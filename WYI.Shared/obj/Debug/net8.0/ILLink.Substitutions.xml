@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<linker>
+  <assembly fullname="WYI.Shared">
+    <resource name="FSharpSignatureData.WYI.Shared" action="remove"></resource>
+    <resource name="FSharpSignatureCompressedData.WYI.Shared" action="remove"></resource>
+    <resource name="FSharpSignatureDataB.WYI.Shared" action="remove"></resource>
+    <resource name="FSharpSignatureCompressedDataB.WYI.Shared" action="remove"></resource>
+    <resource name="FSharpOptimizationData.WYI.Shared" action="remove"></resource>
+    <resource name="FSharpOptimizationCompressedData.WYI.Shared" action="remove"></resource>
+    <resource name="FSharpOptimizationDataB.WYI.Shared" action="remove"></resource>
+    <resource name="FSharpOptimizationCompressedDataB.WYI.Shared" action="remove"></resource>
+    <resource name="FSharpOptimizationInfo.WYI.Shared" action="remove"></resource>
+    <resource name="FSharpSignatureInfo.WYI.Shared" action="remove"></resource>
+  </assembly>
+</linker>
