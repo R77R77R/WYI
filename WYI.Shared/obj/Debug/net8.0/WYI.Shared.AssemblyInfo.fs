@@ -10,7 +10,7 @@ open System.Reflection
 [<assembly: System.Reflection.AssemblyCompanyAttribute("WYI.Shared")>]
 [<assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")>]
 [<assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")>]
-[<assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9f000fc3dfda97f541d9db7f7778f9abc25822ce")>]
+[<assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6893ee4ff4888790ce7081fbfc65ecb1ee76bd5a")>]
 [<assembly: System.Reflection.AssemblyProductAttribute("WYI.Shared")>]
 [<assembly: System.Reflection.AssemblyTitleAttribute("WYI.Shared")>]
 [<assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")>]

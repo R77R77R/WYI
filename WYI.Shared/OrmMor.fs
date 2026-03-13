@@ -1,4 +1,4 @@
-module Studio.Shared.OrmMor
+module WYI.Shared.OrmMor
 
 open LanguagePrimitives
 
@@ -26,8 +26,8 @@ open PreOrm
 open System.Data.SqlClient
 open System.Threading
 open Util.Bin
-open Studio.Shared.OrmTypes
-open Studio.Shared.Types
+open WYI.Shared.OrmTypes
+open WYI.Shared.Types
 
 // [BOOK] Structure
 

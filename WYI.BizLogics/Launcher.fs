@@ -1,4 +1,4 @@
-﻿module Studio.BizLogics.Launcher
+﻿module WYI.BizLogics.Launcher
 
 open System
 open System.Text
@@ -17,13 +17,13 @@ open UtilWebServer.Common
 open UtilWebServer.SSR
 open UtilWebServer.Server.Service
 
-open Studio.Shared.Types
-open Studio.Shared.CustomMor
+open WYI.Shared.Types
+open WYI.Shared.CustomMor
 
-open Studio.BizLogics.Common
-open Studio.BizLogics.Init
-open Studio.BizLogics.Branch
-open Studio.BizLogics.SSR
+open WYI.BizLogics.Common
+open WYI.BizLogics.Init
+open WYI.BizLogics.Branch
+open WYI.BizLogics.SSR
 
 
 let launch() =

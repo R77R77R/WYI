@@ -1,4 +1,4 @@
-﻿module Studio.BizLogics.Db
+﻿module WYI.BizLogics.Db
 
 open System
 open System.IO
@@ -18,12 +18,12 @@ open UtilWebServer.DbLogger
 open UtilWebServer.Db
 open UtilWebServer.Common
 
-open Studio.Shared.OrmTypes
-open Studio.Shared.Types
-open Studio.Shared.OrmMor
-open Studio.Shared.CustomMor
+open WYI.Shared.OrmTypes
+open WYI.Shared.Types
+open WYI.Shared.OrmMor
+open WYI.Shared.CustomMor
 
-open Studio.BizLogics.Common
+open WYI.BizLogics.Common
 
 let dbLoggero =
     (fun log -> 

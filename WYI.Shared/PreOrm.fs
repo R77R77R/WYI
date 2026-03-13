@@ -1,1 +1,1 @@
-﻿module Studio.Shared.PreOrm
+﻿module WYI.Shared.PreOrm

@@ -1,4 +1,4 @@
-﻿module Studio.BizLogics.Init
+﻿module WYI.BizLogics.Init
 
 open System
 open System.IO
@@ -22,13 +22,13 @@ open UtilWebServer.Init
 open UtilWebServer.FileSys
 open UtilWebServer.Api
 
-open Studio.Shared.OrmTypes
-open Studio.Shared.OrmMor
-open Studio.Shared.Types
-open Studio.Shared.CustomMor
+open WYI.Shared.OrmTypes
+open WYI.Shared.OrmMor
+open WYI.Shared.Types
+open WYI.Shared.CustomMor
 
-open Studio.BizLogics.Common
-open Studio.BizLogics.Db
+open WYI.BizLogics.Common
+open WYI.BizLogics.Db
 
 let init (runtime:Runtime) = 
 
@@ -40,7 +40,7 @@ let init (runtime:Runtime) =
     if runtime.host.updateDatabase then
         updateDbStructure runtime conn
 
-    Studio.Shared.OrmMor.init()
+    WYI.Shared.OrmMor.init()
 
     let users = runtime.users.Values |> Seq.toArray
     match users |> Array.tryFind(fun i -> i.eu.p.AuthType = euAuthTypeEnum.Admin) with

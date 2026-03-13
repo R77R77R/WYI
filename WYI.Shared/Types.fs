@@ -1,4 +1,4 @@
-﻿module Studio.Shared.Types
+﻿module WYI.Shared.Types
 
 open System
 open System.Collections.Generic
@@ -9,7 +9,7 @@ open Util.Json
 open Util.CollectionModDict
 open Util.Stat
 
-open Studio.Shared.OrmTypes
+open WYI.Shared.OrmTypes
 
 //[TypeManaged]{
 

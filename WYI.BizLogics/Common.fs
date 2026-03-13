@@ -1,4 +1,4 @@
-﻿module Studio.BizLogics.Common
+﻿module WYI.BizLogics.Common
 
 open System
 open System.Collections.Generic
@@ -15,9 +15,9 @@ open UtilWebServer.Db
 open UtilWebServer.DbLogger
 open UtilWebServer.Runtime
 
-open Studio.Shared.OrmTypes
-open Studio.Shared.OrmMor
-open Studio.Shared.Types
+open WYI.Shared.OrmTypes
+open WYI.Shared.OrmMor
+open WYI.Shared.Types
 
 
 type Session = SessionTemplate<EuComplex,unit>

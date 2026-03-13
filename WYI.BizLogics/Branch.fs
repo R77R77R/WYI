@@ -1,4 +1,4 @@
-﻿module Studio.BizLogics.Branch
+﻿module WYI.BizLogics.Branch
 
 open System
 open System.Text
@@ -15,10 +15,10 @@ open Util.Http
 open Util.HttpServer
 open Util.Zmq
 
-open Studio.Shared.OrmTypes
-open Studio.Shared.Types
-open Studio.Shared.OrmMor
-open Studio.Shared.CustomMor
+open WYI.Shared.OrmTypes
+open WYI.Shared.Types
+open WYI.Shared.OrmMor
+open WYI.Shared.CustomMor
 
 open UtilWebServer.Common
 open UtilWebServer.Api
@@ -26,7 +26,7 @@ open UtilWebServer.Json
 open UtilWebServer.SSR
 open UtilWebServer.Server.Monitor
 
-open Studio.BizLogics.Common
+open WYI.BizLogics.Common
 
 let branching (x:X) = 
 

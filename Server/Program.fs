@@ -10,7 +10,7 @@ open UtilWebServer.Common
 [<EntryPoint>]
 let main argv =
 
-    Studio.BizLogics.Launcher.launch()
+    WYI.BizLogics.Launcher.launch()
 
     Util.Runtime.halt output "" ""
 

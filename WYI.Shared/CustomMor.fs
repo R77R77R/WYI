@@ -1,4 +1,4 @@
-module Studio.Shared.CustomMor
+module WYI.Shared.CustomMor
 
 open LanguagePrimitives
 
@@ -24,9 +24,9 @@ open Util.Stat
 open PreOrm
 
 open Util.Bin
-open Studio.Shared.OrmTypes
-open Studio.Shared.Types
-open Studio.Shared.OrmMor
+open WYI.Shared.OrmTypes
+open WYI.Shared.Types
+open WYI.Shared.OrmMor
 
 // [EuComplex] Structure
 

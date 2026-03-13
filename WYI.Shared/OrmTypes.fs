@@ -1,4 +1,4 @@
-module Studio.Shared.OrmTypes
+module WYI.Shared.OrmTypes
 
 open LanguagePrimitives
 

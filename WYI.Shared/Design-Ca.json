@@ -48,27 +48,5 @@
         "name": "Owner"
       }
     ]
-  },
-
-  {
-    "name": "Ca_Book",
-    "shorthand": "book",
-    "id": 1001,
-    "fields": [
-      {
-        "enum": "Chars",
-        "length": 64,
-        "name": "Caption"
-      },
-      {
-        "enum": "Chars",
-        "length": 64,
-        "name": "Email"
-      },
-      {
-        "enum": "Text",
-        "name": "Message"
-      }
-    ]
   }
 ]
