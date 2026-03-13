@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\lib",
+    "\\lib\\shared",
+    "\\lib\\shared\\gchain",
+    "\\lib\\store",
+    "\\lib\\util",
+    "\\pages",
+    "\\pages\\fx",
+    "\\pages\\gchain",
+    "\\types"
+  ],
+  "SelectedNode": "\\lib\\shared\\gchain\\Types.d.ts",
+  "PreviewInSolutionExplorer": false
+}

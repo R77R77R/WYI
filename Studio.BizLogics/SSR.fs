@@ -1,0 +1,98 @@
+﻿module Studio.BizLogics.SSR
+
+open System
+open System.Text
+open System.Collections.Generic
+open System.Threading
+
+open Util.Cat
+open Util.Text
+open Util.Bin
+open Util.Perf
+open Util.Json
+open Util.Http
+open Util.HttpServer
+open Util.Zmq
+
+open Studio.Shared.OrmTypes
+open Studio.Shared.Types
+open Studio.Shared.OrmMor
+open Studio.Shared.CustomMor
+
+open UtilWebServer.Common
+open UtilWebServer.Api
+open UtilWebServer.Json
+open UtilWebServer.SSR
+
+open Studio.BizLogics.Common
+open Studio.BizLogics.Branch
+
+let ssrPageHome = {
+    title = "SDCHEN FINE ART STUDIO"
+    desc = "Portrait painting"
+    image = "https://i.imgur.com/JvdrjQP.png"
+    url = runtime.host.url
+    noscript = "" }
+
+let renderGoogleAds = 
+    """
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11507607517">
+    </script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'AW-11507607517');
+    </script>
+
+    <!-- Event snippet for Page view conversion page
+    In your html page, add the snippet and call gtag_report_conversion when someone clicks on the chosen link or button. -->
+    <script>
+    function gtag_report_conversion(url) {
+      var callback = function () {
+        if (typeof(url) != 'undefined') {
+          window.location = url;
+        }
+      };
+      gtag('event', 'conversion', {
+          'send_to': 'AW-11507607517/O1yWCP6F2vkZEN3PoO8q',
+          'value': 1.0,
+          'currency': 'USD',
+          'event_callback': callback
+      });
+      return false;
+    }
+    </script>
+
+
+    """
+
+let r1 = str__regex @"\w+"
+
+let pages = [|
+    "/admin" |]
+
+let echo (req:HttpRequest) = 
+    let ip = req |> remote_ip
+    if ip.StartsWith "127.0.0.1" = false then
+        let p = pPLOG_empty()
+        p.Request <- req.bin |> System.Text.Encoding.ASCII.GetString
+        p.Ip <- ip
+        UtilWebServer.Db.p__createRcd 
+            p PLOG_metadata dbLoggero "echo" conn |> ignore
+
+    let vueDeployDir = runtime.host.req__vueDeployDir req
+
+    match 
+        { req = req; rep = None}
+        |> Suc
+        |> bind (homepage runtime.langs pages ssrPageHome vueDeployDir renderGoogleAds)
+        |> bindFail (hSEO (fun x -> [||]) "")
+        |> bindFail (hapi echoApiHandler (branch req)) with
+    | Suc x -> x.rep
+    | Fail(x,e) -> None
+
+
+

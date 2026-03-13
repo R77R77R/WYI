@@ -1,0 +1,60 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Dev\\GCHAIN2024\\VsCodeOpen\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Dev\\GCHAIN2024\\VsCodeOpen\\src\\pcs\\ctc\\ChartPriceStake.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\pcs\\ctc\\ChartPriceStake.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Dev\\GCHAIN2024\\VsCodeOpen\\src\\pcs\\ctc\\UserAuth.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\pcs\\ctc\\UserAuth.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 152,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "UserAuth.vue",
+              "DocumentMoniker": "C:\\Dev\\GCHAIN2024\\VsCodeOpen\\src\\pcs\\ctc\\UserAuth.vue",
+              "RelativeDocumentMoniker": "src\\pcs\\ctc\\UserAuth.vue",
+              "ToolTip": "C:\\Dev\\GCHAIN2024\\VsCodeOpen\\src\\pcs\\ctc\\UserAuth.vue",
+              "RelativeToolTip": "src\\pcs\\ctc\\UserAuth.vue",
+              "ViewState": "AQIAAC0AAAAAAAAAAAAAAEIAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
+              "WhenOpened": "2024-06-27T20:44:49.211Z",
+              "EditorCaption": ""
+            }
+          ]
+        },
+        {
+          "DockedWidth": 248,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ChartPriceStake.vue",
+              "DocumentMoniker": "C:\\Dev\\GCHAIN2024\\VsCodeOpen\\src\\pcs\\ctc\\ChartPriceStake.vue",
+              "RelativeDocumentMoniker": "src\\pcs\\ctc\\ChartPriceStake.vue",
+              "ToolTip": "C:\\Dev\\GCHAIN2024\\VsCodeOpen\\src\\pcs\\ctc\\ChartPriceStake.vue",
+              "RelativeToolTip": "src\\pcs\\ctc\\ChartPriceStake.vue",
+              "ViewState": "AQIAACUAAAAAAAAAAAAAAAwAAAAeAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
+              "WhenOpened": "2024-06-27T20:48:16.372Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

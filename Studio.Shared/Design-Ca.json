@@ -1,0 +1,74 @@
+[
+  {
+    "name": "Ca_EndUser",
+    "shorthand": "eu",
+    "id": 1001,
+    "fields": [
+      {
+        "enum": "Chars",
+        "length": 64,
+        "name": "Caption"
+      },
+      {
+        "enum": "SelectLines",
+        "lines": "Normal//Normal///Authorized//Authorized///Admin//Admin",
+        "name": "AuthType"
+      }
+    ]
+  },
+  {
+    "name": "Ca_File",
+    "shorthand": "file",
+    "id": 35461231,
+    "fields": [
+      {
+        "enum": "Text",
+        "name": "Caption"
+      },
+      {
+        "enum": "Text",
+        "name": "Desc"
+      },
+      {
+        "enum": "Chars",
+        "length": 4,
+        "name": "Suffix"
+      },
+      {
+        "enum": "Integer",
+        "name": "Size"
+      },
+      {
+        "enum": "Bin",
+        "name": "Thumbnail"
+      },
+      {
+        "enum": "FK",
+        "ref": "Ca_EndUser",
+        "name": "Owner"
+      }
+    ]
+  },
+
+  {
+    "name": "Ca_Book",
+    "shorthand": "book",
+    "id": 1001,
+    "fields": [
+      {
+        "enum": "Chars",
+        "length": 64,
+        "name": "Caption"
+      },
+      {
+        "enum": "Chars",
+        "length": 64,
+        "name": "Email"
+      },
+      {
+        "enum": "Text",
+        "name": "Message"
+      }
+    ]
+  }
+]
