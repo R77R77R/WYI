@@ -10,7 +10,7 @@ open System.Reflection
 [<assembly: System.Reflection.AssemblyCompanyAttribute("Studio.BizLogics")>]
 [<assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")>]
 [<assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")>]
-[<assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+396d0829d6f6347d0ecaa05a16287c1b77a4190d")>]
+[<assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9f000fc3dfda97f541d9db7f7778f9abc25822ce")>]
 [<assembly: System.Reflection.AssemblyProductAttribute("Studio.BizLogics")>]
 [<assembly: System.Reflection.AssemblyTitleAttribute("Studio.BizLogics")>]
 [<assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")>]

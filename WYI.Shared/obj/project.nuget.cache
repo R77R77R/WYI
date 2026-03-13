@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "FEWDvtR3I7s=",
+  "dgSpecHash": "x4VempKVjyM=",
   "success": true,
-  "projectFilePath": "C:\\Dev\\WYI\\Studio.Shared\\WYI.Shared.fsproj",
+  "projectFilePath": "C:\\Dev\\WYI\\WYI.Shared\\WYI.Shared.fsproj",
   "expectedPackageFiles": [
     "C:\\Users\\RR\\.nuget\\packages\\asyncio\\0.1.69\\asyncio.0.1.69.nupkg.sha512",
     "C:\\Users\\RR\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",

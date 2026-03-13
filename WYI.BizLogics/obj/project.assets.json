@@ -3063,6 +3063,20 @@
         "runtime": {
           "bin/placeholder/UtilWebServer.dll": {}
         }
+      },
+      "WYI.Shared/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "FSharp.Core": "10.0.102",
+          "GNodeUtils": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/WYI.Shared.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/WYI.Shared.dll": {}
+        }
       }
     }
   },
@@ -9068,14 +9082,19 @@
       "type": "project",
       "path": "../../Common/UtilWebServer/UtilWebServer.fsproj",
       "msbuildProject": "../../Common/UtilWebServer/UtilWebServer.fsproj"
+    },
+    "WYI.Shared/1.0.0": {
+      "type": "project",
+      "path": "../WYI.Shared/WYI.Shared.fsproj",
+      "msbuildProject": "../WYI.Shared/WYI.Shared.fsproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
-      "C:\\Dev\\WYI\\Studio.Shared\\Studio.Shared.fsproj",
       "FSharp.Core >= 10.0.102",
       "GNodeUtils >= 1.0.0",
-      "UtilWebServer >= 1.0.0"
+      "UtilWebServer >= 1.0.0",
+      "WYI.Shared >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -9085,11 +9104,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Dev\\WYI\\Studio.BizLogics\\Studio.BizLogics.fsproj",
-      "projectName": "Studio.BizLogics",
-      "projectPath": "C:\\Dev\\WYI\\Studio.BizLogics\\Studio.BizLogics.fsproj",
+      "projectUniqueName": "C:\\Dev\\WYI\\WYI.BizLogics\\WYI.BizLogics.fsproj",
+      "projectName": "WYI.BizLogics",
+      "projectPath": "C:\\Dev\\WYI\\WYI.BizLogics\\WYI.BizLogics.fsproj",
       "packagesPath": "C:\\Users\\RR\\.nuget\\packages\\",
-      "outputPath": "C:\\Dev\\WYI\\Studio.BizLogics\\obj\\",
+      "outputPath": "C:\\Dev\\WYI\\WYI.BizLogics\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -9118,8 +9137,8 @@
             "C:\\Dev\\Common\\Util\\Util.fsproj": {
               "projectPath": "C:\\Dev\\Common\\Util\\Util.fsproj"
             },
-            "C:\\Dev\\WYI\\Studio.Shared\\Studio.Shared.fsproj": {
-              "projectPath": "C:\\Dev\\WYI\\Studio.Shared\\Studio.Shared.fsproj"
+            "C:\\Dev\\WYI\\WYI.Shared\\WYI.Shared.fsproj": {
+              "projectPath": "C:\\Dev\\WYI\\WYI.Shared\\WYI.Shared.fsproj"
             }
           }
         }
@@ -9161,16 +9180,5 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.102/PortableRuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1104",
-      "level": "Error",
-      "message": "Unable to find project 'C:\\Dev\\WYI\\Studio.Shared\\Studio.Shared.fsproj'. Check that the project reference is valid and that the project file exists.",
-      "libraryId": "C:\\Dev\\WYI\\Studio.Shared\\Studio.Shared.fsproj",
-      "targetGraphs": [
-        "net8.0"
-      ]
-    }
-  ]
+  }
 }

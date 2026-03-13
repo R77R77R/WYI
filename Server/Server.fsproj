@@ -12,8 +12,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Common\UtilWebServer\UtilWebServer.fsproj" />
     <ProjectReference Include="..\..\Common\Util\Util.fsproj" />
-    <ProjectReference Include="..\Studio.BizLogics\Studio.BizLogics.fsproj" />
-    <ProjectReference Include="..\Studio.Shared\Studio.Shared.fsproj" />
+    <ProjectReference Include="..\WYI.BizLogics\WYI.BizLogics.fsproj" />
+    <ProjectReference Include="..\WYI.Shared\WYI.Shared.fsproj" />
   </ItemGroup>
 
 </Project>

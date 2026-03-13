@@ -8621,11 +8621,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Dev\\WYI\\Studio.Shared\\WYI.Shared.fsproj",
+      "projectUniqueName": "C:\\Dev\\WYI\\WYI.Shared\\WYI.Shared.fsproj",
       "projectName": "WYI.Shared",
-      "projectPath": "C:\\Dev\\WYI\\Studio.Shared\\WYI.Shared.fsproj",
+      "projectPath": "C:\\Dev\\WYI\\WYI.Shared\\WYI.Shared.fsproj",
       "packagesPath": "C:\\Users\\RR\\.nuget\\packages\\",
-      "outputPath": "C:\\Dev\\WYI\\Studio.Shared\\obj\\",
+      "outputPath": "C:\\Dev\\WYI\\WYI.Shared\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
