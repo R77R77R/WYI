@@ -10,7 +10,8 @@ open UtilWebServer.Common
 [<EntryPoint>]
 let main argv =
 
-    System.Console.WriteLine Environment.MachineName
+    "Machine Name: " + Environment.MachineName
+    |> System.Console.WriteLine 
 
     //WYI.BizLogics.Launcher.launch()
 
