@@ -33,3 +33,8 @@ WYI.Shared/obj/Debug/net8.0/WYI.Shared.AssemblyInfo.fs
 WYI.Shared/obj/Debug/net8.0/WYI.Shared.AssemblyInfoInputs.cache
 /vscode/node_modules
 /WYI.Shared/obj
+WYI.BizLogics/obj/project.assets.json
+WYI.BizLogics/obj/project.nuget.cache
+WYI.Shared/obj/project.assets.json
+WYI.Shared/obj/project.nuget.cache
+WYI.Shared/obj/WYI.Shared.fsproj.nuget.dgspec.json
