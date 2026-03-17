@@ -42,6 +42,7 @@ let runtime =
     let h = {
         data = { version = 0 }
         port = 1723
+        rdbms = Util.Db.Rdbms.SqlServer
         conn = "server=.; database=Studio; Trusted_Connection=True;"
         url = ""
 
@@ -81,6 +82,9 @@ let runtime =
     match hostEnum with
     | HostEnum.Kamatera -> 
         h.conn <- "server=localhost\MSSQLSERVER01; database=Studio; Trusted_Connection=True;"
+    | HostEnum.HetznerEastUSA -> 
+        h.rdbms <- Util.Db.Rdbms.PostgreSql
+        h.conn <- ""
     | _ -> ()
 
     {   books = new List<BOOK>() }

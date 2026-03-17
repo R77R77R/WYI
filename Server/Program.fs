@@ -12,6 +12,6 @@ let main argv =
 
     WYI.BizLogics.Launcher.launch()
 
-    //Util.Runtime.halt output "" ""
+    Util.Runtime.halt output "" ""
 
     0
