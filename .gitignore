@@ -27,3 +27,8 @@
 /WYI.Shared/obj
 WYI.Shared/obj/Debug/net8.0/WYI.Shared.AssemblyInfoInputs.cache
 WYI.Shared/obj/Debug/net8.0/WYI.Shared.AssemblyInfo.fs
+*.cache
+/WYI.Shared/obj
+WYI.Shared/obj/Debug/net8.0/WYI.Shared.AssemblyInfo.fs
+WYI.Shared/obj/Debug/net8.0/WYI.Shared.AssemblyInfoInputs.cache
+/vscode/node_modules
