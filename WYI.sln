@@ -15,6 +15,12 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "WYI.Shared", "WYI.Shared\WY
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "WYI.BizLogics", "WYI.BizLogics\WYI.BizLogics.fsproj", "{3B3D03C0-25D9-613B-A6C6-93F4612995CD}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "JCS.BizLogics", "..\JCS\JCS.BizLogics\JCS.BizLogics.fsproj", "{2218C98F-4A6C-E354-2B00-0E49751C0079}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "JCS.Shared", "..\JCS\JCS.Shared\JCS.Shared.fsproj", "{DF9100A9-D547-6815-04BE-12FBAA935FAC}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TypeSys", "..\JCS\TypeSys\TypeSys.fsproj", "{4491982B-B43E-16AA-C203-FF4A1B87181A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +47,18 @@ Global
 		{3B3D03C0-25D9-613B-A6C6-93F4612995CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B3D03C0-25D9-613B-A6C6-93F4612995CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B3D03C0-25D9-613B-A6C6-93F4612995CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2218C98F-4A6C-E354-2B00-0E49751C0079}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2218C98F-4A6C-E354-2B00-0E49751C0079}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2218C98F-4A6C-E354-2B00-0E49751C0079}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2218C98F-4A6C-E354-2B00-0E49751C0079}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF9100A9-D547-6815-04BE-12FBAA935FAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF9100A9-D547-6815-04BE-12FBAA935FAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF9100A9-D547-6815-04BE-12FBAA935FAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF9100A9-D547-6815-04BE-12FBAA935FAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4491982B-B43E-16AA-C203-FF4A1B87181A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4491982B-B43E-16AA-C203-FF4A1B87181A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4491982B-B43E-16AA-C203-FF4A1B87181A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4491982B-B43E-16AA-C203-FF4A1B87181A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
