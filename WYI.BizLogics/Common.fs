@@ -40,7 +40,7 @@ let runtime =
 
     let h = {
         data = { version = 0 }
-        port = 2026
+        port = 1723
         conn = "server=.; database=Studio; Trusted_Connection=True;"
         url = ""
 
