@@ -35,6 +35,7 @@ type CtxWrappedX = CtxWrapper<X,Er>
 type HostEnum = 
 | Dev
 | Kamatera
+| HetznerEastUSA
 
 let runtime = 
 
@@ -74,6 +75,7 @@ let runtime =
         match Environment.MachineName with
         | "MAIN" -> HostEnum.Dev
         | "PTNHKDIE15IJZN" -> HostEnum.Kamatera
+        | "ubuntu-2gb-ash-1" -> HostEnum.HetznerEastUSA
         | _ -> HostEnum.Dev
 
     match hostEnum with
