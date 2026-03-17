@@ -10,6 +10,8 @@ open UtilWebServer.Common
 [<EntryPoint>]
 let main argv =
 
+    // wyi/e2TpqcaTEYLfkvFMkc
+    
     TypeSys.CodeRobot.go 
         output 
         @"C:\Dev\JCS\TypeSys\bin\Debug\net10.0"
