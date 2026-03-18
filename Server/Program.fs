@@ -48,6 +48,7 @@ let main argv =
     "FsRoot: " + fsRoot |> output
     "VueDistPath: " + vueDistPath |> output
 
+    // https://5.78.201.21
     Server.Kestrel.runServer 
         (devRoot,fsRoot,vueDistPath) 
         (80,443)
