@@ -50,6 +50,7 @@ let main argv =
 
     Server.Kestrel.runServer 
         (devRoot,fsRoot,vueDistPath) 
+        (80,443)
         output
         [||]
 

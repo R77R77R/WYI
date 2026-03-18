@@ -14,8 +14,14 @@ open System.Net.WebSockets
 
 let runServer 
     (devRoot,fsRoot,vueDistPath)
+    (port80,port443)
     output (args: string[]) =
+
     let builder = WebApplication.CreateBuilder(args)
+
+    // 强制监听标准端口 80 和 443
+    // 注意：0.0.0.0 允许外部公网访问
+    builder.WebHost.UseUrls("http://0.0.0.0:" + port80.ToString() + ";https://0.0.0.0:" + port443.ToString()) |> ignore
 
     // 1. 高性能 Kestrel 配置
     builder.WebHost.ConfigureKestrel(fun options ->
