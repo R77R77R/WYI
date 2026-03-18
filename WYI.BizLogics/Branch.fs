@@ -68,15 +68,7 @@ let branching (x:X) =
             let email = (tryFindStrByAtt "email" x.json).Trim()
             let msg = (tryFindStrByAtt "msg" x.json).Trim()
 
-            let p = pBOOK_empty()
-            p.Caption <- name
-            p.Email <- email
-            p.Message <- msg
-            match 
-                UtilWebServer.Db.p__createRcd 
-                    p BOOK_metadata dbLoggero "/api/public/msg" conn with
-            | Some rcd -> [| ok |]
-            | None -> er Er.Internal) |> bindx
+            [| ok |]) |> bindx
         | _ -> Fail(Er.ApiNotExists,x)
     | "eu" -> 
         match x.api with
@@ -91,24 +83,6 @@ let branching (x:X) =
                 |> Array.filter(fun i -> (UtilWebServer.PageLog.req__fromo i.p.Request).IsSome)
                 |> (fun items -> if items.Length > 200 then Array.sub items 0 200 else items)
                 |> Array.map(fun rcd -> UtilWebServer.PageLog.req__json (rcd.p.Ip,rcd.Createdat,rcd.p.Request))
-            | None -> [| |]
-            |> wrapOkAry) |> bindx
-        | "books" -> (fun x -> 
-            let metadata = BOOK_metadata
-            match 
-                "ORDER BY ID DESC"
-                |> Util.Orm.loadall conn
-                    (metadata.table,metadata.fieldorders(),metadata.db__rcd) with
-            | Some items ->
-                if items.Length > 200 then
-                    Array.sub items 0 200
-                else
-                    items 
-                |> Array.map(fun rcd -> 
-                    let clone = BOOK_clone rcd
-                    clone.p.Message <- clone.p.Message.Replace(crlf,"<br>")
-                    clone)
-                |> Array.map BOOK__json
             | None -> [| |]
             |> wrapOkAry) |> bindx
         | "monitorPerf" -> bindx apiMonitorPerf

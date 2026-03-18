@@ -21,10 +21,10 @@ export const enum ErEnum {
 
 // [EuComplex] Structure
 
-export const EuComplex_empty = (): studio.EuComplex => { 
+export const EuComplex_empty = (): wyi.EuComplex => { 
     return {
         eu: { id: 0, sort: 0, createdat: new Date(), updatedat: new Date(), p: marshall.pEU_empty() },
-    } as studio.EuComplex
+    } as wyi.EuComplex
 }
 
 export const EuComplex__bin = (bb:BytesBuilder) => (v:any) => {
@@ -32,7 +32,7 @@ export const EuComplex__bin = (bb:BytesBuilder) => (v:any) => {
     marshall.EU__bin (bb) (v.eu)
 }
 
-export const bin__EuComplex = (bi:BinIndexed):studio.EuComplex => {
+export const bin__EuComplex = (bi:BinIndexed):wyi.EuComplex => {
 
     return {
         eu: marshall.bin__EU (bi),
@@ -41,10 +41,10 @@ export const bin__EuComplex = (bi:BinIndexed):studio.EuComplex => {
 
 // [MomentComplex] Structure
 
-export const MomentComplex_empty = (): studio.MomentComplex => { 
+export const MomentComplex_empty = (): wyi.MomentComplex => { 
     return {
         m: { id: 0, sort: 0, createdat: new Date(), updatedat: new Date(), p: marshall.pMOMENT_empty() },
-    } as studio.MomentComplex
+    } as wyi.MomentComplex
 }
 
 export const MomentComplex__bin = (bb:BytesBuilder) => (v:any) => {
@@ -52,7 +52,7 @@ export const MomentComplex__bin = (bb:BytesBuilder) => (v:any) => {
     marshall.MOMENT__bin (bb) (v.m)
 }
 
-export const bin__MomentComplex = (bi:BinIndexed):studio.MomentComplex => {
+export const bin__MomentComplex = (bi:BinIndexed):wyi.MomentComplex => {
 
     return {
         m: marshall.bin__MOMENT (bi),
@@ -61,31 +61,30 @@ export const bin__MomentComplex = (bi:BinIndexed):studio.MomentComplex => {
 
 // [RuntimeData] Structure
 
-export const RuntimeData_empty = (): studio.RuntimeData => { 
+export const RuntimeData_empty = (): wyi.RuntimeData => { 
     return {
-        books: [],
-    } as studio.RuntimeData
+        desc: "",
+    } as wyi.RuntimeData
 }
 
 export const RuntimeData__bin = (bb:BytesBuilder) => (v:any) => {
 
-    
-    marshall.array__bin (marshall.BOOK__bin) (bb) (v.books)
+    marshall.str__bin (bb) (v.desc)
 }
 
-export const bin__RuntimeData = (bi:BinIndexed):studio.RuntimeData => {
+export const bin__RuntimeData = (bi:BinIndexed):wyi.RuntimeData => {
 
     return {
-        books: marshall.bin__array (marshall.bin__BOOK) (bi),
+        desc: marshall.bin__str (bi),
     }
 }
 
 // [ClientRuntime] Structure
 
-export const ClientRuntime_empty = (): studio.ClientRuntime => { 
+export const ClientRuntime_empty = (): wyi.ClientRuntime => { 
     return {
         version: 0,
-    } as studio.ClientRuntime
+    } as wyi.ClientRuntime
 }
 
 export const ClientRuntime__bin = (bb:BytesBuilder) => (v:any) => {
@@ -93,7 +92,7 @@ export const ClientRuntime__bin = (bb:BytesBuilder) => (v:any) => {
     marshall.int32__bin (bb) (v.version)
 }
 
-export const bin__ClientRuntime = (bi:BinIndexed):studio.ClientRuntime => {
+export const bin__ClientRuntime = (bi:BinIndexed):wyi.ClientRuntime => {
 
     return {
         version: marshall.bin__int32 (bi),
@@ -102,10 +101,10 @@ export const bin__ClientRuntime = (bi:BinIndexed):studio.ClientRuntime => {
 
 // [Msg] Structure
 
-export const Msg_empty = (): studio.Msg => { 
+export const Msg_empty = (): wyi.Msg => { 
     return {
     e:0, val:{}
-    } as studio.Msg
+    } as wyi.Msg
 }
 
 export const Msg__bin = (bb:BytesBuilder) => (v:any) => {
@@ -123,9 +122,9 @@ export const Msg__bin = (bb:BytesBuilder) => (v:any) => {
     }
 }
 
-export const bin__Msg = (bi:BinIndexed):studio.Msg => {
+export const bin__Msg = (bi:BinIndexed):wyi.Msg => {
 
-    let v:studio.Msg = { e:0, val:{} }
+    let v:wyi.Msg = { e:0, val:{} }
     v.e = marshall.bin__int32 (bi)
     switch (v.e) {
         case 2:
@@ -142,10 +141,10 @@ export const bin__Msg = (bi:BinIndexed):studio.Msg => {
 
 // [Er] Structure
 
-export const Er_empty = (): studio.Er => { 
+export const Er_empty = (): wyi.Er => { 
     return {
     e:0, val:{}
-    } as studio.Er
+    } as wyi.Er
 }
 
 export const Er__bin = (bb:BytesBuilder) => (v:any) => {
@@ -165,9 +164,9 @@ export const Er__bin = (bb:BytesBuilder) => (v:any) => {
     }
 }
 
-export const bin__Er = (bi:BinIndexed):studio.Er => {
+export const bin__Er = (bi:BinIndexed):wyi.Er => {
 
-    let v:studio.Er = { e:0, val:{} }
+    let v:wyi.Er = { e:0, val:{} }
     v.e = marshall.bin__int32 (bi)
     switch (v.e) {
         case 4:

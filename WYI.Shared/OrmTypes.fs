@@ -19,58 +19,10 @@ open Util.Bin
 open Util.Text
 open Util.Json
 open Util.Orm
+open Util.Math
 open Util.Stat
 
 open PreOrm
-
-// [Ca_Book] (BOOK)
-
-type pBOOK = {
-mutable Caption: Chars
-mutable Email: Chars
-mutable Message: Text}
-
-
-type BOOK = Rcd<pBOOK>
-
-let BOOK_fieldorders() =
-    match rdbms with
-    | Rdbms.SqlServer ->
-        "[ID],[Createdat],[Updatedat],[Sort],[Caption],[Email],[Message]"
-    | Rdbms.PostgreSql ->
-        $""" "id","createdat","updatedat","sort", "caption","email","message" """
-
-let pBOOK_fieldordersArray = [|
-    "Caption"
-    "Email"
-    "Message" |]
-
-let BOOK_sql_update() =
-    match rdbms with
-    | Rdbms.SqlServer -> "[Caption]=@Caption,[Email]=@Email,[Message]=@Message"
-    | Rdbms.PostgreSql -> "caption=@caption,email=@email,message=@message"
-
-let pBOOK_fields() =
-    match rdbms with
-    | Rdbms.SqlServer ->
-        [|
-            Chars("Caption", 64)
-            Chars("Email", 64)
-            Text("Message") |]
-    | Rdbms.PostgreSql ->
-        [|
-            Chars("caption", 64)
-            Chars("email", 64)
-            Text("message") |]
-
-let pBOOK_empty(): pBOOK = {
-    Caption = ""
-    Email = ""
-    Message = "" }
-
-let BOOK_id = ref 1001L
-let BOOK_count = ref 0
-let BOOK_table = "Ca_Book"
 
 // [Ca_EndUser] (EU)
 

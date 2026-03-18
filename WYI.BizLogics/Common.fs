@@ -42,11 +42,11 @@ let runtime =
     let h = {
         data = { version = 0 }
         port = 1723
-        rdbms = Util.Db.Rdbms.SqlServer
-        conn = "server=.; database=Studio; Trusted_Connection=True;"
+        rdbms = Util.Db.Rdbms.PostgreSql
+        conn = @"Host=178.156.223.41;Port=5432;Database=wyi;Username=wyi;Password=e2TpqcaTEYLfkvFMkc"
         url = ""
 
-        updateDatabase = true
+        updateDatabase = false
 
         DiscordAppId = 
             [|  "1254790111"
@@ -67,9 +67,9 @@ let runtime =
                 "oeT01nom" |]
             |> String.Concat
 
-        VsDirSolution = "C:/Dev/Studio"
-        req__vueDeployDir = (fun _ -> @"C:/Dev/Studio/vscode/dist")
-        fsDir = @"C:/FsRoot/Studio" }
+        VsDirSolution = "C:/Dev/WYI"
+        req__vueDeployDir = (fun _ -> @"C:/Dev/WYI/vscode/dist")
+        fsDir = @"C:/FsRoot/WYI" }
 
     let hostEnum = 
         let machinename = Environment.MachineName
@@ -80,15 +80,14 @@ let runtime =
         | _ -> HostEnum.Dev
 
     match hostEnum with
-    | HostEnum.Kamatera -> 
-        h.conn <- "server=localhost\MSSQLSERVER01; database=Studio; Trusted_Connection=True;"
     | HostEnum.HetznerEastUSA -> 
-        h.rdbms <- Util.Db.Rdbms.PostgreSql
-        h.conn <- ""
-    | _ -> ()
+        h.updateDatabase <- true
+    | _ -> 
+        h.updateDatabase <- true
 
-    {   books = new List<BOOK>() }
-    |> empty__Runtime<EuComplex,unit,HostData,RuntimeData> "Studio" h
+
+    {   desc = "" }
+    |> empty__Runtime<EuComplex,unit,HostData,RuntimeData> "WYI" h
 
 
 let dbLoggero =

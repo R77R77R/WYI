@@ -1,6 +1,6 @@
 declare global {
 
-namespace studio {
+namespace wyi {
 
 
 // [EuComplex]
@@ -15,7 +15,7 @@ m:MOMENT
 
 // [RuntimeData]
 export type RuntimeData = {
-books:Array<BOOK>
+desc:string
 }
 
 // [ClientRuntime]

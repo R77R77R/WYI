@@ -1,23 +1,6 @@
 declare global {
 
-namespace studio {
-
-// [Ca_Book] (BOOK)
-
-export type pBOOK = {
-[key:string]: any
-    Caption: string
-    Email: string
-    Message: string
-}
-
-export type BOOK = {
-id:number
-createdat:Date
-updatedat:Date
-sort:number
-p:pBOOK
-}
+namespace wyi {
 
 // [Ca_EndUser] (EU)
 

@@ -20,7 +20,7 @@ type MomentComplex = {
 m: MOMENT }
 
 type RuntimeData = {
-books: List<BOOK> }
+desc: string }
 
 type ClientRuntime = {
 mutable version: int }

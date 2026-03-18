@@ -1,66 +1,4 @@
--- [Ca_Book] ----------------------
-
-DO $$
-DECLARE
-    condition boolean;
-BEGIN
-    condition := (SELECT EXISTS(SELECT * FROM information_schema.tables WHERE table_name = 'ca_book'));
-
-    IF not condition THEN
-    CREATE TABLE ca_book (id BIGINT NOT NULL
-        ,createdat BIGINT NOT NULL
-        ,updatedat BIGINT NOT NULL
-        ,sort BIGINT NOT NULL
-        ,"caption" VARCHAR(64)
-        ,"email" VARCHAR(64)
-        ,"message" TEXT);
-
-   END IF;
-END $$;
-
-
--- [Ca_Book.Caption] -------------
-
-
-DO $$
-DECLARE
-    condition boolean;
-BEGIN
-    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='ca_book' AND column_name='caption'));
-
-    IF not condition THEN
-        ALTER TABLE ca_book ADD "caption" varchar(64);
-    END IF;
-END $$;
-
--- [Ca_Book.Email] -------------
-
-
-DO $$
-DECLARE
-    condition boolean;
-BEGIN
-    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='ca_book' AND column_name='email'));
-
-    IF not condition THEN
-        ALTER TABLE ca_book ADD "email" varchar(64);
-    END IF;
-END $$;
-
--- [Ca_Book.Message] -------------
-
-
-DO $$
-DECLARE
-    condition boolean;
-BEGIN
-    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='ca_book' AND column_name='message'));
-
-    IF not condition THEN
-        ALTER TABLE ca_book ADD "message" text;
-    END IF;
-END $$;
--- [Ca_EndUser] ----------------------
+-- [ca_enduser] ----------------------
 
 DO $$
 DECLARE
@@ -80,7 +18,7 @@ BEGIN
 END $$;
 
 
--- [Ca_EndUser.Caption] -------------
+-- [ca_enduser.Caption] -------------
 
 
 DO $$
@@ -94,7 +32,7 @@ BEGIN
     END IF;
 END $$;
 
--- [Ca_EndUser.AuthType] -------------
+-- [ca_enduser.AuthType] -------------
 
 
 DO $$
@@ -107,7 +45,7 @@ BEGIN
         ALTER TABLE ca_enduser ADD "authtype" int;
     END IF;
 END $$;
--- [Ca_File] ----------------------
+-- [ca_file] ----------------------
 
 DO $$
 DECLARE
@@ -131,7 +69,7 @@ BEGIN
 END $$;
 
 
--- [Ca_File.Caption] -------------
+-- [ca_file.Caption] -------------
 
 
 DO $$
@@ -145,7 +83,7 @@ BEGIN
     END IF;
 END $$;
 
--- [Ca_File.Desc] -------------
+-- [ca_file.Desc] -------------
 
 
 DO $$
@@ -159,7 +97,7 @@ BEGIN
     END IF;
 END $$;
 
--- [Ca_File.Suffix] -------------
+-- [ca_file.Suffix] -------------
 
 
 DO $$
@@ -173,7 +111,7 @@ BEGIN
     END IF;
 END $$;
 
--- [Ca_File.Size] -------------
+-- [ca_file.Size] -------------
 
 
 DO $$
@@ -187,7 +125,7 @@ BEGIN
     END IF;
 END $$;
 
--- [Ca_File.Thumbnail] -------------
+-- [ca_file.Thumbnail] -------------
 
 
 DO $$
@@ -201,7 +139,7 @@ BEGIN
     END IF;
 END $$;
 
--- [Ca_File.Owner] -------------
+-- [ca_file.Owner] -------------
 
 
 DO $$
@@ -214,7 +152,7 @@ BEGIN
         ALTER TABLE ca_file ADD "owner" bigint;
     END IF;
 END $$;
--- [Social_FileBind] ----------------------
+-- [social_filebind] ----------------------
 
 DO $$
 DECLARE
@@ -235,7 +173,7 @@ BEGIN
 END $$;
 
 
--- [Social_FileBind.File] -------------
+-- [social_filebind.File] -------------
 
 
 DO $$
@@ -249,7 +187,7 @@ BEGIN
     END IF;
 END $$;
 
--- [Social_FileBind.Moment] -------------
+-- [social_filebind.Moment] -------------
 
 
 DO $$
@@ -263,7 +201,7 @@ BEGIN
     END IF;
 END $$;
 
--- [Social_FileBind.Desc] -------------
+-- [social_filebind.Desc] -------------
 
 
 DO $$
@@ -276,7 +214,7 @@ BEGIN
         ALTER TABLE social_filebind ADD "desc" text;
     END IF;
 END $$;
--- [Social_Moment] ----------------------
+-- [social_moment] ----------------------
 
 DO $$
 DECLARE
@@ -302,7 +240,7 @@ BEGIN
 END $$;
 
 
--- [Social_Moment.Title] -------------
+-- [social_moment.Title] -------------
 
 
 DO $$
@@ -316,7 +254,7 @@ BEGIN
     END IF;
 END $$;
 
--- [Social_Moment.Summary] -------------
+-- [social_moment.Summary] -------------
 
 
 DO $$
@@ -330,7 +268,7 @@ BEGIN
     END IF;
 END $$;
 
--- [Social_Moment.FullText] -------------
+-- [social_moment.FullText] -------------
 
 
 DO $$
@@ -344,7 +282,7 @@ BEGIN
     END IF;
 END $$;
 
--- [Social_Moment.PreviewImgUrl] -------------
+-- [social_moment.PreviewImgUrl] -------------
 
 
 DO $$
@@ -358,7 +296,7 @@ BEGIN
     END IF;
 END $$;
 
--- [Social_Moment.Link] -------------
+-- [social_moment.Link] -------------
 
 
 DO $$
@@ -372,7 +310,7 @@ BEGIN
     END IF;
 END $$;
 
--- [Social_Moment.Type] -------------
+-- [social_moment.Type] -------------
 
 
 DO $$
@@ -386,7 +324,7 @@ BEGIN
     END IF;
 END $$;
 
--- [Social_Moment.State] -------------
+-- [social_moment.State] -------------
 
 
 DO $$
@@ -400,7 +338,7 @@ BEGIN
     END IF;
 END $$;
 
--- [Social_Moment.MediaType] -------------
+-- [social_moment.MediaType] -------------
 
 
 DO $$
@@ -413,7 +351,7 @@ BEGIN
         ALTER TABLE social_moment ADD "mediatype" int;
     END IF;
 END $$;
--- [Sys_Log] ----------------------
+-- [sys_log] ----------------------
 
 DO $$
 DECLARE
@@ -434,7 +372,7 @@ BEGIN
 END $$;
 
 
--- [Sys_Log.Location] -------------
+-- [sys_log.Location] -------------
 
 
 DO $$
@@ -448,7 +386,7 @@ BEGIN
     END IF;
 END $$;
 
--- [Sys_Log.Content] -------------
+-- [sys_log.Content] -------------
 
 
 DO $$
@@ -462,7 +400,7 @@ BEGIN
     END IF;
 END $$;
 
--- [Sys_Log.Sql] -------------
+-- [sys_log.Sql] -------------
 
 
 DO $$
@@ -475,7 +413,7 @@ BEGIN
         ALTER TABLE sys_log ADD "sql" text;
     END IF;
 END $$;
--- [Sys_PageLog] ----------------------
+-- [sys_pagelog] ----------------------
 
 DO $$
 DECLARE
@@ -495,7 +433,7 @@ BEGIN
 END $$;
 
 
--- [Sys_PageLog.Ip] -------------
+-- [sys_pagelog.Ip] -------------
 
 
 DO $$
@@ -509,7 +447,7 @@ BEGIN
     END IF;
 END $$;
 
--- [Sys_PageLog.Request] -------------
+-- [sys_pagelog.Request] -------------
 
 
 DO $$

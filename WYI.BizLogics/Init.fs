@@ -36,6 +36,7 @@ let init (runtime:Runtime) =
     |> runtime.output
 
     conn <- runtime.host.conn
+    rdbms <- runtime.host.rdbms
 
     if runtime.host.updateDatabase then
         updateDbStructure runtime conn
@@ -50,8 +51,8 @@ let init (runtime:Runtime) =
         | Some rcd -> runtime.users[rcd.ID] <- { eu = rcd }
         | None -> halt runtime.output ("BizLogics.Init.createEU") ""
 
-    (fun (i:BOOK) -> runtime.data.books.Add i)
-    |> loadAll runtime.output conn BOOK_metadata
+    //(fun (i:BOOK) -> runtime.data.books.Add i)
+    //|> loadAll runtime.output conn BOOK_metadata
 
 
 

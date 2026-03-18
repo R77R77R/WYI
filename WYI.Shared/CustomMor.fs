@@ -19,6 +19,7 @@ open Util.Bin
 open Util.Text
 open Util.Json
 open Util.Orm
+open Util.Math
 open Util.Stat
 
 open PreOrm
@@ -38,6 +39,7 @@ let EuComplex_empty(): EuComplex =
 let EuComplex__bin (bb:BytesBuilder) (v:EuComplex) =
 
     EU__bin bb v.eu
+    ()
 
 let bin__EuComplex (bi:BinIndexed):EuComplex =
     let bin,index = bi
@@ -99,6 +101,7 @@ let MomentComplex_empty(): MomentComplex =
 let MomentComplex__bin (bb:BytesBuilder) (v:MomentComplex) =
 
     MOMENT__bin bb v.m
+    ()
 
 let bin__MomentComplex (bi:BinIndexed):MomentComplex =
     let bin,index = bi
@@ -154,26 +157,26 @@ let MomentComplex_clone src =
 
 let RuntimeData_empty(): RuntimeData =
     {
-        books = new List<BOOK>()
+        desc = ""
     }
 
 let RuntimeData__bin (bb:BytesBuilder) (v:RuntimeData) =
 
-    
-    List__bin (BOOK__bin) bb v.books
+    str__bin bb v.desc
+    ()
 
 let bin__RuntimeData (bi:BinIndexed):RuntimeData =
     let bin,index = bi
 
     {
-        books = 
+        desc = 
             bi
-            |> bin__List (bin__BOOK)
+            |> bin__str
     }
 
 let RuntimeData__json (v:RuntimeData) =
 
-    [|  ("books",List__json (BOOK__json) v.books)
+    [|  ("desc",str__json v.desc)
          |]
     |> Json.Braket
 
@@ -189,13 +192,13 @@ let json__RuntimeDatao (json:Json):RuntimeData option =
 
     let mutable passOptions = true
 
-    let bookso =
-        match json__tryFindByName json "books" with
+    let desco =
+        match json__tryFindByName json "desc" with
         | None ->
             passOptions <- false
             None
         | Some v -> 
-            match v |> json__Listo (json__BOOKo) with
+            match v |> json__stro with
             | Some res -> Some res
             | None ->
                 passOptions <- false
@@ -203,7 +206,7 @@ let json__RuntimeDatao (json:Json):RuntimeData option =
 
     if passOptions then
         ({
-            books = bookso.Value }:RuntimeData) |> Some
+            desc = desco.Value }:RuntimeData) |> Some
     else
         None
 
@@ -222,6 +225,7 @@ let ClientRuntime_empty(): ClientRuntime =
 let ClientRuntime__bin (bb:BytesBuilder) (v:ClientRuntime) =
 
     int32__bin bb v.version
+    ()
 
 let bin__ClientRuntime (bi:BinIndexed):ClientRuntime =
     let bin,index = bi
@@ -288,6 +292,7 @@ let Msg__bin (bb:BytesBuilder) (v:Msg) =
     | Msg.ApiResponse v ->
         int32__bin bb 2
         json__bin bb v
+    ()
 
 let bin__Msg (bi:BinIndexed):Msg =
     let bin,index = bi
@@ -369,6 +374,7 @@ let Er__bin (bb:BytesBuilder) (v:Er) =
         int32__bin bb 3
     | Er.Internal ->
         int32__bin bb 4
+    ()
 
 let bin__Er (bi:BinIndexed):Er =
     let bin,index = bi

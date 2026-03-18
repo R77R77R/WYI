@@ -4,59 +4,10 @@ import * as binCommon from '~/lib/util/bin'
 const marshall = {...binCommon }
 
 
-// [BOOK] Structure
-
-
-export const pBOOK__bin = (bb:BytesBuilder) => (p:studio.pBOOK) => {
-
-    
-    marshall.str__bin (bb) (p.Caption)
-    
-    marshall.str__bin (bb) (p.Email)
-    
-    marshall.str__bin (bb) (p.Message)
-}
-
-export const BOOK__bin = (bb:BytesBuilder) => (v:studio.BOOK) => {
-    marshall.int64__bin (bb) (v.id)
-    marshall.int64__bin (bb) (v.sort)
-    marshall.DateTime__bin (bb) (v.createdat)
-    marshall.DateTime__bin (bb) (v.updatedat)
-
-    pBOOK__bin (bb) (v.p)
-}
-
-export const bin__pBOOK = (bi:BinIndexed):studio.pBOOK => {
-
-    let p = pBOOK_empty()
-    p.Caption = marshall.bin__str (bi)
-    p.Email = marshall.bin__str (bi)
-    p.Message = marshall.bin__str (bi)
-
-    return p
-}
-
-
-export const bin__BOOK = (bi:BinIndexed):studio.BOOK => {
-
-    let ID = marshall.bin__int64 (bi)
-    let Sort = marshall.bin__int64 (bi)
-    let Createdat = marshall.bin__DateTime (bi)
-    let Updatedat = marshall.bin__DateTime (bi)
-    
-    return {
-        id: ID,
-        sort: Sort,
-        createdat: Createdat,
-        updatedat: Updatedat,
-        p:  bin__pBOOK (bi)
-    }
-}
-
 // [EU] Structure
 
 
-export const pEU__bin = (bb:BytesBuilder) => (p:studio.pEU) => {
+export const pEU__bin = (bb:BytesBuilder) => (p:wyi.pEU) => {
 
     
     marshall.str__bin (bb) (p.Caption)
@@ -64,7 +15,7 @@ export const pEU__bin = (bb:BytesBuilder) => (p:studio.pEU) => {
     marshall.int32__bin (bb) (p.AuthType)
 }
 
-export const EU__bin = (bb:BytesBuilder) => (v:studio.EU) => {
+export const EU__bin = (bb:BytesBuilder) => (v:wyi.EU) => {
     marshall.int64__bin (bb) (v.id)
     marshall.int64__bin (bb) (v.sort)
     marshall.DateTime__bin (bb) (v.createdat)
@@ -73,7 +24,7 @@ export const EU__bin = (bb:BytesBuilder) => (v:studio.EU) => {
     pEU__bin (bb) (v.p)
 }
 
-export const bin__pEU = (bi:BinIndexed):studio.pEU => {
+export const bin__pEU = (bi:BinIndexed):wyi.pEU => {
 
     let p = pEU_empty()
     p.Caption = marshall.bin__str (bi)
@@ -83,7 +34,7 @@ export const bin__pEU = (bi:BinIndexed):studio.pEU => {
 }
 
 
-export const bin__EU = (bi:BinIndexed):studio.EU => {
+export const bin__EU = (bi:BinIndexed):wyi.EU => {
 
     let ID = marshall.bin__int64 (bi)
     let Sort = marshall.bin__int64 (bi)
@@ -102,7 +53,7 @@ export const bin__EU = (bi:BinIndexed):studio.EU => {
 // [FILE] Structure
 
 
-export const pFILE__bin = (bb:BytesBuilder) => (p:studio.pFILE) => {
+export const pFILE__bin = (bb:BytesBuilder) => (p:wyi.pFILE) => {
 
     
     marshall.str__bin (bb) (p.Caption)
@@ -119,7 +70,7 @@ export const pFILE__bin = (bb:BytesBuilder) => (p:studio.pFILE) => {
     marshall.int64__bin (bb) (p.Owner)
 }
 
-export const FILE__bin = (bb:BytesBuilder) => (v:studio.FILE) => {
+export const FILE__bin = (bb:BytesBuilder) => (v:wyi.FILE) => {
     marshall.int64__bin (bb) (v.id)
     marshall.int64__bin (bb) (v.sort)
     marshall.DateTime__bin (bb) (v.createdat)
@@ -128,7 +79,7 @@ export const FILE__bin = (bb:BytesBuilder) => (v:studio.FILE) => {
     pFILE__bin (bb) (v.p)
 }
 
-export const bin__pFILE = (bi:BinIndexed):studio.pFILE => {
+export const bin__pFILE = (bi:BinIndexed):wyi.pFILE => {
 
     let p = pFILE_empty()
     p.Caption = marshall.bin__str (bi)
@@ -146,7 +97,7 @@ export const bin__pFILE = (bi:BinIndexed):studio.pFILE => {
 }
 
 
-export const bin__FILE = (bi:BinIndexed):studio.FILE => {
+export const bin__FILE = (bi:BinIndexed):wyi.FILE => {
 
     let ID = marshall.bin__int64 (bi)
     let Sort = marshall.bin__int64 (bi)
@@ -165,7 +116,7 @@ export const bin__FILE = (bi:BinIndexed):studio.FILE => {
 // [FBIND] Structure
 
 
-export const pFBIND__bin = (bb:BytesBuilder) => (p:studio.pFBIND) => {
+export const pFBIND__bin = (bb:BytesBuilder) => (p:wyi.pFBIND) => {
 
     
     marshall.int64__bin (bb) (p.File)
@@ -175,7 +126,7 @@ export const pFBIND__bin = (bb:BytesBuilder) => (p:studio.pFBIND) => {
     marshall.str__bin (bb) (p.Desc)
 }
 
-export const FBIND__bin = (bb:BytesBuilder) => (v:studio.FBIND) => {
+export const FBIND__bin = (bb:BytesBuilder) => (v:wyi.FBIND) => {
     marshall.int64__bin (bb) (v.id)
     marshall.int64__bin (bb) (v.sort)
     marshall.DateTime__bin (bb) (v.createdat)
@@ -184,7 +135,7 @@ export const FBIND__bin = (bb:BytesBuilder) => (v:studio.FBIND) => {
     pFBIND__bin (bb) (v.p)
 }
 
-export const bin__pFBIND = (bi:BinIndexed):studio.pFBIND => {
+export const bin__pFBIND = (bi:BinIndexed):wyi.pFBIND => {
 
     let p = pFBIND_empty()
     p.File = marshall.bin__int64 (bi)
@@ -195,7 +146,7 @@ export const bin__pFBIND = (bi:BinIndexed):studio.pFBIND => {
 }
 
 
-export const bin__FBIND = (bi:BinIndexed):studio.FBIND => {
+export const bin__FBIND = (bi:BinIndexed):wyi.FBIND => {
 
     let ID = marshall.bin__int64 (bi)
     let Sort = marshall.bin__int64 (bi)
@@ -214,7 +165,7 @@ export const bin__FBIND = (bi:BinIndexed):studio.FBIND => {
 // [MOMENT] Structure
 
 
-export const pMOMENT__bin = (bb:BytesBuilder) => (p:studio.pMOMENT) => {
+export const pMOMENT__bin = (bb:BytesBuilder) => (p:wyi.pMOMENT) => {
 
     
     marshall.str__bin (bb) (p.Title)
@@ -234,7 +185,7 @@ export const pMOMENT__bin = (bb:BytesBuilder) => (p:studio.pMOMENT) => {
     marshall.int32__bin (bb) (p.MediaType)
 }
 
-export const MOMENT__bin = (bb:BytesBuilder) => (v:studio.MOMENT) => {
+export const MOMENT__bin = (bb:BytesBuilder) => (v:wyi.MOMENT) => {
     marshall.int64__bin (bb) (v.id)
     marshall.int64__bin (bb) (v.sort)
     marshall.DateTime__bin (bb) (v.createdat)
@@ -243,7 +194,7 @@ export const MOMENT__bin = (bb:BytesBuilder) => (v:studio.MOMENT) => {
     pMOMENT__bin (bb) (v.p)
 }
 
-export const bin__pMOMENT = (bi:BinIndexed):studio.pMOMENT => {
+export const bin__pMOMENT = (bi:BinIndexed):wyi.pMOMENT => {
 
     let p = pMOMENT_empty()
     p.Title = marshall.bin__str (bi)
@@ -259,7 +210,7 @@ export const bin__pMOMENT = (bi:BinIndexed):studio.pMOMENT => {
 }
 
 
-export const bin__MOMENT = (bi:BinIndexed):studio.MOMENT => {
+export const bin__MOMENT = (bi:BinIndexed):wyi.MOMENT => {
 
     let ID = marshall.bin__int64 (bi)
     let Sort = marshall.bin__int64 (bi)
@@ -278,7 +229,7 @@ export const bin__MOMENT = (bi:BinIndexed):studio.MOMENT => {
 // [LOG] Structure
 
 
-export const pLOG__bin = (bb:BytesBuilder) => (p:studio.pLOG) => {
+export const pLOG__bin = (bb:BytesBuilder) => (p:wyi.pLOG) => {
 
     
     marshall.str__bin (bb) (p.Location)
@@ -288,7 +239,7 @@ export const pLOG__bin = (bb:BytesBuilder) => (p:studio.pLOG) => {
     marshall.str__bin (bb) (p.Sql)
 }
 
-export const LOG__bin = (bb:BytesBuilder) => (v:studio.LOG) => {
+export const LOG__bin = (bb:BytesBuilder) => (v:wyi.LOG) => {
     marshall.int64__bin (bb) (v.id)
     marshall.int64__bin (bb) (v.sort)
     marshall.DateTime__bin (bb) (v.createdat)
@@ -297,7 +248,7 @@ export const LOG__bin = (bb:BytesBuilder) => (v:studio.LOG) => {
     pLOG__bin (bb) (v.p)
 }
 
-export const bin__pLOG = (bi:BinIndexed):studio.pLOG => {
+export const bin__pLOG = (bi:BinIndexed):wyi.pLOG => {
 
     let p = pLOG_empty()
     p.Location = marshall.bin__str (bi)
@@ -308,7 +259,7 @@ export const bin__pLOG = (bi:BinIndexed):studio.pLOG => {
 }
 
 
-export const bin__LOG = (bi:BinIndexed):studio.LOG => {
+export const bin__LOG = (bi:BinIndexed):wyi.LOG => {
 
     let ID = marshall.bin__int64 (bi)
     let Sort = marshall.bin__int64 (bi)
@@ -327,7 +278,7 @@ export const bin__LOG = (bi:BinIndexed):studio.LOG => {
 // [PLOG] Structure
 
 
-export const pPLOG__bin = (bb:BytesBuilder) => (p:studio.pPLOG) => {
+export const pPLOG__bin = (bb:BytesBuilder) => (p:wyi.pPLOG) => {
 
     
     marshall.str__bin (bb) (p.Ip)
@@ -335,7 +286,7 @@ export const pPLOG__bin = (bb:BytesBuilder) => (p:studio.pPLOG) => {
     marshall.str__bin (bb) (p.Request)
 }
 
-export const PLOG__bin = (bb:BytesBuilder) => (v:studio.PLOG) => {
+export const PLOG__bin = (bb:BytesBuilder) => (v:wyi.PLOG) => {
     marshall.int64__bin (bb) (v.id)
     marshall.int64__bin (bb) (v.sort)
     marshall.DateTime__bin (bb) (v.createdat)
@@ -344,7 +295,7 @@ export const PLOG__bin = (bb:BytesBuilder) => (v:studio.PLOG) => {
     pPLOG__bin (bb) (v.p)
 }
 
-export const bin__pPLOG = (bi:BinIndexed):studio.pPLOG => {
+export const bin__pPLOG = (bi:BinIndexed):wyi.pPLOG => {
 
     let p = pPLOG_empty()
     p.Ip = marshall.bin__str (bi)
@@ -354,7 +305,7 @@ export const bin__pPLOG = (bi:BinIndexed):studio.pPLOG => {
 }
 
 
-export const bin__PLOG = (bi:BinIndexed):studio.PLOG => {
+export const bin__PLOG = (bi:BinIndexed):wyi.PLOG => {
 
     let ID = marshall.bin__int64 (bi)
     let Sort = marshall.bin__int64 (bi)
@@ -369,33 +320,17 @@ export const bin__PLOG = (bi:BinIndexed):studio.PLOG => {
         p:  bin__pPLOG (bi)
     }
 }
-export const pBOOK_empty = (): studio.pBOOK => {
-    return {
-        Caption: "",
-        Email: "",
-        Message: "" }
-}
-
-export const BOOK_empty = (): studio.BOOK => {
-    return {
-        id: 0,
-        createdat: new Date(),
-        updatedat: new Date(),
-        sort: 0,
-        p: pBOOK_empty() }
-}
-
 export const euAuthTypeEnum_Normal = 0 // Normal
 export const euAuthTypeEnum_Authorized = 1 // Authorized
 export const euAuthTypeEnum_Admin = 2 // Admin
 
-export const pEU_empty = (): studio.pEU => {
+export const pEU_empty = (): wyi.pEU => {
     return {
         Caption: "",
         AuthType: 0 }
 }
 
-export const EU_empty = (): studio.EU => {
+export const EU_empty = (): wyi.EU => {
     return {
         id: 0,
         createdat: new Date(),
@@ -404,7 +339,7 @@ export const EU_empty = (): studio.EU => {
         p: pEU_empty() }
 }
 
-export const pFILE_empty = (): studio.pFILE => {
+export const pFILE_empty = (): wyi.pFILE => {
     return {
         Caption: "",
         Desc: "",
@@ -414,7 +349,7 @@ export const pFILE_empty = (): studio.pFILE => {
         Owner: 0 }
 }
 
-export const FILE_empty = (): studio.FILE => {
+export const FILE_empty = (): wyi.FILE => {
     return {
         id: 0,
         createdat: new Date(),
@@ -423,14 +358,14 @@ export const FILE_empty = (): studio.FILE => {
         p: pFILE_empty() }
 }
 
-export const pFBIND_empty = (): studio.pFBIND => {
+export const pFBIND_empty = (): wyi.pFBIND => {
     return {
         File: 0,
         Moment: 0,
         Desc: "" }
 }
 
-export const FBIND_empty = (): studio.FBIND => {
+export const FBIND_empty = (): wyi.FBIND => {
     return {
         id: 0,
         createdat: new Date(),
@@ -460,7 +395,7 @@ export const momentMediaTypeEnum_None = 0 // 无
 export const momentMediaTypeEnum_Video = 1 // 视频
 export const momentMediaTypeEnum_Audio = 2 // 音频
 
-export const pMOMENT_empty = (): studio.pMOMENT => {
+export const pMOMENT_empty = (): wyi.pMOMENT => {
     return {
         Title: "",
         Summary: "",
@@ -472,7 +407,7 @@ export const pMOMENT_empty = (): studio.pMOMENT => {
         MediaType: 0 }
 }
 
-export const MOMENT_empty = (): studio.MOMENT => {
+export const MOMENT_empty = (): wyi.MOMENT => {
     return {
         id: 0,
         createdat: new Date(),
@@ -481,14 +416,14 @@ export const MOMENT_empty = (): studio.MOMENT => {
         p: pMOMENT_empty() }
 }
 
-export const pLOG_empty = (): studio.pLOG => {
+export const pLOG_empty = (): wyi.pLOG => {
     return {
         Location: "",
         Content: "",
         Sql: "" }
 }
 
-export const LOG_empty = (): studio.LOG => {
+export const LOG_empty = (): wyi.LOG => {
     return {
         id: 0,
         createdat: new Date(),
@@ -497,13 +432,13 @@ export const LOG_empty = (): studio.LOG => {
         p: pLOG_empty() }
 }
 
-export const pPLOG_empty = (): studio.pPLOG => {
+export const pPLOG_empty = (): wyi.pPLOG => {
     return {
         Ip: "",
         Request: "" }
 }
 
-export const PLOG_empty = (): studio.PLOG => {
+export const PLOG_empty = (): wyi.PLOG => {
     return {
         id: 0,
         createdat: new Date(),

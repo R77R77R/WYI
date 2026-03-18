@@ -19,6 +19,7 @@ open Util.Bin
 open Util.Text
 open Util.Json
 open Util.Orm
+open Util.Math
 open Util.Stat
 
 open PreOrm
@@ -28,146 +29,6 @@ open System.Threading
 open Util.Bin
 open WYI.Shared.OrmTypes
 open WYI.Shared.Types
-
-// [BOOK] Structure
-
-
-let pBOOK__bin (bb:BytesBuilder) (p:pBOOK) =
-
-    
-    let binCaption = p.Caption |> Encoding.UTF8.GetBytes
-    binCaption.Length |> BitConverter.GetBytes |> bb.append
-    binCaption |> bb.append
-    
-    let binEmail = p.Email |> Encoding.UTF8.GetBytes
-    binEmail.Length |> BitConverter.GetBytes |> bb.append
-    binEmail |> bb.append
-    
-    let binMessage = p.Message |> Encoding.UTF8.GetBytes
-    binMessage.Length |> BitConverter.GetBytes |> bb.append
-    binMessage |> bb.append
-
-let BOOK__bin (bb:BytesBuilder) (v:BOOK) =
-    v.ID |> BitConverter.GetBytes |> bb.append
-    v.Sort |> BitConverter.GetBytes |> bb.append
-    DateTime__bin bb v.Createdat
-    DateTime__bin bb v.Updatedat
-    
-    pBOOK__bin bb v.p
-
-let bin__pBOOK (bi:BinIndexed):pBOOK =
-    let bin,index = bi
-
-    let p = pBOOK_empty()
-    
-    let count_Caption = BitConverter.ToInt32(bin,index.Value)
-    index.Value <- index.Value + 4
-    p.Caption <- Encoding.UTF8.GetString(bin,index.Value,count_Caption)
-    index.Value <- index.Value + count_Caption
-    
-    let count_Email = BitConverter.ToInt32(bin,index.Value)
-    index.Value <- index.Value + 4
-    p.Email <- Encoding.UTF8.GetString(bin,index.Value,count_Email)
-    index.Value <- index.Value + count_Email
-    
-    let count_Message = BitConverter.ToInt32(bin,index.Value)
-    index.Value <- index.Value + 4
-    p.Message <- Encoding.UTF8.GetString(bin,index.Value,count_Message)
-    index.Value <- index.Value + count_Message
-    
-    p
-
-let bin__BOOK (bi:BinIndexed):BOOK =
-    let bin,index = bi
-
-    let ID = BitConverter.ToInt64(bin,index.Value)
-    index.Value <- index.Value + 8
-    
-    let Sort = BitConverter.ToInt64(bin,index.Value)
-    index.Value <- index.Value + 8
-    
-    let Createdat = bin__DateTime bi
-    
-    let Updatedat = bin__DateTime bi
-    
-    {
-        ID = ID
-        Sort = Sort
-        Createdat = Createdat
-        Updatedat = Updatedat
-        p = bin__pBOOK bi }
-
-let pBOOK__json (p:pBOOK) =
-
-    [|
-        ("Caption",p.Caption |> Json.Str)
-        ("Email",p.Email |> Json.Str)
-        ("Message",p.Message |> Json.Str) |]
-    |> Json.Braket
-
-let BOOK__json (v:BOOK) =
-
-    let p = v.p
-    
-    [|  ("id",v.ID.ToString() |> Json.Num)
-        ("sort",v.Sort.ToString() |> Json.Num)
-        ("createdat",(v.Createdat |> Util.Time.wintime__unixtime).ToString() |> Json.Num)
-        ("updatedat",(v.Updatedat |> Util.Time.wintime__unixtime).ToString() |> Json.Num)
-        ("p",pBOOK__json v.p) |]
-    |> Json.Braket
-
-let BOOK__jsonTbw (w:TextBlockWriter) (v:BOOK) =
-    json__str w (BOOK__json v)
-
-let BOOK__jsonStr (v:BOOK) =
-    (BOOK__json v) |> json__strFinal
-
-
-let json__pBOOKo (json:Json):pBOOK option =
-    let fields = json |> json__items
-
-    let p = pBOOK_empty()
-    
-    p.Caption <- checkfieldz fields "Caption" 64
-    
-    p.Email <- checkfieldz fields "Email" 64
-    
-    p.Message <- checkfield fields "Message"
-    
-    p |> Some
-    
-
-let json__BOOKo (json:Json):BOOK option =
-    let fields = json |> json__items
-
-    let ID = checkfield fields "id" |> parse_int64
-    let Sort = checkfield fields "sort" |> parse_int64
-    let Createdat = checkfield fields "createdat" |> parse_int64 |> DateTime.FromBinary
-    let Updatedat = checkfield fields "updatedat" |> parse_int64 |> DateTime.FromBinary
-    
-    let o  =
-        match
-            json
-            |> tryFindByAtt "p" with
-        | Some (s,v) -> json__pBOOKo v
-        | None -> None
-    
-    match o with
-    | Some p ->
-        
-        {
-            ID = ID
-            Sort = Sort
-            Createdat = Createdat
-            Updatedat = Updatedat
-            p = p } |> Some
-        
-    | None -> None
-
-let BOOK_clone src =
-    let bb = new BytesBuilder()
-    BOOK__bin bb src
-    bin__BOOK (bb.bytes(),ref 0)
 
 // [EU] Structure
 
@@ -188,6 +49,7 @@ let EU__bin (bb:BytesBuilder) (v:EU) =
     DateTime__bin bb v.Updatedat
     
     pEU__bin bb v.p
+    ()
 
 let bin__pEU (bi:BinIndexed):pEU =
     let bin,index = bi
@@ -325,6 +187,7 @@ let FILE__bin (bb:BytesBuilder) (v:FILE) =
     DateTime__bin bb v.Updatedat
     
     pFILE__bin bb v.p
+    ()
 
 let bin__pFILE (bi:BinIndexed):pFILE =
     let bin,index = bi
@@ -479,6 +342,7 @@ let FBIND__bin (bb:BytesBuilder) (v:FBIND) =
     DateTime__bin bb v.Updatedat
     
     pFBIND__bin bb v.p
+    ()
 
 let bin__pFBIND (bi:BinIndexed):pFBIND =
     let bin,index = bi
@@ -629,6 +493,7 @@ let MOMENT__bin (bb:BytesBuilder) (v:MOMENT) =
     DateTime__bin bb v.Updatedat
     
     pMOMENT__bin bb v.p
+    ()
 
 let bin__pMOMENT (bi:BinIndexed):pMOMENT =
     let bin,index = bi
@@ -803,6 +668,7 @@ let LOG__bin (bb:BytesBuilder) (v:LOG) =
     DateTime__bin bb v.Updatedat
     
     pLOG__bin bb v.p
+    ()
 
 let bin__pLOG (bi:BinIndexed):pLOG =
     let bin,index = bi
@@ -939,6 +805,7 @@ let PLOG__bin (bb:BytesBuilder) (v:PLOG) =
     DateTime__bin bb v.Updatedat
     
     pPLOG__bin bb v.p
+    ()
 
 let bin__pPLOG (bi:BinIndexed):pPLOG =
     let bin,index = bi
@@ -1047,108 +914,6 @@ let PLOG_clone src =
     bin__PLOG (bb.bytes(),ref 0)
 
 let mutable conn = ""
-
-let db__pBOOK(line:Object[]): pBOOK =
-    let p = pBOOK_empty()
-
-    p.Caption <- string(line[4]).TrimEnd()
-    p.Email <- string(line[5]).TrimEnd()
-    p.Message <- string(line[6]).TrimEnd()
-
-    p
-
-let pBOOK__sps (p:pBOOK) =
-    match rdbms with
-    | Rdbms.SqlServer ->
-        [|
-            ("Caption", p.Caption) |> kvp__sqlparam
-            ("Email", p.Email) |> kvp__sqlparam
-            ("Message", p.Message) |> kvp__sqlparam |]
-    | Rdbms.PostgreSql ->
-        [|
-            ("caption", p.Caption) |> kvp__sqlparam
-            ("email", p.Email) |> kvp__sqlparam
-            ("message", p.Message) |> kvp__sqlparam |]
-
-let db__BOOK = db__Rcd db__pBOOK
-
-let BOOK_wrapper item: BOOK =
-    let (i,c,u,s),p = item
-    { ID = i; Createdat = c; Updatedat = u; Sort = s; p = p }
-
-let pBOOK_clone (p:pBOOK): pBOOK = {
-    Caption = p.Caption
-    Email = p.Email
-    Message = p.Message }
-
-let BOOK_update_transaction output (updater,suc,fail) (rcd:BOOK) =
-    let rollback_p = rcd.p |> pBOOK_clone
-    let rollback_updatedat = rcd.Updatedat
-    updater rcd.p
-    let ctime,res =
-        (rcd.ID,rcd.p,rollback_p,rollback_updatedat)
-        |> update (conn,output,BOOK_table,BOOK_sql_update(),pBOOK__sps,suc,fail)
-    match res with
-    | Suc ctx ->
-        rcd.Updatedat <- ctime
-        suc(ctime,ctx)
-    | Fail(eso,ctx) ->
-        rcd.p <- rollback_p
-        rcd.Updatedat <- rollback_updatedat
-        fail eso
-
-let BOOK_update output (rcd:BOOK) =
-    rcd
-    |> BOOK_update_transaction output ((fun p -> ()),(fun (ctime,ctx) -> ()),(fun dte -> ()))
-
-let BOOK_create_incremental_transaction output (suc,fail) p =
-    let cid = Interlocked.Increment BOOK_id
-    let ctime = DateTime.UtcNow
-    match create (conn,output,BOOK_table,pBOOK__sps) (cid,ctime,p) with
-    | Suc ctx -> ((cid,ctime,ctime,cid),p) |> BOOK_wrapper |> suc
-    | Fail(eso,ctx) -> fail(eso,ctx)
-
-let BOOK_create output p =
-    BOOK_create_incremental_transaction output ((fun rcd -> ()),(fun (eso,ctx) -> ())) p
-    
-
-let id__BOOKo id: BOOK option = id__rcd(conn,BOOK_fieldorders(),BOOK_table,db__BOOK) id
-
-let BOOK_metadata = {
-    fieldorders = BOOK_fieldorders
-    db__rcd = db__BOOK 
-    wrapper = BOOK_wrapper
-    sps = pBOOK__sps
-    id = BOOK_id
-    id__rcdo = id__BOOKo
-    clone = pBOOK_clone
-    empty__p = pBOOK_empty
-    rcd__bin = BOOK__bin
-    bin__rcd = bin__BOOK
-    p__json = pBOOK__json
-    json__po = json__pBOOKo
-    rcd__json = BOOK__json
-    json__rcdo = json__BOOKo
-    sql_update = BOOK_sql_update
-    rcd_update = BOOK_update
-    table = BOOK_table
-    shorthand = "book" }
-
-let BOOKTxSqlServer =
-    """
-    IF NOT EXISTS(SELECT * FROM sysobjects WHERE [name]='Ca_Book' AND xtype='U')
-    BEGIN
-
-        CREATE TABLE Ca_Book ([ID] BIGINT NOT NULL
-    ,[Createdat] BIGINT NOT NULL
-    ,[Updatedat] BIGINT NOT NULL
-    ,[Sort] BIGINT NOT NULL,
-    ,[Caption]
-    ,[Email]
-    ,[Message])
-    END
-    """
-
 
 let db__pEU(line:Object[]): pEU =
     let p = pEU_empty()
@@ -1793,16 +1558,14 @@ let PLOGTxSqlServer =
 
 
 type MetadataEnum = 
-| BOOK = 0
-| EU = 1
-| FILE = 2
-| FBIND = 3
-| MOMENT = 4
-| LOG = 5
-| PLOG = 6
+| EU = 0
+| FILE = 1
+| FBIND = 2
+| MOMENT = 3
+| LOG = 4
+| PLOG = 5
 
 let tablenames = [|
-    BOOK_metadata.table
     EU_metadata.table
     FILE_metadata.table
     FBIND_metadata.table
@@ -1811,25 +1574,6 @@ let tablenames = [|
     PLOG_metadata.table |]
 
 let init() =
-
-    let sqlMaxCa_Book, sqlCountCa_Book =
-        match rdbms with
-        | Rdbms.SqlServer -> "SELECT MAX(ID) FROM [Ca_Book]", "SELECT COUNT(ID) FROM [Ca_Book]"
-        | Rdbms.PostgreSql -> "SELECT MAX(id) FROM ca_book", "SELECT COUNT(id) FROM ca_book"
-    match singlevalue_query conn (str__sql sqlMaxCa_Book) with
-    | Some v ->
-        let max = v :?> int64
-        if max > BOOK_id.Value then
-            BOOK_id.Value <- max
-    | None -> ()
-
-    match singlevalue_query conn (str__sql sqlCountCa_Book) with
-    | Some v ->
-        BOOK_count.Value <-
-            match rdbms with
-            | Rdbms.SqlServer -> v :?> int32
-            | Rdbms.PostgreSql -> v :?> int64 |> int32
-    | None -> ()
 
     let sqlMaxCa_EndUser, sqlCountCa_EndUser =
         match rdbms with
