@@ -38,7 +38,7 @@ let runtime =
         data = { version = 0 }
         port = 1723
         rdbms = Util.Db.Rdbms.PostgreSql
-        conn = @"Host=178.156.223.41;Port=5432;Database=wyi;Username=wyi;Password=e2TpqcaTEYLfkvFMkc"
+        conn = @"Host=5.78.201.21;Port=5432;Database=wyi;Username=wyi;Password=e2TpqcaTEYLfkvFMkc"
         url = ""
 
         updateDatabase = true

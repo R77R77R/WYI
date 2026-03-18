@@ -27,7 +27,8 @@ let main argv =
         //JCS.BizLogics.Common.runtime.data.projectxs[234354L] 
         //|> JCS.BizLogics.CodeRobot.runProject
 
-    WYI.BizLogics.Launcher.launch()
+    //WYI.BizLogics.Launcher.launch()
+    Server.Kestrel.runServer [||]
 
     Util.Runtime.halt output "" ""
 
