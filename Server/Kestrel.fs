@@ -17,10 +17,6 @@ let runServer
     output (args: string[]) =
     let builder = WebApplication.CreateBuilder(args)
 
-    "DevRoot: " + devRoot |> output
-    "FsRoot: " + fsRoot |> output
-    "VueDistPath: " + vueDistPath |> output
-
     // 1. 高性能 Kestrel 配置
     builder.WebHost.ConfigureKestrel(fun options ->
         options.Limits.MaxRequestBodySize <- Nullable(10L * 1024L * 1024L * 1024L) 

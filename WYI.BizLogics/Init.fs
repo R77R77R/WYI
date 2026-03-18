@@ -42,14 +42,14 @@ let init (runtime:Runtime) =
     match Environment.MachineName with
     | "ubuntu-2gb-hil-1" -> 
         runtime.host.updateDatabase <- false
-        rootPath <- "/root/"
+        rootPath <- "/root"
     | _ -> 
-        rootPath <- @"C:\"
+        rootPath <- @"C:"
 
-    runtime.host.VsDirSolution <- Path.Combine(rootPath,"Dev","WYI")
-    runtime.host.fsDir <- Path.Combine(rootPath,"FsRoot","WYI")
+    runtime.host.VsDirSolution <- rootPath + "/Dev/WYI"
+    runtime.host.fsDir <- rootPath + "/FsRoot/WYI"
     runtime.host.req__vueDeployDir <- 
-        (fun _ -> Path.Combine(runtime.host.VsDirSolution,"vscode","dist"))
+        (fun _ -> runtime.host.VsDirSolution + "/vscode/dist")
 
     if runtime.host.updateDatabase then
         updateDbStructure runtime conn

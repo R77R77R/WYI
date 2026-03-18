@@ -26,7 +26,7 @@ open UtilWebServer.Common
 let main argv =
 
     match Environment.MachineName with
-    | "ubuntu-2gb-ash-1" -> ()
+    | "ubuntu-2gb-hil-1" -> ()
     | _ ->
         TypeSys.CodeRobot.go 
             output 
@@ -42,9 +42,14 @@ let main argv =
         //JCS.BizLogics.Common.runtime.data.projectxs[234354L] 
         //|> JCS.BizLogics.CodeRobot.runProject
 
-    let paths = WYI.BizLogics.Launcher.launch()
+    let devRoot,fsRoot,vueDistPath = WYI.BizLogics.Launcher.launch()
+
+    "DevRoot: " + devRoot |> output
+    "FsRoot: " + fsRoot |> output
+    "VueDistPath: " + vueDistPath |> output
+
     Server.Kestrel.runServer 
-        paths 
+        (devRoot,fsRoot,vueDistPath) 
         output
         [||]
 

@@ -30,7 +30,7 @@ let launch() =
 
     init runtime |> ignore
 
-    (runtime.host.VsDirSolution,runtime.host.fsDir,Path.Combine(runtime.host.VsDirSolution,"vscode","dist"))
+    (runtime.host.VsDirSolution,runtime.host.fsDir,runtime.host.VsDirSolution + "/vscode/dist")
 
     (*
     runtime.listener.echo <- echo
