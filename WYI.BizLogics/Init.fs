@@ -38,6 +38,11 @@ let init (runtime:Runtime) =
     conn <- runtime.host.conn
     rdbms <- runtime.host.rdbms
 
+    match Environment.MachineName with
+    | "ubuntu-2gb-ash-1" -> 
+        runtime.host.updateDatabase <- false
+    | _ -> ()
+
     if runtime.host.updateDatabase then
         updateDbStructure runtime conn
 

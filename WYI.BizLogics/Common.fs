@@ -32,11 +32,6 @@ type X = UtilWebServer.Api.ApiCtx<Runtime,Session,Er>
 
 type CtxWrappedX = CtxWrapper<X,Er>
 
-type HostEnum = 
-| Dev
-| Kamatera
-| HetznerEastUSA
-
 let runtime = 
 
     let h = {
@@ -46,7 +41,7 @@ let runtime =
         conn = @"Host=178.156.223.41;Port=5432;Database=wyi;Username=wyi;Password=e2TpqcaTEYLfkvFMkc"
         url = ""
 
-        updateDatabase = false
+        updateDatabase = true
 
         DiscordAppId = 
             [|  "1254790111"
@@ -71,24 +66,9 @@ let runtime =
         req__vueDeployDir = (fun _ -> @"C:/Dev/WYI/vscode/dist")
         fsDir = @"C:/FsRoot/WYI" }
 
-    let hostEnum = 
-        let machinename = Environment.MachineName
-        match Environment.MachineName with
-        | "MAIN" -> HostEnum.Dev
-        | "PTNHKDIE15IJZN" -> HostEnum.Kamatera
-        | "ubuntu-2gb-ash-1" -> HostEnum.HetznerEastUSA
-        | _ -> HostEnum.Dev
-
-    match hostEnum with
-    | HostEnum.HetznerEastUSA -> 
-        h.updateDatabase <- true
-    | _ -> 
-        h.updateDatabase <- true
-
 
     {   desc = "" }
     |> empty__Runtime<EuComplex,unit,HostData,RuntimeData> "WYI" h
-
 
 let dbLoggero =
     (fun log -> 
