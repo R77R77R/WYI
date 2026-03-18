@@ -30,6 +30,9 @@ let launch() =
 
     init runtime |> ignore
 
+    (runtime.host.VsDirSolution,runtime.host.fsDir,Path.Combine(runtime.host.VsDirSolution,"vscode","dist"))
+
+    (*
     runtime.listener.echo <- echo
     runtime.listener.h404o <- Some(fun _ -> 
         "404"
@@ -38,3 +41,4 @@ let launch() =
     runtime.listener.wsHandler <- fun json -> None
     
     startEngine runtime.listener
+    *)

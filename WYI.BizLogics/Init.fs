@@ -38,10 +38,18 @@ let init (runtime:Runtime) =
     conn <- runtime.host.conn
     rdbms <- runtime.host.rdbms
 
+    let mutable rootPath = ""
     match Environment.MachineName with
-    | "ubuntu-2gb-ash-1" -> 
+    | "ubuntu-2gb-hil-1" -> 
         runtime.host.updateDatabase <- false
-    | _ -> ()
+        rootPath <- "/root/"
+    | _ -> 
+        rootPath <- @"C:\"
+
+    runtime.host.VsDirSolution <- Path.Combine(rootPath,"Dev","WYI")
+    runtime.host.fsDir <- Path.Combine(rootPath,"FsRoot","WYI")
+    runtime.host.req__vueDeployDir <- 
+        (fun _ -> Path.Combine(runtime.host.VsDirSolution,"vscode","dist"))
 
     if runtime.host.updateDatabase then
         updateDbStructure runtime conn

@@ -2,84 +2,78 @@ module Server.Kestrel
 
 open System
 open System.IO
+open System.Text
 open System.Threading.Tasks
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Http
 open Microsoft.AspNetCore.Hosting
 open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.DependencyInjection
+open Microsoft.Extensions.FileProviders
 open System.Net.WebSockets
 
-let runServer (args: string[]) =
+let runServer 
+    (devRoot,fsRoot,vueDistPath)
+    output (args: string[]) =
     let builder = WebApplication.CreateBuilder(args)
 
-    // 1. 高性能 Kestrel 配置 (针对大文件和并发优化)
+    "DevRoot: " + devRoot |> output
+    "FsRoot: " + fsRoot |> output
+    "VueDistPath: " + vueDistPath |> output
+
+    // 1. 高性能 Kestrel 配置
     builder.WebHost.ConfigureKestrel(fun options ->
-        // 支持 10GB 大文件上传
         options.Limits.MaxRequestBodySize <- Nullable(10L * 1024L * 1024L * 1024L) 
-        // 禁用最低速率限制，防止大文件传输时被断开
         options.Limits.MinRequestBodyDataRate <- null 
     ) |> ignore
 
     let app = builder.Build()
 
-    // 2. 基础中间件配置
+    // 启用 WebSocket 支持
     app.UseWebSockets() |> ignore
 
     // --- 路由与功能实现区 ---
 
-    // A. 根目录与健康检查 (防止 404)
-    app.MapGet("/", Func<IResult>(fun () -> 
-        Results.Content("F# High-Performance Server: Online", "text/plain"))) |> ignore
+    // 1. API 分发：/api/{scheme}/{api}
+    app.MapPost("/api/{scheme}/{api}",
+        Func<string, string, HttpContext, Task>(fun scheme api context -> task {
+        context.Response.ContentType <- "application/json; charset=utf-8"
+        
+        use reader = new StreamReader(context.Request.Body, Encoding.UTF8)
+        let! requestBody = reader.ReadToEndAsync()
 
-    // B. 二进制 Echo 服务器 (高性能流式处理)
-    app.MapPost("/echo", Func<HttpContext, Task>(fun context -> task {
-        context.Response.ContentType <- "application/octet-stream"
-        // 直接流拷贝，内存占用极低
-        do! context.Request.Body.CopyToAsync(context.Response.Body)
+        // 依然对接你的业务库逻辑
+        let responseJson = 
+            sprintf "{\"scheme\": \"%s\", \"api\": \"%s\", \"data\": %s}" scheme api requestBody
+        let responseBytes = Encoding.UTF8.GetBytes(responseJson)
+        
+        do! context.Response.Body.WriteAsync(ReadOnlyMemory(responseBytes))
     })) |> ignore
 
-    // C. 自定义文件服务 (支持断点续传)
-    app.MapGet("/files/{*filepath}", Func<string, HttpContext, Task<IResult>>(fun filepath context -> task {
-        // 建议路径改为你服务器上的实际目录
-        let fullPath = Path.Combine("/var/www/myfiles", filepath) 
+    // 2. 文件服务：/file/{id} 映射到动态计算的 fsRoot
+    app.MapGet("/file/{id}", Func<string, HttpContext, Task<IResult>>(fun id context -> task {
+        let fullPath = Path.Combine(fsRoot, id) 
         if File.Exists(fullPath) then
-            // enableRangeProcessing: true 是实现 HTTP 断点续传的关键
+            // 支持大文件断点续传
             return Results.File(fullPath, enableRangeProcessing = true)
         else 
             return Results.NotFound()
     })) |> ignore
 
-    // D. 大文件上传 (流式写入本地临时文件)
-    app.MapPost("/upload", Func<HttpContext, Task<IResult>>(fun context -> task {
-        let tempPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".tmp")
-        // 使用 FileOptions.Asynchronous 优化 I/O
-        use fileStream = new FileStream(tempPath, FileMode.Create, FileAccess.Write, FileShare.None, 4096, true)
-        do! context.Request.Body.CopyToAsync(fileStream)
-        return Results.Ok(sprintf "Saved to %s" tempPath)
-    })) |> ignore
+    // 3. Vue 静态文件托管
+    if Directory.Exists(vueDistPath) then
+        let fileServerOptions = StaticFileOptions()
+        fileServerOptions.FileProvider <- new PhysicalFileProvider(vueDistPath)
+        app.UseStaticFiles(fileServerOptions) |> ignore
 
-    // E. WebSocket 拦截 (显式指定委托类型修复编译错误)
-    app.Use(Func<HttpContext, RequestDelegate, Task>(fun context next -> task {
-        if context.Request.Path = PathString("/ws") then
-            if context.WebSockets.IsWebSocketRequest then
-                let! webSocket = context.WebSockets.AcceptWebSocketAsync()
-                
-                // 简单的消息循环示例
-                let buffer = Array.create 4096 (byte 0)
-                let mutable isClosed = false
-                while not isClosed do
-                    let! result = webSocket.ReceiveAsync(ArraySegment(buffer), Threading.CancellationToken.None)
-                    if result.MessageType = WebSocketMessageType.Close then
-                        do! webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closed by server", Threading.CancellationToken.None)
-                        isClosed <- true
-                return ()
+        // 4. 兜底处理：SPA 路由支持
+        app.MapFallback(Func<HttpContext, Task>(fun context -> task {
+            let indexPath = Path.Combine(vueDistPath, "index.html")
+            if File.Exists(indexPath) then
+                context.Response.ContentType <- "text/html"
+                do! context.Response.SendFileAsync(indexPath)
             else
-                context.Response.StatusCode <- 400
-                return ()
-        else
-            // 调用中间件管道中的下一个组件
-            return! next.Invoke(context)
-    })) |> ignore
+                context.Response.StatusCode <- 404
+        })) |> ignore
 
     app.Run()
