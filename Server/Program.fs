@@ -1,4 +1,4 @@
-﻿module Server.Launching
+﻿module Server.Program
 
 open System
 open System.Text
@@ -21,7 +21,7 @@ let main argv =
                 rdbms = Util.Db.Rdbms.PostgreSql
                 dbName = "wyi"
                 donmainName = ""
-                conn = @"Host=178.156.223.41;Port=5432;Database=wyi;Username=wyi;Password=e2TpqcaTEYLfkvFMkc"
+                conn = @"Host=77.42.91.106;Port=5432;Database=wyi;Username=wyi;Password=e2TpqcaTEYLfkvFMkc"
                 mainDir = @"C:\Dev\WYI\WYI.Shared"
                 JsDir = @"C:\Dev\WYI\vscode\src\lib\shared" }
         //JCS.BizLogics.Common.runtime.data.projectxs[234354L] 

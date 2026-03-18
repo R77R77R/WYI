@@ -40,8 +40,10 @@ let creator metadata populate =
     populate p
     p__createRcd p metadata dbLoggero metadata.table conn
 
-let createEU caption auth = 
+let createEU username pwd caption auth = 
     (fun (p:pEU) -> 
+        p.Username <- username
+        p.Pwd <- pwd
         p.Caption <- caption
         p.AuthType <- auth) 
     |> creator EU_metadata

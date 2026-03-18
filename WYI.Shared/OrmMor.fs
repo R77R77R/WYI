@@ -40,6 +40,14 @@ let pEU__bin (bb:BytesBuilder) (p:pEU) =
     binCaption.Length |> BitConverter.GetBytes |> bb.append
     binCaption |> bb.append
     
+    let binUsername = p.Username |> Encoding.UTF8.GetBytes
+    binUsername.Length |> BitConverter.GetBytes |> bb.append
+    binUsername |> bb.append
+    
+    let binPwd = p.Pwd |> Encoding.UTF8.GetBytes
+    binPwd.Length |> BitConverter.GetBytes |> bb.append
+    binPwd |> bb.append
+    
     p.AuthType |> EnumToValue |> BitConverter.GetBytes |> bb.append
 
 let EU__bin (bb:BytesBuilder) (v:EU) =
@@ -60,6 +68,16 @@ let bin__pEU (bi:BinIndexed):pEU =
     index.Value <- index.Value + 4
     p.Caption <- Encoding.UTF8.GetString(bin,index.Value,count_Caption)
     index.Value <- index.Value + count_Caption
+    
+    let count_Username = BitConverter.ToInt32(bin,index.Value)
+    index.Value <- index.Value + 4
+    p.Username <- Encoding.UTF8.GetString(bin,index.Value,count_Username)
+    index.Value <- index.Value + count_Username
+    
+    let count_Pwd = BitConverter.ToInt32(bin,index.Value)
+    index.Value <- index.Value + 4
+    p.Pwd <- Encoding.UTF8.GetString(bin,index.Value,count_Pwd)
+    index.Value <- index.Value + count_Pwd
     
     p.AuthType <- BitConverter.ToInt32(bin,index.Value) |> EnumOfValue
     index.Value <- index.Value + 4
@@ -90,6 +108,8 @@ let pEU__json (p:pEU) =
 
     [|
         ("Caption",p.Caption |> Json.Str)
+        ("Username",p.Username |> Json.Str)
+        ("Pwd",p.Pwd |> Json.Str)
         ("AuthType",(p.AuthType |> EnumToValue).ToString() |> Json.Num) |]
     |> Json.Braket
 
@@ -117,6 +137,10 @@ let json__pEUo (json:Json):pEU option =
     let p = pEU_empty()
     
     p.Caption <- checkfieldz fields "Caption" 64
+    
+    p.Username <- checkfieldz fields "Username" 64
+    
+    p.Pwd <- checkfieldz fields "Pwd" 64
     
     p.AuthType <- checkfield fields "AuthType" |> parse_int32 |> EnumOfValue
     
@@ -919,7 +943,9 @@ let db__pEU(line:Object[]): pEU =
     let p = pEU_empty()
 
     p.Caption <- string(line[4]).TrimEnd()
-    p.AuthType <- EnumOfValue(if Convert.IsDBNull(line[5]) then 0 else line[5] :?> int)
+    p.Username <- string(line[5]).TrimEnd()
+    p.Pwd <- string(line[6]).TrimEnd()
+    p.AuthType <- EnumOfValue(if Convert.IsDBNull(line[7]) then 0 else line[7] :?> int)
 
     p
 
@@ -928,11 +954,15 @@ let pEU__sps (p:pEU) =
     | Rdbms.SqlServer ->
         [|
             ("Caption", p.Caption) |> kvp__sqlparam
-            ("AuthType", p.AuthType) |> kvp__sqlparam |]
+            ("Username", p.Username) |> kvp__sqlparam
+            ("Pwd", p.Pwd) |> kvp__sqlparam
+            ("AuthType", EnumToValue p.AuthType) |> kvp__sqlparam |]
     | Rdbms.PostgreSql ->
         [|
             ("caption", p.Caption) |> kvp__sqlparam
-            ("authtype", p.AuthType) |> kvp__sqlparam |]
+            ("username", p.Username) |> kvp__sqlparam
+            ("pwd", p.Pwd) |> kvp__sqlparam
+            ("authtype", EnumToValue p.AuthType) |> kvp__sqlparam |]
 
 let db__EU = db__Rcd db__pEU
 
@@ -942,6 +972,8 @@ let EU_wrapper item: EU =
 
 let pEU_clone (p:pEU): pEU = {
     Caption = p.Caption
+    Username = p.Username
+    Pwd = p.Pwd
     AuthType = p.AuthType }
 
 let EU_update_transaction output (updater,suc,fail) (rcd:EU) =
@@ -1007,6 +1039,8 @@ let EUTxSqlServer =
     ,[Updatedat] BIGINT NOT NULL
     ,[Sort] BIGINT NOT NULL,
     ,[Caption]
+    ,[Username]
+    ,[Pwd]
     ,[AuthType])
     END
     """
@@ -1254,9 +1288,9 @@ let pMOMENT__sps (p:pMOMENT) =
             ("FullText", p.FullText) |> kvp__sqlparam
             ("PreviewImgUrl", p.PreviewImgUrl) |> kvp__sqlparam
             ("Link", p.Link) |> kvp__sqlparam
-            ("Type", p.Type) |> kvp__sqlparam
-            ("State", p.State) |> kvp__sqlparam
-            ("MediaType", p.MediaType) |> kvp__sqlparam |]
+            ("Type", EnumToValue p.Type) |> kvp__sqlparam
+            ("State", EnumToValue p.State) |> kvp__sqlparam
+            ("MediaType", EnumToValue p.MediaType) |> kvp__sqlparam |]
     | Rdbms.PostgreSql ->
         [|
             ("title", p.Title) |> kvp__sqlparam
@@ -1264,9 +1298,9 @@ let pMOMENT__sps (p:pMOMENT) =
             ("fulltext", p.FullText) |> kvp__sqlparam
             ("previewimgurl", p.PreviewImgUrl) |> kvp__sqlparam
             ("link", p.Link) |> kvp__sqlparam
-            ("type", p.Type) |> kvp__sqlparam
-            ("state", p.State) |> kvp__sqlparam
-            ("mediatype", p.MediaType) |> kvp__sqlparam |]
+            ("type", EnumToValue p.Type) |> kvp__sqlparam
+            ("state", EnumToValue p.State) |> kvp__sqlparam
+            ("mediatype", EnumToValue p.MediaType) |> kvp__sqlparam |]
 
 let db__MOMENT = db__Rcd db__pMOMENT
 

@@ -10,6 +10,16 @@
         "name": "Caption"
       },
       {
+        "enum": "Chars",
+        "length": 64,
+        "name": "Username"
+      },
+      {
+        "enum": "Chars",
+        "length": 64,
+        "name": "Pwd"
+      },
+      {
         "enum": "SelectLines",
         "lines": "Normal//Normal///Authorized//Authorized///Admin//Admin",
         "name": "AuthType"

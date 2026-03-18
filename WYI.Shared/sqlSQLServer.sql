@@ -10,6 +10,8 @@ BEGIN
         ,[Updatedat] BIGINT NOT NULL
         ,[Sort] BIGINT NOT NULL,
         [Caption] NVARCHAR(64) COLLATE Chinese_PRC_CI_AS
+        ,[Username] NVARCHAR(64) COLLATE Chinese_PRC_CI_AS
+        ,[Pwd] NVARCHAR(64) COLLATE Chinese_PRC_CI_AS
         ,[AuthType] INT
 , CONSTRAINT [PK_ca_enduser] PRIMARY KEY CLUSTERED ([ID] ASC)) ON [PRIMARY]
 END
@@ -18,7 +20,7 @@ END
 -- Dropping obsolete fields -----------
 DECLARE @name_ca_enduser NVARCHAR(64)
 DECLARE cursor_ca_enduser CURSOR FOR 
-    SELECT name FROM SYSCOLUMNS WHERE id=object_id('ca_enduser') AND (name NOT IN ('ID','Createdat','Updatedat','Sort','Caption','AuthType'))
+    SELECT name FROM SYSCOLUMNS WHERE id=object_id('ca_enduser') AND (name NOT IN ('ID','Createdat','Updatedat','Sort','Caption','Username','Pwd','AuthType'))
 
 OPEN cursor_ca_enduser
 FETCH NEXT FROM cursor_ca_enduser INTO @name_ca_enduser
@@ -64,6 +66,60 @@ IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_ca_enduse
 IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_ca_enduserCaption')
     BEGIN
     ALTER TABLE ca_enduser DROP  CONSTRAINT [UniqueNonclustered_ca_enduserCaption]
+    END
+
+-- [ca_enduser.Username] -------------
+
+
+-- [ca_enduser.Username] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('ca_enduser') AND name='Username')
+    BEGIN
+     ALTER TABLE ca_enduser ALTER COLUMN [Username] NVARCHAR(64) COLLATE Chinese_PRC_CI_AS
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_ca_enduser_Username NVARCHAR(MAX);
+    SET @sql_add_ca_enduser_Username = 'ALTER TABLE ca_enduser ADD [Username] NVARCHAR(64) COLLATE Chinese_PRC_CI_AS'
+    EXEC sp_executesql @sql_add_ca_enduser_Username
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_ca_enduserUsername')
+    BEGIN
+    ALTER TABLE ca_enduser DROP  CONSTRAINT [Constraint_ca_enduserUsername]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_ca_enduserUsername')
+    BEGIN
+    ALTER TABLE ca_enduser DROP  CONSTRAINT [UniqueNonclustered_ca_enduserUsername]
+    END
+
+-- [ca_enduser.Pwd] -------------
+
+
+-- [ca_enduser.Pwd] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('ca_enduser') AND name='Pwd')
+    BEGIN
+     ALTER TABLE ca_enduser ALTER COLUMN [Pwd] NVARCHAR(64) COLLATE Chinese_PRC_CI_AS
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_ca_enduser_Pwd NVARCHAR(MAX);
+    SET @sql_add_ca_enduser_Pwd = 'ALTER TABLE ca_enduser ADD [Pwd] NVARCHAR(64) COLLATE Chinese_PRC_CI_AS'
+    EXEC sp_executesql @sql_add_ca_enduser_Pwd
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_ca_enduserPwd')
+    BEGIN
+    ALTER TABLE ca_enduser DROP  CONSTRAINT [Constraint_ca_enduserPwd]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_ca_enduserPwd')
+    BEGIN
+    ALTER TABLE ca_enduser DROP  CONSTRAINT [UniqueNonclustered_ca_enduserPwd]
     END
 
 -- [ca_enduser.AuthType] -------------

@@ -58,6 +58,8 @@ let euAuthTypeEnum__caption e =
 
 type pEU = {
 mutable Caption: Chars
+mutable Username: Chars
+mutable Pwd: Chars
 mutable AuthType: euAuthTypeEnum}
 
 
@@ -66,32 +68,40 @@ type EU = Rcd<pEU>
 let EU_fieldorders() =
     match rdbms with
     | Rdbms.SqlServer ->
-        "[ID],[Createdat],[Updatedat],[Sort],[Caption],[AuthType]"
+        "[ID],[Createdat],[Updatedat],[Sort],[Caption],[Username],[Pwd],[AuthType]"
     | Rdbms.PostgreSql ->
-        $""" "id","createdat","updatedat","sort", "caption","authtype" """
+        $""" "id","createdat","updatedat","sort", "caption","username","pwd","authtype" """
 
 let pEU_fieldordersArray = [|
     "Caption"
+    "Username"
+    "Pwd"
     "AuthType" |]
 
 let EU_sql_update() =
     match rdbms with
-    | Rdbms.SqlServer -> "[Caption]=@Caption,[AuthType]=@AuthType"
-    | Rdbms.PostgreSql -> "caption=@caption,authtype=@authtype"
+    | Rdbms.SqlServer -> "[Caption]=@Caption,[Username]=@Username,[Pwd]=@Pwd,[AuthType]=@AuthType"
+    | Rdbms.PostgreSql -> "caption=@caption,username=@username,pwd=@pwd,authtype=@authtype"
 
 let pEU_fields() =
     match rdbms with
     | Rdbms.SqlServer ->
         [|
             Chars("Caption", 64)
+            Chars("Username", 64)
+            Chars("Pwd", 64)
             SelectLines("AuthType", [| ("Normal","Normal");("Authorized","Authorized");("Admin","Admin") |]) |]
     | Rdbms.PostgreSql ->
         [|
             Chars("caption", 64)
+            Chars("username", 64)
+            Chars("pwd", 64)
             SelectLines("authtype", [| ("Normal","Normal");("Authorized","Authorized");("Admin","Admin") |]) |]
 
 let pEU_empty(): pEU = {
     Caption = ""
+    Username = ""
+    Pwd = ""
     AuthType = EnumOfValue 0 }
 
 let EU_id = ref 1001L

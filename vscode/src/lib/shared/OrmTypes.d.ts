@@ -8,6 +8,8 @@ namespace wyi {
 export type pEU = {
 [key:string]: any
     Caption: string
+    Username: string
+    Pwd: string
     AuthType: number
 }
 

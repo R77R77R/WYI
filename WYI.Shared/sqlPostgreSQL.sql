@@ -12,6 +12,8 @@ BEGIN
         ,updatedat BIGINT NOT NULL
         ,sort BIGINT NOT NULL
         ,"caption" VARCHAR(64)
+        ,"username" VARCHAR(64)
+        ,"pwd" VARCHAR(64)
         ,"authtype" INT);
 
    END IF;
@@ -29,6 +31,34 @@ BEGIN
 
     IF not condition THEN
         ALTER TABLE ca_enduser ADD "caption" varchar(64);
+    END IF;
+END $$;
+
+-- [ca_enduser.Username] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='ca_enduser' AND column_name='username'));
+
+    IF not condition THEN
+        ALTER TABLE ca_enduser ADD "username" varchar(64);
+    END IF;
+END $$;
+
+-- [ca_enduser.Pwd] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='ca_enduser' AND column_name='pwd'));
+
+    IF not condition THEN
+        ALTER TABLE ca_enduser ADD "pwd" varchar(64);
     END IF;
 END $$;
 

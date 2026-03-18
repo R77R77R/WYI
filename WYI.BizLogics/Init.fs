@@ -48,16 +48,26 @@ let init (runtime:Runtime) =
 
     WYI.Shared.OrmMor.init()
 
+    (fun (i:EU) -> runtime.users[i.ID] <- { eu = i })
+    |> loadAll runtime.output conn EU_metadata
+
     let users = runtime.users.Values |> Seq.toArray
-    match users |> Array.tryFind(fun i -> i.eu.p.AuthType = euAuthTypeEnum.Admin) with
+
+    let sapwd = Util.Crypto.str__sha256 "21:16 EST, March 17th, 2026"
+
+    match 
+        users 
+        |> Array.tryFind(fun i -> 
+            i.eu.p.Username = "sa"
+            && i.eu.p.AuthType = euAuthTypeEnum.Admin) with
     | Some rcd -> ()
     | None -> 
-        match createEU "sa" euAuthTypeEnum.Admin with
+        match createEU 
+            "sa" sapwd
+            "System Administrator" euAuthTypeEnum.Admin with
         | Some rcd -> runtime.users[rcd.ID] <- { eu = rcd }
         | None -> halt runtime.output ("BizLogics.Init.createEU") ""
 
-    //(fun (i:BOOK) -> runtime.data.books.Add i)
-    //|> loadAll runtime.output conn BOOK_metadata
 
 
 
