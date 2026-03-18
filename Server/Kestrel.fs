@@ -68,14 +68,20 @@ let runServer
         fileServerOptions.FileProvider <- new PhysicalFileProvider(vueDistPath)
         app.UseStaticFiles(fileServerOptions) |> ignore
 
-        // 4. 兜底处理：SPA 路由支持
+        // 4. 兜底处理：SPA 路由支持 (增加方法过滤以修复 CONNECT 异常)
         app.MapFallback(Func<HttpContext, Task>(fun context -> task {
-            let indexPath = Path.Combine(vueDistPath, "index.html")
-            if File.Exists(indexPath) then
-                context.Response.ContentType <- "text/html"
-                do! context.Response.SendFileAsync(indexPath)
+            // 关键修复：仅针对 GET 请求返回 index.html
+            // 因为 CONNECT, HEAD 等请求不应包含 Body，会导致 InvalidOperationException
+            if HttpMethods.IsGet(context.Request.Method) then
+                let indexPath = Path.Combine(vueDistPath, "index.html")
+                if File.Exists(indexPath) then
+                    context.Response.ContentType <- "text/html"
+                    do! context.Response.SendFileAsync(indexPath)
+                else
+                    context.Response.StatusCode <- 404
             else
-                context.Response.StatusCode <- 404
+                // 对于非 GET 请求（如 CONNECT），只返回状态码而不写入 Body
+                context.Response.StatusCode <- 200
         })) |> ignore
 
     app.Run()
