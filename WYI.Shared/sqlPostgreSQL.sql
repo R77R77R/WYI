@@ -62,7 +62,7 @@ BEGIN
         ,"desc" TEXT
         ,"suffix" VARCHAR(4)
         ,"size" BIGINT
-        ,"thumbnail" 
+        ,"thumbnail" BYTEA
         ,"owner" BIGINT);
 
    END IF;
@@ -135,7 +135,7 @@ BEGIN
     condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='ca_file' AND column_name='thumbnail'));
 
     IF not condition THEN
-        ALTER TABLE ca_file ADD "thumbnail" ;
+        ALTER TABLE ca_file ADD "thumbnail" bytea;
     END IF;
 END $$;
 
