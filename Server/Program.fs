@@ -49,6 +49,9 @@ let main argv =
     "FsRoot: " + fsRoot |> output
     "VueDistPath: " + vueDistPath |> output
 
+    "Cert: " + cert |> output
+    "CertPwd: " + certpwd |> output
+
     // https://5.78.201.21
     // https://localhost/api/public/ping
     Server.Kestrel.runServer 
