@@ -1,5 +1,8 @@
 <template> 
 
+<div>https://whatsyourideal.com/</div>
+<div>Lower Your Bills On CruiseControl!</div>
+
 <div class="lg:w-[1200px] mr-[10px]">
 
   <div class="main-color w-screen">

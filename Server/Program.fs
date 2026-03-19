@@ -49,10 +49,10 @@ let main argv =
     "VueDistPath: " + vueDistPath |> output
 
     // https://5.78.201.21
+    // https://localhost/api/public/ping
     Server.Kestrel.runServer 
         (devRoot,fsRoot,vueDistPath) 
         (80,443)
-        output
         [||]
 
     Util.Runtime.halt output "" ""

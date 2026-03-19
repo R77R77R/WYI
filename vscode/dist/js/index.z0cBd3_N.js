@@ -9740,12 +9740,12 @@ const Stat_empty = () => {
     middle: 0,
     var: 0,
     median: 0,
-    ma: 0,
-    mb: 0,
-    mc: 0,
-    md: 0,
-    min: 0,
-    max: 0,
+    qinf: 0,
+    qsup: 0,
+    oinf: 0,
+    osup: 0,
+    inf: 0,
+    sup: 0,
     histogram: [],
     count: 0
   };
@@ -9755,12 +9755,12 @@ const Stat__bin = (bb) => (v) => {
   float__bin(bb)(v.middle);
   float__bin(bb)(v.var);
   float__bin(bb)(v.median);
-  float__bin(bb)(v.ma);
-  float__bin(bb)(v.mb);
-  float__bin(bb)(v.mc);
-  float__bin(bb)(v.md);
-  float__bin(bb)(v.min);
-  float__bin(bb)(v.max);
+  float__bin(bb)(v.qinf);
+  float__bin(bb)(v.qsup);
+  float__bin(bb)(v.oinf);
+  float__bin(bb)(v.osup);
+  float__bin(bb)(v.inf);
+  float__bin(bb)(v.sup);
   int32__bin(bb)(v.count);
 };
 const bin__Stat = (bi) => {
@@ -9769,12 +9769,12 @@ const bin__Stat = (bi) => {
     middle: bin__float(bi),
     var: bin__float(bi),
     median: bin__float(bi),
-    ma: bin__float(bi),
-    mb: bin__float(bi),
-    mc: bin__float(bi),
-    md: bin__float(bi),
-    min: bin__float(bi),
-    max: bin__float(bi),
+    qinf: bin__float(bi),
+    qsup: bin__float(bi),
+    oinf: bin__float(bi),
+    osup: bin__float(bi),
+    inf: bin__float(bi),
+    sup: bin__float(bi),
     histogram: bin__array(bin__int32)(bi),
     count: bin__int32(bi)
   };
@@ -10147,13 +10147,35 @@ const compile_md = (p2) => {
 const markdown__html = (str) => {
   let res = "";
   let lines = str.split(/\r?\n/);
+  let state = "";
+  let buffer2 = [];
   for (let i = 0, len = lines.length; i < len; i++) {
     let line = lines[i];
     let html = "";
+    if (state == "" && line.startsWith("$$")) {
+      state = "$$";
+      continue;
+    } else if (state == "$$" && line.startsWith("$$")) {
+      let s = buffer2.join("");
+      console.log(s);
+      let tex = encodeURI(s);
+      console.log(tex);
+      let alt = s.replaceAll('"', " ").replaceAll("'", " ").replaceAll("<", " ").replaceAll(">", " ");
+      let img = "<img class='img-inline' src='http://latex.codecogs.com/gif.latex?" + tex + "' alt='" + alt + "'>";
+      let p2 = "<p>" + img + "&nbsp;</p>";
+      res += p2;
+      buffer2 = [];
+      state = "";
+      continue;
+    } else if (state == "$$") {
+      buffer2.push(line);
+      continue;
+    }
     line.matchAll(/\$.+?\$/g).forEach((item) => {
       let s = item + "";
       let tex = encodeURI(s.substring(1, s.length - 1));
-      let img = "<img class='img-inline' src='http://latex.codecogs.com/gif.latex?" + tex + "'>";
+      let alt = s.substring(1, s.length - 1).replaceAll('"', " ").replaceAll("'", " ").replaceAll("<", " ").replaceAll(">", " ");
+      let img = "<img class='img-inline' src='http://latex.codecogs.com/gif.latex?" + tex + "' alt='" + alt + "'>";
       line = line.replace(s, img);
     });
     line.matchAll(/\!\[.*?\]\(.+?\)/g).forEach((item) => {
@@ -10172,9 +10194,12 @@ const markdown__html = (str) => {
     line.matchAll(/\[.+?\]\(.+?\)/g).forEach((item) => {
       let s = item + "";
       let txt = s.match(/\[.+?\]/) + "";
-      if (txt.length >= 2)
+      let s1 = s;
+      if (txt.length >= 2) {
         txt = txt.substring(1, txt.length - 1);
-      let src = s.match(/\(.+?\)/) + "";
+        s1 = s.substring(txt.length + 2);
+      }
+      let src = s1.match(/\(.+?\)/) + "";
       if (src.length >= 2)
         src = src.substring(1, src.length - 1);
       let a = "<a href='" + src + "' target='_blank'>" + txt + "</a>";
@@ -10186,7 +10211,9 @@ const markdown__html = (str) => {
       let b = "<b>" + txt + "</b>";
       line = line.replace(s, b);
     });
-    if (line.startsWith("##### "))
+    if (line.startsWith("---"))
+      html = "<hr>";
+    else if (line.startsWith("##### "))
       html = "<div class='caption-5'>" + line.substring(6, line.length) + "</div>";
     else if (line.startsWith("#### "))
       html = "<div class='caption-4'>" + line.substring(5, line.length) + "</div>";
@@ -10197,7 +10224,7 @@ const markdown__html = (str) => {
     else if (line.startsWith("# "))
       html = "<div class='caption-1'>" + line.substring(2, line.length) + "</div>";
     else
-      html = "<p>" + line + "</p>";
+      html = "<p>" + line + "&nbsp;</p>";
     res += html;
   }
   return res;
@@ -10275,6 +10302,9 @@ const strechPRange = (coord) => (rate) => {
 };
 const p__d = (coord) => (p2) => {
   return coord.dinf + (coord.dsup - coord.dinf) * (p2 - coord.pinf) / (coord.psup - coord.pinf);
+};
+const d__p = (coord) => (d) => {
+  return coord.pinf + (coord.psup - coord.pinf) * (d - coord.dinf) / (coord.dsup - coord.dinf);
 };
 const pp__dd = (coordx, coordy) => (px, py) => {
   return {
@@ -10375,6 +10405,7 @@ const graphics = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProp
   checkmultiPRange,
   colrowSpan__gridLayoutCell,
   colrow__gridLayoutCell,
+  d__p,
   p__d,
   percentage__controlPoints,
   pp__dd,
@@ -12262,13 +12293,13 @@ const _hoisted_11$1 = {
   id: "book",
   class: "my-5"
 };
-const _hoisted_12$2 = /* @__PURE__ */ createBaseVNode("div", null, "Contact by email: info@sdchen.art", -1);
-const _hoisted_13$2 = { key: 0 };
-const _hoisted_14$1 = {
+const _hoisted_12$1 = /* @__PURE__ */ createBaseVNode("div", null, "Contact by email: info@sdchen.art", -1);
+const _hoisted_13$1 = { key: 0 };
+const _hoisted_14$2 = {
   key: 1,
   class: "m-3 p-3 bg-[#aabb99] w-[1000px]"
 };
-const _hoisted_15$1 = /* @__PURE__ */ createBaseVNode("div", null, "Name", -1);
+const _hoisted_15$2 = /* @__PURE__ */ createBaseVNode("div", null, "Name", -1);
 const _hoisted_16$1 = /* @__PURE__ */ createBaseVNode("div", null, "Email", -1);
 const _hoisted_17 = /* @__PURE__ */ createBaseVNode("div", null, "Message", -1);
 const _hoisted_18 = /* @__PURE__ */ createStaticVNode('<div id="painting" class="caption-1">Painting Progress</div><div class="lg:flex justify-start"><img class="painting" src="https://i.imgur.com/nMqz18N.jpeg"><img class="painting" src="https://i.imgur.com/ypjl9oY.jpeg"><img class="painting" src="https://i.imgur.com/at8cz1s.jpeg"></div><div class="lg:flex justify-end"><img class="painting" src="https://i.imgur.com/JaH5I2S.jpeg"><img class="painting" src="https://i.imgur.com/65JdVrh.jpeg"><img class="painting" src="https://i.imgur.com/uLdMbny.jpeg"></div><div class="lg:flex justify-start"><img class="painting" src="https://i.imgur.com/6bipccJ.jpeg"><img class="painting" src="https://i.imgur.com/TSwr3Pw.jpeg"><img class="painting" src="https://i.imgur.com/FygNW9w.jpeg"></div><div class="lg:flex justify-end"><img class="painting" src="https://i.imgur.com/mJkTKta.jpeg"><img class="painting" src="https://i.imgur.com/awNWKJf.jpeg"><img class="painting" src="https://i.imgur.com/BNeLCuO.jpeg"></div><div class="lg:flex justify-start"><img class="painting" src="https://i.imgur.com/YAW4jVN.jpeg"><img class="painting" src="https://i.imgur.com/ypiRqH5.jpeg"><img class="painting" src="https://i.imgur.com/fTlsPsu.jpeg"></div><div id="price" class="caption-1">Price</div><div> Typically a 10&quot; x 12&quot; portrait is done in two sessions. Each session lasts approx. 3 hours. There is an intermission between the sessions to allow the oil to dry. A portrait is $400 for the standard hourly rate of $65/hour plus the materials. </div><div id="lesson" class="caption-1">Lesson</div><div><a href="#book">Book</a> portrait oil painting lessons. <br>Master the art of oil portrait painting through private lessons. Available online or in-person. <br>Session length: 3 hours <br>Rate: $40/hour (plus tax) </div>', 10);
@@ -12312,13 +12343,13 @@ const _sfc_main$3 = /* @__PURE__ */ defineComponent({
           createBaseVNode("div", _hoisted_4$3, [
             _hoisted_5$3,
             createBaseVNode("div", _hoisted_11$1, [
-              _hoisted_12$2,
-              unref(s).expand == false ? (openBlock(), createElementBlock("div", _hoisted_13$2, [
+              _hoisted_12$1,
+              unref(s).expand == false ? (openBlock(), createElementBlock("div", _hoisted_13$1, [
                 createBaseVNode("button", {
                   onClick: _cache[0] || (_cache[0] = ($event) => unref(s).expand = true)
                 }, "Book Now")
-              ])) : (openBlock(), createElementBlock("div", _hoisted_14$1, [
-                _hoisted_15$1,
+              ])) : (openBlock(), createElementBlock("div", _hoisted_14$2, [
+                _hoisted_15$2,
                 withDirectives(createBaseVNode("input", {
                   "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => unref(s).name = $event),
                   type: "text",
@@ -12364,13 +12395,13 @@ const _hoisted_5$2 = /* @__PURE__ */ createBaseVNode("div", { class: "card-capti
 const _hoisted_6$2 = ["innerHTML"];
 const _hoisted_7$2 = /* @__PURE__ */ createBaseVNode("hr", { class: "mt-3" }, null, -1);
 const _hoisted_8$2 = { class: "card" };
-const _hoisted_9$1 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Log", -1);
-const _hoisted_10$1 = ["innerHTML"];
+const _hoisted_9$2 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Log", -1);
+const _hoisted_10$2 = ["innerHTML"];
 const _hoisted_11 = ["innerHTML"];
-const _hoisted_12$1 = /* @__PURE__ */ createBaseVNode("hr", { class: "mt-3" }, null, -1);
-const _hoisted_13$1 = { class: "card" };
-const _hoisted_14 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Page Log", -1);
-const _hoisted_15 = /* @__PURE__ */ createBaseVNode("hr", { class: "mt-3" }, null, -1);
+const _hoisted_12 = /* @__PURE__ */ createBaseVNode("hr", { class: "mt-3" }, null, -1);
+const _hoisted_13 = { class: "card" };
+const _hoisted_14$1 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Page Log", -1);
+const _hoisted_15$1 = /* @__PURE__ */ createBaseVNode("hr", { class: "mt-3" }, null, -1);
 const _hoisted_16 = /* @__PURE__ */ createBaseVNode("div", { class: "flex justify-center" }, [
   /* @__PURE__ */ createBaseVNode("div", { class: "hor-range" })
 ], -1);
@@ -12413,30 +12444,30 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
               }), 256))
             ]),
             createBaseVNode("div", _hoisted_8$2, [
-              _hoisted_9$1,
+              _hoisted_9$2,
               (openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).logs, (log) => {
                 return openBlock(), createElementBlock("div", null, [
                   createBaseVNode("div", null, toDisplayString(log.createdat), 1),
                   createBaseVNode("div", null, toDisplayString(log.p.Location), 1),
                   createBaseVNode("div", {
                     innerHTML: log.p.Sql
-                  }, null, 8, _hoisted_10$1),
+                  }, null, 8, _hoisted_10$2),
                   createBaseVNode("div", {
                     innerHTML: log.p.Content
                   }, null, 8, _hoisted_11),
-                  _hoisted_12$1
+                  _hoisted_12
                 ]);
               }), 256))
             ]),
-            createBaseVNode("div", _hoisted_13$1, [
-              _hoisted_14,
+            createBaseVNode("div", _hoisted_13, [
+              _hoisted_14$1,
               (openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).plogs, (plog) => {
                 return openBlock(), createElementBlock("div", null, [
                   createBaseVNode("div", null, toDisplayString(plog.time), 1),
                   createBaseVNode("div", null, toDisplayString(plog.ip), 1),
                   createBaseVNode("div", null, toDisplayString(plog.pathline), 1),
                   createBaseVNode("div", null, toDisplayString(plog.from), 1),
-                  _hoisted_15
+                  _hoisted_15$1
                 ]);
               }), 256))
             ])
@@ -12537,40 +12568,10 @@ const host$1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProper
   initHost
 }, Symbol.toStringTag, { value: "Module" }));
 const marshall$1 = { ...bin };
-const pBOOK__bin = (bb) => (p2) => {
-  marshall$1.str__bin(bb)(p2.Caption);
-  marshall$1.str__bin(bb)(p2.Email);
-  marshall$1.str__bin(bb)(p2.Message);
-};
-const BOOK__bin = (bb) => (v) => {
-  marshall$1.int64__bin(bb)(v.id);
-  marshall$1.int64__bin(bb)(v.sort);
-  marshall$1.DateTime__bin(bb)(v.createdat);
-  marshall$1.DateTime__bin(bb)(v.updatedat);
-  pBOOK__bin(bb)(v.p);
-};
-const bin__pBOOK = (bi) => {
-  let p2 = pBOOK_empty();
-  p2.Caption = marshall$1.bin__str(bi);
-  p2.Email = marshall$1.bin__str(bi);
-  p2.Message = marshall$1.bin__str(bi);
-  return p2;
-};
-const bin__BOOK = (bi) => {
-  let ID = marshall$1.bin__int64(bi);
-  let Sort = marshall$1.bin__int64(bi);
-  let Createdat = marshall$1.bin__DateTime(bi);
-  let Updatedat = marshall$1.bin__DateTime(bi);
-  return {
-    id: ID,
-    sort: Sort,
-    createdat: Createdat,
-    updatedat: Updatedat,
-    p: bin__pBOOK(bi)
-  };
-};
 const pEU__bin = (bb) => (p2) => {
   marshall$1.str__bin(bb)(p2.Caption);
+  marshall$1.str__bin(bb)(p2.Username);
+  marshall$1.str__bin(bb)(p2.Pwd);
   marshall$1.int32__bin(bb)(p2.AuthType);
 };
 const EU__bin = (bb) => (v) => {
@@ -12583,6 +12584,8 @@ const EU__bin = (bb) => (v) => {
 const bin__pEU = (bi) => {
   let p2 = pEU_empty();
   p2.Caption = marshall$1.bin__str(bi);
+  p2.Username = marshall$1.bin__str(bi);
+  p2.Pwd = marshall$1.bin__str(bi);
   p2.AuthType = marshall$1.bin__int32(bi);
   return p2;
 };
@@ -12776,28 +12779,14 @@ const bin__PLOG = (bi) => {
     p: bin__pPLOG(bi)
   };
 };
-const pBOOK_empty = () => {
-  return {
-    Caption: "",
-    Email: "",
-    Message: ""
-  };
-};
-const BOOK_empty = () => {
-  return {
-    id: 0,
-    createdat: /* @__PURE__ */ new Date(),
-    updatedat: /* @__PURE__ */ new Date(),
-    sort: 0,
-    p: pBOOK_empty()
-  };
-};
 const euAuthTypeEnum_Normal = 0;
 const euAuthTypeEnum_Authorized = 1;
 const euAuthTypeEnum_Admin = 2;
 const pEU_empty = () => {
   return {
     Caption: "",
+    Username: "",
+    Pwd: "",
     AuthType: 0
   };
 };
@@ -12917,8 +12906,6 @@ const PLOG_empty = () => {
 };
 const om = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  BOOK__bin,
-  BOOK_empty,
   EU__bin,
   EU_empty,
   FBIND__bin,
@@ -12931,14 +12918,12 @@ const om = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   MOMENT_empty,
   PLOG__bin,
   PLOG_empty,
-  bin__BOOK,
   bin__EU,
   bin__FBIND,
   bin__FILE,
   bin__LOG,
   bin__MOMENT,
   bin__PLOG,
-  bin__pBOOK,
   bin__pEU,
   bin__pFBIND,
   bin__pFILE,
@@ -12966,8 +12951,6 @@ const om = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   momentTypeEnum_Repost,
   momentTypeEnum_Thread,
   momentTypeEnum_WebPage,
-  pBOOK__bin,
-  pBOOK_empty,
   pEU__bin,
   pEU_empty,
   pFBIND__bin,
@@ -13024,15 +13007,15 @@ const bin__MomentComplex = (bi) => {
 };
 const RuntimeData_empty = () => {
   return {
-    books: []
+    desc: ""
   };
 };
 const RuntimeData__bin = (bb) => (v) => {
-  marshall.array__bin(marshall.BOOK__bin)(bb)(v.books);
+  marshall.str__bin(bb)(v.desc);
 };
 const bin__RuntimeData = (bi) => {
   return {
-    books: marshall.bin__array(marshall.bin__BOOK)(bi)
+    desc: marshall.bin__str(bi)
   };
 };
 const ClientRuntime_empty = () => {
@@ -13271,8 +13254,8 @@ const _hoisted_8$1 = {
   key: 0,
   class: "p-[15px]"
 };
-const _hoisted_9 = { class: "card" };
-const _hoisted_10 = { class: "flex" };
+const _hoisted_9$1 = { class: "card" };
+const _hoisted_10$1 = { class: "flex" };
 const _sfc_main$1 = /* @__PURE__ */ defineComponent({
   __name: "UserAuth",
   emits: ["changed"],
@@ -13336,9 +13319,9 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
               onClick: signOut
             }, "Sign Out")
           ])) : createCommentVNode("", true),
-          createBaseVNode("div", _hoisted_9, [
+          createBaseVNode("div", _hoisted_9$1, [
             createBaseVNode("div", null, [
-              createBaseVNode("div", _hoisted_10, [
+              createBaseVNode("div", _hoisted_10$1, [
                 createTextVNode(" Key "),
                 withDirectives(createBaseVNode("input", {
                   "onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => unref(s).key = $event),
@@ -13357,21 +13340,23 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const _hoisted_1 = { class: "lg:w-[1200px] mr-[10px]" };
-const _hoisted_2 = { class: "main-color w-screen" };
-const _hoisted_3 = { class: "flex justify-start" };
-const _hoisted_4 = /* @__PURE__ */ createBaseVNode("div", { class: "w-full flex justify-center bg-[#262622]" }, [
+const _hoisted_1 = /* @__PURE__ */ createBaseVNode("div", null, "https://whatsyourideal.com/", -1);
+const _hoisted_2 = /* @__PURE__ */ createBaseVNode("div", null, "Lower Your Bills On CruiseControl!", -1);
+const _hoisted_3 = { class: "lg:w-[1200px] mr-[10px]" };
+const _hoisted_4 = { class: "main-color w-screen" };
+const _hoisted_5 = { class: "flex justify-start" };
+const _hoisted_6 = /* @__PURE__ */ createBaseVNode("div", { class: "w-full flex justify-center bg-[#262622]" }, [
   /* @__PURE__ */ createBaseVNode("img", {
     class: "w-[300px] my-3",
     src: "https://i.imgur.com/JvdrjQP.png"
   })
 ], -1);
-const _hoisted_5 = { class: "flex justify-center p-3" };
-const _hoisted_6 = { class: "flex hor-range" };
-const _hoisted_7 = { class: "menu" };
-const _hoisted_8 = /* @__PURE__ */ createStaticVNode('<div class="menu"><a href="#painting">Painting</a></div><div class="menu"><a href="#price">Price</a></div><div class="menu"><a href="#lesson">Lesson</a></div><div class="bg-white"><a href="https://www.yelp.com/biz/sdcheen-fine-art-studio-dingmans-ferry" target="_blank"><img src="https://s3-media0.fl.yelpcdn.com/assets/srv0/yelp_design_cdn/7ef71bf77a33/assets/img/brand/logo_desktop.svg"></a></div>', 4);
-const _hoisted_12 = /* @__PURE__ */ createBaseVNode("div", { class: "hor" }, null, -1);
-const _hoisted_13 = /* @__PURE__ */ createBaseVNode("div", { class: "flex justify-center" }, [
+const _hoisted_7 = { class: "flex justify-center p-3" };
+const _hoisted_8 = { class: "flex hor-range" };
+const _hoisted_9 = { class: "menu" };
+const _hoisted_10 = /* @__PURE__ */ createStaticVNode('<div class="menu"><a href="#painting">Painting</a></div><div class="menu"><a href="#price">Price</a></div><div class="menu"><a href="#lesson">Lesson</a></div><div class="bg-white"><a href="https://www.yelp.com/biz/sdcheen-fine-art-studio-dingmans-ferry" target="_blank"><img src="https://s3-media0.fl.yelpcdn.com/assets/srv0/yelp_design_cdn/7ef71bf77a33/assets/img/brand/logo_desktop.svg"></a></div>', 4);
+const _hoisted_14 = /* @__PURE__ */ createBaseVNode("div", { class: "hor" }, null, -1);
+const _hoisted_15 = /* @__PURE__ */ createBaseVNode("div", { class: "flex justify-center" }, [
   /* @__PURE__ */ createBaseVNode("div", { class: "hor-range" }, [
     /* @__PURE__ */ createBaseVNode("div", { class: "pt-2 pb-5" }, [
       /* @__PURE__ */ createBaseVNode("br"),
@@ -13385,30 +13370,34 @@ const _sfc_main = {
     return (_ctx, _cache) => {
       const _component_router_link = resolveComponent("router-link");
       const _component_router_view = resolveComponent("router-view");
-      return openBlock(), createElementBlock("div", _hoisted_1, [
-        createBaseVNode("div", _hoisted_2, [
-          createBaseVNode("div", _hoisted_3, [
-            createVNode(_sfc_main$1, { onChanged: _ctx.onAuthChanged }, null, 8, ["onChanged"])
-          ]),
-          _hoisted_4,
-          createBaseVNode("div", _hoisted_5, [
-            createBaseVNode("div", _hoisted_6, [
-              createBaseVNode("div", _hoisted_7, [
-                createVNode(_component_router_link, { to: "/" }, {
-                  default: withCtx(() => [
-                    createTextVNode("Home")
-                  ]),
-                  _: 1
-                })
-              ]),
-              _hoisted_8
-            ])
-          ]),
-          createVNode(_component_router_view),
-          _hoisted_12,
-          _hoisted_13
+      return openBlock(), createElementBlock(Fragment, null, [
+        _hoisted_1,
+        _hoisted_2,
+        createBaseVNode("div", _hoisted_3, [
+          createBaseVNode("div", _hoisted_4, [
+            createBaseVNode("div", _hoisted_5, [
+              createVNode(_sfc_main$1, { onChanged: _ctx.onAuthChanged }, null, 8, ["onChanged"])
+            ]),
+            _hoisted_6,
+            createBaseVNode("div", _hoisted_7, [
+              createBaseVNode("div", _hoisted_8, [
+                createBaseVNode("div", _hoisted_9, [
+                  createVNode(_component_router_link, { to: "/" }, {
+                    default: withCtx(() => [
+                      createTextVNode("Home")
+                    ]),
+                    _: 1
+                  })
+                ]),
+                _hoisted_10
+              ])
+            ]),
+            createVNode(_component_router_view),
+            _hoisted_14,
+            _hoisted_15
+          ])
         ])
-      ]);
+      ], 64);
     };
   }
 };

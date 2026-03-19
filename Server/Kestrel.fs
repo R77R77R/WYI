@@ -13,14 +13,13 @@ open Microsoft.Extensions.FileProviders
 open System.Net.WebSockets
 
 let runServer 
-    (devRoot,fsRoot,vueDistPath)
-    (port80,port443)
-    output (args: string[]) =
+    (devRoot, fsRoot, vueDistPath)
+    (port80, port443)
+    (args: string[]) =
 
     let builder = WebApplication.CreateBuilder(args)
 
-    // 强制监听标准端口 80 和 443
-    // 注意：0.0.0.0 允许外部公网访问
+    // 强制监听标准端口，并允许外部公网访问
     builder.WebHost.UseUrls("http://0.0.0.0:" + port80.ToString() + ";https://0.0.0.0:" + port443.ToString()) |> ignore
 
     // 1. 高性能 Kestrel 配置
@@ -36,7 +35,18 @@ let runServer
 
     // --- 路由与功能实现区 ---
 
-    // 1. API 分发：/api/{scheme}/{api}
+    // 1.1 GET 型 API 分发
+    app.MapGet("/api/{scheme}/{api}", Func<string, string, HttpContext, Task>(fun scheme api context -> task {
+        context.Response.ContentType <- "application/json; charset=utf-8"
+        
+        if scheme = "public" && api = "ping" then
+            let timeJson = sprintf "{\"status\": \"ok\", \"serverTime\": \"%s\"}" (DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
+            do! context.Response.Body.WriteAsync(ReadOnlyMemory(Encoding.UTF8.GetBytes(timeJson)))
+        else
+            context.Response.StatusCode <- 404
+    })) |> ignore
+
+    // 1.2 POST 型 API 分发
     app.MapPost("/api/{scheme}/{api}",
         Func<string, string, HttpContext, Task>(fun scheme api context -> task {
         context.Response.ContentType <- "application/json; charset=utf-8"
@@ -44,7 +54,7 @@ let runServer
         use reader = new StreamReader(context.Request.Body, Encoding.UTF8)
         let! requestBody = reader.ReadToEndAsync()
 
-        // 依然对接你的业务库逻辑
+        // 对接业务库逻辑
         let responseJson = 
             sprintf "{\"scheme\": \"%s\", \"api\": \"%s\", \"data\": %s}" scheme api requestBody
         let responseBytes = Encoding.UTF8.GetBytes(responseJson)
@@ -68,10 +78,8 @@ let runServer
         fileServerOptions.FileProvider <- new PhysicalFileProvider(vueDistPath)
         app.UseStaticFiles(fileServerOptions) |> ignore
 
-        // 4. 兜底处理：SPA 路由支持 (增加方法过滤以修复 CONNECT 异常)
+        // 4. 兜底处理：SPA 路由支持 (过滤非 GET 请求以修复 CONNECT 异常)
         app.MapFallback(Func<HttpContext, Task>(fun context -> task {
-            // 关键修复：仅针对 GET 请求返回 index.html
-            // 因为 CONNECT, HEAD 等请求不应包含 Body，会导致 InvalidOperationException
             if HttpMethods.IsGet(context.Request.Method) then
                 let indexPath = Path.Combine(vueDistPath, "index.html")
                 if File.Exists(indexPath) then
