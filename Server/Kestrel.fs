@@ -20,7 +20,8 @@ let runServer
     let builder = WebApplication.CreateBuilder(args)
 
     // 强制监听标准端口，并允许外部公网访问
-    builder.WebHost.UseUrls("http://0.0.0.0:" + port80.ToString() + ";https://0.0.0.0:" + port443.ToString()) |> ignore
+    //builder.WebHost.UseUrls("http://0.0.0.0:" + port80.ToString() + ";https://0.0.0.0:" + port443.ToString()) |> ignore
+    builder.WebHost.UseUrls("http://0.0.0.0:" + port80.ToString()) |> ignore
 
     // 1. 高性能 Kestrel 配置
     builder.WebHost.ConfigureKestrel(fun options ->
