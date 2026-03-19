@@ -42,7 +42,8 @@ let main argv =
         //JCS.BizLogics.Common.runtime.data.projectxs[234354L] 
         //|> JCS.BizLogics.CodeRobot.runProject
 
-    let devRoot,fsRoot,vueDistPath = WYI.BizLogics.Launcher.launch()
+    let devRoot,fsRoot,vueDistPath,cert,certpwd = 
+        WYI.BizLogics.Launcher.launch()
 
     "DevRoot: " + devRoot |> output
     "FsRoot: " + fsRoot |> output
@@ -52,7 +53,9 @@ let main argv =
     // https://localhost/api/public/ping
     Server.Kestrel.runServer 
         (devRoot,fsRoot,vueDistPath) 
+        (cert,certpwd)
         (80,443)
+        output
         [||]
 
     Util.Runtime.halt output "" ""

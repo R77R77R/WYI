@@ -40,6 +40,8 @@ let runtime =
         rdbms = Util.Db.Rdbms.PostgreSql
         conn = @"Host=5.78.201.21;Port=5432;Database=wyi;Username=wyi;Password=e2TpqcaTEYLfkvFMkc"
         url = ""
+        cert = ""
+        certpwd = ""
 
         updateDatabase = true
 

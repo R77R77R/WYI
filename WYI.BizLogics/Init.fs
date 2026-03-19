@@ -42,9 +42,13 @@ let init (runtime:Runtime) =
     match Environment.MachineName with
     | "ubuntu-2gb-hil-1" -> 
         runtime.host.updateDatabase <- false
-        rootPath <- "/root"
+        runtime.host.cert <- ""
+        rootPath <- "/root/aspnetapp.pfx"
     | _ -> 
+        runtime.host.cert <- 
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "aspnetapp.pfx")
         rootPath <- @"C:"
+    runtime.host.certpwd <- "123456"
 
     runtime.host.VsDirSolution <- rootPath + "/Dev/WYI"
     runtime.host.fsDir <- rootPath + "/FsRoot/WYI"

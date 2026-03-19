@@ -30,8 +30,11 @@ let launch() =
 
     init runtime |> ignore
 
-    (runtime.host.VsDirSolution,runtime.host.fsDir,runtime.host.VsDirSolution + "/vscode/dist")
+    let devRoot,fsRoot,vueDistPath = runtime.host.VsDirSolution,runtime.host.fsDir,runtime.host.VsDirSolution + "/vscode/dist"
+    let cert = runtime.host.cert
+    let certpwd = runtime.host.certpwd
 
+    devRoot,fsRoot,vueDistPath,cert,certpwd
     (*
     runtime.listener.echo <- echo
     runtime.listener.h404o <- Some(fun _ -> 

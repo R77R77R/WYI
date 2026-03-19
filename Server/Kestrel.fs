@@ -8,25 +8,34 @@ open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Http
 open Microsoft.AspNetCore.Hosting
 open Microsoft.Extensions.Hosting
+open Microsoft.AspNetCore.Server.Kestrel.Core
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.FileProviders
 open System.Net.WebSockets
 
 let runServer 
     (devRoot, fsRoot, vueDistPath)
+    (cert,certpwd)
     (port80, port443)
+    output
     (args: string[]) =
 
     let builder = WebApplication.CreateBuilder(args)
-
-    // 强制监听标准端口，并允许外部公网访问
-    //builder.WebHost.UseUrls("http://0.0.0.0:" + port80.ToString() + ";https://0.0.0.0:" + port443.ToString()) |> ignore
-    builder.WebHost.UseUrls("http://0.0.0.0:" + port80.ToString()) |> ignore
 
     // 1. 高性能 Kestrel 配置
     builder.WebHost.ConfigureKestrel(fun options ->
         options.Limits.MaxRequestBodySize <- Nullable(10L * 1024L * 1024L * 1024L) 
         options.Limits.MinRequestBodyDataRate <- null 
+
+        options.ListenAnyIP(port80)
+        options.ListenAnyIP(port443, fun listenOptions ->
+            if File.Exists cert then
+                listenOptions.UseHttps(cert,certpwd) |> ignore
+                "SSL Certificate loaded from: " + cert |> output
+            else
+                "Warning: SSL certificate not found at " + cert + ". HTTPS may not work." |> output
+        )
+
     ) |> ignore
 
     let app = builder.Build()
