@@ -67,6 +67,7 @@ let Bash output server (devDir, deployDir) (gitName, gitEmail) =
         [|
             $"cd {deployDir}"
             "git pull"
+            "sudo fuser -k 80/tcp || true"
             "sudo fuser -k 443/tcp || true"
             "cd Server"
             "sudo dotnet run" // 如果这里不加 &，ssh 会一直保持连接并即时回传日志
