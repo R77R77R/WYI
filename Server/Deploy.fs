@@ -40,7 +40,7 @@ let Bash output server (devDir,deployDir) =
         proc.WaitForExit()
 
         if proc.ExitCode = 0 then
-            res |> green |> output
+            "OK: " + res |> green |> output
         else
             "ExitCode " + proc.ExitCode.ToString() + ": " + error |> red |> output
 
