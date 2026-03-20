@@ -42,8 +42,6 @@ let main argv =
     (green "[SUCCESS]") |> output
     (red "[ERROR]") |> output
 
-    Util.Runtime.halt output "" ""
-
     match Environment.MachineName with
     | "ubuntu-2gb-hil-1" -> ()
     | _ ->
