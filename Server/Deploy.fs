@@ -66,7 +66,9 @@ let Bash output server (devDir, deployDir) (gitName, gitEmail) =
     let remoteCommands = 
         [|
             $"cd {deployDir}"
-            "git pull"
+            "git fetch --all"
+            "git reset --hard origin/main"
+            "sudo killall -9 dotnet || true"
             "sudo fuser -k 80/tcp || true"
             "sudo fuser -k 443/tcp || true"
             "cd Server"
