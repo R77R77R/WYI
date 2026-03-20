@@ -52,6 +52,7 @@ let Bash output server (devDir,deployDir) (gitName,gitEmail) =
     /// 提交git
     [|  "config user.name \"" + gitName + "\""
         "config user.email \"" + gitEmail + "\""
+        "status"
         "add ."
         "commit -m \".\""
         "push" |]
@@ -67,7 +68,8 @@ let Bash output server (devDir,deployDir) (gitName,gitEmail) =
         |> String.concat " && "
 
     let cmd = $"root@{server} \"{remoteCommands}\""
-    exec "ssh" cmd
-    |> ignore
 
+    cmd
+    |> exec "" "ssh"
+    |> ignore
 
