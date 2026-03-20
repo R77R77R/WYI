@@ -23,6 +23,9 @@ let Bash output server (devDir,deployDir) =
 
     /// 在本地执行指令（如 ssh）
     let exec setDir (fileName: string) (args: string) =
+
+        fileName + ": " + args |> cyan |> output
+
         let psi = ProcessStartInfo(fileName, args)
         if setDir <> "" then
             psi.WorkingDirectory <- setDir
