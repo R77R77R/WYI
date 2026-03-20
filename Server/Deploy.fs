@@ -66,8 +66,8 @@ let Bash output server (devDir,deployDir) (gitName,gitEmail) =
             "sudo dotnet run" |]
         |> String.concat " && "
 
-    $"root@{server} \"{remoteCommands}\""
-    |> exec "ssh"
+    let cmd = $"root@{server} \"{remoteCommands}\""
+    exec "ssh" cmd
     |> ignore
 
 
