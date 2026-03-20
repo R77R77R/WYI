@@ -1,5 +1,6 @@
 <template> 
 
+<div>Auto remote deploy</div>
 <div>postgresql + F# + Kestrel + vue</div>
 <div>https://whatsyourideal.com/</div>
 <div>Lower Your Bills On CruiseControl!</div>
