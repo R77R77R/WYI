@@ -1,5 +1,6 @@
 <template> 
 
+<div>postgresql + F# + Kestrel + vue</div>
 <div>https://whatsyourideal.com/</div>
 <div>Lower Your Bills On CruiseControl!</div>
 
