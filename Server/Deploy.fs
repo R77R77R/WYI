@@ -6,7 +6,7 @@ open System.Runtime.InteropServices
 
 
 
-let Bash output server (devDir,deployDir) = 
+let Bash output server (devDir,deployDir) (gitName,gitEmail) = 
 
     (*
     // ssh root@5.78.201.21 免密码登录，本地配置
@@ -50,7 +50,9 @@ let Bash output server (devDir,deployDir) =
     printfn "%s" (cyan $">>> 开始部署至 {server}...")
 
     /// 提交git
-    [|  "add ."
+    [|  "config user.name \"" + gitName + "\""
+        "config user.email \"" + gitEmail + "\""
+        "add ."
         "commit -m \".\""
         "push" |]
     |> Array.map(exec devDir "git")

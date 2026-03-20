@@ -78,6 +78,7 @@ let main argv =
             output 
             deployHost
             (devRoot,"Dev/WYI")
+            ("R","siduochen@hotmail.com")
 
     // https://5.78.201.21
     // https://localhost/api/public/ping
