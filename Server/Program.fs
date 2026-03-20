@@ -42,8 +42,22 @@ let main argv =
     (green "[SUCCESS]") |> output
     (red "[ERROR]") |> output
 
+
+
     match Environment.MachineName with
-    | "ubuntu-2gb-hil-1" -> ()
+    | "ubuntu-2gb-hil-1" -> 
+        (*
+        // ssh root@5.78.201.21 免密码登录，本地配置
+
+        ssh-keygen -t ed25519
+        $pubKey = Get-Content "$HOME\.ssh\id_ed25519.pub"
+        ssh root@5.78.201.21 "mkdir -p ~/.ssh && echo '$pubKey' >> ~/.ssh/authorized_keys && chmod 700 ~/.ssh && chmod 600 ~/.ssh/authorized_keys"
+        *)
+
+
+
+        ()
+
     | _ ->
         TypeSys.CodeRobot.go 
             output 
