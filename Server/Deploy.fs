@@ -37,12 +37,9 @@ let Bash output server (devDir,deployDir) =
         proc.WaitForExit()
 
         if proc.ExitCode = 0 then
-            green ">>> 指令发送成功！" |> output
-            "服务器响应: " + res |> output
-            cyan ">>> 请访问: https://" + server + "/api/public/ping 检查状态" |> output
+            res |> green |> output
         else
-            red $">>> 部署失败 (ExitCode: {proc.ExitCode})" |> output
-            "错误详情: " + error |> output
+            "ExitCode " + proc.ExitCode.ToString() + ": " + error |> red |> output
 
         (proc.ExitCode, res, error)
 
