@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "ury7kwjFx1Y=",
+  "dgSpecHash": "ctz1N0AuAtA=",
   "success": true,
   "projectFilePath": "C:\\Dev\\WYI\\WYI.BizLogics\\WYI.BizLogics.fsproj",
   "expectedPackageFiles": [
@@ -17,7 +17,7 @@
     "C:\\Users\\RR\\.nuget\\packages\\discord.net.websocket\\3.17.2\\discord.net.websocket.3.17.2.nupkg.sha512",
     "C:\\Users\\RR\\.nuget\\packages\\fleck\\1.2.0\\fleck.1.2.0.nupkg.sha512",
     "C:\\Users\\RR\\.nuget\\packages\\fsharp.control.asyncseq\\3.2.1\\fsharp.control.asyncseq.3.2.1.nupkg.sha512",
-    "C:\\Users\\RR\\.nuget\\packages\\fsharp.core\\10.0.102\\fsharp.core.10.0.102.nupkg.sha512",
+    "C:\\Users\\RR\\.nuget\\packages\\fsharp.core\\10.1.201\\fsharp.core.10.1.201.nupkg.sha512",
     "C:\\Users\\RR\\.nuget\\packages\\fsharp.stats\\0.6.0\\fsharp.stats.0.6.0.nupkg.sha512",
     "C:\\Users\\RR\\.nuget\\packages\\fsharpaux\\2.0.0\\fsharpaux.2.0.0.nupkg.sha512",
     "C:\\Users\\RR\\.nuget\\packages\\fsharpaux.core\\2.0.0\\fsharpaux.core.2.0.0.nupkg.sha512",

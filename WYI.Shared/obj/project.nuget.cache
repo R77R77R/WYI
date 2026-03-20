@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "zJqaRhmUnS0=",
+  "dgSpecHash": "t3zuRBi0ads=",
   "success": true,
   "projectFilePath": "C:\\Dev\\WYI\\WYI.Shared\\WYI.Shared.fsproj",
   "expectedPackageFiles": [
@@ -9,7 +9,7 @@
     "C:\\Users\\RR\\.nuget\\packages\\chtchsconv\\1.0.0\\chtchsconv.1.0.0.nupkg.sha512",
     "C:\\Users\\RR\\.nuget\\packages\\crypto.ripemd\\1.0.3\\crypto.ripemd.1.0.3.nupkg.sha512",
     "C:\\Users\\RR\\.nuget\\packages\\fsharp.control.asyncseq\\3.2.1\\fsharp.control.asyncseq.3.2.1.nupkg.sha512",
-    "C:\\Users\\RR\\.nuget\\packages\\fsharp.core\\10.0.102\\fsharp.core.10.0.102.nupkg.sha512",
+    "C:\\Users\\RR\\.nuget\\packages\\fsharp.core\\10.1.201\\fsharp.core.10.1.201.nupkg.sha512",
     "C:\\Users\\RR\\.nuget\\packages\\fsharp.stats\\0.6.0\\fsharp.stats.0.6.0.nupkg.sha512",
     "C:\\Users\\RR\\.nuget\\packages\\fsharpaux\\2.0.0\\fsharpaux.2.0.0.nupkg.sha512",
     "C:\\Users\\RR\\.nuget\\packages\\fsharpaux.core\\2.0.0\\fsharpaux.core.2.0.0.nupkg.sha512",

@@ -59,7 +59,7 @@ let Bash output server (devDir, deployDir) (gitName, gitEmail) =
         "commit -m \"auto-deploy\""
         "push"
     |]
-    |> Array.iter (fun args -> exec devDir "git" args |> ignore)
+    |> Array.iter (fun args -> exec devDir @"C:\Program Files\Git\bin\git.exe" args |> ignore)
 
     // 2. 远程 SSH 操作
     // 注意：远程执行 dotnet run 时建议加上 nohup 或确保你希望持续观察输出
