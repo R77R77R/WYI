@@ -42,23 +42,13 @@ let main argv =
     (green "[SUCCESS]") |> output
     (red "[ERROR]") |> output
 
+    let deployHost = "5.78.201.21"
+    let devOrDeploy = 
+        match Environment.MachineName with
+        | "ubuntu-2gb-hil-1" -> false
+        | _ -> true
 
-
-    match Environment.MachineName with
-    | "ubuntu-2gb-hil-1" -> 
-        (*
-        // ssh root@5.78.201.21 免密码登录，本地配置
-
-        ssh-keygen -t ed25519
-        $pubKey = Get-Content "$HOME\.ssh\id_ed25519.pub"
-        ssh root@5.78.201.21 "mkdir -p ~/.ssh && echo '$pubKey' >> ~/.ssh/authorized_keys && chmod 700 ~/.ssh && chmod 600 ~/.ssh/authorized_keys"
-        *)
-
-
-
-        ()
-
-    | _ ->
+    if devOrDeploy then
         TypeSys.CodeRobot.go 
             output 
             @"C:\Dev\JCS\TypeSys\bin\Debug\net10.0"
@@ -67,7 +57,7 @@ let main argv =
                 rdbms = Util.Db.Rdbms.PostgreSql
                 dbName = "wyi"
                 donmainName = ""
-                conn = @"Host=5.78.201.21;Port=5432;Database=wyi;Username=wyi;Password=e2TpqcaTEYLfkvFMkc"
+                conn = @"Host=" + deployHost + ";Port=5432;Database=wyi;Username=wyi;Password=e2TpqcaTEYLfkvFMkc"
                 mainDir = @"C:\Dev\WYI\WYI.Shared"
                 JsDir = @"C:\Dev\WYI\vscode\src\lib\shared" }
         //JCS.BizLogics.Common.runtime.data.projectxs[234354L] 
@@ -82,6 +72,12 @@ let main argv =
 
     "Cert: " + cert |> output
     "CertPwd: " + certpwd |> output
+
+    if devOrDeploy then
+        Server.Deploy.Bash
+            output 
+            deployHost
+            (devRoot,"Dev/WYI")
 
     // https://5.78.201.21
     // https://localhost/api/public/ping

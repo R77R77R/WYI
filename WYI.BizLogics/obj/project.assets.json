@@ -1492,7 +1492,7 @@
           }
         }
       },
-      "GNodeUtils/1.0.0": {
+      "Util/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v10.0",
         "dependencies": {
@@ -1521,10 +1521,10 @@
           "System.ServiceProcess.ServiceController": "9.0.3"
         },
         "compile": {
-          "bin/placeholder/GNodeUtils.dll": {}
+          "bin/placeholder/Util.dll": {}
         },
         "runtime": {
-          "bin/placeholder/GNodeUtils.dll": {}
+          "bin/placeholder/Util.dll": {}
         }
       },
       "UtilWebServer/1.0.0": {
@@ -1538,7 +1538,7 @@
           "Discord.Net.Webhook": "3.17.2",
           "FSharp.Core": "9.0.201",
           "Fleck": "1.2.0",
-          "GNodeUtils": "1.0.0"
+          "Util": "1.0.0"
         },
         "compile": {
           "bin/placeholder/UtilWebServer.dll": {}
@@ -1552,7 +1552,7 @@
         "framework": ".NETCoreApp,Version=v10.0",
         "dependencies": {
           "FSharp.Core": "10.0.102",
-          "GNodeUtils": "1.0.0"
+          "Util": "1.0.0"
         },
         "compile": {
           "bin/placeholder/WYI.Shared.dll": {}
@@ -3689,7 +3689,7 @@
         "version.txt"
       ]
     },
-    "GNodeUtils/1.0.0": {
+    "Util/1.0.0": {
       "type": "project",
       "path": "../../Common/Util/Util.fsproj",
       "msbuildProject": "../../Common/Util/Util.fsproj"
@@ -3708,7 +3708,7 @@
   "projectFileDependencyGroups": {
     "net10.0": [
       "FSharp.Core >= 10.0.102",
-      "GNodeUtils >= 1.0.0",
+      "Util >= 1.0.0",
       "UtilWebServer >= 1.0.0",
       "WYI.Shared >= 1.0.0"
     ]

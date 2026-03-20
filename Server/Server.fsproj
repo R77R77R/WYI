@@ -13,10 +13,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <Compile Include="Kestrel.fs" />
+    <Compile Include="Deploy.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
-
-  <ItemGroup />
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\UtilWebServer\UtilWebServer.fsproj" />

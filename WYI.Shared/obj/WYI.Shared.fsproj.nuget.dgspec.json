@@ -8,7 +8,7 @@
       "version": "1.0.0",
       "restore": {
         "projectUniqueName": "C:\\Dev\\Common\\Util\\Util.fsproj",
-        "projectName": "GNodeUtils",
+        "projectName": "Util",
         "projectPath": "C:\\Dev\\Common\\Util\\Util.fsproj",
         "packagesPath": "C:\\Users\\RR\\.nuget\\packages\\",
         "outputPath": "C:\\Dev\\Common\\Util\\obj\\",
