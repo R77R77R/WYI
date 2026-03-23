@@ -3,6 +3,7 @@ module Server.Kestrel
 open System
 open System.IO
 open System.Text
+open System.Text.Encodings
 open System.Threading.Tasks
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Http
@@ -16,6 +17,7 @@ open System.Net.WebSockets
 let runServer 
     (devRoot, fsRoot, vueDistPath)
     (cert,certpwd)
+    (echo)
     (port80, port443)
     output
     (args: string[]) =
@@ -49,12 +51,16 @@ let runServer
     app.MapGet("/api/{scheme}/{api}", Func<string, string, HttpContext, Task>(fun scheme api context -> task {
         context.Response.ContentType <- "application/json; charset=utf-8"
         
-        if scheme = "public" && api = "ping" then
-            let timeJson = sprintf "{\"status\": \"ok\", \"serverTime\": \"%s\"}" (DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
-            do! context.Response.Body.WriteAsync(ReadOnlyMemory(Encoding.UTF8.GetBytes(timeJson)))
-        else
-            context.Response.StatusCode <- 404
-    })) |> ignore
+        let responseBytes = echo (scheme,api,"")
+
+        //if scheme = "public" && api = "ping" then
+        //    let timeJson = sprintf "{\"status\": \"ok\", \"serverTime\": \"%s\"}" (DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
+        //    do! context.Response.Body.WriteAsync(ReadOnlyMemory(Encoding.UTF8.GetBytes(timeJson)))
+        //else
+        //    context.Response.StatusCode <- 404
+
+        do! context.Response.Body.WriteAsync(ReadOnlyMemory(responseBytes))
+        })) |> ignore
 
     // 1.2 POST 型 API 分发
     app.MapPost("/api/{scheme}/{api}",
@@ -64,10 +70,11 @@ let runServer
         use reader = new StreamReader(context.Request.Body, Encoding.UTF8)
         let! requestBody = reader.ReadToEndAsync()
 
+        let responseBytes = echo (scheme,api,requestBody)
         // 对接业务库逻辑
-        let responseJson = 
-            sprintf "{\"scheme\": \"%s\", \"api\": \"%s\", \"data\": %s}" scheme api requestBody
-        let responseBytes = Encoding.UTF8.GetBytes(responseJson)
+        //let responseJson = 
+        //    sprintf "{\"scheme\": \"%s\", \"api\": \"%s\", \"data\": %s}" scheme api requestBody
+        //let responseBytes = Encoding.UTF8.GetBytes(responseJson)
         
         do! context.Response.Body.WriteAsync(ReadOnlyMemory(responseBytes))
     })) |> ignore

@@ -12294,15 +12294,15 @@ const _hoisted_11$2 = {
   class: "my-5"
 };
 const _hoisted_12$2 = /* @__PURE__ */ createBaseVNode("div", null, "Contact by email: info@sdchen.art", -1);
-const _hoisted_13$1 = { key: 0 };
+const _hoisted_13$2 = { key: 0 };
 const _hoisted_14$1 = {
   key: 1,
   class: "m-3 p-3 bg-[#aabb99] w-[1000px]"
 };
 const _hoisted_15$1 = /* @__PURE__ */ createBaseVNode("div", null, "Name", -1);
-const _hoisted_16$2 = /* @__PURE__ */ createBaseVNode("div", null, "Email", -1);
+const _hoisted_16$1 = /* @__PURE__ */ createBaseVNode("div", null, "Email", -1);
 const _hoisted_17$1 = /* @__PURE__ */ createBaseVNode("div", null, "Message", -1);
-const _hoisted_18 = /* @__PURE__ */ createStaticVNode('<div id="painting" class="caption-1">Painting Progress</div><div class="lg:flex justify-start"><img class="painting" src="https://i.imgur.com/nMqz18N.jpeg"><img class="painting" src="https://i.imgur.com/ypjl9oY.jpeg"><img class="painting" src="https://i.imgur.com/at8cz1s.jpeg"></div><div class="lg:flex justify-end"><img class="painting" src="https://i.imgur.com/JaH5I2S.jpeg"><img class="painting" src="https://i.imgur.com/65JdVrh.jpeg"><img class="painting" src="https://i.imgur.com/uLdMbny.jpeg"></div><div class="lg:flex justify-start"><img class="painting" src="https://i.imgur.com/6bipccJ.jpeg"><img class="painting" src="https://i.imgur.com/TSwr3Pw.jpeg"><img class="painting" src="https://i.imgur.com/FygNW9w.jpeg"></div><div class="lg:flex justify-end"><img class="painting" src="https://i.imgur.com/mJkTKta.jpeg"><img class="painting" src="https://i.imgur.com/awNWKJf.jpeg"><img class="painting" src="https://i.imgur.com/BNeLCuO.jpeg"></div><div class="lg:flex justify-start"><img class="painting" src="https://i.imgur.com/YAW4jVN.jpeg"><img class="painting" src="https://i.imgur.com/ypiRqH5.jpeg"><img class="painting" src="https://i.imgur.com/fTlsPsu.jpeg"></div><div id="price" class="caption-1">Price</div><div> Typically a 10&quot; x 12&quot; portrait is done in two sessions. Each session lasts approx. 3 hours. There is an intermission between the sessions to allow the oil to dry. A portrait is $400 for the standard hourly rate of $65/hour plus the materials. </div><div id="lesson" class="caption-1">Lesson</div><div><a href="#book">Book</a> portrait oil painting lessons. <br>Master the art of oil portrait painting through private lessons. Available online or in-person. <br>Session length: 3 hours <br>Rate: $40/hour (plus tax) </div>', 10);
+const _hoisted_18$1 = /* @__PURE__ */ createStaticVNode('<div id="painting" class="caption-1">Painting Progress</div><div class="lg:flex justify-start"><img class="painting" src="https://i.imgur.com/nMqz18N.jpeg"><img class="painting" src="https://i.imgur.com/ypjl9oY.jpeg"><img class="painting" src="https://i.imgur.com/at8cz1s.jpeg"></div><div class="lg:flex justify-end"><img class="painting" src="https://i.imgur.com/JaH5I2S.jpeg"><img class="painting" src="https://i.imgur.com/65JdVrh.jpeg"><img class="painting" src="https://i.imgur.com/uLdMbny.jpeg"></div><div class="lg:flex justify-start"><img class="painting" src="https://i.imgur.com/6bipccJ.jpeg"><img class="painting" src="https://i.imgur.com/TSwr3Pw.jpeg"><img class="painting" src="https://i.imgur.com/FygNW9w.jpeg"></div><div class="lg:flex justify-end"><img class="painting" src="https://i.imgur.com/mJkTKta.jpeg"><img class="painting" src="https://i.imgur.com/awNWKJf.jpeg"><img class="painting" src="https://i.imgur.com/BNeLCuO.jpeg"></div><div class="lg:flex justify-start"><img class="painting" src="https://i.imgur.com/YAW4jVN.jpeg"><img class="painting" src="https://i.imgur.com/ypiRqH5.jpeg"><img class="painting" src="https://i.imgur.com/fTlsPsu.jpeg"></div><div id="price" class="caption-1">Price</div><div> Typically a 10&quot; x 12&quot; portrait is done in two sessions. Each session lasts approx. 3 hours. There is an intermission between the sessions to allow the oil to dry. A portrait is $400 for the standard hourly rate of $65/hour plus the materials. </div><div id="lesson" class="caption-1">Lesson</div><div><a href="#book">Book</a> portrait oil painting lessons. <br>Master the art of oil portrait painting through private lessons. Available online or in-person. <br>Session length: 3 hours <br>Rate: $40/hour (plus tax) </div>', 10);
 const _hoisted_28 = /* @__PURE__ */ createBaseVNode("div", { class: "hor" }, null, -1);
 const _hoisted_29 = /* @__PURE__ */ createBaseVNode("div", { class: "flex justify-center" }, [
   /* @__PURE__ */ createBaseVNode("div", { class: "hor-range" }, [
@@ -12344,7 +12344,7 @@ const _sfc_main$3 = /* @__PURE__ */ defineComponent({
             _hoisted_5$3,
             createBaseVNode("div", _hoisted_11$2, [
               _hoisted_12$2,
-              unref(s).expand == false ? (openBlock(), createElementBlock("div", _hoisted_13$1, [
+              unref(s).expand == false ? (openBlock(), createElementBlock("div", _hoisted_13$2, [
                 createBaseVNode("button", {
                   onClick: _cache[0] || (_cache[0] = ($event) => unref(s).expand = true)
                 }, "Book Now")
@@ -12357,7 +12357,7 @@ const _sfc_main$3 = /* @__PURE__ */ defineComponent({
                 }, null, 512), [
                   [vModelText, unref(s).name]
                 ]),
-                _hoisted_16$2,
+                _hoisted_16$1,
                 withDirectives(createBaseVNode("input", {
                   "onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => unref(s).email = $event),
                   type: "text",
@@ -12376,7 +12376,7 @@ const _sfc_main$3 = /* @__PURE__ */ defineComponent({
               ])),
               createBaseVNode("div", null, toDisplayString(unref(s).prompt), 1)
             ]),
-            _hoisted_18
+            _hoisted_18$1
           ])
         ]),
         _hoisted_28,
@@ -12399,10 +12399,10 @@ const _hoisted_9$2 = /* @__PURE__ */ createBaseVNode("div", { class: "card-capti
 const _hoisted_10$2 = ["innerHTML"];
 const _hoisted_11$1 = ["innerHTML"];
 const _hoisted_12$1 = /* @__PURE__ */ createBaseVNode("hr", { class: "mt-3" }, null, -1);
-const _hoisted_13 = { class: "card" };
+const _hoisted_13$1 = { class: "card" };
 const _hoisted_14 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Page Log", -1);
 const _hoisted_15 = /* @__PURE__ */ createBaseVNode("hr", { class: "mt-3" }, null, -1);
-const _hoisted_16$1 = /* @__PURE__ */ createBaseVNode("div", { class: "flex justify-center" }, [
+const _hoisted_16 = /* @__PURE__ */ createBaseVNode("div", { class: "flex justify-center" }, [
   /* @__PURE__ */ createBaseVNode("div", { class: "hor-range" })
 ], -1);
 const _sfc_main$2 = /* @__PURE__ */ defineComponent({
@@ -12459,7 +12459,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
                 ]);
               }), 256))
             ]),
-            createBaseVNode("div", _hoisted_13, [
+            createBaseVNode("div", _hoisted_13$1, [
               _hoisted_14,
               (openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).plogs, (plog) => {
                 return openBlock(), createElementBlock("div", null, [
@@ -12473,7 +12473,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
             ])
           ])
         ]),
-        _hoisted_16$1
+        _hoisted_16
       ], 64);
     };
   }
@@ -13340,25 +13340,26 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const _hoisted_1 = /* @__PURE__ */ createBaseVNode("div", null, "Auto remote deploy", -1);
-const _hoisted_2 = /* @__PURE__ */ createBaseVNode("div", null, "postgresql + F# + Kestrel + vue", -1);
-const _hoisted_3 = /* @__PURE__ */ createBaseVNode("div", null, "https://whatsyourideal.com/", -1);
-const _hoisted_4 = /* @__PURE__ */ createBaseVNode("div", null, "Lower Your Bills On CruiseControl!", -1);
-const _hoisted_5 = { class: "lg:w-[1200px] mr-[10px]" };
-const _hoisted_6 = { class: "main-color w-screen" };
-const _hoisted_7 = { class: "flex justify-start" };
-const _hoisted_8 = /* @__PURE__ */ createBaseVNode("div", { class: "w-full flex justify-center bg-[#262622]" }, [
+const _hoisted_1 = /* @__PURE__ */ createBaseVNode("div", null, "MO Mar 23, 2026", -1);
+const _hoisted_2 = /* @__PURE__ */ createBaseVNode("div", null, "Auto remote deploy", -1);
+const _hoisted_3 = /* @__PURE__ */ createBaseVNode("div", null, "postgresql + F# + Kestrel + vue", -1);
+const _hoisted_4 = /* @__PURE__ */ createBaseVNode("div", null, "https://whatsyourideal.com/", -1);
+const _hoisted_5 = /* @__PURE__ */ createBaseVNode("div", null, "Lower Your Bills On CruiseControl!", -1);
+const _hoisted_6 = { class: "lg:w-[1200px] mr-[10px]" };
+const _hoisted_7 = { class: "main-color w-screen" };
+const _hoisted_8 = { class: "flex justify-start" };
+const _hoisted_9 = /* @__PURE__ */ createBaseVNode("div", { class: "w-full flex justify-center bg-[#262622]" }, [
   /* @__PURE__ */ createBaseVNode("img", {
     class: "w-[300px] my-3",
     src: "https://i.imgur.com/JvdrjQP.png"
   })
 ], -1);
-const _hoisted_9 = { class: "flex justify-center p-3" };
-const _hoisted_10 = { class: "flex hor-range" };
-const _hoisted_11 = { class: "menu" };
-const _hoisted_12 = /* @__PURE__ */ createStaticVNode('<div class="menu"><a href="#painting">Painting</a></div><div class="menu"><a href="#price">Price</a></div><div class="menu"><a href="#lesson">Lesson</a></div><div class="bg-white"><a href="https://www.yelp.com/biz/sdcheen-fine-art-studio-dingmans-ferry" target="_blank"><img src="https://s3-media0.fl.yelpcdn.com/assets/srv0/yelp_design_cdn/7ef71bf77a33/assets/img/brand/logo_desktop.svg"></a></div>', 4);
-const _hoisted_16 = /* @__PURE__ */ createBaseVNode("div", { class: "hor" }, null, -1);
-const _hoisted_17 = /* @__PURE__ */ createBaseVNode("div", { class: "flex justify-center" }, [
+const _hoisted_10 = { class: "flex justify-center p-3" };
+const _hoisted_11 = { class: "flex hor-range" };
+const _hoisted_12 = { class: "menu" };
+const _hoisted_13 = /* @__PURE__ */ createStaticVNode('<div class="menu"><a href="#painting">Painting</a></div><div class="menu"><a href="#price">Price</a></div><div class="menu"><a href="#lesson">Lesson</a></div><div class="bg-white"><a href="https://www.yelp.com/biz/sdcheen-fine-art-studio-dingmans-ferry" target="_blank"><img src="https://s3-media0.fl.yelpcdn.com/assets/srv0/yelp_design_cdn/7ef71bf77a33/assets/img/brand/logo_desktop.svg"></a></div>', 4);
+const _hoisted_17 = /* @__PURE__ */ createBaseVNode("div", { class: "hor" }, null, -1);
+const _hoisted_18 = /* @__PURE__ */ createBaseVNode("div", { class: "flex justify-center" }, [
   /* @__PURE__ */ createBaseVNode("div", { class: "hor-range" }, [
     /* @__PURE__ */ createBaseVNode("div", { class: "pt-2 pb-5" }, [
       /* @__PURE__ */ createBaseVNode("br"),
@@ -13377,15 +13378,16 @@ const _sfc_main = {
         _hoisted_2,
         _hoisted_3,
         _hoisted_4,
-        createBaseVNode("div", _hoisted_5, [
-          createBaseVNode("div", _hoisted_6, [
-            createBaseVNode("div", _hoisted_7, [
+        _hoisted_5,
+        createBaseVNode("div", _hoisted_6, [
+          createBaseVNode("div", _hoisted_7, [
+            createBaseVNode("div", _hoisted_8, [
               createVNode(_sfc_main$1, { onChanged: _ctx.onAuthChanged }, null, 8, ["onChanged"])
             ]),
-            _hoisted_8,
-            createBaseVNode("div", _hoisted_9, [
-              createBaseVNode("div", _hoisted_10, [
-                createBaseVNode("div", _hoisted_11, [
+            _hoisted_9,
+            createBaseVNode("div", _hoisted_10, [
+              createBaseVNode("div", _hoisted_11, [
+                createBaseVNode("div", _hoisted_12, [
                   createVNode(_component_router_link, { to: "/" }, {
                     default: withCtx(() => [
                       createTextVNode("Home")
@@ -13393,12 +13395,12 @@ const _sfc_main = {
                     _: 1
                   })
                 ]),
-                _hoisted_12
+                _hoisted_13
               ])
             ]),
             createVNode(_component_router_view),
-            _hoisted_16,
-            _hoisted_17
+            _hoisted_17,
+            _hoisted_18
           ])
         ])
       ], 64);

@@ -63,11 +63,19 @@ let main argv =
             (devRoot,"Dev/WYI")
             ("R","siduochen@hotmail.com")
 
+    let echo (scheme,api,req) = 
+        // 对接业务库逻辑
+        let responseJson = 
+            sprintf "{\"scheme\": \"%s\", \"api\": \"%s\", \"data\": %s}" scheme api req
+        let rep = Encoding.UTF8.GetBytes(responseJson)
+        rep
+
     // https://5.78.201.21
     // https://localhost/api/public/ping
     Server.Kestrel.runServer 
         (devRoot,fsRoot,vueDistPath) 
         (cert,certpwd)
+        echo
         (80,443)
         output
         [||]
