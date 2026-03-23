@@ -61,8 +61,8 @@ let runServer
             }
 
 
-    // 1.2 POST 型 API 分发
-    app.MapPost("/api/{scheme}/{api}",
+    // 1.2 GET 型 API 分发
+    app.MapGet("/api/{scheme}/{api}",
         Func<string, string, HttpContext, Task>(fun scheme api context -> task {
     
         let! req = read context
