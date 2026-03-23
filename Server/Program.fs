@@ -57,11 +57,14 @@ let main argv =
     "CertPwd: " + certpwd |> output
 
     if devOrDeploy then
-        Server.Deploy.Bash
-            output 
-            deployHost
-            (devRoot,"Dev/WYI")
-            ("R","siduochen@hotmail.com")
+        async {
+            Server.Deploy.Bash
+                output 
+                deployHost
+                (devRoot,"Dev/WYI")
+                ("R","siduochen@hotmail.com")
+        } |> Async.Start // 立即在线程池开始执行
+
 
     let echo (scheme,api,req) = 
                 
