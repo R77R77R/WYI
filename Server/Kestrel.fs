@@ -47,36 +47,43 @@ let runServer
 
     // --- 路由与功能实现区 ---
 
-    // 1.1 GET 型 API 分发
-    app.MapGet("/api/{scheme}/{api}", Func<string, string, HttpContext, Task>(fun scheme api context -> task {
+    let read (context:HttpContext) = 
+        if context.Request.ContentLength.HasValue then
+            let length = int context.Request.ContentLength.Value
+            let buffer = Array.zeroCreate<byte> length
+            let! _ = context.Request.Body.ReadAsync(buffer, 0, length)
+            task { return buffer }
+        else
+            task {
+                use ms = new MemoryStream()
+                do! context.Request.Body.CopyToAsync(ms)
+                return ms.ToArray()
+            }
+
+
+    // 1.2 POST 型 API 分发
+    app.MapPost("/api/{scheme}/{api}",
+        Func<string, string, HttpContext, Task>(fun scheme api context -> task {
+    
+        let! req = read context
+        let rep = echo (scheme, api, req)
+    
         context.Response.ContentType <- "application/json; charset=utf-8"
+        do! context.Response.Body.WriteAsync(ReadOnlyMemory(rep))
         
-        let responseBytes = echo (scheme,api,"")
+    })) |> ignore
 
-        //if scheme = "public" && api = "ping" then
-        //    let timeJson = sprintf "{\"status\": \"ok\", \"serverTime\": \"%s\"}" (DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"))
-        //    do! context.Response.Body.WriteAsync(ReadOnlyMemory(Encoding.UTF8.GetBytes(timeJson)))
-        //else
-        //    context.Response.StatusCode <- 404
-
-        do! context.Response.Body.WriteAsync(ReadOnlyMemory(responseBytes))
-        })) |> ignore
 
     // 1.2 POST 型 API 分发
     app.MapPost("/api/{scheme}/{api}",
         Func<string, string, HttpContext, Task>(fun scheme api context -> task {
         context.Response.ContentType <- "application/json; charset=utf-8"
-        
-        use reader = new StreamReader(context.Request.Body, Encoding.UTF8)
-        let! requestBody = reader.ReadToEndAsync()
 
-        let responseBytes = echo (scheme,api,requestBody)
-        // 对接业务库逻辑
-        //let responseJson = 
-        //    sprintf "{\"scheme\": \"%s\", \"api\": \"%s\", \"data\": %s}" scheme api requestBody
-        //let responseBytes = Encoding.UTF8.GetBytes(responseJson)
+        let! req = read context
+        let rep = echo (scheme, api, req)
         
-        do! context.Response.Body.WriteAsync(ReadOnlyMemory(responseBytes))
+        context.Response.ContentType <- "application/json; charset=utf-8"
+        do! context.Response.Body.WriteAsync(ReadOnlyMemory(rep))
     })) |> ignore
 
     // 2. 文件服务：/file/{id} 映射到动态计算的 fsRoot

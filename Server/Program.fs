@@ -64,11 +64,17 @@ let main argv =
             ("R","siduochen@hotmail.com")
 
     let echo (scheme,api,req) = 
-        // 对接业务库逻辑
-        let responseJson = 
-            sprintf "{\"scheme\": \"%s\", \"api\": \"%s\", \"data\": %s}" scheme api req
-        let rep = Encoding.UTF8.GetBytes(responseJson)
-        rep
+                
+        let o,(s,bin) = Util.HttpServer.bs__httpRequest ("",req) 
+
+        match o with
+        | Some hreq ->
+            match
+                hreq
+                |> WYI.BizLogics.SSR.echo with
+            | Some bin -> bin
+            | _ -> [||]
+        | _ -> [||]
 
     // https://5.78.201.21
     // https://localhost/api/public/ping
