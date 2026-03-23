@@ -25,23 +25,6 @@ open UtilWebServer.Common
 [<EntryPoint>]
 let main argv =
 
-    let esc = "\u001b["
-    let reset = esc + "0m"
-
-    // Text Styles
-    let bold str = esc + "1m" + str + reset
-    let underline str = esc + "4m" + str + reset
-
-    // Foreground Colors
-    let red str = esc + "31m" + str + reset
-    let green str = esc + "32m" + str + reset
-    let cyan str = esc + "36m" + str + reset
-    let yellow str = esc + "33m" + str + reset
-
-    // Usage inside your Kestrel app:
-    (green "[SUCCESS]") |> output
-    (red "[ERROR]") |> output
-
     let deployHost = "5.78.201.21"
     let devOrDeploy = 
         match Environment.MachineName with
