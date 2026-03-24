@@ -14,6 +14,8 @@ open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.FileProviders
 open System.Net.WebSockets
 
+open UtilWebServer.Kestrel
+
 let runServer 
     (devRoot, fsRoot, vueDistPath)
     (cert,certpwd)
@@ -61,30 +63,47 @@ let runServer
                 return ms.ToArray()
             }
 
+    let req__kestrelx (scheme,api,httpx,req) = 
+        {   scheme = scheme
+            api = api
+            httpx = httpx
+            req = req
+            rep = [| |]
+            contentType = "" }
 
     // 1.2 GET 型 API 分发
     app.MapGet("/api/{scheme}/{api}",
-        Func<string, string, HttpContext, Task>(fun scheme api context -> task {
-    
-        let! req = read context
-        let rep = echo (scheme, api, req)
-    
-        context.Response.ContentType <- "application/json; charset=utf-8"
-        do! context.Response.Body.WriteAsync(ReadOnlyMemory(rep))
+        Func<string, string, HttpContext, Task>(fun scheme api httpx -> task {
+            let! reqBodyBin = read httpx
+            let kestrelx = 
+                (scheme,api,httpx,reqBodyBin)
+                |> req__kestrelx
+
+            echo kestrelx
         
+            if kestrelx.contentType.Length > 0 then
+                httpx.Response.ContentType <- kestrelx.contentType
+            else
+                httpx.Response.ContentType <- "application/json; charset=utf-8"
+            do! httpx.Response.Body.WriteAsync(ReadOnlyMemory(kestrelx.rep))
     })) |> ignore
 
 
     // 1.2 POST 型 API 分发
     app.MapPost("/api/{scheme}/{api}",
-        Func<string, string, HttpContext, Task>(fun scheme api context -> task {
-        context.Response.ContentType <- "application/json; charset=utf-8"
+        Func<string, string, HttpContext, Task>(fun scheme api httpx -> task {
+            let! reqBodyBin = read httpx
+            let kestrelx = 
+                (scheme,api,httpx,reqBodyBin)
+                |> req__kestrelx
 
-        let! req = read context
-        let rep = echo (scheme, api, req)
+            echo kestrelx
         
-        context.Response.ContentType <- "application/json; charset=utf-8"
-        do! context.Response.Body.WriteAsync(ReadOnlyMemory(rep))
+            if kestrelx.contentType.Length > 0 then
+                httpx.Response.ContentType <- kestrelx.contentType
+            else
+                httpx.Response.ContentType <- "application/json; charset=utf-8"
+            do! httpx.Response.Body.WriteAsync(ReadOnlyMemory(kestrelx.rep))
     })) |> ignore
 
     // 2. 文件服务：/file/{id} 映射到动态计算的 fsRoot

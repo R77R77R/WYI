@@ -5,6 +5,9 @@ open System.Text
 open System.Collections.Generic
 open System.Threading
 
+open Microsoft.AspNetCore
+open Microsoft.AspNetCore.Http
+
 open Util.Cat
 open Util.Text
 open Util.Bin
@@ -23,6 +26,7 @@ open UtilWebServer.Common
 open UtilWebServer.Api
 open UtilWebServer.Json
 open UtilWebServer.SSR
+open UtilWebServer.Kestrel
 
 open WYI.BizLogics.Common
 open WYI.BizLogics.Branch
@@ -74,25 +78,14 @@ let r1 = str__regex @"\w+"
 let pages = [|
     "/admin" |]
 
-let echo (req:HttpRequest) = 
-    let ip = req |> remote_ip
-    if ip.StartsWith "127.0.0.1" = false then
-        let p = pPLOG_empty()
-        p.Request <- req.bin |> System.Text.Encoding.ASCII.GetString
-        p.Ip <- ip
-        UtilWebServer.Db.p__createRcd 
-            p PLOG_metadata dbLoggero "echo" conn |> ignore
+let echo (kestrelx:KestrelCtx) = 
+    let vueDeployDir = runtime.host.req__vueDeployDir
 
-    let vueDeployDir = runtime.host.req__vueDeployDir req
-
-    match 
-        { req = req; rep = None}
-        |> Suc
-        |> bind (homepage runtime.langs pages ssrPageHome vueDeployDir renderGoogleAds)
-        |> bindFail (hSEO (fun x -> [||]) "")
-        |> bindFail (hapi echoApiHandler (branch req)) with
-    | Suc x -> x.rep
-    | Fail(x,e) -> None
-
+    kestrelx
+    |> Suc
+    |> bind (homepage runtime.langs pages ssrPageHome vueDeployDir renderGoogleAds)
+    //|> bindFail (hSEO (fun x -> [||]) "")
+    //|> bindFail (hapi echoApiHandler (branch (scheme,api) hx)) 
+    |> ignore
 
 

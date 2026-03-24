@@ -52,8 +52,7 @@ let init (runtime:Runtime) =
 
     runtime.host.VsDirSolution <- rootPath + "/Dev/WYI"
     runtime.host.fsDir <- rootPath + "/FsRoot/WYI"
-    runtime.host.req__vueDeployDir <- 
-        (fun _ -> runtime.host.VsDirSolution + "/vscode/dist")
+    runtime.host.req__vueDeployDir <- runtime.host.VsDirSolution + "/vscode/dist"
 
     if runtime.host.updateDatabase then
         updateDbStructure runtime conn

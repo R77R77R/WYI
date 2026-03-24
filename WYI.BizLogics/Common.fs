@@ -65,7 +65,7 @@ let runtime =
             |> String.Concat
 
         VsDirSolution = "C:/Dev/WYI"
-        req__vueDeployDir = (fun _ -> @"C:/Dev/WYI/vscode/dist")
+        req__vueDeployDir = @"C:/Dev/WYI/vscode/dist"
         fsDir = @"C:/FsRoot/WYI" }
 
 

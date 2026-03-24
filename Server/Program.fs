@@ -66,25 +66,12 @@ let main argv =
         } |> Async.Start // 立即在线程池开始执行
 
 
-    let echo (scheme,api,req) = 
-                
-        let o,(s,bin) = Util.HttpServer.bs__httpRequest ("",req) 
-
-        match o with
-        | Some hreq ->
-            match
-                hreq
-                |> WYI.BizLogics.SSR.echo with
-            | Some bin -> bin
-            | _ -> [||]
-        | _ -> [||]
-
     // https://5.78.201.21
     // https://localhost/api/public/ping
     Server.Kestrel.runServer 
         (devRoot,fsRoot,vueDistPath) 
         (cert,certpwd)
-        echo
+        WYI.BizLogics.SSR.echo
         (80,443)
         output
         [||]

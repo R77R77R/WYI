@@ -6,7 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="OrmTypes.sql" />
+	  <FrameworkReference Include="Microsoft.AspNetCore.App" />
+	  <None Include="OrmTypes.sql" />
     <Compile Include="Common.fs" />
     <Compile Include="Db.fs" />
     <Compile Include="Init.fs" />
