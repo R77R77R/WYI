@@ -1,5 +1,15 @@
 <template> 
 
+<header>
+    <Show when="signed-out">
+      <SignInButton />
+      <SignUpButton />
+    </Show>
+    <Show when="signed-in">
+      <UserButton />
+    </Show>
+  </header>
+
 <div>MO Mar 23, 2026</div>
 <div>Auto remote deploy</div>
 <div>postgresql + F# + Kestrel + vue</div>
@@ -48,6 +58,8 @@
 </template>
   
 <script setup>
+
+import { Show, SignInButton, SignUpButton, UserButton } from '@clerk/vue'
 
 import { glib } from '~/lib/glib'
 import { upload,checkUrl }  from '~/lib/util/fetch'
