@@ -4,6 +4,9 @@ open System
 open System.Text
 open System.Collections.Generic
 open System.Threading
+open System.IdentityModel.Tokens.Jwt
+
+open Microsoft.AspNetCore.Http
 
 open Util.Cat
 open Util.Text
@@ -39,6 +42,35 @@ let branching (x:X) =
         match x.Struct.api with
         | "ping" -> bindx apiPing
         | "auth" -> (fun (x:X) -> 
+
+            let getClerkIdentity (httpx: HttpContext) =
+                let authHeader = httpx.Request.Headers.["Authorization"].ToString()
+                if authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase) then
+                    try
+                        // 1. 去掉 "Bearer " 前缀
+                        let token = authHeader.Replace("Bearer ", "")
+        
+                        // 2. 使用 JwtSecurityTokenHandler 解析（无需密钥即可读取内容）
+                        let handler = JwtSecurityTokenHandler()
+                        let jwtToken = handler.ReadJwtToken(token)
+        
+                        // 3. 提取 'sub' 字段，这才是 Clerk 的真正 User ID (如 user_2xb...)
+                        let userId = jwtToken.Subject 
+        
+                        "✅ 成功解析 JWT，Clerk User ID: " + userId
+                        |> x.Struct.runtime.output
+                        
+                        userId
+                    with
+                    | ex -> 
+                        "❌ JWT 解析失败: " + ex.Message
+                        |> x.Struct.runtime.output
+                        ""                    
+                else
+                    ""
+
+            let clerkUserId = getClerkIdentity x.Struct.httpx
+
             let json = x.Json
             let session = (tryFindStrByAtt "session" json).Trim()
             if (tryFindStrByAtt "act" json).Trim() = "sign-out" then

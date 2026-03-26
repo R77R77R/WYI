@@ -18,7 +18,7 @@ export const initHost = () => {
     switch (host.hostname) {
         case 'localhost':
             host.hostname = 'localhost'
-            host.api = 'http://localhost:2024'
+            host.api = 'https://localhost'
             host.wsurl = 'wss://localhost/'
             break
         case '127.0.0.1':
@@ -27,6 +27,9 @@ export const initHost = () => {
             host.wsurl = 'wss://localhost/'
             break
     }
+    console.log("host.hostname: " + host.hostname)
+    console.log("host.api: " + host.api)
+    console.log("host.wsurl: " + host.wsurl)
 
     return host
 }

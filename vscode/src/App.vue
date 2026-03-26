@@ -79,7 +79,7 @@ watch(isSignedIn, async (newVal) => {
     try {
       // 1. 强制走 /api 前缀，确保触发 vite.config.ts 的 proxy
       // 2. 这里的 post 是你 fetch.ts 里的封装
-      const response = await post("/api/sys/login",{ test: "hello" }); 
+      const response = await post("/api/public/auth",{ test: "hello" }); 
       
       console.log('✅ 后端响应成功:', response);
     } catch (err) {
