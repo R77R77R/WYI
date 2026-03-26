@@ -82,7 +82,7 @@ watch(isSignedIn, async (newVal) => {
         clerkId: user.value.id,
         email: user.value.primaryEmailAddress?.emailAddress, // 获取 Gmail
         caption: user.value.fullName || user.value.username, // 获取姓名/昵称
-        imageUrl: user.value.imageUrl                       // 可选：获取头像
+        avatar: user.value.imageUrl                       // 可选：获取头像
       }
 
       // 1. 强制走 /api 前缀，确保触发 vite.config.ts 的 proxy
