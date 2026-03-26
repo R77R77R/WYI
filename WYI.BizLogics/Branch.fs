@@ -4,7 +4,6 @@ open System
 open System.Text
 open System.Collections.Generic
 open System.Threading
-open System.IdentityModel.Tokens.Jwt
 
 open Microsoft.AspNetCore.Http
 
@@ -14,8 +13,7 @@ open Util.Bin
 open Util.CollectionModDict
 open Util.Perf
 open Util.Json
-open Util.Http
-open Util.HttpServer
+open Util.Orm
 
 open WYI.Shared.OrmTypes
 open WYI.Shared.Types
@@ -31,6 +29,8 @@ open UtilKestrel.Server
 
 open WYI.BizLogics.Common
 
+let output = runtime.output
+
 let branching (x:X) = 
 
     let bindx p = 
@@ -43,35 +43,15 @@ let branching (x:X) =
         | "ping" -> bindx apiPing
         | "auth" -> (fun (x:X) -> 
 
-            let getClerkIdentity (httpx: HttpContext) =
-                let authHeader = httpx.Request.Headers.["Authorization"].ToString()
-                if authHeader.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase) then
-                    try
-                        // 1. 去掉 "Bearer " 前缀
-                        let token = authHeader.Replace("Bearer ", "")
-        
-                        // 2. 使用 JwtSecurityTokenHandler 解析（无需密钥即可读取内容）
-                        let handler = JwtSecurityTokenHandler()
-                        let jwtToken = handler.ReadJwtToken(token)
-        
-                        // 3. 提取 'sub' 字段，这才是 Clerk 的真正 User ID (如 user_2xb...)
-                        let userId = jwtToken.Subject 
-        
-                        "✅ 成功解析 JWT，Clerk User ID: " + userId
-                        |> x.Struct.runtime.output
-                        
-                        userId
-                    with
-                    | ex -> 
-                        "❌ JWT 解析失败: " + ex.Message
-                        |> x.Struct.runtime.output
-                        ""                    
-                else
-                    ""
-
-            let clerkUserId = getClerkIdentity x.Struct.httpx
+            let clerkUserId =
+                UtilKestrel.Open.Clerk.getClerkIdentity output x.Struct.httpx
 
             let json = x.Json
+            
+            json
+            |> json__strFinal
+            |> output
+
             let session = (tryFindStrByAtt "session" json).Trim()
             if (tryFindStrByAtt "act" json).Trim() = "sign-out" then
                 if runtime.sessions.ContainsKey session then
@@ -85,7 +65,22 @@ let branching (x:X) =
                         runtime.users.Values
                         |> Seq.toArray
                         |> Array.find(fun i ->  i.eu.p.AuthType = euAuthTypeEnum.Admin)
-                
+               
+                    let email = tryFindStrByAttWithDefault eux.eu.p.Avatar "email" json
+                    let caption = tryFindStrByAttWithDefault eux.eu.p.Caption "caption" json
+                    let avatar = tryFindStrByAttWithDefault eux.eu.p.Avatar "avatar" json
+
+                    if email <> eux.eu.p.Email
+                        || caption <> eux.eu.p.Caption
+                        || avatar <> eux.eu.p.Avatar then
+
+                        eux.eu.p.Email <- email
+                        eux.eu.p.Caption <- caption
+                        eux.eu.p.Avatar <- avatar
+                        
+                        eux.eu
+                        |> EU_update output
+
                     if runtime.sessions.ContainsKey session then
                         runtime.sessions.Remove session |> ignore
 
@@ -111,7 +106,7 @@ let branching (x:X) =
         match x.Struct.api with
         | "plogs" -> (fun x -> 
             let metadata = PLOG_metadata
-            match "ORDER BY ID DESC" |> Util.Orm.loadall conn (metadata.table,metadata.fieldorders(),metadata.db__rcd) with
+            match "ORDER BY ID DESC" |> loadall conn (metadata.table,metadata.fieldorders(),metadata.db__rcd) with
             | Some items ->
                 items
                 |> Array.filter(fun i -> (UtilKestrel.PageLog.req__fromo i.p.Request).IsSome)

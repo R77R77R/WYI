@@ -9,6 +9,9 @@ export type pEU = {
 [key:string]: any
     Caption: string
     Username: string
+    Email: string
+    Avatar: string
+    ClerkUserID: string
     Pwd: string
     AuthType: number
 }

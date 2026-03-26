@@ -44,6 +44,18 @@ let pEU__bin (bb:BytesBuilder) (p:pEU) =
     binUsername.Length |> BitConverter.GetBytes |> bb.append
     binUsername |> bb.append
     
+    let binEmail = p.Email |> Encoding.UTF8.GetBytes
+    binEmail.Length |> BitConverter.GetBytes |> bb.append
+    binEmail |> bb.append
+    
+    let binAvatar = p.Avatar |> Encoding.UTF8.GetBytes
+    binAvatar.Length |> BitConverter.GetBytes |> bb.append
+    binAvatar |> bb.append
+    
+    let binClerkUserID = p.ClerkUserID |> Encoding.UTF8.GetBytes
+    binClerkUserID.Length |> BitConverter.GetBytes |> bb.append
+    binClerkUserID |> bb.append
+    
     let binPwd = p.Pwd |> Encoding.UTF8.GetBytes
     binPwd.Length |> BitConverter.GetBytes |> bb.append
     binPwd |> bb.append
@@ -73,6 +85,21 @@ let bin__pEU (bi:BinIndexed):pEU =
     index.Value <- index.Value + 4
     p.Username <- Encoding.UTF8.GetString(bin,index.Value,count_Username)
     index.Value <- index.Value + count_Username
+    
+    let count_Email = BitConverter.ToInt32(bin,index.Value)
+    index.Value <- index.Value + 4
+    p.Email <- Encoding.UTF8.GetString(bin,index.Value,count_Email)
+    index.Value <- index.Value + count_Email
+    
+    let count_Avatar = BitConverter.ToInt32(bin,index.Value)
+    index.Value <- index.Value + 4
+    p.Avatar <- Encoding.UTF8.GetString(bin,index.Value,count_Avatar)
+    index.Value <- index.Value + count_Avatar
+    
+    let count_ClerkUserID = BitConverter.ToInt32(bin,index.Value)
+    index.Value <- index.Value + 4
+    p.ClerkUserID <- Encoding.UTF8.GetString(bin,index.Value,count_ClerkUserID)
+    index.Value <- index.Value + count_ClerkUserID
     
     let count_Pwd = BitConverter.ToInt32(bin,index.Value)
     index.Value <- index.Value + 4
@@ -109,6 +136,9 @@ let pEU__json (p:pEU) =
     [|
         ("Caption",p.Caption |> Json.Str)
         ("Username",p.Username |> Json.Str)
+        ("Email",p.Email |> Json.Str)
+        ("Avatar",p.Avatar |> Json.Str)
+        ("ClerkUserID",p.ClerkUserID |> Json.Str)
         ("Pwd",p.Pwd |> Json.Str)
         ("AuthType",(p.AuthType |> EnumToValue).ToString() |> Json.Num) |]
     |> Json.Braket
@@ -139,6 +169,12 @@ let json__pEUo (json:Json):pEU option =
     p.Caption <- checkfieldz fields "Caption" 64
     
     p.Username <- checkfieldz fields "Username" 64
+    
+    p.Email <- checkfieldz fields "Email" 255
+    
+    p.Avatar <- checkfield fields "Avatar"
+    
+    p.ClerkUserID <- checkfieldz fields "ClerkUserID" 100
     
     p.Pwd <- checkfieldz fields "Pwd" 64
     
@@ -944,8 +980,11 @@ let db__pEU(line:Object[]): pEU =
 
     p.Caption <- string(line[4]).TrimEnd()
     p.Username <- string(line[5]).TrimEnd()
-    p.Pwd <- string(line[6]).TrimEnd()
-    p.AuthType <- EnumOfValue(if Convert.IsDBNull(line[7]) then 0 else line[7] :?> int)
+    p.Email <- string(line[6]).TrimEnd()
+    p.Avatar <- string(line[7]).TrimEnd()
+    p.ClerkUserID <- string(line[8]).TrimEnd()
+    p.Pwd <- string(line[9]).TrimEnd()
+    p.AuthType <- EnumOfValue(if Convert.IsDBNull(line[10]) then 0 else line[10] :?> int)
 
     p
 
@@ -955,12 +994,18 @@ let pEU__sps (p:pEU) =
         [|
             ("Caption", p.Caption) |> kvp__sqlparam
             ("Username", p.Username) |> kvp__sqlparam
+            ("Email", p.Email) |> kvp__sqlparam
+            ("Avatar", p.Avatar) |> kvp__sqlparam
+            ("ClerkUserID", p.ClerkUserID) |> kvp__sqlparam
             ("Pwd", p.Pwd) |> kvp__sqlparam
             ("AuthType", EnumToValue p.AuthType) |> kvp__sqlparam |]
     | Rdbms.PostgreSql ->
         [|
             ("caption", p.Caption) |> kvp__sqlparam
             ("username", p.Username) |> kvp__sqlparam
+            ("email", p.Email) |> kvp__sqlparam
+            ("avatar", p.Avatar) |> kvp__sqlparam
+            ("clerkuserid", p.ClerkUserID) |> kvp__sqlparam
             ("pwd", p.Pwd) |> kvp__sqlparam
             ("authtype", EnumToValue p.AuthType) |> kvp__sqlparam |]
 
@@ -973,6 +1018,9 @@ let EU_wrapper item: EU =
 let pEU_clone (p:pEU): pEU = {
     Caption = p.Caption
     Username = p.Username
+    Email = p.Email
+    Avatar = p.Avatar
+    ClerkUserID = p.ClerkUserID
     Pwd = p.Pwd
     AuthType = p.AuthType }
 
@@ -1040,6 +1088,9 @@ let EUTxSqlServer =
     ,[Sort] BIGINT NOT NULL,
     ,[Caption]
     ,[Username]
+    ,[Email]
+    ,[Avatar]
+    ,[ClerkUserID]
     ,[Pwd]
     ,[AuthType])
     END

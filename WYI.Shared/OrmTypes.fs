@@ -59,6 +59,9 @@ let euAuthTypeEnum__caption e =
 type pEU = {
 mutable Caption: Chars
 mutable Username: Chars
+mutable Email: Chars
+mutable Avatar: Text
+mutable ClerkUserID: Chars
 mutable Pwd: Chars
 mutable AuthType: euAuthTypeEnum}
 
@@ -68,20 +71,23 @@ type EU = Rcd<pEU>
 let EU_fieldorders() =
     match rdbms with
     | Rdbms.SqlServer ->
-        "[ID],[Createdat],[Updatedat],[Sort],[Caption],[Username],[Pwd],[AuthType]"
+        "[ID],[Createdat],[Updatedat],[Sort],[Caption],[Username],[Email],[Avatar],[ClerkUserID],[Pwd],[AuthType]"
     | Rdbms.PostgreSql ->
-        $""" "id","createdat","updatedat","sort", "caption","username","pwd","authtype" """
+        $""" "id","createdat","updatedat","sort", "caption","username","email","avatar","clerkuserid","pwd","authtype" """
 
 let pEU_fieldordersArray = [|
     "Caption"
     "Username"
+    "Email"
+    "Avatar"
+    "ClerkUserID"
     "Pwd"
     "AuthType" |]
 
 let EU_sql_update() =
     match rdbms with
-    | Rdbms.SqlServer -> "[Caption]=@Caption,[Username]=@Username,[Pwd]=@Pwd,[AuthType]=@AuthType"
-    | Rdbms.PostgreSql -> "caption=@caption,username=@username,pwd=@pwd,authtype=@authtype"
+    | Rdbms.SqlServer -> "[Caption]=@Caption,[Username]=@Username,[Email]=@Email,[Avatar]=@Avatar,[ClerkUserID]=@ClerkUserID,[Pwd]=@Pwd,[AuthType]=@AuthType"
+    | Rdbms.PostgreSql -> "caption=@caption,username=@username,email=@email,avatar=@avatar,clerkuserid=@clerkuserid,pwd=@pwd,authtype=@authtype"
 
 let pEU_fields() =
     match rdbms with
@@ -89,18 +95,27 @@ let pEU_fields() =
         [|
             Chars("Caption", 64)
             Chars("Username", 64)
+            Chars("Email", 255)
+            Text("Avatar")
+            Chars("ClerkUserID", 100)
             Chars("Pwd", 64)
             SelectLines("AuthType", [| ("Normal","Normal");("Authorized","Authorized");("Admin","Admin") |]) |]
     | Rdbms.PostgreSql ->
         [|
             Chars("caption", 64)
             Chars("username", 64)
+            Chars("email", 255)
+            Text("avatar")
+            Chars("clerkuserid", 100)
             Chars("pwd", 64)
             SelectLines("authtype", [| ("Normal","Normal");("Authorized","Authorized");("Admin","Admin") |]) |]
 
 let pEU_empty(): pEU = {
     Caption = ""
     Username = ""
+    Email = ""
+    Avatar = ""
+    ClerkUserID = ""
     Pwd = ""
     AuthType = EnumOfValue 0 }
 

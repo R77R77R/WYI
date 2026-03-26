@@ -11,6 +11,9 @@ BEGIN
         ,[Sort] BIGINT NOT NULL,
         [Caption] NVARCHAR(64) COLLATE Chinese_PRC_CI_AS
         ,[Username] NVARCHAR(64) COLLATE Chinese_PRC_CI_AS
+        ,[Email] NVARCHAR(255) COLLATE Chinese_PRC_CI_AS
+        ,[Avatar] NVARCHAR(MAX)
+        ,[ClerkUserID] NVARCHAR(100) COLLATE Chinese_PRC_CI_AS
         ,[Pwd] NVARCHAR(64) COLLATE Chinese_PRC_CI_AS
         ,[AuthType] INT
 , CONSTRAINT [PK_ca_enduser] PRIMARY KEY CLUSTERED ([ID] ASC)) ON [PRIMARY]
@@ -20,7 +23,7 @@ END
 -- Dropping obsolete fields -----------
 DECLARE @name_ca_enduser NVARCHAR(64)
 DECLARE cursor_ca_enduser CURSOR FOR 
-    SELECT name FROM SYSCOLUMNS WHERE id=object_id('ca_enduser') AND (name NOT IN ('ID','Createdat','Updatedat','Sort','Caption','Username','Pwd','AuthType'))
+    SELECT name FROM SYSCOLUMNS WHERE id=object_id('ca_enduser') AND (name NOT IN ('ID','Createdat','Updatedat','Sort','Caption','Username','Email','Avatar','ClerkUserID','Pwd','AuthType'))
 
 OPEN cursor_ca_enduser
 FETCH NEXT FROM cursor_ca_enduser INTO @name_ca_enduser
@@ -93,6 +96,87 @@ IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_ca_enduse
 IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_ca_enduserUsername')
     BEGIN
     ALTER TABLE ca_enduser DROP  CONSTRAINT [UniqueNonclustered_ca_enduserUsername]
+    END
+
+-- [ca_enduser.Email] -------------
+
+
+-- [ca_enduser.Email] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('ca_enduser') AND name='Email')
+    BEGIN
+     ALTER TABLE ca_enduser ALTER COLUMN [Email] NVARCHAR(255) COLLATE Chinese_PRC_CI_AS
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_ca_enduser_Email NVARCHAR(MAX);
+    SET @sql_add_ca_enduser_Email = 'ALTER TABLE ca_enduser ADD [Email] NVARCHAR(255) COLLATE Chinese_PRC_CI_AS'
+    EXEC sp_executesql @sql_add_ca_enduser_Email
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_ca_enduserEmail')
+    BEGIN
+    ALTER TABLE ca_enduser DROP  CONSTRAINT [Constraint_ca_enduserEmail]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_ca_enduserEmail')
+    BEGIN
+    ALTER TABLE ca_enduser DROP  CONSTRAINT [UniqueNonclustered_ca_enduserEmail]
+    END
+
+-- [ca_enduser.Avatar] -------------
+
+
+-- [ca_enduser.Avatar] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('ca_enduser') AND name='Avatar')
+    BEGIN
+     ALTER TABLE ca_enduser ALTER COLUMN [Avatar] NVARCHAR(MAX)
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_ca_enduser_Avatar NVARCHAR(MAX);
+    SET @sql_add_ca_enduser_Avatar = 'ALTER TABLE ca_enduser ADD [Avatar] NVARCHAR(MAX)'
+    EXEC sp_executesql @sql_add_ca_enduser_Avatar
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_ca_enduserAvatar')
+    BEGIN
+    ALTER TABLE ca_enduser DROP  CONSTRAINT [Constraint_ca_enduserAvatar]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_ca_enduserAvatar')
+    BEGIN
+    ALTER TABLE ca_enduser DROP  CONSTRAINT [UniqueNonclustered_ca_enduserAvatar]
+    END
+
+-- [ca_enduser.ClerkUserID] -------------
+
+
+-- [ca_enduser.ClerkUserID] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('ca_enduser') AND name='ClerkUserID')
+    BEGIN
+     ALTER TABLE ca_enduser ALTER COLUMN [ClerkUserID] NVARCHAR(100) COLLATE Chinese_PRC_CI_AS
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_ca_enduser_ClerkUserID NVARCHAR(MAX);
+    SET @sql_add_ca_enduser_ClerkUserID = 'ALTER TABLE ca_enduser ADD [ClerkUserID] NVARCHAR(100) COLLATE Chinese_PRC_CI_AS'
+    EXEC sp_executesql @sql_add_ca_enduser_ClerkUserID
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_ca_enduserClerkUserID')
+    BEGIN
+    ALTER TABLE ca_enduser DROP  CONSTRAINT [Constraint_ca_enduserClerkUserID]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_ca_enduserClerkUserID')
+    BEGIN
+    ALTER TABLE ca_enduser DROP  CONSTRAINT [UniqueNonclustered_ca_enduserClerkUserID]
     END
 
 -- [ca_enduser.Pwd] -------------

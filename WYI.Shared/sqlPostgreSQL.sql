@@ -13,6 +13,9 @@ BEGIN
         ,sort BIGINT NOT NULL
         ,"caption" VARCHAR(64)
         ,"username" VARCHAR(64)
+        ,"email" VARCHAR(255)
+        ,"avatar" TEXT
+        ,"clerkuserid" VARCHAR(100)
         ,"pwd" VARCHAR(64)
         ,"authtype" INT);
 
@@ -45,6 +48,48 @@ BEGIN
 
     IF not condition THEN
         ALTER TABLE ca_enduser ADD "username" varchar(64);
+    END IF;
+END $$;
+
+-- [ca_enduser.Email] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='ca_enduser' AND column_name='email'));
+
+    IF not condition THEN
+        ALTER TABLE ca_enduser ADD "email" varchar(255);
+    END IF;
+END $$;
+
+-- [ca_enduser.Avatar] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='ca_enduser' AND column_name='avatar'));
+
+    IF not condition THEN
+        ALTER TABLE ca_enduser ADD "avatar" text;
+    END IF;
+END $$;
+
+-- [ca_enduser.ClerkUserID] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='ca_enduser' AND column_name='clerkuserid'));
+
+    IF not condition THEN
+        ALTER TABLE ca_enduser ADD "clerkuserid" varchar(100);
     END IF;
 END $$;
 

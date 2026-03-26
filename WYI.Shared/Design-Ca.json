@@ -16,6 +16,20 @@
       },
       {
         "enum": "Chars",
+        "length": 255,
+        "name": "Email"
+      },
+      {
+        "enum": "Text",
+        "name": "Avatar"
+      },
+      {
+        "enum": "Chars",
+        "length": 100,
+        "name": "ClerkUserID"
+      },
+      {
+        "enum": "Chars",
         "length": 64,
         "name": "Pwd"
       },

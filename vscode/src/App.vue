@@ -77,9 +77,17 @@ watch(isSignedIn, async (newVal) => {
     console.log('🚀 登录成功，准备联调后端...');
     
     try {
+
+      const payload = {
+        clerkId: user.value.id,
+        email: user.value.primaryEmailAddress?.emailAddress, // 获取 Gmail
+        caption: user.value.fullName || user.value.username, // 获取姓名/昵称
+        imageUrl: user.value.imageUrl                       // 可选：获取头像
+      }
+
       // 1. 强制走 /api 前缀，确保触发 vite.config.ts 的 proxy
       // 2. 这里的 post 是你 fetch.ts 里的封装
-      const response = await post("/api/public/auth",{ test: "hello" }); 
+      const response = await post("/api/public/auth",payload); 
       
       console.log('✅ 后端响应成功:', response);
     } catch (err) {

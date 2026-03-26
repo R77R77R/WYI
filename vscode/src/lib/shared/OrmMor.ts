@@ -14,6 +14,12 @@ export const pEU__bin = (bb:BytesBuilder) => (p:wyi.pEU) => {
     
     marshall.str__bin (bb) (p.Username)
     
+    marshall.str__bin (bb) (p.Email)
+    
+    marshall.str__bin (bb) (p.Avatar)
+    
+    marshall.str__bin (bb) (p.ClerkUserID)
+    
     marshall.str__bin (bb) (p.Pwd)
     
     marshall.int32__bin (bb) (p.AuthType)
@@ -33,6 +39,9 @@ export const bin__pEU = (bi:BinIndexed):wyi.pEU => {
     let p = pEU_empty()
     p.Caption = marshall.bin__str (bi)
     p.Username = marshall.bin__str (bi)
+    p.Email = marshall.bin__str (bi)
+    p.Avatar = marshall.bin__str (bi)
+    p.ClerkUserID = marshall.bin__str (bi)
     p.Pwd = marshall.bin__str (bi)
     p.AuthType = marshall.bin__int32 (bi)
 
@@ -334,6 +343,9 @@ export const pEU_empty = (): wyi.pEU => {
     return {
         Caption: "",
         Username: "",
+        Email: "",
+        Avatar: "",
+        ClerkUserID: "",
         Pwd: "",
         AuthType: 0 }
 }
