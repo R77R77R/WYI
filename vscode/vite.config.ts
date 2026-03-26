@@ -15,7 +15,11 @@ export default defineConfig({
       '/api': {
         target: 'https://localhost', // 你的 F# 后端地址
         secure: false, // 如果是自签名证书则需设为 false
-        changeOrigin: true
+        changeOrigin: true,
+        configure: (proxy, options) => {
+          proxy.on('proxyReq', (proxyReq, req, res) => {
+            console.log('代理发送请求:', req.method, req.url, '->', options.target + proxyReq.path);
+          })}
       }
     }
   },
