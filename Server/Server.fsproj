@@ -12,13 +12,11 @@
     <None Include="aspnetapp.pfx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Compile Include="Kestrel.fs" />
     <Compile Include="Deploy.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\UtilWebServer\UtilWebServer.fsproj" />
     <ProjectReference Include="..\..\Common\Util\Util.fsproj" />
     <ProjectReference Include="..\..\JCS\JCS.BizLogics\JCS.BizLogics.fsproj" />
     <ProjectReference Include="..\..\JCS\JCS.Shared\JCS.Shared.fsproj" />

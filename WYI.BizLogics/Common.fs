@@ -10,10 +10,10 @@ open Util.DbTx
 open Util.CollectionModDict
 open Util.Orm
 
-open UtilWebServer.Common
-open UtilWebServer.Db
-open UtilWebServer.DbLogger
-open UtilWebServer.Runtime
+open UtilKestrel.Types
+open UtilKestrel.Ctx
+open UtilKestrel.DbLogger
+open UtilKestrel.Runtime
 
 open WYI.Shared.OrmTypes
 open WYI.Shared.OrmMor
@@ -28,9 +28,8 @@ mutable version: int }
 
 type Runtime = RuntimeTemplate<EuComplex,unit,RuntimeData,HostData>
 
-type X = UtilWebServer.Api.ApiCtx<Runtime,Session,Er>
-
-type CtxWrappedX = CtxWrapper<X,Er>
+type X = EchoCtx<Runtime,Session,Er>
+type WrapX = CtxWrapper<X,Er>
 
 let runtime = 
 
@@ -44,25 +43,6 @@ let runtime =
         certpwd = ""
 
         updateDatabase = true
-
-        DiscordAppId = 
-            [|  "1254790111"
-                "913181274" |]
-            |> String.Concat
-        DiscordPubKey = 
-            [|  "e0300e71e2dc"
-                "94ec42425c"
-                "eea8faed6b6"
-                "172158dbbc1"
-                "b882fa2750f"
-                "b55dec22a" |]
-            |> String.Concat
-        DiscordSecret = 
-            [|  "YwZeJGUrR"
-                "JwL3E7V"
-                "cwlgtvJ_"
-                "oeT01nom" |]
-            |> String.Concat
 
         VsDirSolution = "C:/Dev/WYI"
         req__vueDeployDir = @"C:/Dev/WYI/vscode/dist"

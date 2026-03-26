@@ -5,8 +5,11 @@ open System.Text
 open System.IO
 open System.Diagnostics
 
-open UtilWebServer.Common
+open UtilKestrel.Types
+open UtilKestrel.Common
+open UtilKestrel.Server
 
+open WYI.BizLogics.Common
 
 (*
 在ubuntu上，我把名为WYI的项目放在 /Dev/WYI 下，
@@ -68,10 +71,12 @@ let main argv =
 
     // https://5.78.201.21
     // https://localhost/api/public/ping
-    Server.Kestrel.runServer 
+    
+    runServer 
+        runtime
         (devRoot,fsRoot,vueDistPath) 
         (cert,certpwd)
-        WYI.BizLogics.SSR.echo
+        WYI.BizLogics.Branch.branch
         (80,443)
         output
         [||]

@@ -14,13 +14,12 @@ open Util.Collection
 open Util.Db
 open Util.DbTx
 open Util.Orm
-open Util.Zmq
 
-open UtilWebServer.Constants
-open UtilWebServer.DbLogger
-open UtilWebServer.Init
-open UtilWebServer.FileSys
-open UtilWebServer.Api
+open UtilKestrel.Constants
+open UtilKestrel.DbLogger
+open UtilKestrel.Init
+open UtilKestrel.FileSys
+open UtilKestrel.Api
 
 open WYI.Shared.OrmTypes
 open WYI.Shared.OrmMor

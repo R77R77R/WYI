@@ -13,39 +13,40 @@ open Util.Perf
 open Util.Json
 open Util.Http
 open Util.HttpServer
-open Util.Zmq
 
 open WYI.Shared.OrmTypes
 open WYI.Shared.Types
 open WYI.Shared.OrmMor
 open WYI.Shared.CustomMor
 
-open UtilWebServer.Common
-open UtilWebServer.Api
-open UtilWebServer.Json
-open UtilWebServer.SSR
-open UtilWebServer.Server.Monitor
+open UtilKestrel.Types
+open UtilKestrel.Ctx
+open UtilKestrel.Api
+open UtilKestrel.Json
+open UtilKestrel.SSR
+open UtilKestrel.Server
 
 open WYI.BizLogics.Common
 
 let branching (x:X) = 
 
     let bindx p = 
-        x.proco <- Some p
+        x.Struct.proco <- Some p
         Suc x
 
-    match x.service with
+    match x.Struct.scheme with
     | "public" -> 
-        match x.api with
+        match x.Struct.api with
         | "ping" -> bindx apiPing
-        | "auth" -> (fun x -> 
-            let session = (tryFindStrByAtt "session" x.json).Trim()
-            if (tryFindStrByAtt "act" x.json).Trim() = "sign-out" then
+        | "auth" -> (fun (x:X) -> 
+            let json = x.Json
+            let session = (tryFindStrByAtt "session" json).Trim()
+            if (tryFindStrByAtt "act" json).Trim() = "sign-out" then
                 if runtime.sessions.ContainsKey session then
                     runtime.sessions.Remove session |> ignore
                 [| ok |]
             else
-                let key = (tryFindStrByAtt "key" x.json).Trim()
+                let key = (tryFindStrByAtt "key" json).Trim()
                 if key = "B2C88F15-558F-4E9E-A7A9-3611D98D3691" then
 
                     let eux = 
@@ -56,47 +57,44 @@ let branching (x:X) =
                     if runtime.sessions.ContainsKey session then
                         runtime.sessions.Remove session |> ignore
 
-                    let s = UtilWebServer.Session.user__session runtime.sessions eux
+                    let s = UtilKestrel.Session.user__session runtime.sessions eux
 
                     [|  ok
                         "session", s.session |> str__json
                         "eux", eux |> EuComplex__json |]
                 else
                     er Er.Unauthorized) |> bindx
-        | "msg" -> (fun x -> 
-            let name = (tryFindStrByAtt "name" x.json).Trim()
-            let email = (tryFindStrByAtt "email" x.json).Trim()
-            let msg = (tryFindStrByAtt "msg" x.json).Trim()
+        | "msg" -> (fun (x:X) -> 
+            let json = x.Json
+            let name = (tryFindStrByAtt "name" json).Trim()
+            let email = (tryFindStrByAtt "email" json).Trim()
+            let msg = (tryFindStrByAtt "msg" json).Trim()
 
             [| ok |]) |> bindx
         | _ -> Fail(Er.ApiNotExists,x)
     | "eu" -> 
-        match x.api with
+        match x.Struct.api with
         | _ -> Fail(Er.ApiNotExists,x)
     | "admin" -> 
-        match x.api with
+        match x.Struct.api with
         | "plogs" -> (fun x -> 
             let metadata = PLOG_metadata
             match "ORDER BY ID DESC" |> Util.Orm.loadall conn (metadata.table,metadata.fieldorders(),metadata.db__rcd) with
             | Some items ->
                 items
-                |> Array.filter(fun i -> (UtilWebServer.PageLog.req__fromo i.p.Request).IsSome)
+                |> Array.filter(fun i -> (UtilKestrel.PageLog.req__fromo i.p.Request).IsSome)
                 |> (fun items -> if items.Length > 200 then Array.sub items 0 200 else items)
-                |> Array.map(fun rcd -> UtilWebServer.PageLog.req__json (rcd.p.Ip,rcd.Createdat,rcd.p.Request))
+                |> Array.map(fun rcd -> UtilKestrel.PageLog.req__json (rcd.p.Ip,rcd.Createdat,rcd.p.Request))
             | None -> [| |]
             |> wrapOkAry) |> bindx
         | "monitorPerf" -> bindx apiMonitorPerf
-        | "monitorServer" -> bindx (fun x -> x.runtime |> apiMonitor)
         | _ -> Fail(Er.ApiNotExists,x)
     | "open" -> Fail(Er.ApiNotExists,x)
     | _ -> Fail(Er.ApiNotExists,x)
 
-
-let branch req service api json = 
+let branch (x:X) = 
 
     use cw = new CodeWrapper("Server.WebHandler.branch")
-
-    let mutable x = incoming__x runtime req service api "" json
     
     //match service with
     //| "eu" ->
@@ -117,4 +115,9 @@ let branch req service api json =
 
     //| _ -> ()
 
-    runApi branching x
+    x.Struct.contentType <- "application/json; charset=utf-8"
+    x.Struct.rep <-
+        runApi branching x 
+        |> Braket
+        |> json__strFinal
+        |> Encoding.UTF8.GetBytes

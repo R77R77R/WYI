@@ -12,11 +12,10 @@ open Util.Crypto
 open Util.Db
 open Util.DbTx
 open Util.Orm
-open Util.Zmq
 
-open UtilWebServer.DbLogger
-open UtilWebServer.Db
-open UtilWebServer.Common
+open UtilKestrel.DbLogger
+open UtilKestrel.Db
+open UtilKestrel.Common
 
 open WYI.Shared.OrmTypes
 open WYI.Shared.Types

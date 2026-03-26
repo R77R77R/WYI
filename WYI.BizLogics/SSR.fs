@@ -15,18 +15,17 @@ open Util.Perf
 open Util.Json
 open Util.Http
 open Util.HttpServer
-open Util.Zmq
 
 open WYI.Shared.OrmTypes
 open WYI.Shared.Types
 open WYI.Shared.OrmMor
 open WYI.Shared.CustomMor
 
-open UtilWebServer.Common
-open UtilWebServer.Api
-open UtilWebServer.Json
-open UtilWebServer.SSR
-open UtilWebServer.Kestrel
+open UtilKestrel.Types
+open UtilKestrel.Api
+open UtilKestrel.Json
+open UtilKestrel.SSR
+open UtilKestrel.Server
 
 open WYI.BizLogics.Common
 open WYI.BizLogics.Branch
@@ -77,15 +76,4 @@ let r1 = str__regex @"\w+"
 
 let pages = [|
     "/admin" |]
-
-let echo (kestrelx:KestrelCtx) = 
-    let vueDeployDir = runtime.host.req__vueDeployDir
-
-    kestrelx
-    |> Suc
-    |> bind (homepage runtime.langs pages ssrPageHome vueDeployDir renderGoogleAds)
-    //|> bindFail (hSEO (fun x -> [||]) "")
-    //|> bindFail (hapi echoApiHandler (branch (scheme,api) hx)) 
-    |> ignore
-
 
