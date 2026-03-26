@@ -10,7 +10,14 @@ export default defineConfig({
   ],
   server: {
     host: '0.0.0.0',
-    port: 2019
+    port: 2019,
+    proxy: {
+      '/api': {
+        target: 'https://localhost', // 你的 F# 后端地址
+        secure: false, // 如果是自签名证书则需设为 false
+        changeOrigin: true
+      }
+    }
   },
   resolve: {
     alias: {

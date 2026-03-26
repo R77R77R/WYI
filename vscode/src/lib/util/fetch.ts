@@ -19,10 +19,21 @@ const request = (method: "POST" | "GET") => async (url: string, data: Record<str
 
   url = checkUrl(url)
 
+  // --- 关键修改：截获 Clerk Token ---
+  let clerkToken = null
+  if (window.Clerk?.session) {
+      // 异步获取 Clerk 签发的 JWT 令牌
+      clerkToken = await window.Clerk.session.getToken()
+  }
+
   const inits: RequestInit = {
     method: method,
     mode: 'cors',
-    headers: { 'Content-Type': 'application/json' }
+    headers: { 
+      'Content-Type': 'application/json',
+      // 将 Token 注入 Header 
+      'Authorization': clerkToken ? `Bearer ${clerkToken}` : ''
+     }
   }
   switch (method) {
     case "POST":
