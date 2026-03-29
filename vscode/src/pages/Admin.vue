@@ -5,17 +5,6 @@
         <div class="card">
           <div class="card-caption">Admin Console</div>
         </div>
-      
-        <div class="card">
-          <div class="card-caption">Book</div>
-          <div v-for="book in s.books">
-            <div>{{ book.createdat }}</div>
-            <div>{{ book.p.Caption }}</div>
-            <div>{{ book.p.Email }}</div>
-            <div v-html="book.p.Message" />
-            <hr class="mt-3">
-          </div>
-        </div>
 
         <div class="card">
           <div class="card-caption">Log</div>
@@ -58,18 +47,14 @@
   import * as Common from '~/lib/store/common'
     
   const s = glib.vue.reactive({
-  books: [] as studio.BOOK[],
-  logs: [] as studio.LOG[],
+  logs: [] as wyi.LOG[],
   plogs: [] as any[]
   })
     
   glib.vue.onMounted(async () => {
     
-    Common.loader('/api/admin/books', {},(rep:any) => {
-      s.books = rep.list as studio.BOOK[]
-    })  
     Common.loader('/api/admin/logs', {},(rep:any) => {
-      s.logs = rep.list as studio.LOG[]
+      s.logs = rep.list as wyi.LOG[]
     })  
     Common.loader('/api/admin/plogs', {},(rep:any) => {
       s.plogs = rep.list
