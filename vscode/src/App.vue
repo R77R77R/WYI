@@ -1,5 +1,15 @@
 <template> 
 
+<div v-if="s.eux.eu.id > 0">
+  {{ s.eux.eu.p.Caption }} ({{ s.eux.eu.p.Email }})
+  <img :src="s.eux.eu.p.Avatar" width="32" />
+</div>
+<div v-else>
+  N/A
+</div>
+
+<div>Clerk</div>
+
 <header>
     <Show when="signed-out">
       <SignInButton />
@@ -9,6 +19,8 @@
       <UserButton />
     </Show>
   </header>
+
+<button>Upload Your Bills</button>
 
 <div>MO Mar 23, 2026</div>
 <div>Auto remote deploy</div>
@@ -70,6 +82,11 @@ import UserAuth from '~/comps/UserAuth.vue'
 
 const { isSignedIn, user } = useUser()
 
+const s = glib.vue.reactive({
+  eux: {},
+  session: ""
+})
+
 // 监听登录状态变化
 // App.vue 调试代码
 watch(isSignedIn, async (newVal) => {
@@ -88,6 +105,14 @@ watch(isSignedIn, async (newVal) => {
       // 1. 强制走 /api 前缀，确保触发 vite.config.ts 的 proxy
       // 2. 这里的 post 是你 fetch.ts 里的封装
       const response = await post("/api/public/auth",payload); 
+      
+      const { Er, session, eux } = response;
+      if (Er === "OK"){
+        runtime.user = eux;
+        runtime.session = session;
+        s.eux = runtime.user;
+        s.session = runtime.session;
+      }
       
       console.log('✅ 后端响应成功:', response);
     } catch (err) {
