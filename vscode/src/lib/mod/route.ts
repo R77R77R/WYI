@@ -6,7 +6,8 @@ import Admin from '~/pages/Admin.vue'
 
 const routes = [
   { path: '/UploadBills', component: UploadBills },
-  { path: '/admin', component: Admin }
+  { path: '/admin', component: Admin },
+  { path: '/', component: Admin }
 ]
 
 export const router = createRouter({
