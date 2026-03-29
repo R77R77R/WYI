@@ -21,15 +21,6 @@ function setupMetaInfo(pro) {
     case 'admin':
       resultMeta.layout = "admin"
       return resultMeta
-    case 'ctc':
-      resultMeta.layout = "ctc"
-      return resultMeta
-    case 'gchain':
-      resultMeta.layout = "gchain"
-      return resultMeta
-    case 'fx':
-      resultMeta.layout = "fx"
-      return resultMeta
   }
   return resultMeta
 }

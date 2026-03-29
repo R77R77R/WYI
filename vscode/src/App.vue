@@ -1,8 +1,8 @@
 <template> 
 
-<div v-if="s.eux.eu.id > 0">
-  {{ s.eux.eu.p.Caption }} ({{ s.eux.eu.p.Email }})
-  <img :src="s.eux.eu.p.Avatar" width="32" />
+<div v-if="s.rt.user.eu.id > 0">
+  {{ s.rt.user.eu.p.Caption }} ({{ s.rt.user.eu.p.Email }})
+  <img :src="s.rt.user.eu.p.Avatar" width="32" />
 </div>
 <div v-else>
   N/A
@@ -20,7 +20,7 @@
     </Show>
   </header>
 
-<button>Upload Your Bills</button>
+<button @click="s.rt.router.push('/UploadBills')">Upload Your Bills</button>
 
 <div>MO Mar 23, 2026</div>
 <div>Auto remote deploy</div>
@@ -83,8 +83,7 @@ import UserAuth from '~/comps/UserAuth.vue'
 const { isSignedIn, user } = useUser()
 
 const s = glib.vue.reactive({
-  eux: {},
-  session: ""
+  rt: runtime
 })
 
 // 监听登录状态变化
@@ -108,10 +107,8 @@ watch(isSignedIn, async (newVal) => {
       
       const { Er, session, eux } = response;
       if (Er === "OK"){
-        runtime.user = eux;
-        runtime.session = session;
-        s.eux = runtime.user;
-        s.session = runtime.session;
+        s.rt.user = eux;
+        s.rt.session = session;
       }
       
       console.log('✅ 后端响应成功:', response);

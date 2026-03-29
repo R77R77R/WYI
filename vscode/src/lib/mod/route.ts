@@ -1,11 +1,11 @@
 import { createMemoryHistory, createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
-import Index from '~/pages/Studio.vue'
+import UploadBills from '~/pages/UploadBills.vue'
 
 import Admin from '~/pages/Admin.vue'
 
 const routes = [
-  { path: '/', component: Index },
+  { path: '/UploadBills', component: UploadBills },
   { path: '/admin', component: Admin }
 ]
 

@@ -15,13 +15,13 @@ import { RouteRecordRaw } from 'vue-router';
       }]
     },
     {
-      path: '//Studio',
+      path: '//UploadBills',
       component: ()=>import ( "/src/layouts/blank.vue" ),
       meta: {"layout":"blank"},
       children: [{
         path: "",
-        name: '-Studio',
-        component:()=> import("~/pages//Studio.vue"),
+        name: '-UploadBills',
+        component:()=> import("~/pages//UploadBills.vue"),
         meta: {"layout":"blank"},
         props: true
       }]
