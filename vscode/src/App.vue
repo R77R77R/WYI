@@ -20,7 +20,9 @@
     </Show>
   </header>
 
-<button @click="s.rt.router.push('/UploadBills')">Upload Your Bills</button>
+<main class="main-content">
+  <router-view />
+</main>
 
 <div>MO Mar 23, 2026</div>
 <div>Auto remote deploy</div>

@@ -1,13 +1,14 @@
 import { createMemoryHistory, createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
 import UploadBills from '~/pages/UploadBills.vue'
+import HomeCustomer from '~/pages/HomeCustomer.vue'
 
 import Admin from '~/pages/Admin.vue'
 
 const routes = [
+  { path: '/', component: HomeCustomer },
   { path: '/UploadBills', component: UploadBills },
   { path: '/admin', component: Admin },
-  { path: '/', component: Admin }
 ]
 
 export const router = createRouter({
