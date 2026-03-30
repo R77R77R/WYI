@@ -15,6 +15,8 @@ m:MOMENT
 
 // [RuntimeData]
 export type RuntimeData = {
+apiKeyGemini:string,
+
 desc:string
 }
 

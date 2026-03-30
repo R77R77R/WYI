@@ -241,6 +241,52 @@ export const bin__MOMENT = (bi:BinIndexed):wyi.MOMENT => {
     }
 }
 
+// [CONFIG] Structure
+
+
+export const pCONFIG__bin = (bb:BytesBuilder) => (p:wyi.pCONFIG) => {
+
+    
+    marshall.str__bin (bb) (p.Key)
+    
+    marshall.str__bin (bb) (p.Val)
+}
+
+export const CONFIG__bin = (bb:BytesBuilder) => (v:wyi.CONFIG) => {
+    marshall.int64__bin (bb) (v.id)
+    marshall.int64__bin (bb) (v.sort)
+    marshall.DateTime__bin (bb) (v.createdat)
+    marshall.DateTime__bin (bb) (v.updatedat)
+
+    pCONFIG__bin (bb) (v.p)
+}
+
+export const bin__pCONFIG = (bi:BinIndexed):wyi.pCONFIG => {
+
+    let p = pCONFIG_empty()
+    p.Key = marshall.bin__str (bi)
+    p.Val = marshall.bin__str (bi)
+
+    return p
+}
+
+
+export const bin__CONFIG = (bi:BinIndexed):wyi.CONFIG => {
+
+    let ID = marshall.bin__int64 (bi)
+    let Sort = marshall.bin__int64 (bi)
+    let Createdat = marshall.bin__DateTime (bi)
+    let Updatedat = marshall.bin__DateTime (bi)
+    
+    return {
+        id: ID,
+        sort: Sort,
+        createdat: Createdat,
+        updatedat: Updatedat,
+        p:  bin__pCONFIG (bi)
+    }
+}
+
 // [LOG] Structure
 
 
@@ -434,6 +480,21 @@ export const MOMENT_empty = (): wyi.MOMENT => {
         updatedat: new Date(),
         sort: 0,
         p: pMOMENT_empty() }
+}
+
+export const pCONFIG_empty = (): wyi.pCONFIG => {
+    return {
+        Key: "",
+        Val: "" }
+}
+
+export const CONFIG_empty = (): wyi.CONFIG => {
+    return {
+        id: 0,
+        createdat: new Date(),
+        updatedat: new Date(),
+        sort: 0,
+        p: pCONFIG_empty() }
 }
 
 export const pLOG_empty = (): wyi.pLOG => {

@@ -31,5 +31,20 @@
         "name": "Request"
       }
     ]
+  },
+  {
+    "name": "Sys_Config",
+    "shorthand": "config",
+    "fields": [
+      {
+        "enum": "Chars",
+        "length": 64,
+        "name": "Key"
+      },
+      {
+        "enum": "Text",
+        "name": "Val"
+      }
+    ]
   }
 ]

@@ -1,9 +1,9 @@
 <template>
   <div class="upload-page">
     <div class="header">
-      <h2>账单上传</h2>
+      <h2>Upload Bills</h2>
       <p v-if="s.rt.user" class="user-status">
-        当前操作员: <strong>{{ s.rt.user.p?.Caption }}</strong> 
+        <strong>{{ s.rt.user.eu.p.Caption }}</strong> 
         <span class="id-tag">(ID: {{ s.rt.user.id }})</span>
       </p>
     </div>
@@ -24,15 +24,16 @@
         hidden 
       />
       <div class="icon">📄</div>
-      <p>将账单文件拖拽到此处，或 <span>点击选择文件</span></p>
-      <small>支持并行上传多个文件 (PDF, 图片)</small>
+      <p>Drop your files here or <span>Select</span></p>
+      <small>Max. 10GB</small>
+      <div>Utility Providers: ADT, ... see a full list.</div>
     </div>
 
     <div class="task-list" v-if="tasks.length > 0">
       <div v-for="task in tasks" :key="task.id" class="task-item">
         <div class="file-meta">
           <span class="file-name">{{ task.file.name }}</span>
-          <span class="file-size">{{ (task.file.size / 1024).toFixed(1) }} KB</span>
+          <span class="file-size">{{ (task.file.size / 1024 / 1024).toFixed(2) }} MB</span>
         </div>
         
         <div class="progress-container">
@@ -47,6 +48,7 @@
           <span :class="['status-label', task.status]">
             {{ getStatusText(task) }}
           </span>
+          <span v-if="task.message" class="error-detail"> - {{ task.message }}</span>
         </div>
       </div>
     </div>
@@ -57,15 +59,18 @@
 import { ref } from 'vue'
 import { glib } from '~/lib/glib'
 
+// 定义上传任务接口
 interface UploadTask {
   id: string
   file: File
   progress: number
   status: 'pending' | 'uploading' | 'success' | 'error'
+  message?: string
 }
 
+// 适配你的全局 runtime 注入逻辑
 const s = glib.vue.reactive({
-  rt: runtime
+  rt: (window as any).runtime
 })
 
 const tasks = ref<UploadTask[]>([])
@@ -87,9 +92,9 @@ const onDrop = (e: DragEvent) => {
 const handleFiles = (fileList: FileList | null) => {
   if (!fileList) return
   
-  // 业务逻辑检查：确保 Session 已由 loader 注入
-  if (!runtime.session || runtime.session === "null") {
-    alert("系统尚未就绪，请稍后刷新页面再试。")
+  // 校验业务 Session 是否就绪 (来自你的后置 loader)
+  if (!s.rt.session || s.rt.session === "null") {
+    alert("Session 未就绪，请刷新页面。")
     return
   }
 
@@ -101,29 +106,22 @@ const handleFiles = (fileList: FileList | null) => {
       status: 'pending'
     }
     tasks.value.push(task)
-    // 触发并行上传
+    // 立即触发并行上传请求
     executeUpload(task)
   })
 }
 
 const executeUpload = async (task: UploadTask) => {
   task.status = 'uploading'
-  
-  // 1. 获取 Clerk Token，使用可选链修复 18049 错误
-  // 这里将 window 强制转为 any 以跳过复杂的 Clerk 类型定义检查
+  task.progress = 20 // 模拟初始进度
+
+  // 获取 Clerk 令牌用于后端鉴权
   const clerk = (window as any).Clerk
   const token = await clerk?.session?.getToken()
 
-  if (!token) {
-    task.status = 'error'
-    console.error("未能获取有效的 Clerk Token")
-    return
-  }
-
   const formData = new FormData()
   formData.append('file', task.file)
-  // 将业务 Session ID 注入，供后端关联用户 (1003)
-  formData.append('session', runtime.session)
+  formData.append('session', s.rt.session)
 
   try {
     const response = await fetch("/api/public/upload", {
@@ -134,92 +132,64 @@ const executeUpload = async (task: UploadTask) => {
       body: formData
     })
 
+    if (!response.ok) throw new Error(`Server Error: ${response.status}`)
+
     const result = await response.json()
+    
     if (result.Er === "OK") {
       task.status = 'success'
       task.progress = 100
     } else {
       task.status = 'error'
+      task.message = result.Er
     }
-  } catch (err) {
+  } catch (err: any) {
     task.status = 'error'
-    console.error("网络上传异常:", err)
+    task.message = "网络异常或文件超过限制"
+    console.error("Upload failed:", err)
   }
 }
 
 const getStatusText = (task: UploadTask) => {
   switch (task.status) {
     case 'uploading': return '上传中...'
-    case 'success': return '已完成'
+    case 'success': return '完成'
     case 'error': return '失败'
-    default: return '排队中'
+    default: return '排队'
   }
 }
 </script>
 
 <style scoped>
-.upload-page {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 40px 20px;
-  font-family: sans-serif;
-}
-
-.header { margin-bottom: 30px; }
-.user-status { color: #666; font-size: 14px; }
-.id-tag { color: #999; margin-left: 8px; }
-
+.upload-page { max-width: 800px; margin: 0 auto; padding: 2rem; }
+.user-status { font-size: 0.9rem; color: #666; margin-bottom: 1.5rem; }
 .drop-zone {
-  border: 2px dashed #dcdfe6;
-  border-radius: 12px;
-  background: #fbfdff;
-  padding: 60px 20px;
+  border: 2px dashed #ccd0d7;
+  border-radius: 8px;
+  padding: 4rem 1rem;
   text-align: center;
+  background: #f9fafc;
   cursor: pointer;
   transition: all 0.2s;
 }
-
-.drop-zone:hover, .drop-zone.is-dragging {
-  border-color: #409eff;
-  background: #f0f7ff;
+.drop-zone.is-dragging { border-color: #409eff; background: #ecf5ff; }
+.icon { font-size: 3rem; margin-bottom: 1rem; }
+.task-list { margin-top: 2rem; }
+.task-item { 
+  border: 1px solid #eee; 
+  padding: 1rem; 
+  border-radius: 6px; 
+  margin-bottom: 1rem; 
+  background: white;
 }
-
-.icon { font-size: 48px; margin-bottom: 15px; }
-.drop-zone span { color: #409eff; font-weight: bold; }
-
-.task-list { margin-top: 30px; }
-.task-item {
-  background: #fff;
-  border: 1px solid #ebeef5;
-  border-radius: 8px;
-  padding: 15px;
-  margin-bottom: 12px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-}
-
-.file-meta { display: flex; justify-content: space-between; margin-bottom: 10px; }
-.file-name { font-weight: 500; color: #303133; }
-.file-size { color: #909399; font-size: 13px; }
-
-.progress-container {
-  height: 8px;
-  background: #f5f7fa;
-  border-radius: 4px;
-  overflow: hidden;
-  margin-bottom: 8px;
-}
-
-.progress-fill {
-  height: 100%;
-  transition: width 0.3s ease;
-}
-
-.progress-fill.uploading { background-color: #409eff; }
-.progress-fill.success { background-color: #67c23a; }
-.progress-fill.error { background-color: #f56c6c; }
-
-.status-label { font-size: 12px; }
+.file-meta { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.5rem; }
+.progress-container { height: 6px; background: #ebeef5; border-radius: 3px; overflow: hidden; }
+.progress-fill { height: 100%; transition: width 0.3s; }
+.progress-fill.uploading { background: #409eff; }
+.progress-fill.success { background: #67c23a; }
+.progress-fill.error { background: #f56c6c; }
+.status-row { font-size: 0.75rem; margin-top: 0.5rem; }
 .status-label.success { color: #67c23a; }
 .status-label.error { color: #f56c6c; }
-.status-label.uploading { color: #409eff; }
+.error-detail { color: #999; }
 </style>

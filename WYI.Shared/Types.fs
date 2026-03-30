@@ -20,6 +20,7 @@ type MomentComplex = {
 m: MOMENT }
 
 type RuntimeData = {
+mutable apiKeyGemini: string
 desc: string }
 
 type ClientRuntime = {

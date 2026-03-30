@@ -157,11 +157,13 @@ let MomentComplex_clone src =
 
 let RuntimeData_empty(): RuntimeData =
     {
+        apiKeyGemini = ""
         desc = ""
     }
 
 let RuntimeData__bin (bb:BytesBuilder) (v:RuntimeData) =
 
+    str__bin bb v.apiKeyGemini
     str__bin bb v.desc
     ()
 
@@ -169,6 +171,9 @@ let bin__RuntimeData (bi:BinIndexed):RuntimeData =
     let bin,index = bi
 
     {
+        apiKeyGemini = 
+            bi
+            |> bin__str
         desc = 
             bi
             |> bin__str
@@ -176,7 +181,8 @@ let bin__RuntimeData (bi:BinIndexed):RuntimeData =
 
 let RuntimeData__json (v:RuntimeData) =
 
-    [|  ("desc",str__json v.desc)
+    [|  ("apiKeyGemini",str__json v.apiKeyGemini)
+        ("desc",str__json v.desc)
          |]
     |> Json.Braket
 
@@ -192,6 +198,18 @@ let json__RuntimeDatao (json:Json):RuntimeData option =
 
     let mutable passOptions = true
 
+    let apiKeyGeminio =
+        match json__tryFindByName json "apiKeyGemini" with
+        | None ->
+            passOptions <- false
+            None
+        | Some v -> 
+            match v |> json__stro with
+            | Some res -> Some res
+            | None ->
+                passOptions <- false
+                None
+
     let desco =
         match json__tryFindByName json "desc" with
         | None ->
@@ -206,6 +224,7 @@ let json__RuntimeDatao (json:Json):RuntimeData option =
 
     if passOptions then
         ({
+            apiKeyGemini = apiKeyGeminio.Value
             desc = desco.Value }:RuntimeData) |> Some
     else
         None

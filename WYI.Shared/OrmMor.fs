@@ -703,6 +703,135 @@ let MOMENT_clone src =
     MOMENT__bin bb src
     bin__MOMENT (bb.bytes(),ref 0)
 
+// [CONFIG] Structure
+
+
+let pCONFIG__bin (bb:BytesBuilder) (p:pCONFIG) =
+
+    
+    let binKey = p.Key |> Encoding.UTF8.GetBytes
+    binKey.Length |> BitConverter.GetBytes |> bb.append
+    binKey |> bb.append
+    
+    let binVal = p.Val |> Encoding.UTF8.GetBytes
+    binVal.Length |> BitConverter.GetBytes |> bb.append
+    binVal |> bb.append
+
+let CONFIG__bin (bb:BytesBuilder) (v:CONFIG) =
+    v.ID |> BitConverter.GetBytes |> bb.append
+    v.Sort |> BitConverter.GetBytes |> bb.append
+    DateTime__bin bb v.Createdat
+    DateTime__bin bb v.Updatedat
+    
+    pCONFIG__bin bb v.p
+    ()
+
+let bin__pCONFIG (bi:BinIndexed):pCONFIG =
+    let bin,index = bi
+
+    let p = pCONFIG_empty()
+    
+    let count_Key = BitConverter.ToInt32(bin,index.Value)
+    index.Value <- index.Value + 4
+    p.Key <- Encoding.UTF8.GetString(bin,index.Value,count_Key)
+    index.Value <- index.Value + count_Key
+    
+    let count_Val = BitConverter.ToInt32(bin,index.Value)
+    index.Value <- index.Value + 4
+    p.Val <- Encoding.UTF8.GetString(bin,index.Value,count_Val)
+    index.Value <- index.Value + count_Val
+    
+    p
+
+let bin__CONFIG (bi:BinIndexed):CONFIG =
+    let bin,index = bi
+
+    let ID = BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    let Sort = BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    let Createdat = bin__DateTime bi
+    
+    let Updatedat = bin__DateTime bi
+    
+    {
+        ID = ID
+        Sort = Sort
+        Createdat = Createdat
+        Updatedat = Updatedat
+        p = bin__pCONFIG bi }
+
+let pCONFIG__json (p:pCONFIG) =
+
+    [|
+        ("Key",p.Key |> Json.Str)
+        ("Val",p.Val |> Json.Str) |]
+    |> Json.Braket
+
+let CONFIG__json (v:CONFIG) =
+
+    let p = v.p
+    
+    [|  ("id",v.ID.ToString() |> Json.Num)
+        ("sort",v.Sort.ToString() |> Json.Num)
+        ("createdat",(v.Createdat |> Util.Time.wintime__unixtime).ToString() |> Json.Num)
+        ("updatedat",(v.Updatedat |> Util.Time.wintime__unixtime).ToString() |> Json.Num)
+        ("p",pCONFIG__json v.p) |]
+    |> Json.Braket
+
+let CONFIG__jsonTbw (w:TextBlockWriter) (v:CONFIG) =
+    json__str w (CONFIG__json v)
+
+let CONFIG__jsonStr (v:CONFIG) =
+    (CONFIG__json v) |> json__strFinal
+
+
+let json__pCONFIGo (json:Json):pCONFIG option =
+    let fields = json |> json__items
+
+    let p = pCONFIG_empty()
+    
+    p.Key <- checkfieldz fields "Key" 64
+    
+    p.Val <- checkfield fields "Val"
+    
+    p |> Some
+    
+
+let json__CONFIGo (json:Json):CONFIG option =
+    let fields = json |> json__items
+
+    let ID = checkfield fields "id" |> parse_int64
+    let Sort = checkfield fields "sort" |> parse_int64
+    let Createdat = checkfield fields "createdat" |> parse_int64 |> DateTime.FromBinary
+    let Updatedat = checkfield fields "updatedat" |> parse_int64 |> DateTime.FromBinary
+    
+    let o  =
+        match
+            json
+            |> tryFindByAtt "p" with
+        | Some (s,v) -> json__pCONFIGo v
+        | None -> None
+    
+    match o with
+    | Some p ->
+        
+        {
+            ID = ID
+            Sort = Sort
+            Createdat = Createdat
+            Updatedat = Updatedat
+            p = p } |> Some
+        
+    | None -> None
+
+let CONFIG_clone src =
+    let bb = new BytesBuilder()
+    CONFIG__bin bb src
+    bin__CONFIG (bb.bytes(),ref 0)
+
 // [LOG] Structure
 
 
@@ -1443,6 +1572,103 @@ let MOMENTTxSqlServer =
     """
 
 
+let db__pCONFIG(line:Object[]): pCONFIG =
+    let p = pCONFIG_empty()
+
+    p.Key <- string(line[4]).TrimEnd()
+    p.Val <- string(line[5]).TrimEnd()
+
+    p
+
+let pCONFIG__sps (p:pCONFIG) =
+    match rdbms with
+    | Rdbms.SqlServer ->
+        [|
+            ("Key", p.Key) |> kvp__sqlparam
+            ("Val", p.Val) |> kvp__sqlparam |]
+    | Rdbms.PostgreSql ->
+        [|
+            ("key", p.Key) |> kvp__sqlparam
+            ("val", p.Val) |> kvp__sqlparam |]
+
+let db__CONFIG = db__Rcd db__pCONFIG
+
+let CONFIG_wrapper item: CONFIG =
+    let (i,c,u,s),p = item
+    { ID = i; Createdat = c; Updatedat = u; Sort = s; p = p }
+
+let pCONFIG_clone (p:pCONFIG): pCONFIG = {
+    Key = p.Key
+    Val = p.Val }
+
+let CONFIG_update_transaction output (updater,suc,fail) (rcd:CONFIG) =
+    let rollback_p = rcd.p |> pCONFIG_clone
+    let rollback_updatedat = rcd.Updatedat
+    updater rcd.p
+    let ctime,res =
+        (rcd.ID,rcd.p,rollback_p,rollback_updatedat)
+        |> update (conn,output,CONFIG_table,CONFIG_sql_update(),pCONFIG__sps,suc,fail)
+    match res with
+    | Suc ctx ->
+        rcd.Updatedat <- ctime
+        suc(ctime,ctx)
+    | Fail(eso,ctx) ->
+        rcd.p <- rollback_p
+        rcd.Updatedat <- rollback_updatedat
+        fail eso
+
+let CONFIG_update output (rcd:CONFIG) =
+    rcd
+    |> CONFIG_update_transaction output ((fun p -> ()),(fun (ctime,ctx) -> ()),(fun dte -> ()))
+
+let CONFIG_create_incremental_transaction output (suc,fail) p =
+    let cid = Interlocked.Increment CONFIG_id
+    let ctime = DateTime.UtcNow
+    match create (conn,output,CONFIG_table,pCONFIG__sps) (cid,ctime,p) with
+    | Suc ctx -> ((cid,ctime,ctime,cid),p) |> CONFIG_wrapper |> suc
+    | Fail(eso,ctx) -> fail(eso,ctx)
+
+let CONFIG_create output p =
+    CONFIG_create_incremental_transaction output ((fun rcd -> ()),(fun (eso,ctx) -> ())) p
+    
+
+let id__CONFIGo id: CONFIG option = id__rcd(conn,CONFIG_fieldorders(),CONFIG_table,db__CONFIG) id
+
+let CONFIG_metadata = {
+    fieldorders = CONFIG_fieldorders
+    db__rcd = db__CONFIG 
+    wrapper = CONFIG_wrapper
+    sps = pCONFIG__sps
+    id = CONFIG_id
+    id__rcdo = id__CONFIGo
+    clone = pCONFIG_clone
+    empty__p = pCONFIG_empty
+    rcd__bin = CONFIG__bin
+    bin__rcd = bin__CONFIG
+    p__json = pCONFIG__json
+    json__po = json__pCONFIGo
+    rcd__json = CONFIG__json
+    json__rcdo = json__CONFIGo
+    sql_update = CONFIG_sql_update
+    rcd_update = CONFIG_update
+    table = CONFIG_table
+    shorthand = "config" }
+
+let CONFIGTxSqlServer =
+    """
+    IF NOT EXISTS(SELECT * FROM sysobjects WHERE [name]='Sys_Config' AND xtype='U')
+    BEGIN
+
+        CREATE TABLE Sys_Config ([ID] BIGINT NOT NULL
+    ,[Createdat] BIGINT NOT NULL
+    ,[Updatedat] BIGINT NOT NULL
+    ,[Sort] BIGINT NOT NULL,
+    ,[Key]
+    ,[Val])
+    END
+    """
+
+
 let db__pLOG(line:Object[]): pLOG =
     let p = pLOG_empty()
 
@@ -1647,14 +1873,16 @@ type MetadataEnum =
 | FILE = 1
 | FBIND = 2
 | MOMENT = 3
-| LOG = 4
-| PLOG = 5
+| CONFIG = 4
+| LOG = 5
+| PLOG = 6
 
 let tablenames = [|
     EU_metadata.table
     FILE_metadata.table
     FBIND_metadata.table
     MOMENT_metadata.table
+    CONFIG_metadata.table
     LOG_metadata.table
     PLOG_metadata.table |]
 
@@ -1731,6 +1959,25 @@ let init() =
     match singlevalue_query conn (str__sql sqlCountSocial_Moment) with
     | Some v ->
         MOMENT_count.Value <-
+            match rdbms with
+            | Rdbms.SqlServer -> v :?> int32
+            | Rdbms.PostgreSql -> v :?> int64 |> int32
+    | None -> ()
+
+    let sqlMaxSys_Config, sqlCountSys_Config =
+        match rdbms with
+        | Rdbms.SqlServer -> "SELECT MAX(ID) FROM [Sys_Config]", "SELECT COUNT(ID) FROM [Sys_Config]"
+        | Rdbms.PostgreSql -> "SELECT MAX(id) FROM sys_config", "SELECT COUNT(id) FROM sys_config"
+    match singlevalue_query conn (str__sql sqlMaxSys_Config) with
+    | Some v ->
+        let max = v :?> int64
+        if max > CONFIG_id.Value then
+            CONFIG_id.Value <- max
+    | None -> ()
+
+    match singlevalue_query conn (str__sql sqlCountSys_Config) with
+    | Some v ->
+        CONFIG_count.Value <-
             match rdbms with
             | Rdbms.SqlServer -> v :?> int32
             | Rdbms.PostgreSql -> v :?> int64 |> int32

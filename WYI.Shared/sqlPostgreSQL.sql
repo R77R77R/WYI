@@ -22,6 +22,24 @@ BEGIN
    END IF;
 END $$;
 
+-- PostgreSQL: Dropping obsolete fields (Safety Guard Active) -----------
+DO $$ 
+DECLARE
+    row record;
+BEGIN
+    FOR row IN 
+        SELECT column_name 
+        FROM information_schema.columns 
+        WHERE table_name = 'ca_enduser' 
+          AND table_schema = 'public' 
+          -- 核心过滤：排除保留字段及传入的业务字段
+          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'ID', 'Createdat', 'Updatedat', 'Sort', 'caption', 'username', 'email', 'avatar', 'clerkuserid', 'pwd', 'authtype'])
+    LOOP
+        RAISE NOTICE 'Dropping column %% from table %%', row.column_name, 'ca_enduser';
+        EXECUTE format('ALTER TABLE %%I DROP COLUMN IF EXISTS %%I CASCADE', 'ca_enduser', row.column_name);
+    END LOOP;
+END $$;
+
 
 -- [ca_enduser.Caption] -------------
 
@@ -143,6 +161,24 @@ BEGIN
    END IF;
 END $$;
 
+-- PostgreSQL: Dropping obsolete fields (Safety Guard Active) -----------
+DO $$ 
+DECLARE
+    row record;
+BEGIN
+    FOR row IN 
+        SELECT column_name 
+        FROM information_schema.columns 
+        WHERE table_name = 'ca_file' 
+          AND table_schema = 'public' 
+          -- 核心过滤：排除保留字段及传入的业务字段
+          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'ID', 'Createdat', 'Updatedat', 'Sort', 'caption', 'desc', 'suffix', 'size', 'thumbnail', 'owner'])
+    LOOP
+        RAISE NOTICE 'Dropping column %% from table %%', row.column_name, 'ca_file';
+        EXECUTE format('ALTER TABLE %%I DROP COLUMN IF EXISTS %%I CASCADE', 'ca_file', row.column_name);
+    END LOOP;
+END $$;
+
 
 -- [ca_file.Caption] -------------
 
@@ -247,6 +283,24 @@ BEGIN
    END IF;
 END $$;
 
+-- PostgreSQL: Dropping obsolete fields (Safety Guard Active) -----------
+DO $$ 
+DECLARE
+    row record;
+BEGIN
+    FOR row IN 
+        SELECT column_name 
+        FROM information_schema.columns 
+        WHERE table_name = 'social_filebind' 
+          AND table_schema = 'public' 
+          -- 核心过滤：排除保留字段及传入的业务字段
+          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'ID', 'Createdat', 'Updatedat', 'Sort', 'file', 'moment', 'desc'])
+    LOOP
+        RAISE NOTICE 'Dropping column %% from table %%', row.column_name, 'social_filebind';
+        EXECUTE format('ALTER TABLE %%I DROP COLUMN IF EXISTS %%I CASCADE', 'social_filebind', row.column_name);
+    END LOOP;
+END $$;
+
 
 -- [social_filebind.File] -------------
 
@@ -312,6 +366,24 @@ BEGIN
         ,"mediatype" INT);
 
    END IF;
+END $$;
+
+-- PostgreSQL: Dropping obsolete fields (Safety Guard Active) -----------
+DO $$ 
+DECLARE
+    row record;
+BEGIN
+    FOR row IN 
+        SELECT column_name 
+        FROM information_schema.columns 
+        WHERE table_name = 'social_moment' 
+          AND table_schema = 'public' 
+          -- 核心过滤：排除保留字段及传入的业务字段
+          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'ID', 'Createdat', 'Updatedat', 'Sort', 'title', 'summary', 'fulltext', 'previewimgurl', 'link', 'type', 'state', 'mediatype'])
+    LOOP
+        RAISE NOTICE 'Dropping column %% from table %%', row.column_name, 'social_moment';
+        EXECUTE format('ALTER TABLE %%I DROP COLUMN IF EXISTS %%I CASCADE', 'social_moment', row.column_name);
+    END LOOP;
 END $$;
 
 
@@ -426,6 +498,71 @@ BEGIN
         ALTER TABLE social_moment ADD "mediatype" int;
     END IF;
 END $$;
+-- [sys_config] ----------------------
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT * FROM information_schema.tables WHERE table_name = 'sys_config'));
+
+    IF not condition THEN
+    CREATE TABLE sys_config (id BIGINT NOT NULL
+        ,createdat BIGINT NOT NULL
+        ,updatedat BIGINT NOT NULL
+        ,sort BIGINT NOT NULL
+        ,"key" VARCHAR(64)
+        ,"val" TEXT);
+
+   END IF;
+END $$;
+
+-- PostgreSQL: Dropping obsolete fields (Safety Guard Active) -----------
+DO $$ 
+DECLARE
+    row record;
+BEGIN
+    FOR row IN 
+        SELECT column_name 
+        FROM information_schema.columns 
+        WHERE table_name = 'sys_config' 
+          AND table_schema = 'public' 
+          -- 核心过滤：排除保留字段及传入的业务字段
+          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'ID', 'Createdat', 'Updatedat', 'Sort', 'key', 'val'])
+    LOOP
+        RAISE NOTICE 'Dropping column %% from table %%', row.column_name, 'sys_config';
+        EXECUTE format('ALTER TABLE %%I DROP COLUMN IF EXISTS %%I CASCADE', 'sys_config', row.column_name);
+    END LOOP;
+END $$;
+
+
+-- [sys_config.Key] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='sys_config' AND column_name='key'));
+
+    IF not condition THEN
+        ALTER TABLE sys_config ADD "key" varchar(64);
+    END IF;
+END $$;
+
+-- [sys_config.Val] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='sys_config' AND column_name='val'));
+
+    IF not condition THEN
+        ALTER TABLE sys_config ADD "val" text;
+    END IF;
+END $$;
 -- [sys_log] ----------------------
 
 DO $$
@@ -444,6 +581,24 @@ BEGIN
         ,"sql" TEXT);
 
    END IF;
+END $$;
+
+-- PostgreSQL: Dropping obsolete fields (Safety Guard Active) -----------
+DO $$ 
+DECLARE
+    row record;
+BEGIN
+    FOR row IN 
+        SELECT column_name 
+        FROM information_schema.columns 
+        WHERE table_name = 'sys_log' 
+          AND table_schema = 'public' 
+          -- 核心过滤：排除保留字段及传入的业务字段
+          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'ID', 'Createdat', 'Updatedat', 'Sort', 'location', 'content', 'sql'])
+    LOOP
+        RAISE NOTICE 'Dropping column %% from table %%', row.column_name, 'sys_log';
+        EXECUTE format('ALTER TABLE %%I DROP COLUMN IF EXISTS %%I CASCADE', 'sys_log', row.column_name);
+    END LOOP;
 END $$;
 
 
@@ -505,6 +660,24 @@ BEGIN
         ,"request" TEXT);
 
    END IF;
+END $$;
+
+-- PostgreSQL: Dropping obsolete fields (Safety Guard Active) -----------
+DO $$ 
+DECLARE
+    row record;
+BEGIN
+    FOR row IN 
+        SELECT column_name 
+        FROM information_schema.columns 
+        WHERE table_name = 'sys_pagelog' 
+          AND table_schema = 'public' 
+          -- 核心过滤：排除保留字段及传入的业务字段
+          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'ID', 'Createdat', 'Updatedat', 'Sort', 'ip', 'request'])
+    LOOP
+        RAISE NOTICE 'Dropping column %% from table %%', row.column_name, 'sys_pagelog';
+        EXECUTE format('ALTER TABLE %%I DROP COLUMN IF EXISTS %%I CASCADE', 'sys_pagelog', row.column_name);
+    END LOOP;
 END $$;
 
 

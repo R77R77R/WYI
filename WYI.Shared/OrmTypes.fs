@@ -436,6 +436,50 @@ let MOMENT_id = ref 54864675L
 let MOMENT_count = ref 0
 let MOMENT_table = "Social_Moment"
 
+// [Sys_Config] (CONFIG)
+
+type pCONFIG = {
+mutable Key: Chars
+mutable Val: Text}
+
+
+type CONFIG = Rcd<pCONFIG>
+
+let CONFIG_fieldorders() =
+    match rdbms with
+    | Rdbms.SqlServer ->
+        "[ID],[Createdat],[Updatedat],[Sort],[Key],[Val]"
+    | Rdbms.PostgreSql ->
+        $""" "id","createdat","updatedat","sort", "key","val" """
+
+let pCONFIG_fieldordersArray = [|
+    "Key"
+    "Val" |]
+
+let CONFIG_sql_update() =
+    match rdbms with
+    | Rdbms.SqlServer -> "[Key]=@Key,[Val]=@Val"
+    | Rdbms.PostgreSql -> "key=@key,val=@val"
+
+let pCONFIG_fields() =
+    match rdbms with
+    | Rdbms.SqlServer ->
+        [|
+            Chars("Key", 64)
+            Text("Val") |]
+    | Rdbms.PostgreSql ->
+        [|
+            Chars("key", 64)
+            Text("val") |]
+
+let pCONFIG_empty(): pCONFIG = {
+    Key = ""
+    Val = "" }
+
+let CONFIG_id = ref 0L
+let CONFIG_count = ref 0
+let CONFIG_table = "Sys_Config"
+
 // [Sys_Log] (LOG)
 
 type pLOG = {

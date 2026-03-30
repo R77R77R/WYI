@@ -819,6 +819,99 @@ IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_social_momentM
     BEGIN
     ALTER TABLE social_moment DROP  CONSTRAINT [UniqueNonclustered_social_momentMediaType]
     END
+-- [sys_config] ----------------------
+
+IF NOT EXISTS(SELECT * FROM sysobjects WHERE [name]='sys_config' AND xtype='U')
+
+BEGIN
+
+    CREATE TABLE sys_config ([ID] BIGINT NOT NULL
+        ,[Createdat] BIGINT NOT NULL
+        ,[Updatedat] BIGINT NOT NULL
+        ,[Sort] BIGINT NOT NULL,
+        [Key] NVARCHAR(64) COLLATE Chinese_PRC_CI_AS
+        ,[Val] NVARCHAR(MAX)
+, CONSTRAINT [PK_sys_config] PRIMARY KEY CLUSTERED ([ID] ASC)) ON [PRIMARY]
+END
+
+
+-- Dropping obsolete fields -----------
+DECLARE @name_sys_config NVARCHAR(64)
+DECLARE cursor_sys_config CURSOR FOR 
+    SELECT name FROM SYSCOLUMNS WHERE id=object_id('sys_config') AND (name NOT IN ('ID','Createdat','Updatedat','Sort','Key','Val'))
+
+OPEN cursor_sys_config
+FETCH NEXT FROM cursor_sys_config INTO @name_sys_config
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    PRINT 'Dropping sys_config.' + @name_sys_config;
+    
+    DECLARE @sql_sys_config NVARCHAR(MAX);
+    SET @sql_sys_config = 'ALTER TABLE sys_config DROP COLUMN ' + QUOTENAME(@name_sys_config)
+    EXEC sp_executesql @sql_sys_config
+    
+    
+    FETCH NEXT FROM cursor_sys_config INTO @name_sys_config
+END
+
+CLOSE cursor_sys_config;
+DEALLOCATE cursor_sys_config;
+
+
+-- [sys_config.Key] -------------
+
+
+-- [sys_config.Key] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('sys_config') AND name='Key')
+    BEGIN
+     ALTER TABLE sys_config ALTER COLUMN [Key] NVARCHAR(64) COLLATE Chinese_PRC_CI_AS
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_sys_config_Key NVARCHAR(MAX);
+    SET @sql_add_sys_config_Key = 'ALTER TABLE sys_config ADD [Key] NVARCHAR(64) COLLATE Chinese_PRC_CI_AS'
+    EXEC sp_executesql @sql_add_sys_config_Key
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_sys_configKey')
+    BEGIN
+    ALTER TABLE sys_config DROP  CONSTRAINT [Constraint_sys_configKey]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_sys_configKey')
+    BEGIN
+    ALTER TABLE sys_config DROP  CONSTRAINT [UniqueNonclustered_sys_configKey]
+    END
+
+-- [sys_config.Val] -------------
+
+
+-- [sys_config.Val] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('sys_config') AND name='Val')
+    BEGIN
+     ALTER TABLE sys_config ALTER COLUMN [Val] NVARCHAR(MAX)
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_sys_config_Val NVARCHAR(MAX);
+    SET @sql_add_sys_config_Val = 'ALTER TABLE sys_config ADD [Val] NVARCHAR(MAX)'
+    EXEC sp_executesql @sql_add_sys_config_Val
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_sys_configVal')
+    BEGIN
+    ALTER TABLE sys_config DROP  CONSTRAINT [Constraint_sys_configVal]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_sys_configVal')
+    BEGIN
+    ALTER TABLE sys_config DROP  CONSTRAINT [UniqueNonclustered_sys_configVal]
+    END
 -- [sys_log] ----------------------
 
 IF NOT EXISTS(SELECT * FROM sysobjects WHERE [name]='sys_log' AND xtype='U')

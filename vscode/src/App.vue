@@ -1,14 +1,5 @@
 <template> 
 
-<div v-if="s.rt.user.eu.id > 0">
-  {{ s.rt.user.eu.p.Caption }} ({{ s.rt.user.eu.p.Email }})
-  <img :src="s.rt.user.eu.p.Avatar" width="32" />
-</div>
-<div v-else>
-  N/A
-</div>
-
-<div>Clerk</div>
 
 <header>
     <Show when="signed-out">
@@ -18,15 +9,8 @@
     <Show when="signed-in">
       <UserButton />
     </Show>
-  </header>
+</header>
 
-<main class="main-content">
-  <router-view />
-</main>
-
-<div>MO Mar 23, 2026</div>
-<div>Auto remote deploy</div>
-<div>postgresql + F# + Kestrel + vue</div>
 <div>https://whatsyourideal.com/</div>
 <div>Lower Your Bills On CruiseControl!</div>
 
@@ -39,21 +23,9 @@
   </div>  
 
   <div class="w-full flex justify-center bg-[#262622]">
-    <img class="w-[300px] my-3" src="https://i.imgur.com/JvdrjQP.png">
+    <router-link to="/">Home</router-link>
+    &nbsp;
   </div>
-
-  <div class="flex justify-center p-3"><div class="flex hor-range">
-    <div class="menu"><router-link to="/">Home</router-link></div>
-    <div class="menu"><a href="#painting">Painting</a></div>
-    <div class="menu"><a href="#price">Price</a></div>
-    <div class="menu"><a href="#lesson">Lesson</a></div>
-    <div class="bg-white">
-      <a href="https://www.yelp.com/biz/sdcheen-fine-art-studio-dingmans-ferry" target="_blank">
-        <img src="https://s3-media0.fl.yelpcdn.com/assets/srv0/yelp_design_cdn/7ef71bf77a33/assets/img/brand/logo_desktop.svg">
-      </a>
-    </div>
-  </div>
-</div>
 
   <router-view />
 
@@ -61,7 +33,7 @@
 
   <div class="flex justify-center"><div class="hor-range">
     <div class="pt-2 pb-5">
-      <br>© 2025 CiteLand
+      <br>© 2026 WYI
     </div>
   </div></div>
 

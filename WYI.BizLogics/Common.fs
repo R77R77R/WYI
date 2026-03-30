@@ -49,7 +49,8 @@ let runtime =
         fsDir = @"C:/FsRoot/WYI" }
 
 
-    {   desc = "" }
+    {   apiKeyGemini = ""
+        desc = "" }
     |> empty__Runtime<EuComplex,unit,HostData,RuntimeData> "WYI" h
 
 let dbLoggero =

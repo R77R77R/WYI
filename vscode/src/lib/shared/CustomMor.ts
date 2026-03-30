@@ -63,18 +63,21 @@ export const bin__MomentComplex = (bi:BinIndexed):wyi.MomentComplex => {
 
 export const RuntimeData_empty = (): wyi.RuntimeData => { 
     return {
+        apiKeyGemini: "",
         desc: "",
     } as wyi.RuntimeData
 }
 
 export const RuntimeData__bin = (bb:BytesBuilder) => (v:any) => {
 
+    marshall.str__bin (bb) (v.apiKeyGemini)
     marshall.str__bin (bb) (v.desc)
 }
 
 export const bin__RuntimeData = (bi:BinIndexed):wyi.RuntimeData => {
 
     return {
+        apiKeyGemini: marshall.bin__str (bi),
         desc: marshall.bin__str (bi),
     }
 }

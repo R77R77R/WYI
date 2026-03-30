@@ -86,6 +86,22 @@ sort:number
 p:pMOMENT
 }
 
+// [Sys_Config] (CONFIG)
+
+export type pCONFIG = {
+[key:string]: any
+    Key: string
+    Val: string
+}
+
+export type CONFIG = {
+id:number
+createdat:Date
+updatedat:Date
+sort:number
+p:pCONFIG
+}
+
 // [Sys_Log] (LOG)
 
 export type pLOG = {
