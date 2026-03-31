@@ -58,18 +58,31 @@ let init (runtime:Runtime) =
 
     WYI.Shared.OrmMor.init()
 
-    let config = new Dictionary<string,string>()
+    let config = 
+        let res = new Dictionary<string,string>()
 
-    (fun (i:CONFIG) -> config[i.p.Key] <- i.p.Val)
-    |> loadAll runtime.output conn CONFIG_metadata
+        (fun (i:CONFIG) -> res[i.p.Key] <- i.p.Val)
+        |> loadAll runtime.output conn CONFIG_metadata
     
-    let p = pCONFIG_empty()
+        res
+        
+    runtime.data.apiKeyGemini <-
+        let key = "ApiKeyGemini"
+        if config.ContainsKey key = false then
+            let p = pCONFIG_empty()
+            p.Key <- key
+            CONFIG_create_incremental_transaction 
+                runtime.output ((fun rcd -> ()),(fun (eso,ctx) -> ())) p
+        config["ApiKeyGemini"]
 
-    p.Key <- "ApiKeyGemini"
 
-    CONFIG_create_incremental_transaction 
-        runtime.output ((fun rcd -> ()),(fun (eso,ctx) -> ())) p
-    runtime.data.apiKeyGemini <- config["ApiKeyGemini"]
+    UtilKestrel.Open.Google.Gemini
+        runtime.output
+        runtime.data.apiKeyGemini
+        "给我当前时间"
+    |> runtime.output
+    
+
 
     (fun (i:EU) -> runtime.users[i.ID] <- { eu = i })
     |> loadAll runtime.output conn EU_metadata

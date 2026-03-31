@@ -26,32 +26,16 @@
       <div class="icon">📄</div>
       <p>Drop your files here or <span>Select</span></p>
       <small>Max. 10GB</small>
-      <div>Utility Providers: ADT, ... see a full list.</div>
+    </div>
+    <div>Utility Providers: ADT, ... see a full list.</div>
+
+    <div>File list</div>
+    <div class="flex flex-wrap gap-4 p-4">
+        <BillFile class="w-48 h-32 bg-slate-100 border-2 border-dashed border-slate-300 rounded-lg flex items-center justify-center" 
+            v-for="filex in s.filexs"
+            :filex="filex"></BillFile>
     </div>
 
-    <div class="task-list" v-if="tasks.length > 0">
-      <div v-for="task in tasks" :key="task.id" class="task-item">
-        <div class="file-meta">
-          <span class="file-name">{{ task.file.name }}</span>
-          <span class="file-size">{{ (task.file.size / 1024 / 1024).toFixed(2) }} MB</span>
-        </div>
-        
-        <div class="progress-container">
-          <div 
-            class="progress-fill" 
-            :style="{ width: task.progress + '%' }"
-            :class="task.status"
-          ></div>
-        </div>
-
-        <div class="status-row">
-          <span :class="['status-label', task.status]">
-            {{ getStatusText(task) }}
-          </span>
-          <span v-if="task.message" class="error-detail"> - {{ task.message }}</span>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -59,21 +43,16 @@
 import { ref } from 'vue'
 import { glib } from '~/lib/glib'
 
-// 定义上传任务接口
-interface UploadTask {
-  id: string
-  file: File
-  progress: number
-  status: 'pending' | 'uploading' | 'success' | 'error'
-  message?: string
-}
+import BillFile from '~/comps/BillFile.vue'
+import { UploadTask, FileComplex } from '~/comps/BillFile.vue'
+
 
 // 适配你的全局 runtime 注入逻辑
 const s = glib.vue.reactive({
-  rt: (window as any).runtime
+  filexs: [] as FileComplex[],
+  rt: runtime
 })
 
-const tasks = ref<UploadTask[]>([])
 const isDragging = ref(false)
 const fileInput = ref<HTMLInputElement | null>(null)
 
@@ -93,10 +72,12 @@ const handleFiles = (fileList: FileList | null) => {
   if (!fileList) return
   
   // 校验业务 Session 是否就绪 (来自你的后置 loader)
+  /*
   if (!s.rt.session || s.rt.session === "null") {
     alert("Session 未就绪，请刷新页面。")
     return
   }
+  //*/
 
   Array.from(fileList).forEach(file => {
     const task: UploadTask = {
@@ -105,9 +86,11 @@ const handleFiles = (fileList: FileList | null) => {
       progress: 0,
       status: 'pending'
     }
-    tasks.value.push(task)
+
     // 立即触发并行上传请求
     executeUpload(task)
+
+    s.filexs.push({ uploadTask: task, file: file})
   })
 }
 
@@ -145,19 +128,11 @@ const executeUpload = async (task: UploadTask) => {
     }
   } catch (err: any) {
     task.status = 'error'
-    task.message = "网络异常或文件超过限制"
+    task.message = "Network error or file too large"
     console.error("Upload failed:", err)
   }
 }
 
-const getStatusText = (task: UploadTask) => {
-  switch (task.status) {
-    case 'uploading': return '上传中...'
-    case 'success': return '完成'
-    case 'error': return '失败'
-    default: return '排队'
-  }
-}
 </script>
 
 <style scoped>
@@ -175,21 +150,4 @@ const getStatusText = (task: UploadTask) => {
 .drop-zone.is-dragging { border-color: #409eff; background: #ecf5ff; }
 .icon { font-size: 3rem; margin-bottom: 1rem; }
 .task-list { margin-top: 2rem; }
-.task-item { 
-  border: 1px solid #eee; 
-  padding: 1rem; 
-  border-radius: 6px; 
-  margin-bottom: 1rem; 
-  background: white;
-}
-.file-meta { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.5rem; }
-.progress-container { height: 6px; background: #ebeef5; border-radius: 3px; overflow: hidden; }
-.progress-fill { height: 100%; transition: width 0.3s; }
-.progress-fill.uploading { background: #409eff; }
-.progress-fill.success { background: #67c23a; }
-.progress-fill.error { background: #f56c6c; }
-.status-row { font-size: 0.75rem; margin-top: 0.5rem; }
-.status-label.success { color: #67c23a; }
-.status-label.error { color: #f56c6c; }
-.error-detail { color: #999; }
 </style>

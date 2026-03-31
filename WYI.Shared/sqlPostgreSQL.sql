@@ -1,42 +1,52 @@
 -- [ca_enduser] ----------------------
 
+-- [ca_enduser] ----------------------
+
 DO $$
 DECLARE
     condition boolean;
 BEGIN
-    condition := (SELECT EXISTS(SELECT * FROM information_schema.tables WHERE table_name = 'ca_enduser'));
+    condition := (SELECT EXISTS(
+        SELECT 1 FROM information_schema.tables 
+        WHERE table_name = 'ca_enduser' 
+          AND table_schema = 'public'
+    ));
 
     IF not condition THEN
-    CREATE TABLE ca_enduser (id BIGINT NOT NULL
-        ,createdat BIGINT NOT NULL
-        ,updatedat BIGINT NOT NULL
-        ,sort BIGINT NOT NULL
-        ,"caption" VARCHAR(64)
-        ,"username" VARCHAR(64)
-        ,"email" VARCHAR(255)
-        ,"avatar" TEXT
-        ,"clerkuserid" VARCHAR(100)
-        ,"pwd" VARCHAR(64)
-        ,"authtype" INT);
-
-   END IF;
+        CREATE TABLE "ca_enduser" (
+            id BIGINT NOT NULL
+            ,createdat BIGINT NOT NULL
+            ,updatedat BIGINT NOT NULL
+            ,sort BIGINT NOT NULL
+            ,"caption" VARCHAR(64)
+            ,"username" VARCHAR(64)
+            ,"email" VARCHAR(255)
+            ,"avatar" TEXT
+            ,"clerkuserid" VARCHAR(100)
+            ,"pwd" VARCHAR(64)
+            ,"authtype" INT
+            ,CONSTRAINT "pk_ca_enduser" PRIMARY KEY (id)
+        );
+    END IF;
 END $$;
 
--- PostgreSQL: Dropping obsolete fields (Safety Guard Active) -----------
+
+-- PostgreSQL: Dropping obsolete fields -----------
 DO $$ 
 DECLARE
-    row record;
+    fn TEXT;
 BEGIN
-    FOR row IN 
+    FOR fn IN 
         SELECT column_name 
         FROM information_schema.columns 
         WHERE table_name = 'ca_enduser' 
           AND table_schema = 'public' 
-          -- 核心过滤：排除保留字段及传入的业务字段
-          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'ID', 'Createdat', 'Updatedat', 'Sort', 'caption', 'username', 'email', 'avatar', 'clerkuserid', 'pwd', 'authtype'])
+          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'caption', 'username', 'email', 'avatar', 'clerkuserid', 'pwd', 'authtype'])
     LOOP
-        RAISE NOTICE 'Dropping column %% from table %%', row.column_name, 'ca_enduser';
-        EXECUTE format('ALTER TABLE %%I DROP COLUMN IF EXISTS %%I CASCADE', 'ca_enduser', row.column_name);
+        -- 对应 PRINT 'Dropping ' + @tname + '.' + @fn
+        
+        -- 对应 EXEC sp_executesql @sql (format %I 对应 QUOTENAME)
+        EXECUTE format('ALTER TABLE %I DROP COLUMN %I', 'ca_enduser', fn);
     END LOOP;
 END $$;
 
@@ -140,42 +150,52 @@ BEGIN
 END $$;
 -- [ca_file] ----------------------
 
+-- [ca_file] ----------------------
+
 DO $$
 DECLARE
     condition boolean;
 BEGIN
-    condition := (SELECT EXISTS(SELECT * FROM information_schema.tables WHERE table_name = 'ca_file'));
+    condition := (SELECT EXISTS(
+        SELECT 1 FROM information_schema.tables 
+        WHERE table_name = 'ca_file' 
+          AND table_schema = 'public'
+    ));
 
     IF not condition THEN
-    CREATE TABLE ca_file (id BIGINT NOT NULL
-        ,createdat BIGINT NOT NULL
-        ,updatedat BIGINT NOT NULL
-        ,sort BIGINT NOT NULL
-        ,"caption" TEXT
-        ,"desc" TEXT
-        ,"suffix" VARCHAR(4)
-        ,"size" BIGINT
-        ,"thumbnail" BYTEA
-        ,"owner" BIGINT);
-
-   END IF;
+        CREATE TABLE "ca_file" (
+            id BIGINT NOT NULL
+            ,createdat BIGINT NOT NULL
+            ,updatedat BIGINT NOT NULL
+            ,sort BIGINT NOT NULL
+            ,"caption" TEXT
+            ,"desc" TEXT
+            ,"suffix" VARCHAR(4)
+            ,"size" BIGINT
+            ,"thumbnail" BYTEA
+            ,"owner" BIGINT
+            ,CONSTRAINT "pk_ca_file" PRIMARY KEY (id)
+        );
+    END IF;
 END $$;
 
--- PostgreSQL: Dropping obsolete fields (Safety Guard Active) -----------
+
+-- PostgreSQL: Dropping obsolete fields -----------
 DO $$ 
 DECLARE
-    row record;
+    fn TEXT;
 BEGIN
-    FOR row IN 
+    FOR fn IN 
         SELECT column_name 
         FROM information_schema.columns 
         WHERE table_name = 'ca_file' 
           AND table_schema = 'public' 
-          -- 核心过滤：排除保留字段及传入的业务字段
-          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'ID', 'Createdat', 'Updatedat', 'Sort', 'caption', 'desc', 'suffix', 'size', 'thumbnail', 'owner'])
+          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'caption', 'desc', 'suffix', 'size', 'thumbnail', 'owner'])
     LOOP
-        RAISE NOTICE 'Dropping column %% from table %%', row.column_name, 'ca_file';
-        EXECUTE format('ALTER TABLE %%I DROP COLUMN IF EXISTS %%I CASCADE', 'ca_file', row.column_name);
+        -- 对应 PRINT 'Dropping ' + @tname + '.' + @fn
+        
+        -- 对应 EXEC sp_executesql @sql (format %I 对应 QUOTENAME)
+        EXECUTE format('ALTER TABLE %I DROP COLUMN %I', 'ca_file', fn);
     END LOOP;
 END $$;
 
@@ -265,39 +285,49 @@ BEGIN
 END $$;
 -- [social_filebind] ----------------------
 
+-- [social_filebind] ----------------------
+
 DO $$
 DECLARE
     condition boolean;
 BEGIN
-    condition := (SELECT EXISTS(SELECT * FROM information_schema.tables WHERE table_name = 'social_filebind'));
+    condition := (SELECT EXISTS(
+        SELECT 1 FROM information_schema.tables 
+        WHERE table_name = 'social_filebind' 
+          AND table_schema = 'public'
+    ));
 
     IF not condition THEN
-    CREATE TABLE social_filebind (id BIGINT NOT NULL
-        ,createdat BIGINT NOT NULL
-        ,updatedat BIGINT NOT NULL
-        ,sort BIGINT NOT NULL
-        ,"file" BIGINT
-        ,"moment" BIGINT
-        ,"desc" TEXT);
-
-   END IF;
+        CREATE TABLE "social_filebind" (
+            id BIGINT NOT NULL
+            ,createdat BIGINT NOT NULL
+            ,updatedat BIGINT NOT NULL
+            ,sort BIGINT NOT NULL
+            ,"file" BIGINT
+            ,"moment" BIGINT
+            ,"desc" TEXT
+            ,CONSTRAINT "pk_social_filebind" PRIMARY KEY (id)
+        );
+    END IF;
 END $$;
 
--- PostgreSQL: Dropping obsolete fields (Safety Guard Active) -----------
+
+-- PostgreSQL: Dropping obsolete fields -----------
 DO $$ 
 DECLARE
-    row record;
+    fn TEXT;
 BEGIN
-    FOR row IN 
+    FOR fn IN 
         SELECT column_name 
         FROM information_schema.columns 
         WHERE table_name = 'social_filebind' 
           AND table_schema = 'public' 
-          -- 核心过滤：排除保留字段及传入的业务字段
-          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'ID', 'Createdat', 'Updatedat', 'Sort', 'file', 'moment', 'desc'])
+          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'file', 'moment', 'desc'])
     LOOP
-        RAISE NOTICE 'Dropping column %% from table %%', row.column_name, 'social_filebind';
-        EXECUTE format('ALTER TABLE %%I DROP COLUMN IF EXISTS %%I CASCADE', 'social_filebind', row.column_name);
+        -- 对应 PRINT 'Dropping ' + @tname + '.' + @fn
+        
+        -- 对应 EXEC sp_executesql @sql (format %I 对应 QUOTENAME)
+        EXECUTE format('ALTER TABLE %I DROP COLUMN %I', 'social_filebind', fn);
     END LOOP;
 END $$;
 
@@ -345,44 +375,54 @@ BEGIN
 END $$;
 -- [social_moment] ----------------------
 
+-- [social_moment] ----------------------
+
 DO $$
 DECLARE
     condition boolean;
 BEGIN
-    condition := (SELECT EXISTS(SELECT * FROM information_schema.tables WHERE table_name = 'social_moment'));
+    condition := (SELECT EXISTS(
+        SELECT 1 FROM information_schema.tables 
+        WHERE table_name = 'social_moment' 
+          AND table_schema = 'public'
+    ));
 
     IF not condition THEN
-    CREATE TABLE social_moment (id BIGINT NOT NULL
-        ,createdat BIGINT NOT NULL
-        ,updatedat BIGINT NOT NULL
-        ,sort BIGINT NOT NULL
-        ,"title" TEXT
-        ,"summary" TEXT
-        ,"fulltext" TEXT
-        ,"previewimgurl" TEXT
-        ,"link" TEXT
-        ,"type" INT
-        ,"state" INT
-        ,"mediatype" INT);
-
-   END IF;
+        CREATE TABLE "social_moment" (
+            id BIGINT NOT NULL
+            ,createdat BIGINT NOT NULL
+            ,updatedat BIGINT NOT NULL
+            ,sort BIGINT NOT NULL
+            ,"title" TEXT
+            ,"summary" TEXT
+            ,"fulltext" TEXT
+            ,"previewimgurl" TEXT
+            ,"link" TEXT
+            ,"type" INT
+            ,"state" INT
+            ,"mediatype" INT
+            ,CONSTRAINT "pk_social_moment" PRIMARY KEY (id)
+        );
+    END IF;
 END $$;
 
--- PostgreSQL: Dropping obsolete fields (Safety Guard Active) -----------
+
+-- PostgreSQL: Dropping obsolete fields -----------
 DO $$ 
 DECLARE
-    row record;
+    fn TEXT;
 BEGIN
-    FOR row IN 
+    FOR fn IN 
         SELECT column_name 
         FROM information_schema.columns 
         WHERE table_name = 'social_moment' 
           AND table_schema = 'public' 
-          -- 核心过滤：排除保留字段及传入的业务字段
-          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'ID', 'Createdat', 'Updatedat', 'Sort', 'title', 'summary', 'fulltext', 'previewimgurl', 'link', 'type', 'state', 'mediatype'])
+          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'title', 'summary', 'fulltext', 'previewimgurl', 'link', 'type', 'state', 'mediatype'])
     LOOP
-        RAISE NOTICE 'Dropping column %% from table %%', row.column_name, 'social_moment';
-        EXECUTE format('ALTER TABLE %%I DROP COLUMN IF EXISTS %%I CASCADE', 'social_moment', row.column_name);
+        -- 对应 PRINT 'Dropping ' + @tname + '.' + @fn
+        
+        -- 对应 EXEC sp_executesql @sql (format %I 对应 QUOTENAME)
+        EXECUTE format('ALTER TABLE %I DROP COLUMN %I', 'social_moment', fn);
     END LOOP;
 END $$;
 
@@ -500,38 +540,48 @@ BEGIN
 END $$;
 -- [sys_config] ----------------------
 
+-- [sys_config] ----------------------
+
 DO $$
 DECLARE
     condition boolean;
 BEGIN
-    condition := (SELECT EXISTS(SELECT * FROM information_schema.tables WHERE table_name = 'sys_config'));
+    condition := (SELECT EXISTS(
+        SELECT 1 FROM information_schema.tables 
+        WHERE table_name = 'sys_config' 
+          AND table_schema = 'public'
+    ));
 
     IF not condition THEN
-    CREATE TABLE sys_config (id BIGINT NOT NULL
-        ,createdat BIGINT NOT NULL
-        ,updatedat BIGINT NOT NULL
-        ,sort BIGINT NOT NULL
-        ,"key" VARCHAR(64)
-        ,"val" TEXT);
-
-   END IF;
+        CREATE TABLE "sys_config" (
+            id BIGINT NOT NULL
+            ,createdat BIGINT NOT NULL
+            ,updatedat BIGINT NOT NULL
+            ,sort BIGINT NOT NULL
+            ,"key" VARCHAR(64)
+            ,"val" TEXT
+            ,CONSTRAINT "pk_sys_config" PRIMARY KEY (id)
+        );
+    END IF;
 END $$;
 
--- PostgreSQL: Dropping obsolete fields (Safety Guard Active) -----------
+
+-- PostgreSQL: Dropping obsolete fields -----------
 DO $$ 
 DECLARE
-    row record;
+    fn TEXT;
 BEGIN
-    FOR row IN 
+    FOR fn IN 
         SELECT column_name 
         FROM information_schema.columns 
         WHERE table_name = 'sys_config' 
           AND table_schema = 'public' 
-          -- 核心过滤：排除保留字段及传入的业务字段
-          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'ID', 'Createdat', 'Updatedat', 'Sort', 'key', 'val'])
+          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'key', 'val'])
     LOOP
-        RAISE NOTICE 'Dropping column %% from table %%', row.column_name, 'sys_config';
-        EXECUTE format('ALTER TABLE %%I DROP COLUMN IF EXISTS %%I CASCADE', 'sys_config', row.column_name);
+        -- 对应 PRINT 'Dropping ' + @tname + '.' + @fn
+        
+        -- 对应 EXEC sp_executesql @sql (format %I 对应 QUOTENAME)
+        EXECUTE format('ALTER TABLE %I DROP COLUMN %I', 'sys_config', fn);
     END LOOP;
 END $$;
 
@@ -565,39 +615,49 @@ BEGIN
 END $$;
 -- [sys_log] ----------------------
 
+-- [sys_log] ----------------------
+
 DO $$
 DECLARE
     condition boolean;
 BEGIN
-    condition := (SELECT EXISTS(SELECT * FROM information_schema.tables WHERE table_name = 'sys_log'));
+    condition := (SELECT EXISTS(
+        SELECT 1 FROM information_schema.tables 
+        WHERE table_name = 'sys_log' 
+          AND table_schema = 'public'
+    ));
 
     IF not condition THEN
-    CREATE TABLE sys_log (id BIGINT NOT NULL
-        ,createdat BIGINT NOT NULL
-        ,updatedat BIGINT NOT NULL
-        ,sort BIGINT NOT NULL
-        ,"location" TEXT
-        ,"content" TEXT
-        ,"sql" TEXT);
-
-   END IF;
+        CREATE TABLE "sys_log" (
+            id BIGINT NOT NULL
+            ,createdat BIGINT NOT NULL
+            ,updatedat BIGINT NOT NULL
+            ,sort BIGINT NOT NULL
+            ,"location" TEXT
+            ,"content" TEXT
+            ,"sql" TEXT
+            ,CONSTRAINT "pk_sys_log" PRIMARY KEY (id)
+        );
+    END IF;
 END $$;
 
--- PostgreSQL: Dropping obsolete fields (Safety Guard Active) -----------
+
+-- PostgreSQL: Dropping obsolete fields -----------
 DO $$ 
 DECLARE
-    row record;
+    fn TEXT;
 BEGIN
-    FOR row IN 
+    FOR fn IN 
         SELECT column_name 
         FROM information_schema.columns 
         WHERE table_name = 'sys_log' 
           AND table_schema = 'public' 
-          -- 核心过滤：排除保留字段及传入的业务字段
-          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'ID', 'Createdat', 'Updatedat', 'Sort', 'location', 'content', 'sql'])
+          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'location', 'content', 'sql'])
     LOOP
-        RAISE NOTICE 'Dropping column %% from table %%', row.column_name, 'sys_log';
-        EXECUTE format('ALTER TABLE %%I DROP COLUMN IF EXISTS %%I CASCADE', 'sys_log', row.column_name);
+        -- 对应 PRINT 'Dropping ' + @tname + '.' + @fn
+        
+        -- 对应 EXEC sp_executesql @sql (format %I 对应 QUOTENAME)
+        EXECUTE format('ALTER TABLE %I DROP COLUMN %I', 'sys_log', fn);
     END LOOP;
 END $$;
 
@@ -645,38 +705,48 @@ BEGIN
 END $$;
 -- [sys_pagelog] ----------------------
 
+-- [sys_pagelog] ----------------------
+
 DO $$
 DECLARE
     condition boolean;
 BEGIN
-    condition := (SELECT EXISTS(SELECT * FROM information_schema.tables WHERE table_name = 'sys_pagelog'));
+    condition := (SELECT EXISTS(
+        SELECT 1 FROM information_schema.tables 
+        WHERE table_name = 'sys_pagelog' 
+          AND table_schema = 'public'
+    ));
 
     IF not condition THEN
-    CREATE TABLE sys_pagelog (id BIGINT NOT NULL
-        ,createdat BIGINT NOT NULL
-        ,updatedat BIGINT NOT NULL
-        ,sort BIGINT NOT NULL
-        ,"ip" VARCHAR(64)
-        ,"request" TEXT);
-
-   END IF;
+        CREATE TABLE "sys_pagelog" (
+            id BIGINT NOT NULL
+            ,createdat BIGINT NOT NULL
+            ,updatedat BIGINT NOT NULL
+            ,sort BIGINT NOT NULL
+            ,"ip" VARCHAR(64)
+            ,"request" TEXT
+            ,CONSTRAINT "pk_sys_pagelog" PRIMARY KEY (id)
+        );
+    END IF;
 END $$;
 
--- PostgreSQL: Dropping obsolete fields (Safety Guard Active) -----------
+
+-- PostgreSQL: Dropping obsolete fields -----------
 DO $$ 
 DECLARE
-    row record;
+    fn TEXT;
 BEGIN
-    FOR row IN 
+    FOR fn IN 
         SELECT column_name 
         FROM information_schema.columns 
         WHERE table_name = 'sys_pagelog' 
           AND table_schema = 'public' 
-          -- 核心过滤：排除保留字段及传入的业务字段
-          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'ID', 'Createdat', 'Updatedat', 'Sort', 'ip', 'request'])
+          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'ip', 'request'])
     LOOP
-        RAISE NOTICE 'Dropping column %% from table %%', row.column_name, 'sys_pagelog';
-        EXECUTE format('ALTER TABLE %%I DROP COLUMN IF EXISTS %%I CASCADE', 'sys_pagelog', row.column_name);
+        -- 对应 PRINT 'Dropping ' + @tname + '.' + @fn
+        
+        -- 对应 EXEC sp_executesql @sql (format %I 对应 QUOTENAME)
+        EXECUTE format('ALTER TABLE %I DROP COLUMN %I', 'sys_pagelog', fn);
     END LOOP;
 END $$;
 
