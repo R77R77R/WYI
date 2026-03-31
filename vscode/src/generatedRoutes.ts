@@ -15,6 +15,18 @@ import { RouteRecordRaw } from 'vue-router';
       }]
     },
     {
+      path: '//HomeCustomer',
+      component: ()=>import ( "/src/layouts/blank.vue" ),
+      meta: {"layout":"blank"},
+      children: [{
+        path: "",
+        name: '-HomeCustomer',
+        component:()=> import("~/pages//HomeCustomer.vue"),
+        meta: {"layout":"blank"},
+        props: true
+      }]
+    },
+    {
       path: '//UploadBills',
       component: ()=>import ( "/src/layouts/blank.vue" ),
       meta: {"layout":"blank"},

@@ -11180,6 +11180,196 @@ function extractChangingRecords(to, from) {
 	];
 }
 //#endregion
+//#region src/comps/BillFile.vue?vue&type=script&setup=true&lang.ts
+var _withScopeId$2 = (n) => (pushScopeId("data-v-f0f65bef"), n = n(), popScopeId(), n);
+var _hoisted_1$5 = { class: "h-full w-full flex flex-col p-3" };
+var _hoisted_2$3 = /* @__PURE__ */ _withScopeId$2(() => /* @__PURE__ */ createBaseVNode("div", null, "Preview", -1));
+var _hoisted_3$4 = /* @__PURE__ */ _withScopeId$2(() => /* @__PURE__ */ createBaseVNode("div", null, "Unit", -1));
+var _hoisted_4$4 = /* @__PURE__ */ _withScopeId$2(() => /* @__PURE__ */ createBaseVNode("div", null, "Provider", -1));
+var _hoisted_5$4 = /* @__PURE__ */ _withScopeId$2(() => /* @__PURE__ */ createBaseVNode("div", null, "Amount", -1));
+var _hoisted_6$4 = { class: "file-meta" };
+var _hoisted_7$4 = { class: "file-name" };
+var _hoisted_8$4 = { class: "file-size" };
+var _hoisted_9$3 = { class: "progress-container" };
+var _hoisted_10$3 = { class: "status-row" };
+var _hoisted_11$2 = {
+	key: 0,
+	class: "error-detail"
+};
+var BillFile_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */ defineComponent({
+	__name: "BillFile",
+	props: ["filex"],
+	setup(__props) {
+		const props = __props;
+		props.filex;
+		const getStatusText = (task) => {
+			switch (task.status) {
+				case "uploading": return "Uploading ...";
+				case "success": return "Succeeded";
+				case "error": return "Failed";
+				default: return "Pending ...";
+			}
+		};
+		return (_ctx, _cache) => {
+			return openBlock(), createElementBlock("div", _hoisted_1$5, [
+				_hoisted_2$3,
+				_hoisted_3$4,
+				_hoisted_4$4,
+				_hoisted_5$4,
+				createBaseVNode("div", _hoisted_6$4, [createBaseVNode("span", _hoisted_7$4, toDisplayString(props.filex.file.name), 1), createBaseVNode("span", _hoisted_8$4, toDisplayString((props.filex.file.size / 1024 / 1024).toFixed(2)) + " MB", 1)]),
+				createBaseVNode("div", _hoisted_9$3, [createBaseVNode("div", {
+					class: normalizeClass(["progress-fill", __props.filex.uploadTask.status]),
+					style: normalizeStyle({ width: props.filex.uploadTask.progress + "%" })
+				}, null, 6)]),
+				createBaseVNode("div", _hoisted_10$3, [createBaseVNode("span", { class: normalizeClass(["status-label", props.filex.uploadTask.status]) }, toDisplayString(getStatusText(props.filex.uploadTask)), 3), props.filex.uploadTask.message ? (openBlock(), createElementBlock("span", _hoisted_11$2, " - " + toDisplayString(props.filex.uploadTask.message), 1)) : createCommentVNode("", true)])
+			]);
+		};
+	}
+});
+//#endregion
+//#region \0plugin-vue:export-helper
+var _plugin_vue_export_helper_default = (sfc, props) => {
+	const target = sfc.__vccOpts || sfc;
+	for (const [key, val] of props) target[key] = val;
+	return target;
+};
+//#endregion
+//#region src/comps/BillFile.vue
+var BillFile_default = /* @__PURE__ */ _plugin_vue_export_helper_default(BillFile_vue_vue_type_script_setup_true_lang_default, [["__scopeId", "data-v-f0f65bef"]]);
+//#endregion
+//#region src/pages/UploadBills.vue?vue&type=script&setup=true&lang.ts
+var _withScopeId$1 = (n) => (pushScopeId("data-v-94d03db8"), n = n(), popScopeId(), n);
+var _hoisted_1$4 = { class: "upload-page" };
+var _hoisted_2$2 = { class: "header" };
+var _hoisted_3$3 = /* @__PURE__ */ _withScopeId$1(() => /* @__PURE__ */ createBaseVNode("h2", null, "Upload Bills", -1));
+var _hoisted_4$3 = {
+	key: 0,
+	class: "user-status"
+};
+var _hoisted_5$3 = { class: "id-tag" };
+var _hoisted_6$3 = /* @__PURE__ */ _withScopeId$1(() => /* @__PURE__ */ createBaseVNode("div", { class: "icon" }, "📄", -1));
+var _hoisted_7$3 = /* @__PURE__ */ _withScopeId$1(() => /* @__PURE__ */ createBaseVNode("p", null, [/* @__PURE__ */ createTextVNode("Drop your files here or "), /* @__PURE__ */ createBaseVNode("span", null, "Select")], -1));
+var _hoisted_8$3 = /* @__PURE__ */ _withScopeId$1(() => /* @__PURE__ */ createBaseVNode("small", null, "Max. 10GB", -1));
+var _hoisted_9$2 = /* @__PURE__ */ _withScopeId$1(() => /* @__PURE__ */ createBaseVNode("div", null, "Utility Providers: ADT, ... see a full list.", -1));
+var _hoisted_10$2 = /* @__PURE__ */ _withScopeId$1(() => /* @__PURE__ */ createBaseVNode("div", null, "File list", -1));
+var _hoisted_11$1 = { class: "flex flex-wrap gap-4 p-4" };
+//#endregion
+//#region src/pages/UploadBills.vue
+var UploadBills_default = /* @__PURE__ */ _plugin_vue_export_helper_default(/* @__PURE__ */ defineComponent({
+	__name: "UploadBills",
+	setup(__props) {
+		const s = glib.vue.reactive({
+			filexs: [],
+			rt: runtime
+		});
+		const isDragging = ref(false);
+		const fileInput = ref(null);
+		const triggerSelect = () => fileInput.value?.click();
+		const onFileSelect = (e) => {
+			const files = e.target.files;
+			handleFiles(files);
+		};
+		const onDrop = (e) => {
+			isDragging.value = false;
+			handleFiles(e.dataTransfer?.files || null);
+		};
+		const handleFiles = (fileList) => {
+			if (!fileList) return;
+			Array.from(fileList).forEach((file) => {
+				const task = {
+					id: Math.random().toString(36).slice(2),
+					file,
+					progress: 0,
+					status: "pending"
+				};
+				executeUpload(task);
+				s.filexs.push({
+					uploadTask: task,
+					file
+				});
+			});
+		};
+		const executeUpload = async (task) => {
+			task.status = "uploading";
+			task.progress = 20;
+			const token = await window.Clerk?.session?.getToken();
+			const formData = new FormData();
+			formData.append("file", task.file);
+			formData.append("session", s.rt.session);
+			try {
+				const response = await fetch("/api/public/upload", {
+					method: "POST",
+					headers: { "Authorization": `Bearer ${token}` },
+					body: formData
+				});
+				if (!response.ok) throw new Error(`Server Error: ${response.status}`);
+				const result = await response.json();
+				if (result.Er === "OK") {
+					task.status = "success";
+					task.progress = 100;
+				} else {
+					task.status = "error";
+					task.message = result.Er;
+				}
+			} catch (err) {
+				task.status = "error";
+				task.message = "Network error or file too large";
+				console.error("Upload failed:", err);
+			}
+		};
+		return (_ctx, _cache) => {
+			return openBlock(), createElementBlock("div", _hoisted_1$4, [
+				createBaseVNode("div", _hoisted_2$2, [_hoisted_3$3, unref(s).rt.user ? (openBlock(), createElementBlock("p", _hoisted_4$3, [createBaseVNode("strong", null, toDisplayString(unref(s).rt.user.eu.p.Caption), 1), createBaseVNode("span", _hoisted_5$3, "(ID: " + toDisplayString(unref(s).rt.user.id) + ")", 1)])) : createCommentVNode("", true)]),
+				createBaseVNode("div", {
+					class: normalizeClass(["drop-zone", { "is-dragging": isDragging.value }]),
+					onDragover: _cache[0] || (_cache[0] = withModifiers(($event) => isDragging.value = true, ["prevent"])),
+					onDragleave: _cache[1] || (_cache[1] = withModifiers(($event) => isDragging.value = false, ["prevent"])),
+					onDrop: withModifiers(onDrop, ["prevent"]),
+					onClick: triggerSelect
+				}, [
+					createBaseVNode("input", {
+						type: "file",
+						multiple: "",
+						ref_key: "fileInput",
+						ref: fileInput,
+						onChange: onFileSelect,
+						hidden: ""
+					}, null, 544),
+					_hoisted_6$3,
+					_hoisted_7$3,
+					_hoisted_8$3
+				], 34),
+				_hoisted_9$2,
+				_hoisted_10$2,
+				createBaseVNode("div", _hoisted_11$1, [(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).filexs, (filex) => {
+					return openBlock(), createBlock(BillFile_default, {
+						class: "w-48 h-32 bg-slate-100 border-2 border-dashed border-slate-300 rounded-lg flex items-center justify-center",
+						filex
+					}, null, 8, ["filex"]);
+				}), 256))])
+			]);
+		};
+	}
+}), [["__scopeId", "data-v-94d03db8"]]);
+//#endregion
+//#region src/pages/HomeCustomer.vue?vue&type=script&setup=true&lang.ts
+var _withScopeId = (n) => (pushScopeId("data-v-c112724e"), n = n(), popScopeId(), n);
+var _hoisted_1$3 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", null, "Welcome", -1));
+//#endregion
+//#region src/pages/HomeCustomer.vue
+var HomeCustomer_default = /* @__PURE__ */ _plugin_vue_export_helper_default(/* @__PURE__ */ defineComponent({
+	__name: "HomeCustomer",
+	setup(__props) {
+		const s = glib.vue.reactive({ rt: runtime });
+		ref([]);
+		ref(false);
+		ref(null);
+		return (_ctx, _cache) => {
+			return openBlock(), createElementBlock(Fragment, null, [_hoisted_1$3, createBaseVNode("button", { onClick: _cache[0] || (_cache[0] = ($event) => unref(s).rt.router.push("/UploadBills")) }, "Upload Your Bills")], 64);
+		};
+	}
+}), [["__scopeId", "data-v-c112724e"]]);
+//#endregion
 //#region src/lib/store/common.ts
 var loader = async (url, post, h) => {
 	post.session = runtime.session;
@@ -11187,127 +11377,29 @@ var loader = async (url, post, h) => {
 	if (rep?.Er == "OK") h(rep);
 };
 //#endregion
-//#region src/pages/Studio.vue?vue&type=script&setup=true&lang.ts
-var _hoisted_1$3 = { class: "main-color lg:w-screen text-2xl" };
-var _hoisted_2$2 = /* @__PURE__ */ createBaseVNode("div", { class: "hor" }, null, -1);
-var _hoisted_3$3 = {
-	id: "home",
-	class: "flex justify-center"
-};
-var _hoisted_4$3 = { class: "hor-range" };
-var _hoisted_5$3 = /* @__PURE__ */ createStaticVNode("<div class=\"text-5xl flex justify-center m-5\"> BE LOVED, BE PORTRAYED. </div><div class=\"caption-1\">Oil Painting</div><div class=\"lg:flex overflow-x-auto\"><img class=\"painting\" src=\"https://i.imgur.com/lb9Venv.jpeg\"><img class=\"painting\" src=\"https://i.imgur.com/YwSFX3r.jpeg\"><img class=\"painting\" src=\"https://i.imgur.com/L2EL3Jq.jpeg\"></div><div class=\"caption-1\">Sculpture and Egg Tempera</div><div class=\"lg:flex overflow-x-auto\"><img class=\"painting\" src=\"https://i.imgur.com/dmkmNTJ.jpeg\"><img class=\"painting\" src=\"https://i.imgur.com/YZDJVE7.jpeg\"><img class=\"painting\" src=\"https://i.imgur.com/6DPeaUd.jpeg\"></div><div> Oil painting by: <br>Copy from photos: Book to send us photographs of yourself or your loved ones <br>Live sittings: Experience a traditional portrait session, allowing for deeper capture of personality and character through direct observation. Book a visit to my forest home studio in Dingmans Ferry, located near the scenic Delaware Water Gap National Recreation Area at the convergence of New York, New Jersey, and Pennsylvania. </div>", 6);
-var _hoisted_11$2 = {
-	id: "book",
-	class: "my-5"
-};
-var _hoisted_12$2 = /* @__PURE__ */ createBaseVNode("div", null, "Contact by email: info@sdchen.art", -1);
-var _hoisted_13$2 = { key: 0 };
-var _hoisted_14$2 = {
-	key: 1,
-	class: "m-3 p-3 bg-[#aabb99] w-[1000px]"
-};
-var _hoisted_15$2 = /* @__PURE__ */ createBaseVNode("div", null, "Name", -1);
-var _hoisted_16$2 = /* @__PURE__ */ createBaseVNode("div", null, "Email", -1);
-var _hoisted_17$1 = /* @__PURE__ */ createBaseVNode("div", null, "Message", -1);
-var _hoisted_18 = /* @__PURE__ */ createStaticVNode("<div id=\"painting\" class=\"caption-1\">Painting Progress</div><div class=\"lg:flex justify-start\"><img class=\"painting\" src=\"https://i.imgur.com/nMqz18N.jpeg\"><img class=\"painting\" src=\"https://i.imgur.com/ypjl9oY.jpeg\"><img class=\"painting\" src=\"https://i.imgur.com/at8cz1s.jpeg\"></div><div class=\"lg:flex justify-end\"><img class=\"painting\" src=\"https://i.imgur.com/JaH5I2S.jpeg\"><img class=\"painting\" src=\"https://i.imgur.com/65JdVrh.jpeg\"><img class=\"painting\" src=\"https://i.imgur.com/uLdMbny.jpeg\"></div><div class=\"lg:flex justify-start\"><img class=\"painting\" src=\"https://i.imgur.com/6bipccJ.jpeg\"><img class=\"painting\" src=\"https://i.imgur.com/TSwr3Pw.jpeg\"><img class=\"painting\" src=\"https://i.imgur.com/FygNW9w.jpeg\"></div><div class=\"lg:flex justify-end\"><img class=\"painting\" src=\"https://i.imgur.com/mJkTKta.jpeg\"><img class=\"painting\" src=\"https://i.imgur.com/awNWKJf.jpeg\"><img class=\"painting\" src=\"https://i.imgur.com/BNeLCuO.jpeg\"></div><div class=\"lg:flex justify-start\"><img class=\"painting\" src=\"https://i.imgur.com/YAW4jVN.jpeg\"><img class=\"painting\" src=\"https://i.imgur.com/ypiRqH5.jpeg\"><img class=\"painting\" src=\"https://i.imgur.com/fTlsPsu.jpeg\"></div><div id=\"price\" class=\"caption-1\">Price</div><div> Typically a 10&quot; x 12&quot; portrait is done in two sessions. Each session lasts approx. 3 hours. There is an intermission between the sessions to allow the oil to dry. A portrait is $400 for the standard hourly rate of $65/hour plus the materials. </div><div id=\"lesson\" class=\"caption-1\">Lesson</div><div><a href=\"#book\">Book</a> portrait oil painting lessons. <br>Master the art of oil portrait painting through private lessons. Available online or in-person. <br>Session length: 3 hours <br>Rate: $40/hour (plus tax) </div>", 10);
-var _hoisted_28 = /* @__PURE__ */ createBaseVNode("div", { class: "hor" }, null, -1);
-var _hoisted_29 = /* @__PURE__ */ createBaseVNode("div", { class: "flex justify-center" }, [/* @__PURE__ */ createBaseVNode("div", { class: "hor-range" }, [/* @__PURE__ */ createBaseVNode("div", null, "info@sdchen.art"), /* @__PURE__ */ createBaseVNode("div", { class: "pt-2 pb-5" }, [
-	/* @__PURE__ */ createTextVNode(" 133 KEYSTONE DR, DINGMANS FRY, PA 18328 "),
-	/* @__PURE__ */ createBaseVNode("br"),
-	/* @__PURE__ */ createTextVNode("© 2024 COPYRIGHT SDCHEN FINE ART STUDIO ")
-])])], -1);
-//#endregion
-//#region src/pages/Studio.vue
-var Studio_default = /* @__PURE__ */ defineComponent({
-	__name: "Studio",
-	setup(__props) {
-		const s = glib.vue.reactive({
-			name: "",
-			email: "",
-			msg: "",
-			prompt: "",
-			expand: false
-		});
-		const submit = async () => {
-			loader("/api/public/msg", {
-				name: s.name,
-				email: s.email,
-				msg: s.msg
-			}, (rep) => {
-				s.expand = false;
-				s.prompt = "Your message has been sent.";
-			});
-		};
-		glib.vue.onMounted(async () => {});
-		return (_ctx, _cache) => {
-			return openBlock(), createElementBlock("div", _hoisted_1$3, [
-				_hoisted_2$2,
-				createBaseVNode("div", _hoisted_3$3, [createBaseVNode("div", _hoisted_4$3, [
-					_hoisted_5$3,
-					createBaseVNode("div", _hoisted_11$2, [
-						_hoisted_12$2,
-						unref(s).expand == false ? (openBlock(), createElementBlock("div", _hoisted_13$2, [createBaseVNode("button", { onClick: _cache[0] || (_cache[0] = ($event) => unref(s).expand = true) }, "Book Now")])) : (openBlock(), createElementBlock("div", _hoisted_14$2, [
-							_hoisted_15$2,
-							withDirectives(createBaseVNode("input", {
-								"onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => unref(s).name = $event),
-								type: "text",
-								class: "w-[800px]"
-							}, null, 512), [[vModelText, unref(s).name]]),
-							_hoisted_16$2,
-							withDirectives(createBaseVNode("input", {
-								"onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => unref(s).email = $event),
-								type: "text",
-								class: "w-[800px]"
-							}, null, 512), [[vModelText, unref(s).email]]),
-							_hoisted_17$1,
-							withDirectives(createBaseVNode("textarea", {
-								"onUpdate:modelValue": _cache[3] || (_cache[3] = ($event) => unref(s).msg = $event),
-								class: "w-[800px] h-[500px]"
-							}, null, 512), [[vModelText, unref(s).msg]]),
-							createBaseVNode("button", { onClick: submit }, "Submit")
-						])),
-						createBaseVNode("div", null, toDisplayString(unref(s).prompt), 1)
-					]),
-					_hoisted_18
-				])]),
-				_hoisted_28,
-				_hoisted_29
-			]);
-		};
-	}
-});
-//#endregion
 //#region src/pages/Admin.vue?vue&type=script&setup=true&lang.ts
 var _hoisted_1$2 = { class: "flex justify-center" };
 var _hoisted_2$1 = { class: "hor-range" };
 var _hoisted_3$2 = /* @__PURE__ */ createBaseVNode("div", { class: "card" }, [/* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Admin Console")], -1);
 var _hoisted_4$2 = { class: "card" };
-var _hoisted_5$2 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Book", -1);
+var _hoisted_5$2 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Log", -1);
 var _hoisted_6$2 = ["innerHTML"];
-var _hoisted_7$2 = /* @__PURE__ */ createBaseVNode("hr", { class: "mt-3" }, null, -1);
-var _hoisted_8$2 = { class: "card" };
-var _hoisted_9$2 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Log", -1);
-var _hoisted_10$2 = ["innerHTML"];
-var _hoisted_11$1 = ["innerHTML"];
-var _hoisted_12$1 = /* @__PURE__ */ createBaseVNode("hr", { class: "mt-3" }, null, -1);
-var _hoisted_13$1 = { class: "card" };
-var _hoisted_14$1 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Page Log", -1);
-var _hoisted_15$1 = /* @__PURE__ */ createBaseVNode("hr", { class: "mt-3" }, null, -1);
-var _hoisted_16$1 = /* @__PURE__ */ createBaseVNode("div", { class: "flex justify-center" }, [/* @__PURE__ */ createBaseVNode("div", { class: "hor-range" })], -1);
+var _hoisted_7$2 = ["innerHTML"];
+var _hoisted_8$2 = /* @__PURE__ */ createBaseVNode("hr", { class: "mt-3" }, null, -1);
+var _hoisted_9$1 = { class: "card" };
+var _hoisted_10$1 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Page Log", -1);
+var _hoisted_11 = /* @__PURE__ */ createBaseVNode("hr", { class: "mt-3" }, null, -1);
+var _hoisted_12 = /* @__PURE__ */ createBaseVNode("div", { class: "flex justify-center" }, [/* @__PURE__ */ createBaseVNode("div", { class: "hor-range" })], -1);
 //#endregion
 //#region src/pages/Admin.vue
 var Admin_default = /* @__PURE__ */ defineComponent({
 	__name: "Admin",
 	setup(__props) {
 		const s = glib.vue.reactive({
-			books: [],
 			logs: [],
 			plogs: []
 		});
 		glib.vue.onMounted(async () => {
-			loader("/api/admin/books", {}, (rep) => {
-				s.books = rep.list;
-			});
 			loader("/api/admin/logs", {}, (rep) => {
 				s.logs = rep.list;
 			});
@@ -11318,34 +11410,25 @@ var Admin_default = /* @__PURE__ */ defineComponent({
 		return (_ctx, _cache) => {
 			return openBlock(), createElementBlock(Fragment, null, [createBaseVNode("div", _hoisted_1$2, [createBaseVNode("div", _hoisted_2$1, [
 				_hoisted_3$2,
-				createBaseVNode("div", _hoisted_4$2, [_hoisted_5$2, (openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).books, (book) => {
-					return openBlock(), createElementBlock("div", null, [
-						createBaseVNode("div", null, toDisplayString(book.createdat), 1),
-						createBaseVNode("div", null, toDisplayString(book.p.Caption), 1),
-						createBaseVNode("div", null, toDisplayString(book.p.Email), 1),
-						createBaseVNode("div", { innerHTML: book.p.Message }, null, 8, _hoisted_6$2),
-						_hoisted_7$2
-					]);
-				}), 256))]),
-				createBaseVNode("div", _hoisted_8$2, [_hoisted_9$2, (openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).logs, (log) => {
+				createBaseVNode("div", _hoisted_4$2, [_hoisted_5$2, (openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).logs, (log) => {
 					return openBlock(), createElementBlock("div", null, [
 						createBaseVNode("div", null, toDisplayString(log.createdat), 1),
 						createBaseVNode("div", null, toDisplayString(log.p.Location), 1),
-						createBaseVNode("div", { innerHTML: log.p.Sql }, null, 8, _hoisted_10$2),
-						createBaseVNode("div", { innerHTML: log.p.Content }, null, 8, _hoisted_11$1),
-						_hoisted_12$1
+						createBaseVNode("div", { innerHTML: log.p.Sql }, null, 8, _hoisted_6$2),
+						createBaseVNode("div", { innerHTML: log.p.Content }, null, 8, _hoisted_7$2),
+						_hoisted_8$2
 					]);
 				}), 256))]),
-				createBaseVNode("div", _hoisted_13$1, [_hoisted_14$1, (openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).plogs, (plog) => {
+				createBaseVNode("div", _hoisted_9$1, [_hoisted_10$1, (openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).plogs, (plog) => {
 					return openBlock(), createElementBlock("div", null, [
 						createBaseVNode("div", null, toDisplayString(plog.time), 1),
 						createBaseVNode("div", null, toDisplayString(plog.ip), 1),
 						createBaseVNode("div", null, toDisplayString(plog.pathline), 1),
 						createBaseVNode("div", null, toDisplayString(plog.from), 1),
-						_hoisted_15$1
+						_hoisted_11
 					]);
 				}), 256))])
-			])]), _hoisted_16$1], 64);
+			])]), _hoisted_12], 64);
 		};
 	}
 });
@@ -11356,13 +11439,20 @@ var route_exports = /* @__PURE__ */ __exportAll({
 	navigate: () => navigate,
 	router: () => router
 });
-var routes = [{
-	path: "/",
-	component: Studio_default
-}, {
-	path: "/admin",
-	component: Admin_default
-}];
+var routes = [
+	{
+		path: "/",
+		component: HomeCustomer_default
+	},
+	{
+		path: "/UploadBills",
+		component: UploadBills_default
+	},
+	{
+		path: "/admin",
+		component: Admin_default
+	}
+];
 var router = createRouter({
 	history: createMemoryHistory(),
 	routes
@@ -11448,6 +11538,8 @@ var initHost = () => {
 //#endregion
 //#region src/lib/shared/OrmMor.ts
 var OrmMor_exports = /* @__PURE__ */ __exportAll({
+	CONFIG__bin: () => CONFIG__bin,
+	CONFIG_empty: () => CONFIG_empty,
 	EU__bin: () => EU__bin,
 	EU_empty: () => EU_empty,
 	FBIND__bin: () => FBIND__bin,
@@ -11460,12 +11552,14 @@ var OrmMor_exports = /* @__PURE__ */ __exportAll({
 	MOMENT_empty: () => MOMENT_empty,
 	PLOG__bin: () => PLOG__bin,
 	PLOG_empty: () => PLOG_empty,
+	bin__CONFIG: () => bin__CONFIG,
 	bin__EU: () => bin__EU,
 	bin__FBIND: () => bin__FBIND,
 	bin__FILE: () => bin__FILE,
 	bin__LOG: () => bin__LOG,
 	bin__MOMENT: () => bin__MOMENT,
 	bin__PLOG: () => bin__PLOG,
+	bin__pCONFIG: () => bin__pCONFIG,
 	bin__pEU: () => bin__pEU,
 	bin__pFBIND: () => bin__pFBIND,
 	bin__pFILE: () => bin__pFILE,
@@ -11493,6 +11587,8 @@ var OrmMor_exports = /* @__PURE__ */ __exportAll({
 	momentTypeEnum_Repost: () => 1,
 	momentTypeEnum_Thread: () => 2,
 	momentTypeEnum_WebPage: () => 10,
+	pCONFIG__bin: () => pCONFIG__bin,
+	pCONFIG_empty: () => pCONFIG_empty,
 	pEU__bin: () => pEU__bin,
 	pEU_empty: () => pEU_empty,
 	pFBIND__bin: () => pFBIND__bin,
@@ -11646,6 +11742,32 @@ var bin__MOMENT = (bi) => {
 		p: bin__pMOMENT(bi)
 	};
 };
+var pCONFIG__bin = (bb) => (p) => {
+	marshall$1.str__bin(bb)(p.Key);
+	marshall$1.str__bin(bb)(p.Val);
+};
+var CONFIG__bin = (bb) => (v) => {
+	marshall$1.int64__bin(bb)(v.id);
+	marshall$1.int64__bin(bb)(v.sort);
+	marshall$1.DateTime__bin(bb)(v.createdat);
+	marshall$1.DateTime__bin(bb)(v.updatedat);
+	pCONFIG__bin(bb)(v.p);
+};
+var bin__pCONFIG = (bi) => {
+	let p = pCONFIG_empty();
+	p.Key = marshall$1.bin__str(bi);
+	p.Val = marshall$1.bin__str(bi);
+	return p;
+};
+var bin__CONFIG = (bi) => {
+	return {
+		id: marshall$1.bin__int64(bi),
+		sort: marshall$1.bin__int64(bi),
+		createdat: marshall$1.bin__DateTime(bi),
+		updatedat: marshall$1.bin__DateTime(bi),
+		p: bin__pCONFIG(bi)
+	};
+};
 var pLOG__bin = (bb) => (p) => {
 	marshall$1.str__bin(bb)(p.Location);
 	marshall$1.str__bin(bb)(p.Content);
@@ -11776,6 +11898,21 @@ var MOMENT_empty = () => {
 		p: pMOMENT_empty()
 	};
 };
+var pCONFIG_empty = () => {
+	return {
+		Key: "",
+		Val: ""
+	};
+};
+var CONFIG_empty = () => {
+	return {
+		id: 0,
+		createdat: /* @__PURE__ */ new Date(),
+		updatedat: /* @__PURE__ */ new Date(),
+		sort: 0,
+		p: pCONFIG_empty()
+	};
+};
 var pLOG_empty = () => {
 	return {
 		Location: "",
@@ -11880,13 +12017,20 @@ var bin__MomentComplex = (bi) => {
 	return { m: marshall.bin__MOMENT(bi) };
 };
 var RuntimeData_empty = () => {
-	return { desc: "" };
+	return {
+		apiKeyGemini: "",
+		desc: ""
+	};
 };
 var RuntimeData__bin = (bb) => (v) => {
+	marshall.str__bin(bb)(v.apiKeyGemini);
 	marshall.str__bin(bb)(v.desc);
 };
 var bin__RuntimeData = (bi) => {
-	return { desc: marshall.bin__str(bi) };
+	return {
+		apiKeyGemini: marshall.bin__str(bi),
+		desc: marshall.bin__str(bi)
+	};
 };
 var ClientRuntime_empty = () => {
 	return { version: 0 };
@@ -12109,8 +12253,8 @@ var _hoisted_8$1 = {
 	key: 0,
 	class: "p-[15px]"
 };
-var _hoisted_9$1 = { class: "card" };
-var _hoisted_10$1 = { class: "flex" };
+var _hoisted_9 = { class: "card" };
+var _hoisted_10 = { class: "flex" };
 //#endregion
 //#region src/comps/UserAuth.vue
 var UserAuth_default = /* @__PURE__ */ defineComponent({
@@ -12161,7 +12305,7 @@ var UserAuth_default = /* @__PURE__ */ defineComponent({
 			})])) : createCommentVNode("", true), createBaseVNode("button", {
 				class: "inline",
 				onClick: signOut
-			}, "Sign Out")])) : createCommentVNode("", true), createBaseVNode("div", _hoisted_9$1, [createBaseVNode("div", null, [createBaseVNode("div", _hoisted_10$1, [createTextVNode(" Key "), withDirectives(createBaseVNode("input", {
+			}, "Sign Out")])) : createCommentVNode("", true), createBaseVNode("div", _hoisted_9, [createBaseVNode("div", null, [createBaseVNode("div", _hoisted_10, [createTextVNode(" Key "), withDirectives(createBaseVNode("input", {
 				"onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => unref(s).key = $event),
 				type: "text"
 			}, null, 512), [[vModelText, unref(s).key]])])]), createBaseVNode("div", null, [createBaseVNode("button", { onClick: authKey }, "Authorize")])])])) : createCommentVNode("", true)]);
@@ -12170,36 +12314,19 @@ var UserAuth_default = /* @__PURE__ */ defineComponent({
 });
 //#endregion
 //#region src/App.vue
-var _hoisted_1 = { key: 0 };
-var _hoisted_2 = ["src"];
-var _hoisted_3 = { key: 1 };
-var _hoisted_4 = /* @__PURE__ */ createBaseVNode("div", null, "Clerk", -1);
-var _hoisted_5 = /* @__PURE__ */ createBaseVNode("div", null, "MO Mar 23, 2026", -1);
-var _hoisted_6 = /* @__PURE__ */ createBaseVNode("div", null, "Auto remote deploy", -1);
-var _hoisted_7 = /* @__PURE__ */ createBaseVNode("div", null, "postgresql + F# + Kestrel + vue", -1);
-var _hoisted_8 = /* @__PURE__ */ createBaseVNode("div", null, "https://whatsyourideal.com/", -1);
-var _hoisted_9 = /* @__PURE__ */ createBaseVNode("div", null, "Lower Your Bills On CruiseControl!", -1);
-var _hoisted_10 = { class: "lg:w-[1200px] mr-[10px]" };
-var _hoisted_11 = { class: "main-color w-screen" };
-var _hoisted_12 = { class: "flex justify-start" };
-var _hoisted_13 = /* @__PURE__ */ createBaseVNode("div", { class: "w-full flex justify-center bg-[#262622]" }, [/* @__PURE__ */ createBaseVNode("img", {
-	class: "w-[300px] my-3",
-	src: "https://i.imgur.com/JvdrjQP.png"
-})], -1);
-var _hoisted_14 = { class: "flex justify-center p-3" };
-var _hoisted_15 = { class: "flex hor-range" };
-var _hoisted_16 = { class: "menu" };
-var _hoisted_17 = /* @__PURE__ */ createStaticVNode("<div class=\"menu\"><a href=\"#painting\">Painting</a></div><div class=\"menu\"><a href=\"#price\">Price</a></div><div class=\"menu\"><a href=\"#lesson\">Lesson</a></div><div class=\"bg-white\"><a href=\"https://www.yelp.com/biz/sdcheen-fine-art-studio-dingmans-ferry\" target=\"_blank\"><img src=\"https://s3-media0.fl.yelpcdn.com/assets/srv0/yelp_design_cdn/7ef71bf77a33/assets/img/brand/logo_desktop.svg\"></a></div>", 4);
-var _hoisted_21 = /* @__PURE__ */ createBaseVNode("div", { class: "hor" }, null, -1);
-var _hoisted_22 = /* @__PURE__ */ createBaseVNode("div", { class: "flex justify-center" }, [/* @__PURE__ */ createBaseVNode("div", { class: "hor-range" }, [/* @__PURE__ */ createBaseVNode("div", { class: "pt-2 pb-5" }, [/* @__PURE__ */ createBaseVNode("br"), /* @__PURE__ */ createTextVNode("© 2025 CiteLand ")])])], -1);
+var _hoisted_1 = /* @__PURE__ */ createBaseVNode("div", null, "https://whatsyourideal.com/", -1);
+var _hoisted_2 = /* @__PURE__ */ createBaseVNode("div", null, "Lower Your Bills On CruiseControl!", -1);
+var _hoisted_3 = { class: "lg:w-[1200px] mr-[10px]" };
+var _hoisted_4 = { class: "main-color w-screen" };
+var _hoisted_5 = { class: "flex justify-start" };
+var _hoisted_6 = { class: "w-full flex justify-center bg-[#262622]" };
+var _hoisted_7 = /* @__PURE__ */ createBaseVNode("div", { class: "hor" }, null, -1);
+var _hoisted_8 = /* @__PURE__ */ createBaseVNode("div", { class: "flex justify-center" }, [/* @__PURE__ */ createBaseVNode("div", { class: "hor-range" }, [/* @__PURE__ */ createBaseVNode("div", { class: "pt-2 pb-5" }, [/* @__PURE__ */ createBaseVNode("br"), /* @__PURE__ */ createTextVNode("© 2026 WYI ")])])], -1);
 var _sfc_main = {
 	__name: "App",
 	setup(__props) {
 		const { isSignedIn, user } = useUser();
-		const s = glib.vue.reactive({
-			eux: {},
-			session: ""
-		});
+		const s = glib.vue.reactive({ rt: runtime });
 		watch(isSignedIn, async (newVal) => {
 			if (newVal === true) {
 				console.log("🚀 登录成功，准备联调后端...");
@@ -12212,10 +12339,8 @@ var _sfc_main = {
 					});
 					const { Er, session, eux } = response;
 					if (Er === "OK") {
-						runtime.user = eux;
-						runtime.session = session;
-						s.eux = runtime.user;
-						s.session = runtime.session;
+						s.rt.user = eux;
+						s.rt.session = session;
 					}
 					console.log("✅ 后端响应成功:", response);
 				} catch (err) {
@@ -12227,11 +12352,6 @@ var _sfc_main = {
 			const _component_router_link = resolveComponent("router-link");
 			const _component_router_view = resolveComponent("router-view");
 			return openBlock(), createElementBlock(Fragment, null, [
-				unref(s).eux.eu.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_1, [createTextVNode(toDisplayString(unref(s).eux.eu.p.Caption) + " (" + toDisplayString(unref(s).eux.eu.p.Email) + ") ", 1), createBaseVNode("img", {
-					src: unref(s).eux.eu.p.Avatar,
-					width: "32"
-				}, null, 8, _hoisted_2)])) : (openBlock(), createElementBlock("div", _hoisted_3, " N/A ")),
-				_hoisted_4,
 				createBaseVNode("header", null, [createVNode(unref(Show), { when: "signed-out" }, {
 					default: withCtx(() => [createVNode(unref(SignInButton_default)), createVNode(unref(SignUpButton_default))]),
 					_: 1
@@ -12239,21 +12359,17 @@ var _sfc_main = {
 					default: withCtx(() => [createVNode(unref(UserButton))]),
 					_: 1
 				})]),
-				_hoisted_5,
-				_hoisted_6,
-				_hoisted_7,
-				_hoisted_8,
-				_hoisted_9,
-				createBaseVNode("div", _hoisted_10, [createBaseVNode("div", _hoisted_11, [
-					createBaseVNode("div", _hoisted_12, [createVNode(UserAuth_default, { onChanged: _ctx.onAuthChanged }, null, 8, ["onChanged"])]),
-					_hoisted_13,
-					createBaseVNode("div", _hoisted_14, [createBaseVNode("div", _hoisted_15, [createBaseVNode("div", _hoisted_16, [createVNode(_component_router_link, { to: "/" }, {
+				_hoisted_1,
+				_hoisted_2,
+				createBaseVNode("div", _hoisted_3, [createBaseVNode("div", _hoisted_4, [
+					createBaseVNode("div", _hoisted_5, [createVNode(UserAuth_default, { onChanged: _ctx.onAuthChanged }, null, 8, ["onChanged"])]),
+					createBaseVNode("div", _hoisted_6, [createVNode(_component_router_link, { to: "/" }, {
 						default: withCtx(() => [createTextVNode("Home")]),
 						_: 1
-					})]), _hoisted_17])]),
+					}), createTextVNode(" \xA0 ")]),
 					createVNode(_component_router_view),
-					_hoisted_21,
-					_hoisted_22
+					_hoisted_7,
+					_hoisted_8
 				])])
 			], 64);
 		};

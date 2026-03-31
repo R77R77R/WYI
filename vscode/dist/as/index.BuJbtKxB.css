@@ -1,3 +1,122 @@
+
+.task-item[data-v-f0f65bef] { 
+  border: 1px solid #eee; 
+  padding: 1rem; 
+  border-radius: 6px; 
+  margin-bottom: 1rem; 
+  background: white;
+}
+.file-meta[data-v-f0f65bef] { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.5rem;
+}
+.progress-container[data-v-f0f65bef] { height: 6px; background: #ebeef5; border-radius: 3px; overflow: hidden;
+}
+.progress-fill[data-v-f0f65bef] { height: 100%; transition: width 0.3s;
+}
+.progress-fill.uploading[data-v-f0f65bef] { background: #409eff;
+}
+.progress-fill.success[data-v-f0f65bef] { background: #67c23a;
+}
+.progress-fill.error[data-v-f0f65bef] { background: #f56c6c;
+}
+.status-row[data-v-f0f65bef] { font-size: 0.75rem; margin-top: 0.5rem;
+}
+.status-label.success[data-v-f0f65bef] { color: #67c23a;
+}
+.status-label.error[data-v-f0f65bef] { color: #f56c6c;
+}
+.error-detail[data-v-f0f65bef] { color: #999;
+}
+
+.upload-page[data-v-94d03db8] { max-width: 800px; margin: 0 auto; padding: 2rem;
+}
+.user-status[data-v-94d03db8] { font-size: 0.9rem; color: #666; margin-bottom: 1.5rem;
+}
+.drop-zone[data-v-94d03db8] {
+  border: 2px dashed #ccd0d7;
+  border-radius: 8px;
+  padding: 4rem 1rem;
+  text-align: center;
+  background: #f9fafc;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.drop-zone.is-dragging[data-v-94d03db8] { border-color: #409eff; background: #ecf5ff;
+}
+.icon[data-v-94d03db8] { font-size: 3rem; margin-bottom: 1rem;
+}
+.task-list[data-v-94d03db8] { margin-top: 2rem;
+}
+
+.upload-page[data-v-c112724e] {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  font-family: sans-serif;
+}
+.header[data-v-c112724e] { margin-bottom: 30px;
+}
+.user-status[data-v-c112724e] { color: #666; font-size: 14px;
+}
+.id-tag[data-v-c112724e] { color: #999; margin-left: 8px;
+}
+.drop-zone[data-v-c112724e] {
+  border: 2px dashed #dcdfe6;
+  border-radius: 12px;
+  background: #fbfdff;
+  padding: 60px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.drop-zone[data-v-c112724e]:hover, .drop-zone.is-dragging[data-v-c112724e] {
+  border-color: #409eff;
+  background: #f0f7ff;
+}
+.icon[data-v-c112724e] { font-size: 48px; margin-bottom: 15px;
+}
+.drop-zone span[data-v-c112724e] { color: #409eff; font-weight: bold;
+}
+.task-list[data-v-c112724e] { margin-top: 30px;
+}
+.task-item[data-v-c112724e] {
+  background: #fff;
+  border: 1px solid #ebeef5;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+.file-meta[data-v-c112724e] { display: flex; justify-content: space-between; margin-bottom: 10px;
+}
+.file-name[data-v-c112724e] { font-weight: 500; color: #303133;
+}
+.file-size[data-v-c112724e] { color: #909399; font-size: 13px;
+}
+.progress-container[data-v-c112724e] {
+  height: 8px;
+  background: #f5f7fa;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+.progress-fill[data-v-c112724e] {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+.progress-fill.uploading[data-v-c112724e] { background-color: #409eff;
+}
+.progress-fill.success[data-v-c112724e] { background-color: #67c23a;
+}
+.progress-fill.error[data-v-c112724e] { background-color: #f56c6c;
+}
+.status-label[data-v-c112724e] { font-size: 12px;
+}
+.status-label.success[data-v-c112724e] { color: #67c23a;
+}
+.status-label.error[data-v-c112724e] { color: #f56c6c;
+}
+.status-label.uploading[data-v-c112724e] { color: #409eff;
+}
 /*
 ! tailwindcss v3.4.4 | MIT License | https://tailwindcss.com
 *//*
@@ -510,17 +629,6 @@ video {
 .m-3 {
   margin: 0.75rem;
 }
-.m-5 {
-  margin: 1.25rem;
-}
-.my-3 {
-  margin-top: 0.75rem;
-  margin-bottom: 0.75rem;
-}
-.my-5 {
-  margin-top: 1.25rem;
-  margin-bottom: 1.25rem;
-}
 .mr-\[10px\] {
   margin-right: 10px;
 }
@@ -542,6 +650,12 @@ video {
 .grid {
   display: grid;
 }
+.hidden {
+  display: none;
+}
+.h-32 {
+  height: 8rem;
+}
 .h-\[100px\] {
   height: 100px;
 }
@@ -554,11 +668,14 @@ video {
 .h-\[80px\] {
   height: 80px;
 }
+.h-full {
+  height: 100%;
+}
+.w-48 {
+  width: 12rem;
+}
 .w-\[1000px\] {
   width: 1000px;
-}
-.w-\[300px\] {
-  width: 300px;
 }
 .w-\[350px\] {
   width: 350px;
@@ -587,17 +704,17 @@ video {
 .flex-wrap {
   flex-wrap: wrap;
 }
+.items-center {
+  align-items: center;
+}
 .justify-start {
   justify-content: flex-start;
-}
-.justify-end {
-  justify-content: flex-end;
 }
 .justify-center {
   justify-content: center;
 }
-.overflow-x-auto {
-  overflow-x: auto;
+.gap-4 {
+  gap: 1rem;
 }
 .overflow-x-hidden {
   overflow-x: hidden;
@@ -605,16 +722,22 @@ video {
 .rounded-lg {
   border-radius: 0.5rem;
 }
+.border {
+  border-width: 1px;
+}
 .border-2 {
   border-width: 2px;
+}
+.border-dashed {
+  border-style: dashed;
+}
+.border-slate-300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(203 213 225 / var(--tw-border-opacity));
 }
 .bg-\[\#262622\] {
   --tw-bg-opacity: 1;
   background-color: rgb(38 38 34 / var(--tw-bg-opacity));
-}
-.bg-\[\#aabb99\] {
-  --tw-bg-opacity: 1;
-  background-color: rgb(170 187 153 / var(--tw-bg-opacity));
 }
 .bg-\[\#eeffdd\] {
   --tw-bg-opacity: 1;
@@ -632,15 +755,18 @@ video {
 .bg-red-500\/80 {
   background-color: rgb(239 68 68 / 0.8);
 }
-.bg-white {
+.bg-slate-100 {
   --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  background-color: rgb(241 245 249 / var(--tw-bg-opacity));
 }
 .p-2 {
   padding: 0.5rem;
 }
 .p-3 {
   padding: 0.75rem;
+}
+.p-4 {
+  padding: 1rem;
 }
 .p-\[15px\] {
   padding: 15px;
@@ -650,14 +776,6 @@ video {
 }
 .pt-2 {
   padding-top: 0.5rem;
-}
-.text-2xl {
-  font-size: 1.5rem;
-  line-height: 2rem;
-}
-.text-5xl {
-  font-size: 3rem;
-  line-height: 1;
 }
 .italic {
   font-style: italic;
@@ -669,6 +787,11 @@ video {
 }
 .filter {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+.transition {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
 }
 .\[key\:string\] {
   key: string;
@@ -970,16 +1093,8 @@ h1 {
 }
 @media (min-width: 1024px) {
 
-  .lg\:flex {
-    display: flex;
-  }
-
   .lg\:w-\[1200px\] {
     width: 1200px;
-  }
-
-  .lg\:w-screen {
-    width: 100vw;
   }
 }
 

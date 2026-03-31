@@ -80,9 +80,8 @@ let init (runtime:Runtime) =
         runtime.output
         runtime.data.apiKeyGemini
         "给我当前时间"
+    |> Async.RunSynchronously
     |> runtime.output
-    
-
 
     (fun (i:EU) -> runtime.users[i.ID] <- { eu = i })
     |> loadAll runtime.output conn EU_metadata
