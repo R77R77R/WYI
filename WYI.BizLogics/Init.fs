@@ -75,9 +75,18 @@ let init (runtime:Runtime) =
                 runtime.output ((fun rcd -> ()),(fun (eso,ctx) -> ())) p
         config["ApiKeyGemini"]
 
-    UtilKestrel.Open.Google.GeminiListModels
-        runtime.output
+    //UtilKestrel.Open.Google.GeminiListModels
+    //    runtime.output
+    //    runtime.data.apiKeyGemini
+
+    UtilKestrel.Open.Google.GeminiMultimodal
+        runtime.output 
         runtime.data.apiKeyGemini
+        "gemini-2.5-flash"
+        "从我上传的文件中提取票号" 
+        [| @"G:\我的云端硬盘\Flying\tokyo-lingual.pdf" |]
+    |> Async.RunSynchronously
+    |> ignore
 
     UtilKestrel.Open.Google.GeminiChat
         runtime.output
