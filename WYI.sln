@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Util", "..\Common\Util\Util.fsproj", "{132036FF-E53B-4454-A5A2-CE0ACA99119F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6B211DC5-7C29-426F-B005-CE9DEF566656}"
+	ProjectSection(SolutionItems) = preProject
+		prompt.md = prompt.md
+	EndProjectSection
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Server", "Server\Server.fsproj", "{B4FACF1B-C14D-4FD4-9066-E2235501B666}"
 EndProject
@@ -20,6 +23,11 @@ EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TypeSys", "..\JCS\TypeSys\TypeSys.fsproj", "{4491982B-B43E-16AA-C203-FF4A1B87181A}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "UtilKestrel", "..\Common\UtilKestrel\UtilKestrel.fsproj", "{46110679-5942-4E10-C77C-A49AD444D359}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{F7AAC36D-7480-46EC-937B-C3A1A5A81E0F}"
+	ProjectSection(SolutionItems) = preProject
+		doc\Prototype.pdf = doc\Prototype.pdf
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -62,6 +70,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F7AAC36D-7480-46EC-937B-C3A1A5A81E0F} = {6B211DC5-7C29-426F-B005-CE9DEF566656}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5D6FBBFE-FF28-4250-BBFB-AC6B8661ACA6}

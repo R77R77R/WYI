@@ -75,10 +75,14 @@ let init (runtime:Runtime) =
                 runtime.output ((fun rcd -> ()),(fun (eso,ctx) -> ())) p
         config["ApiKeyGemini"]
 
-
-    UtilKestrel.Open.Google.Gemini
+    UtilKestrel.Open.Google.GeminiListModels
         runtime.output
         runtime.data.apiKeyGemini
+
+    UtilKestrel.Open.Google.GeminiChat
+        runtime.output
+        runtime.data.apiKeyGemini
+        "gemini-2.5-flash"
         "给我当前时间"
     |> Async.RunSynchronously
     |> runtime.output
