@@ -381,6 +381,627 @@ let FILE_clone src =
     FILE__bin bb src
     bin__FILE (bb.bytes(),ref 0)
 
+// [CLIENT] Structure
+
+
+let pCLIENT__bin (bb:BytesBuilder) (p:pCLIENT) =
+
+    
+    let binCaption = p.Caption |> Encoding.UTF8.GetBytes
+    binCaption.Length |> BitConverter.GetBytes |> bb.append
+    binCaption |> bb.append
+
+let CLIENT__bin (bb:BytesBuilder) (v:CLIENT) =
+    v.ID |> BitConverter.GetBytes |> bb.append
+    v.Sort |> BitConverter.GetBytes |> bb.append
+    DateTime__bin bb v.Createdat
+    DateTime__bin bb v.Updatedat
+    
+    pCLIENT__bin bb v.p
+    ()
+
+let bin__pCLIENT (bi:BinIndexed):pCLIENT =
+    let bin,index = bi
+
+    let p = pCLIENT_empty()
+    
+    let count_Caption = BitConverter.ToInt32(bin,index.Value)
+    index.Value <- index.Value + 4
+    p.Caption <- Encoding.UTF8.GetString(bin,index.Value,count_Caption)
+    index.Value <- index.Value + count_Caption
+    
+    p
+
+let bin__CLIENT (bi:BinIndexed):CLIENT =
+    let bin,index = bi
+
+    let ID = BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    let Sort = BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    let Createdat = bin__DateTime bi
+    
+    let Updatedat = bin__DateTime bi
+    
+    {
+        ID = ID
+        Sort = Sort
+        Createdat = Createdat
+        Updatedat = Updatedat
+        p = bin__pCLIENT bi }
+
+let pCLIENT__json (p:pCLIENT) =
+
+    [|
+        ("Caption",p.Caption |> Json.Str) |]
+    |> Json.Braket
+
+let CLIENT__json (v:CLIENT) =
+
+    let p = v.p
+    
+    [|  ("id",v.ID.ToString() |> Json.Num)
+        ("sort",v.Sort.ToString() |> Json.Num)
+        ("createdat",(v.Createdat |> Util.Time.wintime__unixtime).ToString() |> Json.Num)
+        ("updatedat",(v.Updatedat |> Util.Time.wintime__unixtime).ToString() |> Json.Num)
+        ("p",pCLIENT__json v.p) |]
+    |> Json.Braket
+
+let CLIENT__jsonTbw (w:TextBlockWriter) (v:CLIENT) =
+    json__str w (CLIENT__json v)
+
+let CLIENT__jsonStr (v:CLIENT) =
+    (CLIENT__json v) |> json__strFinal
+
+
+let json__pCLIENTo (json:Json):pCLIENT option =
+    let fields = json |> json__items
+
+    let p = pCLIENT_empty()
+    
+    p.Caption <- checkfield fields "Caption"
+    
+    p |> Some
+    
+
+let json__CLIENTo (json:Json):CLIENT option =
+    let fields = json |> json__items
+
+    let ID = checkfield fields "id" |> parse_int64
+    let Sort = checkfield fields "sort" |> parse_int64
+    let Createdat = checkfield fields "createdat" |> parse_int64 |> DateTime.FromBinary
+    let Updatedat = checkfield fields "updatedat" |> parse_int64 |> DateTime.FromBinary
+    
+    let o  =
+        match
+            json
+            |> tryFindByAtt "p" with
+        | Some (s,v) -> json__pCLIENTo v
+        | None -> None
+    
+    match o with
+    | Some p ->
+        
+        {
+            ID = ID
+            Sort = Sort
+            Createdat = Createdat
+            Updatedat = Updatedat
+            p = p } |> Some
+        
+    | None -> None
+
+let CLIENT_clone src =
+    let bb = new BytesBuilder()
+    CLIENT__bin bb src
+    bin__CLIENT (bb.bytes(),ref 0)
+
+// [UNIT] Structure
+
+
+let pUNIT__bin (bb:BytesBuilder) (p:pUNIT) =
+
+    
+    let binCaption = p.Caption |> Encoding.UTF8.GetBytes
+    binCaption.Length |> BitConverter.GetBytes |> bb.append
+    binCaption |> bb.append
+
+let UNIT__bin (bb:BytesBuilder) (v:UNIT) =
+    v.ID |> BitConverter.GetBytes |> bb.append
+    v.Sort |> BitConverter.GetBytes |> bb.append
+    DateTime__bin bb v.Createdat
+    DateTime__bin bb v.Updatedat
+    
+    pUNIT__bin bb v.p
+    ()
+
+let bin__pUNIT (bi:BinIndexed):pUNIT =
+    let bin,index = bi
+
+    let p = pUNIT_empty()
+    
+    let count_Caption = BitConverter.ToInt32(bin,index.Value)
+    index.Value <- index.Value + 4
+    p.Caption <- Encoding.UTF8.GetString(bin,index.Value,count_Caption)
+    index.Value <- index.Value + count_Caption
+    
+    p
+
+let bin__UNIT (bi:BinIndexed):UNIT =
+    let bin,index = bi
+
+    let ID = BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    let Sort = BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    let Createdat = bin__DateTime bi
+    
+    let Updatedat = bin__DateTime bi
+    
+    {
+        ID = ID
+        Sort = Sort
+        Createdat = Createdat
+        Updatedat = Updatedat
+        p = bin__pUNIT bi }
+
+let pUNIT__json (p:pUNIT) =
+
+    [|
+        ("Caption",p.Caption |> Json.Str) |]
+    |> Json.Braket
+
+let UNIT__json (v:UNIT) =
+
+    let p = v.p
+    
+    [|  ("id",v.ID.ToString() |> Json.Num)
+        ("sort",v.Sort.ToString() |> Json.Num)
+        ("createdat",(v.Createdat |> Util.Time.wintime__unixtime).ToString() |> Json.Num)
+        ("updatedat",(v.Updatedat |> Util.Time.wintime__unixtime).ToString() |> Json.Num)
+        ("p",pUNIT__json v.p) |]
+    |> Json.Braket
+
+let UNIT__jsonTbw (w:TextBlockWriter) (v:UNIT) =
+    json__str w (UNIT__json v)
+
+let UNIT__jsonStr (v:UNIT) =
+    (UNIT__json v) |> json__strFinal
+
+
+let json__pUNITo (json:Json):pUNIT option =
+    let fields = json |> json__items
+
+    let p = pUNIT_empty()
+    
+    p.Caption <- checkfield fields "Caption"
+    
+    p |> Some
+    
+
+let json__UNITo (json:Json):UNIT option =
+    let fields = json |> json__items
+
+    let ID = checkfield fields "id" |> parse_int64
+    let Sort = checkfield fields "sort" |> parse_int64
+    let Createdat = checkfield fields "createdat" |> parse_int64 |> DateTime.FromBinary
+    let Updatedat = checkfield fields "updatedat" |> parse_int64 |> DateTime.FromBinary
+    
+    let o  =
+        match
+            json
+            |> tryFindByAtt "p" with
+        | Some (s,v) -> json__pUNITo v
+        | None -> None
+    
+    match o with
+    | Some p ->
+        
+        {
+            ID = ID
+            Sort = Sort
+            Createdat = Createdat
+            Updatedat = Updatedat
+            p = p } |> Some
+        
+    | None -> None
+
+let UNIT_clone src =
+    let bb = new BytesBuilder()
+    UNIT__bin bb src
+    bin__UNIT (bb.bytes(),ref 0)
+
+// [UBILL] Structure
+
+
+let pUBILL__bin (bb:BytesBuilder) (p:pUBILL) =
+
+    
+    p.Cat |> BitConverter.GetBytes |> bb.append
+    
+    p.Provider |> BitConverter.GetBytes |> bb.append
+    
+    p.client |> BitConverter.GetBytes |> bb.append
+    
+    p.Unit |> BitConverter.GetBytes |> bb.append
+    
+    p.Amout |> BitConverter.GetBytes |> bb.append
+
+let UBILL__bin (bb:BytesBuilder) (v:UBILL) =
+    v.ID |> BitConverter.GetBytes |> bb.append
+    v.Sort |> BitConverter.GetBytes |> bb.append
+    DateTime__bin bb v.Createdat
+    DateTime__bin bb v.Updatedat
+    
+    pUBILL__bin bb v.p
+    ()
+
+let bin__pUBILL (bi:BinIndexed):pUBILL =
+    let bin,index = bi
+
+    let p = pUBILL_empty()
+    
+    p.Cat <- BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    p.Provider <- BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    p.client <- BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    p.Unit <- BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    p.Amout <- BitConverter.ToDouble(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    p
+
+let bin__UBILL (bi:BinIndexed):UBILL =
+    let bin,index = bi
+
+    let ID = BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    let Sort = BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    let Createdat = bin__DateTime bi
+    
+    let Updatedat = bin__DateTime bi
+    
+    {
+        ID = ID
+        Sort = Sort
+        Createdat = Createdat
+        Updatedat = Updatedat
+        p = bin__pUBILL bi }
+
+let pUBILL__json (p:pUBILL) =
+
+    [|
+        ("Cat",p.Cat.ToString() |> Json.Num)
+        ("Provider",p.Provider.ToString() |> Json.Num)
+        ("client",p.client.ToString() |> Json.Num)
+        ("Unit",p.Unit.ToString() |> Json.Num)
+        ("Amout",p.Amout.ToString() |> Json.Num) |]
+    |> Json.Braket
+
+let UBILL__json (v:UBILL) =
+
+    let p = v.p
+    
+    [|  ("id",v.ID.ToString() |> Json.Num)
+        ("sort",v.Sort.ToString() |> Json.Num)
+        ("createdat",(v.Createdat |> Util.Time.wintime__unixtime).ToString() |> Json.Num)
+        ("updatedat",(v.Updatedat |> Util.Time.wintime__unixtime).ToString() |> Json.Num)
+        ("p",pUBILL__json v.p) |]
+    |> Json.Braket
+
+let UBILL__jsonTbw (w:TextBlockWriter) (v:UBILL) =
+    json__str w (UBILL__json v)
+
+let UBILL__jsonStr (v:UBILL) =
+    (UBILL__json v) |> json__strFinal
+
+
+let json__pUBILLo (json:Json):pUBILL option =
+    let fields = json |> json__items
+
+    let p = pUBILL_empty()
+    
+    p.Cat <- checkfield fields "Cat" |> parse_int64
+    
+    p.Provider <- checkfield fields "Provider" |> parse_int64
+    
+    p.client <- checkfield fields "client" |> parse_int64
+    
+    p.Unit <- checkfield fields "Unit" |> parse_int64
+    
+    p.Amout <- checkfield fields "Amout" |> parse_float
+    
+    p |> Some
+    
+
+let json__UBILLo (json:Json):UBILL option =
+    let fields = json |> json__items
+
+    let ID = checkfield fields "id" |> parse_int64
+    let Sort = checkfield fields "sort" |> parse_int64
+    let Createdat = checkfield fields "createdat" |> parse_int64 |> DateTime.FromBinary
+    let Updatedat = checkfield fields "updatedat" |> parse_int64 |> DateTime.FromBinary
+    
+    let o  =
+        match
+            json
+            |> tryFindByAtt "p" with
+        | Some (s,v) -> json__pUBILLo v
+        | None -> None
+    
+    match o with
+    | Some p ->
+        
+        {
+            ID = ID
+            Sort = Sort
+            Createdat = Createdat
+            Updatedat = Updatedat
+            p = p } |> Some
+        
+    | None -> None
+
+let UBILL_clone src =
+    let bb = new BytesBuilder()
+    UBILL__bin bb src
+    bin__UBILL (bb.bytes(),ref 0)
+
+// [UCAT] Structure
+
+
+let pUCAT__bin (bb:BytesBuilder) (p:pUCAT) =
+
+    
+    let binCaption = p.Caption |> Encoding.UTF8.GetBytes
+    binCaption.Length |> BitConverter.GetBytes |> bb.append
+    binCaption |> bb.append
+
+let UCAT__bin (bb:BytesBuilder) (v:UCAT) =
+    v.ID |> BitConverter.GetBytes |> bb.append
+    v.Sort |> BitConverter.GetBytes |> bb.append
+    DateTime__bin bb v.Createdat
+    DateTime__bin bb v.Updatedat
+    
+    pUCAT__bin bb v.p
+    ()
+
+let bin__pUCAT (bi:BinIndexed):pUCAT =
+    let bin,index = bi
+
+    let p = pUCAT_empty()
+    
+    let count_Caption = BitConverter.ToInt32(bin,index.Value)
+    index.Value <- index.Value + 4
+    p.Caption <- Encoding.UTF8.GetString(bin,index.Value,count_Caption)
+    index.Value <- index.Value + count_Caption
+    
+    p
+
+let bin__UCAT (bi:BinIndexed):UCAT =
+    let bin,index = bi
+
+    let ID = BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    let Sort = BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    let Createdat = bin__DateTime bi
+    
+    let Updatedat = bin__DateTime bi
+    
+    {
+        ID = ID
+        Sort = Sort
+        Createdat = Createdat
+        Updatedat = Updatedat
+        p = bin__pUCAT bi }
+
+let pUCAT__json (p:pUCAT) =
+
+    [|
+        ("Caption",p.Caption |> Json.Str) |]
+    |> Json.Braket
+
+let UCAT__json (v:UCAT) =
+
+    let p = v.p
+    
+    [|  ("id",v.ID.ToString() |> Json.Num)
+        ("sort",v.Sort.ToString() |> Json.Num)
+        ("createdat",(v.Createdat |> Util.Time.wintime__unixtime).ToString() |> Json.Num)
+        ("updatedat",(v.Updatedat |> Util.Time.wintime__unixtime).ToString() |> Json.Num)
+        ("p",pUCAT__json v.p) |]
+    |> Json.Braket
+
+let UCAT__jsonTbw (w:TextBlockWriter) (v:UCAT) =
+    json__str w (UCAT__json v)
+
+let UCAT__jsonStr (v:UCAT) =
+    (UCAT__json v) |> json__strFinal
+
+
+let json__pUCATo (json:Json):pUCAT option =
+    let fields = json |> json__items
+
+    let p = pUCAT_empty()
+    
+    p.Caption <- checkfield fields "Caption"
+    
+    p |> Some
+    
+
+let json__UCATo (json:Json):UCAT option =
+    let fields = json |> json__items
+
+    let ID = checkfield fields "id" |> parse_int64
+    let Sort = checkfield fields "sort" |> parse_int64
+    let Createdat = checkfield fields "createdat" |> parse_int64 |> DateTime.FromBinary
+    let Updatedat = checkfield fields "updatedat" |> parse_int64 |> DateTime.FromBinary
+    
+    let o  =
+        match
+            json
+            |> tryFindByAtt "p" with
+        | Some (s,v) -> json__pUCATo v
+        | None -> None
+    
+    match o with
+    | Some p ->
+        
+        {
+            ID = ID
+            Sort = Sort
+            Createdat = Createdat
+            Updatedat = Updatedat
+            p = p } |> Some
+        
+    | None -> None
+
+let UCAT_clone src =
+    let bb = new BytesBuilder()
+    UCAT__bin bb src
+    bin__UCAT (bb.bytes(),ref 0)
+
+// [CAT] Structure
+
+
+let pCAT__bin (bb:BytesBuilder) (p:pCAT) =
+
+    
+    let binCaption = p.Caption |> Encoding.UTF8.GetBytes
+    binCaption.Length |> BitConverter.GetBytes |> bb.append
+    binCaption |> bb.append
+    
+    p.Cat |> BitConverter.GetBytes |> bb.append
+
+let CAT__bin (bb:BytesBuilder) (v:CAT) =
+    v.ID |> BitConverter.GetBytes |> bb.append
+    v.Sort |> BitConverter.GetBytes |> bb.append
+    DateTime__bin bb v.Createdat
+    DateTime__bin bb v.Updatedat
+    
+    pCAT__bin bb v.p
+    ()
+
+let bin__pCAT (bi:BinIndexed):pCAT =
+    let bin,index = bi
+
+    let p = pCAT_empty()
+    
+    let count_Caption = BitConverter.ToInt32(bin,index.Value)
+    index.Value <- index.Value + 4
+    p.Caption <- Encoding.UTF8.GetString(bin,index.Value,count_Caption)
+    index.Value <- index.Value + count_Caption
+    
+    p.Cat <- BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    p
+
+let bin__CAT (bi:BinIndexed):CAT =
+    let bin,index = bi
+
+    let ID = BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    let Sort = BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    let Createdat = bin__DateTime bi
+    
+    let Updatedat = bin__DateTime bi
+    
+    {
+        ID = ID
+        Sort = Sort
+        Createdat = Createdat
+        Updatedat = Updatedat
+        p = bin__pCAT bi }
+
+let pCAT__json (p:pCAT) =
+
+    [|
+        ("Caption",p.Caption |> Json.Str)
+        ("Cat",p.Cat.ToString() |> Json.Num) |]
+    |> Json.Braket
+
+let CAT__json (v:CAT) =
+
+    let p = v.p
+    
+    [|  ("id",v.ID.ToString() |> Json.Num)
+        ("sort",v.Sort.ToString() |> Json.Num)
+        ("createdat",(v.Createdat |> Util.Time.wintime__unixtime).ToString() |> Json.Num)
+        ("updatedat",(v.Updatedat |> Util.Time.wintime__unixtime).ToString() |> Json.Num)
+        ("p",pCAT__json v.p) |]
+    |> Json.Braket
+
+let CAT__jsonTbw (w:TextBlockWriter) (v:CAT) =
+    json__str w (CAT__json v)
+
+let CAT__jsonStr (v:CAT) =
+    (CAT__json v) |> json__strFinal
+
+
+let json__pCATo (json:Json):pCAT option =
+    let fields = json |> json__items
+
+    let p = pCAT_empty()
+    
+    p.Caption <- checkfield fields "Caption"
+    
+    p.Cat <- checkfield fields "Cat" |> parse_int64
+    
+    p |> Some
+    
+
+let json__CATo (json:Json):CAT option =
+    let fields = json |> json__items
+
+    let ID = checkfield fields "id" |> parse_int64
+    let Sort = checkfield fields "sort" |> parse_int64
+    let Createdat = checkfield fields "createdat" |> parse_int64 |> DateTime.FromBinary
+    let Updatedat = checkfield fields "updatedat" |> parse_int64 |> DateTime.FromBinary
+    
+    let o  =
+        match
+            json
+            |> tryFindByAtt "p" with
+        | Some (s,v) -> json__pCATo v
+        | None -> None
+    
+    match o with
+    | Some p ->
+        
+        {
+            ID = ID
+            Sort = Sort
+            Createdat = Createdat
+            Updatedat = Updatedat
+            p = p } |> Some
+        
+    | None -> None
+
+let CAT_clone src =
+    let bb = new BytesBuilder()
+    CAT__bin bb src
+    bin__CAT (bb.bytes(),ref 0)
+
 // [FBIND] Structure
 
 
@@ -1343,6 +1964,491 @@ let FILETxSqlServer =
     """
 
 
+let db__pCLIENT(line:Object[]): pCLIENT =
+    let p = pCLIENT_empty()
+
+    p.Caption <- string(line[4]).TrimEnd()
+
+    p
+
+let pCLIENT__sps (p:pCLIENT) =
+    match rdbms with
+    | Rdbms.SqlServer ->
+        [|
+            ("Caption", p.Caption) |> kvp__sqlparam |]
+    | Rdbms.PostgreSql ->
+        [|
+            ("caption", p.Caption) |> kvp__sqlparam |]
+
+let db__CLIENT = db__Rcd db__pCLIENT
+
+let CLIENT_wrapper item: CLIENT =
+    let (i,c,u,s),p = item
+    { ID = i; Createdat = c; Updatedat = u; Sort = s; p = p }
+
+let pCLIENT_clone (p:pCLIENT): pCLIENT = {
+    Caption = p.Caption }
+
+let CLIENT_update_transaction output (updater,suc,fail) (rcd:CLIENT) =
+    let rollback_p = rcd.p |> pCLIENT_clone
+    let rollback_updatedat = rcd.Updatedat
+    updater rcd.p
+    let ctime,res =
+        (rcd.ID,rcd.p,rollback_p,rollback_updatedat)
+        |> update (conn,output,CLIENT_table,CLIENT_sql_update(),pCLIENT__sps,suc,fail)
+    match res with
+    | Suc ctx ->
+        rcd.Updatedat <- ctime
+        suc(ctime,ctx)
+    | Fail(eso,ctx) ->
+        rcd.p <- rollback_p
+        rcd.Updatedat <- rollback_updatedat
+        fail eso
+
+let CLIENT_update output (rcd:CLIENT) =
+    rcd
+    |> CLIENT_update_transaction output ((fun p -> ()),(fun (ctime,ctx) -> ()),(fun dte -> ()))
+
+let CLIENT_create_incremental_transaction output (suc,fail) p =
+    let cid = Interlocked.Increment CLIENT_id
+    let ctime = DateTime.UtcNow
+    match create (conn,output,CLIENT_table,pCLIENT__sps) (cid,ctime,p) with
+    | Suc ctx -> ((cid,ctime,ctime,cid),p) |> CLIENT_wrapper |> suc
+    | Fail(eso,ctx) -> fail(eso,ctx)
+
+let CLIENT_create output p =
+    CLIENT_create_incremental_transaction output ((fun rcd -> ()),(fun (eso,ctx) -> ())) p
+    
+
+let id__CLIENTo id: CLIENT option = id__rcd(conn,CLIENT_fieldorders(),CLIENT_table,db__CLIENT) id
+
+let CLIENT_metadata = {
+    fieldorders = CLIENT_fieldorders
+    db__rcd = db__CLIENT 
+    wrapper = CLIENT_wrapper
+    sps = pCLIENT__sps
+    id = CLIENT_id
+    id__rcdo = id__CLIENTo
+    clone = pCLIENT_clone
+    empty__p = pCLIENT_empty
+    rcd__bin = CLIENT__bin
+    bin__rcd = bin__CLIENT
+    p__json = pCLIENT__json
+    json__po = json__pCLIENTo
+    rcd__json = CLIENT__json
+    json__rcdo = json__CLIENTo
+    sql_update = CLIENT_sql_update
+    rcd_update = CLIENT_update
+    table = CLIENT_table
+    shorthand = "client" }
+
+let CLIENTTxSqlServer =
+    """
+    IF NOT EXISTS(SELECT * FROM sysobjects WHERE [name]='Kernel_Client' AND xtype='U')
+    BEGIN
+
+        CREATE TABLE Kernel_Client ([ID] BIGINT NOT NULL
+    ,[Createdat] BIGINT NOT NULL
+    ,[Updatedat] BIGINT NOT NULL
+    ,[Sort] BIGINT NOT NULL,
+    ,[Caption])
+    END
+    """
+
+
+let db__pUNIT(line:Object[]): pUNIT =
+    let p = pUNIT_empty()
+
+    p.Caption <- string(line[4]).TrimEnd()
+
+    p
+
+let pUNIT__sps (p:pUNIT) =
+    match rdbms with
+    | Rdbms.SqlServer ->
+        [|
+            ("Caption", p.Caption) |> kvp__sqlparam |]
+    | Rdbms.PostgreSql ->
+        [|
+            ("caption", p.Caption) |> kvp__sqlparam |]
+
+let db__UNIT = db__Rcd db__pUNIT
+
+let UNIT_wrapper item: UNIT =
+    let (i,c,u,s),p = item
+    { ID = i; Createdat = c; Updatedat = u; Sort = s; p = p }
+
+let pUNIT_clone (p:pUNIT): pUNIT = {
+    Caption = p.Caption }
+
+let UNIT_update_transaction output (updater,suc,fail) (rcd:UNIT) =
+    let rollback_p = rcd.p |> pUNIT_clone
+    let rollback_updatedat = rcd.Updatedat
+    updater rcd.p
+    let ctime,res =
+        (rcd.ID,rcd.p,rollback_p,rollback_updatedat)
+        |> update (conn,output,UNIT_table,UNIT_sql_update(),pUNIT__sps,suc,fail)
+    match res with
+    | Suc ctx ->
+        rcd.Updatedat <- ctime
+        suc(ctime,ctx)
+    | Fail(eso,ctx) ->
+        rcd.p <- rollback_p
+        rcd.Updatedat <- rollback_updatedat
+        fail eso
+
+let UNIT_update output (rcd:UNIT) =
+    rcd
+    |> UNIT_update_transaction output ((fun p -> ()),(fun (ctime,ctx) -> ()),(fun dte -> ()))
+
+let UNIT_create_incremental_transaction output (suc,fail) p =
+    let cid = Interlocked.Increment UNIT_id
+    let ctime = DateTime.UtcNow
+    match create (conn,output,UNIT_table,pUNIT__sps) (cid,ctime,p) with
+    | Suc ctx -> ((cid,ctime,ctime,cid),p) |> UNIT_wrapper |> suc
+    | Fail(eso,ctx) -> fail(eso,ctx)
+
+let UNIT_create output p =
+    UNIT_create_incremental_transaction output ((fun rcd -> ()),(fun (eso,ctx) -> ())) p
+    
+
+let id__UNITo id: UNIT option = id__rcd(conn,UNIT_fieldorders(),UNIT_table,db__UNIT) id
+
+let UNIT_metadata = {
+    fieldorders = UNIT_fieldorders
+    db__rcd = db__UNIT 
+    wrapper = UNIT_wrapper
+    sps = pUNIT__sps
+    id = UNIT_id
+    id__rcdo = id__UNITo
+    clone = pUNIT_clone
+    empty__p = pUNIT_empty
+    rcd__bin = UNIT__bin
+    bin__rcd = bin__UNIT
+    p__json = pUNIT__json
+    json__po = json__pUNITo
+    rcd__json = UNIT__json
+    json__rcdo = json__UNITo
+    sql_update = UNIT_sql_update
+    rcd_update = UNIT_update
+    table = UNIT_table
+    shorthand = "unit" }
+
+let UNITTxSqlServer =
+    """
+    IF NOT EXISTS(SELECT * FROM sysobjects WHERE [name]='Kernel_Unit' AND xtype='U')
+    BEGIN
+
+        CREATE TABLE Kernel_Unit ([ID] BIGINT NOT NULL
+    ,[Createdat] BIGINT NOT NULL
+    ,[Updatedat] BIGINT NOT NULL
+    ,[Sort] BIGINT NOT NULL,
+    ,[Caption])
+    END
+    """
+
+
+let db__pUBILL(line:Object[]): pUBILL =
+    let p = pUBILL_empty()
+
+    p.Cat <- if Convert.IsDBNull(line[4]) then 0L else line[4] :?> int64
+    p.Provider <- if Convert.IsDBNull(line[5]) then 0L else line[5] :?> int64
+    p.client <- if Convert.IsDBNull(line[6]) then 0L else line[6] :?> int64
+    p.Unit <- if Convert.IsDBNull(line[7]) then 0L else line[7] :?> int64
+    p.Amout <- if Convert.IsDBNull(line[8]) then 0.0 else line[8] :?> float
+
+    p
+
+let pUBILL__sps (p:pUBILL) =
+    match rdbms with
+    | Rdbms.SqlServer ->
+        [|
+            ("Cat", p.Cat) |> kvp__sqlparam
+            ("Provider", p.Provider) |> kvp__sqlparam
+            ("client", p.client) |> kvp__sqlparam
+            ("Unit", p.Unit) |> kvp__sqlparam
+            ("Amout", p.Amout) |> kvp__sqlparam |]
+    | Rdbms.PostgreSql ->
+        [|
+            ("cat", p.Cat) |> kvp__sqlparam
+            ("provider", p.Provider) |> kvp__sqlparam
+            ("client", p.client) |> kvp__sqlparam
+            ("unit", p.Unit) |> kvp__sqlparam
+            ("amout", p.Amout) |> kvp__sqlparam |]
+
+let db__UBILL = db__Rcd db__pUBILL
+
+let UBILL_wrapper item: UBILL =
+    let (i,c,u,s),p = item
+    { ID = i; Createdat = c; Updatedat = u; Sort = s; p = p }
+
+let pUBILL_clone (p:pUBILL): pUBILL = {
+    Cat = p.Cat
+    Provider = p.Provider
+    client = p.client
+    Unit = p.Unit
+    Amout = p.Amout }
+
+let UBILL_update_transaction output (updater,suc,fail) (rcd:UBILL) =
+    let rollback_p = rcd.p |> pUBILL_clone
+    let rollback_updatedat = rcd.Updatedat
+    updater rcd.p
+    let ctime,res =
+        (rcd.ID,rcd.p,rollback_p,rollback_updatedat)
+        |> update (conn,output,UBILL_table,UBILL_sql_update(),pUBILL__sps,suc,fail)
+    match res with
+    | Suc ctx ->
+        rcd.Updatedat <- ctime
+        suc(ctime,ctx)
+    | Fail(eso,ctx) ->
+        rcd.p <- rollback_p
+        rcd.Updatedat <- rollback_updatedat
+        fail eso
+
+let UBILL_update output (rcd:UBILL) =
+    rcd
+    |> UBILL_update_transaction output ((fun p -> ()),(fun (ctime,ctx) -> ()),(fun dte -> ()))
+
+let UBILL_create_incremental_transaction output (suc,fail) p =
+    let cid = Interlocked.Increment UBILL_id
+    let ctime = DateTime.UtcNow
+    match create (conn,output,UBILL_table,pUBILL__sps) (cid,ctime,p) with
+    | Suc ctx -> ((cid,ctime,ctime,cid),p) |> UBILL_wrapper |> suc
+    | Fail(eso,ctx) -> fail(eso,ctx)
+
+let UBILL_create output p =
+    UBILL_create_incremental_transaction output ((fun rcd -> ()),(fun (eso,ctx) -> ())) p
+    
+
+let id__UBILLo id: UBILL option = id__rcd(conn,UBILL_fieldorders(),UBILL_table,db__UBILL) id
+
+let UBILL_metadata = {
+    fieldorders = UBILL_fieldorders
+    db__rcd = db__UBILL 
+    wrapper = UBILL_wrapper
+    sps = pUBILL__sps
+    id = UBILL_id
+    id__rcdo = id__UBILLo
+    clone = pUBILL_clone
+    empty__p = pUBILL_empty
+    rcd__bin = UBILL__bin
+    bin__rcd = bin__UBILL
+    p__json = pUBILL__json
+    json__po = json__pUBILLo
+    rcd__json = UBILL__json
+    json__rcdo = json__UBILLo
+    sql_update = UBILL_sql_update
+    rcd_update = UBILL_update
+    table = UBILL_table
+    shorthand = "ubill" }
+
+let UBILLTxSqlServer =
+    """
+    IF NOT EXISTS(SELECT * FROM sysobjects WHERE [name]='Kernel_UtilBill' AND xtype='U')
+    BEGIN
+
+        CREATE TABLE Kernel_UtilBill ([ID] BIGINT NOT NULL
+    ,[Createdat] BIGINT NOT NULL
+    ,[Updatedat] BIGINT NOT NULL
+    ,[Sort] BIGINT NOT NULL,
+    ,[Cat]
+    ,[Provider]
+    ,[client]
+    ,[Unit]
+    ,[Amout])
+    END
+    """
+
+
+let db__pUCAT(line:Object[]): pUCAT =
+    let p = pUCAT_empty()
+
+    p.Caption <- string(line[4]).TrimEnd()
+
+    p
+
+let pUCAT__sps (p:pUCAT) =
+    match rdbms with
+    | Rdbms.SqlServer ->
+        [|
+            ("Caption", p.Caption) |> kvp__sqlparam |]
+    | Rdbms.PostgreSql ->
+        [|
+            ("caption", p.Caption) |> kvp__sqlparam |]
+
+let db__UCAT = db__Rcd db__pUCAT
+
+let UCAT_wrapper item: UCAT =
+    let (i,c,u,s),p = item
+    { ID = i; Createdat = c; Updatedat = u; Sort = s; p = p }
+
+let pUCAT_clone (p:pUCAT): pUCAT = {
+    Caption = p.Caption }
+
+let UCAT_update_transaction output (updater,suc,fail) (rcd:UCAT) =
+    let rollback_p = rcd.p |> pUCAT_clone
+    let rollback_updatedat = rcd.Updatedat
+    updater rcd.p
+    let ctime,res =
+        (rcd.ID,rcd.p,rollback_p,rollback_updatedat)
+        |> update (conn,output,UCAT_table,UCAT_sql_update(),pUCAT__sps,suc,fail)
+    match res with
+    | Suc ctx ->
+        rcd.Updatedat <- ctime
+        suc(ctime,ctx)
+    | Fail(eso,ctx) ->
+        rcd.p <- rollback_p
+        rcd.Updatedat <- rollback_updatedat
+        fail eso
+
+let UCAT_update output (rcd:UCAT) =
+    rcd
+    |> UCAT_update_transaction output ((fun p -> ()),(fun (ctime,ctx) -> ()),(fun dte -> ()))
+
+let UCAT_create_incremental_transaction output (suc,fail) p =
+    let cid = Interlocked.Increment UCAT_id
+    let ctime = DateTime.UtcNow
+    match create (conn,output,UCAT_table,pUCAT__sps) (cid,ctime,p) with
+    | Suc ctx -> ((cid,ctime,ctime,cid),p) |> UCAT_wrapper |> suc
+    | Fail(eso,ctx) -> fail(eso,ctx)
+
+let UCAT_create output p =
+    UCAT_create_incremental_transaction output ((fun rcd -> ()),(fun (eso,ctx) -> ())) p
+    
+
+let id__UCATo id: UCAT option = id__rcd(conn,UCAT_fieldorders(),UCAT_table,db__UCAT) id
+
+let UCAT_metadata = {
+    fieldorders = UCAT_fieldorders
+    db__rcd = db__UCAT 
+    wrapper = UCAT_wrapper
+    sps = pUCAT__sps
+    id = UCAT_id
+    id__rcdo = id__UCATo
+    clone = pUCAT_clone
+    empty__p = pUCAT_empty
+    rcd__bin = UCAT__bin
+    bin__rcd = bin__UCAT
+    p__json = pUCAT__json
+    json__po = json__pUCATo
+    rcd__json = UCAT__json
+    json__rcdo = json__UCATo
+    sql_update = UCAT_sql_update
+    rcd_update = UCAT_update
+    table = UCAT_table
+    shorthand = "ucat" }
+
+let UCATTxSqlServer =
+    """
+    IF NOT EXISTS(SELECT * FROM sysobjects WHERE [name]='Kernel_UtilCat' AND xtype='U')
+    BEGIN
+
+        CREATE TABLE Kernel_UtilCat ([ID] BIGINT NOT NULL
+    ,[Createdat] BIGINT NOT NULL
+    ,[Updatedat] BIGINT NOT NULL
+    ,[Sort] BIGINT NOT NULL,
+    ,[Caption])
+    END
+    """
+
+
+let db__pCAT(line:Object[]): pCAT =
+    let p = pCAT_empty()
+
+    p.Caption <- string(line[4]).TrimEnd()
+    p.Cat <- if Convert.IsDBNull(line[5]) then 0L else line[5] :?> int64
+
+    p
+
+let pCAT__sps (p:pCAT) =
+    match rdbms with
+    | Rdbms.SqlServer ->
+        [|
+            ("Caption", p.Caption) |> kvp__sqlparam
+            ("Cat", p.Cat) |> kvp__sqlparam |]
+    | Rdbms.PostgreSql ->
+        [|
+            ("caption", p.Caption) |> kvp__sqlparam
+            ("cat", p.Cat) |> kvp__sqlparam |]
+
+let db__CAT = db__Rcd db__pCAT
+
+let CAT_wrapper item: CAT =
+    let (i,c,u,s),p = item
+    { ID = i; Createdat = c; Updatedat = u; Sort = s; p = p }
+
+let pCAT_clone (p:pCAT): pCAT = {
+    Caption = p.Caption
+    Cat = p.Cat }
+
+let CAT_update_transaction output (updater,suc,fail) (rcd:CAT) =
+    let rollback_p = rcd.p |> pCAT_clone
+    let rollback_updatedat = rcd.Updatedat
+    updater rcd.p
+    let ctime,res =
+        (rcd.ID,rcd.p,rollback_p,rollback_updatedat)
+        |> update (conn,output,CAT_table,CAT_sql_update(),pCAT__sps,suc,fail)
+    match res with
+    | Suc ctx ->
+        rcd.Updatedat <- ctime
+        suc(ctime,ctx)
+    | Fail(eso,ctx) ->
+        rcd.p <- rollback_p
+        rcd.Updatedat <- rollback_updatedat
+        fail eso
+
+let CAT_update output (rcd:CAT) =
+    rcd
+    |> CAT_update_transaction output ((fun p -> ()),(fun (ctime,ctx) -> ()),(fun dte -> ()))
+
+let CAT_create_incremental_transaction output (suc,fail) p =
+    let cid = Interlocked.Increment CAT_id
+    let ctime = DateTime.UtcNow
+    match create (conn,output,CAT_table,pCAT__sps) (cid,ctime,p) with
+    | Suc ctx -> ((cid,ctime,ctime,cid),p) |> CAT_wrapper |> suc
+    | Fail(eso,ctx) -> fail(eso,ctx)
+
+let CAT_create output p =
+    CAT_create_incremental_transaction output ((fun rcd -> ()),(fun (eso,ctx) -> ())) p
+    
+
+let id__CATo id: CAT option = id__rcd(conn,CAT_fieldorders(),CAT_table,db__CAT) id
+
+let CAT_metadata = {
+    fieldorders = CAT_fieldorders
+    db__rcd = db__CAT 
+    wrapper = CAT_wrapper
+    sps = pCAT__sps
+    id = CAT_id
+    id__rcdo = id__CATo
+    clone = pCAT_clone
+    empty__p = pCAT_empty
+    rcd__bin = CAT__bin
+    bin__rcd = bin__CAT
+    p__json = pCAT__json
+    json__po = json__pCATo
+    rcd__json = CAT__json
+    json__rcdo = json__CATo
+    sql_update = CAT_sql_update
+    rcd_update = CAT_update
+    table = CAT_table
+    shorthand = "cat" }
+
+let CATTxSqlServer =
+    """
+    IF NOT EXISTS(SELECT * FROM sysobjects WHERE [name]='Kernel_UtilProvider' AND xtype='U')
+    BEGIN
+
+        CREATE TABLE Kernel_UtilProvider ([ID] BIGINT NOT NULL
+    ,[Createdat] BIGINT NOT NULL
+    ,[Updatedat] BIGINT NOT NULL
+    ,[Sort] BIGINT NOT NULL,
+    ,[Caption]
+    ,[Cat])
+    END
+    """
+
+
 let db__pFBIND(line:Object[]): pFBIND =
     let p = pFBIND_empty()
 
@@ -1871,15 +2977,25 @@ let PLOGTxSqlServer =
 type MetadataEnum = 
 | EU = 0
 | FILE = 1
-| FBIND = 2
-| MOMENT = 3
-| CONFIG = 4
-| LOG = 5
-| PLOG = 6
+| CLIENT = 2
+| UNIT = 3
+| UBILL = 4
+| UCAT = 5
+| CAT = 6
+| FBIND = 7
+| MOMENT = 8
+| CONFIG = 9
+| LOG = 10
+| PLOG = 11
 
 let tablenames = [|
     EU_metadata.table
     FILE_metadata.table
+    CLIENT_metadata.table
+    UNIT_metadata.table
+    UBILL_metadata.table
+    UCAT_metadata.table
+    CAT_metadata.table
     FBIND_metadata.table
     MOMENT_metadata.table
     CONFIG_metadata.table
@@ -1921,6 +3037,101 @@ let init() =
     match singlevalue_query conn (str__sql sqlCountCa_File) with
     | Some v ->
         FILE_count.Value <-
+            match rdbms with
+            | Rdbms.SqlServer -> v :?> int32
+            | Rdbms.PostgreSql -> v :?> int64 |> int32
+    | None -> ()
+
+    let sqlMaxKernel_Client, sqlCountKernel_Client =
+        match rdbms with
+        | Rdbms.SqlServer -> "SELECT MAX(ID) FROM [Kernel_Client]", "SELECT COUNT(ID) FROM [Kernel_Client]"
+        | Rdbms.PostgreSql -> "SELECT MAX(id) FROM kernel_client", "SELECT COUNT(id) FROM kernel_client"
+    match singlevalue_query conn (str__sql sqlMaxKernel_Client) with
+    | Some v ->
+        let max = v :?> int64
+        if max > CLIENT_id.Value then
+            CLIENT_id.Value <- max
+    | None -> ()
+
+    match singlevalue_query conn (str__sql sqlCountKernel_Client) with
+    | Some v ->
+        CLIENT_count.Value <-
+            match rdbms with
+            | Rdbms.SqlServer -> v :?> int32
+            | Rdbms.PostgreSql -> v :?> int64 |> int32
+    | None -> ()
+
+    let sqlMaxKernel_Unit, sqlCountKernel_Unit =
+        match rdbms with
+        | Rdbms.SqlServer -> "SELECT MAX(ID) FROM [Kernel_Unit]", "SELECT COUNT(ID) FROM [Kernel_Unit]"
+        | Rdbms.PostgreSql -> "SELECT MAX(id) FROM kernel_unit", "SELECT COUNT(id) FROM kernel_unit"
+    match singlevalue_query conn (str__sql sqlMaxKernel_Unit) with
+    | Some v ->
+        let max = v :?> int64
+        if max > UNIT_id.Value then
+            UNIT_id.Value <- max
+    | None -> ()
+
+    match singlevalue_query conn (str__sql sqlCountKernel_Unit) with
+    | Some v ->
+        UNIT_count.Value <-
+            match rdbms with
+            | Rdbms.SqlServer -> v :?> int32
+            | Rdbms.PostgreSql -> v :?> int64 |> int32
+    | None -> ()
+
+    let sqlMaxKernel_UtilBill, sqlCountKernel_UtilBill =
+        match rdbms with
+        | Rdbms.SqlServer -> "SELECT MAX(ID) FROM [Kernel_UtilBill]", "SELECT COUNT(ID) FROM [Kernel_UtilBill]"
+        | Rdbms.PostgreSql -> "SELECT MAX(id) FROM kernel_utilbill", "SELECT COUNT(id) FROM kernel_utilbill"
+    match singlevalue_query conn (str__sql sqlMaxKernel_UtilBill) with
+    | Some v ->
+        let max = v :?> int64
+        if max > UBILL_id.Value then
+            UBILL_id.Value <- max
+    | None -> ()
+
+    match singlevalue_query conn (str__sql sqlCountKernel_UtilBill) with
+    | Some v ->
+        UBILL_count.Value <-
+            match rdbms with
+            | Rdbms.SqlServer -> v :?> int32
+            | Rdbms.PostgreSql -> v :?> int64 |> int32
+    | None -> ()
+
+    let sqlMaxKernel_UtilCat, sqlCountKernel_UtilCat =
+        match rdbms with
+        | Rdbms.SqlServer -> "SELECT MAX(ID) FROM [Kernel_UtilCat]", "SELECT COUNT(ID) FROM [Kernel_UtilCat]"
+        | Rdbms.PostgreSql -> "SELECT MAX(id) FROM kernel_utilcat", "SELECT COUNT(id) FROM kernel_utilcat"
+    match singlevalue_query conn (str__sql sqlMaxKernel_UtilCat) with
+    | Some v ->
+        let max = v :?> int64
+        if max > UCAT_id.Value then
+            UCAT_id.Value <- max
+    | None -> ()
+
+    match singlevalue_query conn (str__sql sqlCountKernel_UtilCat) with
+    | Some v ->
+        UCAT_count.Value <-
+            match rdbms with
+            | Rdbms.SqlServer -> v :?> int32
+            | Rdbms.PostgreSql -> v :?> int64 |> int32
+    | None -> ()
+
+    let sqlMaxKernel_UtilProvider, sqlCountKernel_UtilProvider =
+        match rdbms with
+        | Rdbms.SqlServer -> "SELECT MAX(ID) FROM [Kernel_UtilProvider]", "SELECT COUNT(ID) FROM [Kernel_UtilProvider]"
+        | Rdbms.PostgreSql -> "SELECT MAX(id) FROM kernel_utilprovider", "SELECT COUNT(id) FROM kernel_utilprovider"
+    match singlevalue_query conn (str__sql sqlMaxKernel_UtilProvider) with
+    | Some v ->
+        let max = v :?> int64
+        if max > CAT_id.Value then
+            CAT_id.Value <- max
+    | None -> ()
+
+    match singlevalue_query conn (str__sql sqlCountKernel_UtilProvider) with
+    | Some v ->
+        CAT_count.Value <-
             match rdbms with
             | Rdbms.SqlServer -> v :?> int32
             | Rdbms.PostgreSql -> v :?> int64 |> int32

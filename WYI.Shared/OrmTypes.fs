@@ -187,6 +187,226 @@ let FILE_id = ref 35461231L
 let FILE_count = ref 0
 let FILE_table = "Ca_File"
 
+// [Kernel_Client] (CLIENT)
+
+type pCLIENT = {
+mutable Caption: Text}
+
+
+type CLIENT = Rcd<pCLIENT>
+
+let CLIENT_fieldorders() =
+    match rdbms with
+    | Rdbms.SqlServer ->
+        "[ID],[Createdat],[Updatedat],[Sort],[Caption]"
+    | Rdbms.PostgreSql ->
+        $""" "id","createdat","updatedat","sort", "caption" """
+
+let pCLIENT_fieldordersArray = [|
+    "Caption" |]
+
+let CLIENT_sql_update() =
+    match rdbms with
+    | Rdbms.SqlServer -> "[Caption]=@Caption"
+    | Rdbms.PostgreSql -> "caption=@caption"
+
+let pCLIENT_fields() =
+    match rdbms with
+    | Rdbms.SqlServer ->
+        [|
+            Text("Caption") |]
+    | Rdbms.PostgreSql ->
+        [|
+            Text("caption") |]
+
+let pCLIENT_empty(): pCLIENT = {
+    Caption = "" }
+
+let CLIENT_id = ref 9554261L
+let CLIENT_count = ref 0
+let CLIENT_table = "Kernel_Client"
+
+// [Kernel_Unit] (UNIT)
+
+type pUNIT = {
+mutable Caption: Text}
+
+
+type UNIT = Rcd<pUNIT>
+
+let UNIT_fieldorders() =
+    match rdbms with
+    | Rdbms.SqlServer ->
+        "[ID],[Createdat],[Updatedat],[Sort],[Caption]"
+    | Rdbms.PostgreSql ->
+        $""" "id","createdat","updatedat","sort", "caption" """
+
+let pUNIT_fieldordersArray = [|
+    "Caption" |]
+
+let UNIT_sql_update() =
+    match rdbms with
+    | Rdbms.SqlServer -> "[Caption]=@Caption"
+    | Rdbms.PostgreSql -> "caption=@caption"
+
+let pUNIT_fields() =
+    match rdbms with
+    | Rdbms.SqlServer ->
+        [|
+            Text("Caption") |]
+    | Rdbms.PostgreSql ->
+        [|
+            Text("caption") |]
+
+let pUNIT_empty(): pUNIT = {
+    Caption = "" }
+
+let UNIT_id = ref 29554261L
+let UNIT_count = ref 0
+let UNIT_table = "Kernel_Unit"
+
+// [Kernel_UtilBill] (UBILL)
+
+type pUBILL = {
+mutable Cat: FK
+mutable Provider: FK
+mutable client: FK
+mutable Unit: FK
+mutable Amout: Float}
+
+
+type UBILL = Rcd<pUBILL>
+
+let UBILL_fieldorders() =
+    match rdbms with
+    | Rdbms.SqlServer ->
+        "[ID],[Createdat],[Updatedat],[Sort],[Cat],[Provider],[client],[Unit],[Amout]"
+    | Rdbms.PostgreSql ->
+        $""" "id","createdat","updatedat","sort", "cat","provider","client","unit","amout" """
+
+let pUBILL_fieldordersArray = [|
+    "Cat"
+    "Provider"
+    "client"
+    "Unit"
+    "Amout" |]
+
+let UBILL_sql_update() =
+    match rdbms with
+    | Rdbms.SqlServer -> "[Cat]=@Cat,[Provider]=@Provider,[client]=@client,[Unit]=@Unit,[Amout]=@Amout"
+    | Rdbms.PostgreSql -> "cat=@cat,provider=@provider,client=@client,unit=@unit,amout=@amout"
+
+let pUBILL_fields() =
+    match rdbms with
+    | Rdbms.SqlServer ->
+        [|
+            FK("Cat")
+            FK("Provider")
+            FK("client")
+            FK("Unit")
+            Float("Amout") |]
+    | Rdbms.PostgreSql ->
+        [|
+            FK("cat")
+            FK("provider")
+            FK("client")
+            FK("unit")
+            Float("amout") |]
+
+let pUBILL_empty(): pUBILL = {
+    Cat = 0L
+    Provider = 0L
+    client = 0L
+    Unit = 0L
+    Amout = 0.0 }
+
+let UBILL_id = ref 4426561L
+let UBILL_count = ref 0
+let UBILL_table = "Kernel_UtilBill"
+
+// [Kernel_UtilCat] (UCAT)
+
+type pUCAT = {
+mutable Caption: Text}
+
+
+type UCAT = Rcd<pUCAT>
+
+let UCAT_fieldorders() =
+    match rdbms with
+    | Rdbms.SqlServer ->
+        "[ID],[Createdat],[Updatedat],[Sort],[Caption]"
+    | Rdbms.PostgreSql ->
+        $""" "id","createdat","updatedat","sort", "caption" """
+
+let pUCAT_fieldordersArray = [|
+    "Caption" |]
+
+let UCAT_sql_update() =
+    match rdbms with
+    | Rdbms.SqlServer -> "[Caption]=@Caption"
+    | Rdbms.PostgreSql -> "caption=@caption"
+
+let pUCAT_fields() =
+    match rdbms with
+    | Rdbms.SqlServer ->
+        [|
+            Text("Caption") |]
+    | Rdbms.PostgreSql ->
+        [|
+            Text("caption") |]
+
+let pUCAT_empty(): pUCAT = {
+    Caption = "" }
+
+let UCAT_id = ref 6461L
+let UCAT_count = ref 0
+let UCAT_table = "Kernel_UtilCat"
+
+// [Kernel_UtilProvider] (CAT)
+
+type pCAT = {
+mutable Caption: Text
+mutable Cat: FK}
+
+
+type CAT = Rcd<pCAT>
+
+let CAT_fieldorders() =
+    match rdbms with
+    | Rdbms.SqlServer ->
+        "[ID],[Createdat],[Updatedat],[Sort],[Caption],[Cat]"
+    | Rdbms.PostgreSql ->
+        $""" "id","createdat","updatedat","sort", "caption","cat" """
+
+let pCAT_fieldordersArray = [|
+    "Caption"
+    "Cat" |]
+
+let CAT_sql_update() =
+    match rdbms with
+    | Rdbms.SqlServer -> "[Caption]=@Caption,[Cat]=@Cat"
+    | Rdbms.PostgreSql -> "caption=@caption,cat=@cat"
+
+let pCAT_fields() =
+    match rdbms with
+    | Rdbms.SqlServer ->
+        [|
+            Text("Caption")
+            FK("Cat") |]
+    | Rdbms.PostgreSql ->
+        [|
+            Text("caption")
+            FK("cat") |]
+
+let pCAT_empty(): pCAT = {
+    Caption = ""
+    Cat = 0L }
+
+let CAT_id = ref 254261L
+let CAT_count = ref 0
+let CAT_table = "Kernel_UtilProvider"
+
 // [Social_FileBind] (FBIND)
 
 type pFBIND = {

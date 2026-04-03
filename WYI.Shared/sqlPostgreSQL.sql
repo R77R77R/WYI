@@ -283,6 +283,381 @@ BEGIN
         ALTER TABLE ca_file ADD "owner" bigint;
     END IF;
 END $$;
+-- [kernel_client] ----------------------
+
+-- [kernel_client] ----------------------
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(
+        SELECT 1 FROM information_schema.tables 
+        WHERE table_name = 'kernel_client' 
+          AND table_schema = 'public'
+    ));
+
+    IF not condition THEN
+        CREATE TABLE "kernel_client" (
+            id BIGINT NOT NULL
+            ,createdat BIGINT NOT NULL
+            ,updatedat BIGINT NOT NULL
+            ,sort BIGINT NOT NULL
+            ,"caption" TEXT
+            ,CONSTRAINT "pk_kernel_client" PRIMARY KEY (id)
+        );
+    END IF;
+END $$;
+
+
+-- PostgreSQL: Dropping obsolete fields -----------
+DO $$ 
+DECLARE
+    fn TEXT;
+BEGIN
+    FOR fn IN 
+        SELECT column_name 
+        FROM information_schema.columns 
+        WHERE table_name = 'kernel_client' 
+          AND table_schema = 'public' 
+          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'caption'])
+    LOOP
+        -- 对应 PRINT 'Dropping ' + @tname + '.' + @fn
+        
+        -- 对应 EXEC sp_executesql @sql (format %I 对应 QUOTENAME)
+        EXECUTE format('ALTER TABLE %I DROP COLUMN %I', 'kernel_client', fn);
+    END LOOP;
+END $$;
+
+
+-- [kernel_client.Caption] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_client' AND column_name='caption'));
+
+    IF not condition THEN
+        ALTER TABLE kernel_client ADD "caption" text;
+    END IF;
+END $$;
+-- [kernel_unit] ----------------------
+
+-- [kernel_unit] ----------------------
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(
+        SELECT 1 FROM information_schema.tables 
+        WHERE table_name = 'kernel_unit' 
+          AND table_schema = 'public'
+    ));
+
+    IF not condition THEN
+        CREATE TABLE "kernel_unit" (
+            id BIGINT NOT NULL
+            ,createdat BIGINT NOT NULL
+            ,updatedat BIGINT NOT NULL
+            ,sort BIGINT NOT NULL
+            ,"caption" TEXT
+            ,CONSTRAINT "pk_kernel_unit" PRIMARY KEY (id)
+        );
+    END IF;
+END $$;
+
+
+-- PostgreSQL: Dropping obsolete fields -----------
+DO $$ 
+DECLARE
+    fn TEXT;
+BEGIN
+    FOR fn IN 
+        SELECT column_name 
+        FROM information_schema.columns 
+        WHERE table_name = 'kernel_unit' 
+          AND table_schema = 'public' 
+          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'caption'])
+    LOOP
+        -- 对应 PRINT 'Dropping ' + @tname + '.' + @fn
+        
+        -- 对应 EXEC sp_executesql @sql (format %I 对应 QUOTENAME)
+        EXECUTE format('ALTER TABLE %I DROP COLUMN %I', 'kernel_unit', fn);
+    END LOOP;
+END $$;
+
+
+-- [kernel_unit.Caption] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_unit' AND column_name='caption'));
+
+    IF not condition THEN
+        ALTER TABLE kernel_unit ADD "caption" text;
+    END IF;
+END $$;
+-- [kernel_utilbill] ----------------------
+
+-- [kernel_utilbill] ----------------------
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(
+        SELECT 1 FROM information_schema.tables 
+        WHERE table_name = 'kernel_utilbill' 
+          AND table_schema = 'public'
+    ));
+
+    IF not condition THEN
+        CREATE TABLE "kernel_utilbill" (
+            id BIGINT NOT NULL
+            ,createdat BIGINT NOT NULL
+            ,updatedat BIGINT NOT NULL
+            ,sort BIGINT NOT NULL
+            ,"cat" BIGINT
+            ,"provider" BIGINT
+            ,"client" BIGINT
+            ,"unit" BIGINT
+            ,"amout" FLOAT
+            ,CONSTRAINT "pk_kernel_utilbill" PRIMARY KEY (id)
+        );
+    END IF;
+END $$;
+
+
+-- PostgreSQL: Dropping obsolete fields -----------
+DO $$ 
+DECLARE
+    fn TEXT;
+BEGIN
+    FOR fn IN 
+        SELECT column_name 
+        FROM information_schema.columns 
+        WHERE table_name = 'kernel_utilbill' 
+          AND table_schema = 'public' 
+          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'cat', 'provider', 'client', 'unit', 'amout'])
+    LOOP
+        -- 对应 PRINT 'Dropping ' + @tname + '.' + @fn
+        
+        -- 对应 EXEC sp_executesql @sql (format %I 对应 QUOTENAME)
+        EXECUTE format('ALTER TABLE %I DROP COLUMN %I', 'kernel_utilbill', fn);
+    END LOOP;
+END $$;
+
+
+-- [kernel_utilbill.Cat] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_utilbill' AND column_name='cat'));
+
+    IF not condition THEN
+        ALTER TABLE kernel_utilbill ADD "cat" bigint;
+    END IF;
+END $$;
+
+-- [kernel_utilbill.Provider] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_utilbill' AND column_name='provider'));
+
+    IF not condition THEN
+        ALTER TABLE kernel_utilbill ADD "provider" bigint;
+    END IF;
+END $$;
+
+-- [kernel_utilbill.client] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_utilbill' AND column_name='client'));
+
+    IF not condition THEN
+        ALTER TABLE kernel_utilbill ADD "client" bigint;
+    END IF;
+END $$;
+
+-- [kernel_utilbill.Unit] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_utilbill' AND column_name='unit'));
+
+    IF not condition THEN
+        ALTER TABLE kernel_utilbill ADD "unit" bigint;
+    END IF;
+END $$;
+
+-- [kernel_utilbill.Amout] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_utilbill' AND column_name='amout'));
+
+    IF not condition THEN
+        ALTER TABLE kernel_utilbill ADD "amout" float;
+    END IF;
+END $$;
+-- [kernel_utilcat] ----------------------
+
+-- [kernel_utilcat] ----------------------
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(
+        SELECT 1 FROM information_schema.tables 
+        WHERE table_name = 'kernel_utilcat' 
+          AND table_schema = 'public'
+    ));
+
+    IF not condition THEN
+        CREATE TABLE "kernel_utilcat" (
+            id BIGINT NOT NULL
+            ,createdat BIGINT NOT NULL
+            ,updatedat BIGINT NOT NULL
+            ,sort BIGINT NOT NULL
+            ,"caption" TEXT
+            ,CONSTRAINT "pk_kernel_utilcat" PRIMARY KEY (id)
+        );
+    END IF;
+END $$;
+
+
+-- PostgreSQL: Dropping obsolete fields -----------
+DO $$ 
+DECLARE
+    fn TEXT;
+BEGIN
+    FOR fn IN 
+        SELECT column_name 
+        FROM information_schema.columns 
+        WHERE table_name = 'kernel_utilcat' 
+          AND table_schema = 'public' 
+          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'caption'])
+    LOOP
+        -- 对应 PRINT 'Dropping ' + @tname + '.' + @fn
+        
+        -- 对应 EXEC sp_executesql @sql (format %I 对应 QUOTENAME)
+        EXECUTE format('ALTER TABLE %I DROP COLUMN %I', 'kernel_utilcat', fn);
+    END LOOP;
+END $$;
+
+
+-- [kernel_utilcat.Caption] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_utilcat' AND column_name='caption'));
+
+    IF not condition THEN
+        ALTER TABLE kernel_utilcat ADD "caption" text;
+    END IF;
+END $$;
+-- [kernel_utilprovider] ----------------------
+
+-- [kernel_utilprovider] ----------------------
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(
+        SELECT 1 FROM information_schema.tables 
+        WHERE table_name = 'kernel_utilprovider' 
+          AND table_schema = 'public'
+    ));
+
+    IF not condition THEN
+        CREATE TABLE "kernel_utilprovider" (
+            id BIGINT NOT NULL
+            ,createdat BIGINT NOT NULL
+            ,updatedat BIGINT NOT NULL
+            ,sort BIGINT NOT NULL
+            ,"caption" TEXT
+            ,"cat" BIGINT
+            ,CONSTRAINT "pk_kernel_utilprovider" PRIMARY KEY (id)
+        );
+    END IF;
+END $$;
+
+
+-- PostgreSQL: Dropping obsolete fields -----------
+DO $$ 
+DECLARE
+    fn TEXT;
+BEGIN
+    FOR fn IN 
+        SELECT column_name 
+        FROM information_schema.columns 
+        WHERE table_name = 'kernel_utilprovider' 
+          AND table_schema = 'public' 
+          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'caption', 'cat'])
+    LOOP
+        -- 对应 PRINT 'Dropping ' + @tname + '.' + @fn
+        
+        -- 对应 EXEC sp_executesql @sql (format %I 对应 QUOTENAME)
+        EXECUTE format('ALTER TABLE %I DROP COLUMN %I', 'kernel_utilprovider', fn);
+    END LOOP;
+END $$;
+
+
+-- [kernel_utilprovider.Caption] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_utilprovider' AND column_name='caption'));
+
+    IF not condition THEN
+        ALTER TABLE kernel_utilprovider ADD "caption" text;
+    END IF;
+END $$;
+
+-- [kernel_utilprovider.Cat] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_utilprovider' AND column_name='cat'));
+
+    IF not condition THEN
+        ALTER TABLE kernel_utilprovider ADD "cat" bigint;
+    END IF;
+END $$;
 -- [social_filebind] ----------------------
 
 -- [social_filebind] ----------------------

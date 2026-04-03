@@ -44,6 +44,86 @@ sort:number
 p:pFILE
 }
 
+// [Kernel_Client] (CLIENT)
+
+export type pCLIENT = {
+[key:string]: any
+    Caption: string
+}
+
+export type CLIENT = {
+id:number
+createdat:Date
+updatedat:Date
+sort:number
+p:pCLIENT
+}
+
+// [Kernel_Unit] (UNIT)
+
+export type pUNIT = {
+[key:string]: any
+    Caption: string
+}
+
+export type UNIT = {
+id:number
+createdat:Date
+updatedat:Date
+sort:number
+p:pUNIT
+}
+
+// [Kernel_UtilBill] (UBILL)
+
+export type pUBILL = {
+[key:string]: any
+    Cat: number
+    Provider: number
+    client: number
+    Unit: number
+    Amout: number
+}
+
+export type UBILL = {
+id:number
+createdat:Date
+updatedat:Date
+sort:number
+p:pUBILL
+}
+
+// [Kernel_UtilCat] (UCAT)
+
+export type pUCAT = {
+[key:string]: any
+    Caption: string
+}
+
+export type UCAT = {
+id:number
+createdat:Date
+updatedat:Date
+sort:number
+p:pUCAT
+}
+
+// [Kernel_UtilProvider] (CAT)
+
+export type pCAT = {
+[key:string]: any
+    Caption: string
+    Cat: number
+}
+
+export type CAT = {
+id:number
+createdat:Date
+updatedat:Date
+sort:number
+p:pCAT
+}
+
 // [Social_FileBind] (FBIND)
 
 export type pFBIND = {

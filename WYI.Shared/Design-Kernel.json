@@ -1,0 +1,89 @@
+﻿[
+
+  {
+    "name": "Kernel_UtilCat",
+    "shorthand": "ucat",
+    "id": 6461,
+    "fields": [
+      {
+        "enum": "Text",
+        "name": "Caption"
+      }
+    ]
+  },
+
+  {
+    "name": "Kernel_UtilProvider",
+    "shorthand": "cat",
+    "id": 254261,
+    "fields": [
+      {
+        "enum": "Text",
+        "name": "Caption"
+      },
+      {
+        "enum": "FK",
+        "ref": "Kernel_UtilCat",
+        "name": "Cat"
+      }
+    ]
+  },
+
+  {
+    "name": "Kernel_Client",
+    "shorthand": "client",
+    "id": 9554261,
+    "fields": [
+      {
+        "enum": "Text",
+        "name": "Caption"
+      }
+    ]
+  },
+
+
+  {
+    "name": "Kernel_Unit",
+    "shorthand": "unit",
+    "id": 29554261,
+    "fields": [
+      {
+        "enum": "Text",
+        "name": "Caption"
+      }
+    ]
+  },
+
+  {
+    "name": "Kernel_UtilBill",
+    "shorthand": "ubill",
+    "id": 4426561,
+    "fields": [
+      {
+        "enum": "FK",
+        "ref": "Kernel_UtilCat",
+        "name": "Cat"
+      },
+      {
+        "enum": "FK",
+        "ref": "Kernel_UtilProvider",
+        "name": "Provider"
+      },
+      {
+        "enum": "FK",
+        "ref": "Kernel_Client",
+        "name": "client"
+      },
+      {
+        "enum": "FK",
+        "ref": "Kernel_Unit",
+        "name": "Unit"
+      },
+      {
+        "enum": "Float",
+        "name": "Amout"
+      }
+    ]
+  }
+
+]

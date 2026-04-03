@@ -3,36 +3,18 @@
 <div>
 
 <div class="flex">
-  <a @click="" class="image-button"><img class="w-[50px]" src="https://i.imgur.com/wZFfVj8.jpeg"></a>
-  <div v-if="s.user.eu.id > 0" class="p-[15px]">
-    {{ s.user.eu.p.Caption }}
+  <div v-if="s.rt.user.eu.id > 0" class="p-[15px]">
+    <UserButton />
+    {{ s.rt.user.eu.p.Caption }}
+    <div v-if="s.rt.user.eu.p.AuthType == 2" class="p-[15px]">
+      <router-link to="/Admin">Admin</router-link>
+    </div>
   </div>
   <div v-else class="p-[15px]">
     Visitor
+      <SignInButton />
+      <SignUpButton />
   </div>
-  <button @click="s.expand = !s.expand">Toggle</button>
-</div>
-
-<div v-if="s.expand">
-
-<div v-if="s.user.eu.id > 0" class="p-[15px] flex">
-  <div v-if="s.user.eu.p.AuthType == 2" class="p-[15px]">
-    <router-link to="/Admin">Admin</router-link>
-  </div>
-  <button class="inline" @click="signOut">Sign Out</button>
-</div>
-
-<div class="card">
-  <div>
-    <div class="flex">
-    Key <input v-model="s.key" type="text" />
-    </div>
-  </div>
-  <div>
-    <button @click="authKey">Authorize</button>
-  </div>
-</div>
-
 </div>
 
 </div>
@@ -42,15 +24,19 @@
 
 <script setup lang="ts">
 
+import { useUser, Show, SignInButton, SignUpButton, UserButton } from '@clerk/vue'
+
 import { stringify } from 'postcss'
 import { glib } from '~/lib/glib'
+import { post } from '~/lib/util/fetch' // 或者是你存放 fetch.ts 的具体路径
+import { watch } from 'vue'
 import { EuComplex__bin } from '~/lib/shared/CustomMor'
 import * as Common from '~/lib/store/common'
 
+const { isSignedIn, user } = useUser()
+
 const s = glib.vue.reactive({
-  user: runtime.user,
-  key: "",
-  expand: false
+  rt: runtime
 })
 
 const emits = defineEmits(['changed']) 
@@ -59,32 +45,49 @@ const signOut = () => {
   Common.loader('/api/public/auth', { act: 'sign-out' },(rep:any) => {
     runtime.user = glib.Mor.studio.EuComplex_empty()
     runtime.session = ""
-    s.user = runtime.user
 
     localStorage.setItem("runtime.user",JSON.stringify(runtime.user))
     localStorage.setItem("runtime.session",JSON.stringify(runtime.session))
 
-    s.expand = false
-    emits('changed',runtime.user,runtime.session)
-  })
-}
-
-const authKey = () => {
-  Common.loader('/api/public/auth', { key: s.key },(rep:any) => {
-    runtime.user = rep.eux as studio.EuComplex
-    runtime.session = rep.session
-    s.user = runtime.user
-
-    localStorage.setItem("runtime.user",JSON.stringify(runtime.user))
-    localStorage.setItem("runtime.session",JSON.stringify(runtime.session))
-
-    s.expand = false
     emits('changed',runtime.user,runtime.session)
   })
 }
 
 glib.vue.onMounted(async () => {
 
+})
+
+
+// 监听登录状态变化
+// App.vue 调试代码
+watch(isSignedIn, async (newVal) => {
+  if (newVal === true) {
+    console.log('🚀 登录成功，准备联调后端...');
+    
+    try {
+
+      const payload = {
+        clerkId: user?.value?.id,
+        email: user?.value?.primaryEmailAddress?.emailAddress, // 获取 Gmail
+        caption: user?.value?.fullName || user?.value?.username, // 获取姓名/昵称
+        avatar: user?.value?.imageUrl                       // 可选：获取头像
+      }
+
+      // 1. 强制走 /api 前缀，确保触发 vite.config.ts 的 proxy
+      // 2. 这里的 post 是你 fetch.ts 里的封装
+      const response = await post("/api/public/auth",payload); 
+      
+      const { Er, session, eux } = response;
+      if (Er === "OK"){
+        s.rt.user = eux;
+        s.rt.session = session;
+      }
+      
+      console.log('✅ 后端响应成功:', response);
+    } catch (err) {
+      console.error('❌ 请求后端失败，请检查终端日志或 C# 断面:', err);
+    }
+  }
 })
 
 </script>

@@ -128,6 +128,236 @@ export const bin__FILE = (bi:BinIndexed):wyi.FILE => {
     }
 }
 
+// [CLIENT] Structure
+
+
+export const pCLIENT__bin = (bb:BytesBuilder) => (p:wyi.pCLIENT) => {
+
+    
+    marshall.str__bin (bb) (p.Caption)
+}
+
+export const CLIENT__bin = (bb:BytesBuilder) => (v:wyi.CLIENT) => {
+    marshall.int64__bin (bb) (v.id)
+    marshall.int64__bin (bb) (v.sort)
+    marshall.DateTime__bin (bb) (v.createdat)
+    marshall.DateTime__bin (bb) (v.updatedat)
+
+    pCLIENT__bin (bb) (v.p)
+}
+
+export const bin__pCLIENT = (bi:BinIndexed):wyi.pCLIENT => {
+
+    let p = pCLIENT_empty()
+    p.Caption = marshall.bin__str (bi)
+
+    return p
+}
+
+
+export const bin__CLIENT = (bi:BinIndexed):wyi.CLIENT => {
+
+    let ID = marshall.bin__int64 (bi)
+    let Sort = marshall.bin__int64 (bi)
+    let Createdat = marshall.bin__DateTime (bi)
+    let Updatedat = marshall.bin__DateTime (bi)
+    
+    return {
+        id: ID,
+        sort: Sort,
+        createdat: Createdat,
+        updatedat: Updatedat,
+        p:  bin__pCLIENT (bi)
+    }
+}
+
+// [UNIT] Structure
+
+
+export const pUNIT__bin = (bb:BytesBuilder) => (p:wyi.pUNIT) => {
+
+    
+    marshall.str__bin (bb) (p.Caption)
+}
+
+export const UNIT__bin = (bb:BytesBuilder) => (v:wyi.UNIT) => {
+    marshall.int64__bin (bb) (v.id)
+    marshall.int64__bin (bb) (v.sort)
+    marshall.DateTime__bin (bb) (v.createdat)
+    marshall.DateTime__bin (bb) (v.updatedat)
+
+    pUNIT__bin (bb) (v.p)
+}
+
+export const bin__pUNIT = (bi:BinIndexed):wyi.pUNIT => {
+
+    let p = pUNIT_empty()
+    p.Caption = marshall.bin__str (bi)
+
+    return p
+}
+
+
+export const bin__UNIT = (bi:BinIndexed):wyi.UNIT => {
+
+    let ID = marshall.bin__int64 (bi)
+    let Sort = marshall.bin__int64 (bi)
+    let Createdat = marshall.bin__DateTime (bi)
+    let Updatedat = marshall.bin__DateTime (bi)
+    
+    return {
+        id: ID,
+        sort: Sort,
+        createdat: Createdat,
+        updatedat: Updatedat,
+        p:  bin__pUNIT (bi)
+    }
+}
+
+// [UBILL] Structure
+
+
+export const pUBILL__bin = (bb:BytesBuilder) => (p:wyi.pUBILL) => {
+
+    
+    marshall.int64__bin (bb) (p.Cat)
+    
+    marshall.int64__bin (bb) (p.Provider)
+    
+    marshall.int64__bin (bb) (p.client)
+    
+    marshall.int64__bin (bb) (p.Unit)
+    
+    marshall.float__bin (bb) (p.Amout)
+}
+
+export const UBILL__bin = (bb:BytesBuilder) => (v:wyi.UBILL) => {
+    marshall.int64__bin (bb) (v.id)
+    marshall.int64__bin (bb) (v.sort)
+    marshall.DateTime__bin (bb) (v.createdat)
+    marshall.DateTime__bin (bb) (v.updatedat)
+
+    pUBILL__bin (bb) (v.p)
+}
+
+export const bin__pUBILL = (bi:BinIndexed):wyi.pUBILL => {
+
+    let p = pUBILL_empty()
+    p.Cat = marshall.bin__int64 (bi)
+    p.Provider = marshall.bin__int64 (bi)
+    p.client = marshall.bin__int64 (bi)
+    p.Unit = marshall.bin__int64 (bi)
+    p.Amout = marshall.bin__float (bi)
+
+    return p
+}
+
+
+export const bin__UBILL = (bi:BinIndexed):wyi.UBILL => {
+
+    let ID = marshall.bin__int64 (bi)
+    let Sort = marshall.bin__int64 (bi)
+    let Createdat = marshall.bin__DateTime (bi)
+    let Updatedat = marshall.bin__DateTime (bi)
+    
+    return {
+        id: ID,
+        sort: Sort,
+        createdat: Createdat,
+        updatedat: Updatedat,
+        p:  bin__pUBILL (bi)
+    }
+}
+
+// [UCAT] Structure
+
+
+export const pUCAT__bin = (bb:BytesBuilder) => (p:wyi.pUCAT) => {
+
+    
+    marshall.str__bin (bb) (p.Caption)
+}
+
+export const UCAT__bin = (bb:BytesBuilder) => (v:wyi.UCAT) => {
+    marshall.int64__bin (bb) (v.id)
+    marshall.int64__bin (bb) (v.sort)
+    marshall.DateTime__bin (bb) (v.createdat)
+    marshall.DateTime__bin (bb) (v.updatedat)
+
+    pUCAT__bin (bb) (v.p)
+}
+
+export const bin__pUCAT = (bi:BinIndexed):wyi.pUCAT => {
+
+    let p = pUCAT_empty()
+    p.Caption = marshall.bin__str (bi)
+
+    return p
+}
+
+
+export const bin__UCAT = (bi:BinIndexed):wyi.UCAT => {
+
+    let ID = marshall.bin__int64 (bi)
+    let Sort = marshall.bin__int64 (bi)
+    let Createdat = marshall.bin__DateTime (bi)
+    let Updatedat = marshall.bin__DateTime (bi)
+    
+    return {
+        id: ID,
+        sort: Sort,
+        createdat: Createdat,
+        updatedat: Updatedat,
+        p:  bin__pUCAT (bi)
+    }
+}
+
+// [CAT] Structure
+
+
+export const pCAT__bin = (bb:BytesBuilder) => (p:wyi.pCAT) => {
+
+    
+    marshall.str__bin (bb) (p.Caption)
+    
+    marshall.int64__bin (bb) (p.Cat)
+}
+
+export const CAT__bin = (bb:BytesBuilder) => (v:wyi.CAT) => {
+    marshall.int64__bin (bb) (v.id)
+    marshall.int64__bin (bb) (v.sort)
+    marshall.DateTime__bin (bb) (v.createdat)
+    marshall.DateTime__bin (bb) (v.updatedat)
+
+    pCAT__bin (bb) (v.p)
+}
+
+export const bin__pCAT = (bi:BinIndexed):wyi.pCAT => {
+
+    let p = pCAT_empty()
+    p.Caption = marshall.bin__str (bi)
+    p.Cat = marshall.bin__int64 (bi)
+
+    return p
+}
+
+
+export const bin__CAT = (bi:BinIndexed):wyi.CAT => {
+
+    let ID = marshall.bin__int64 (bi)
+    let Sort = marshall.bin__int64 (bi)
+    let Createdat = marshall.bin__DateTime (bi)
+    let Updatedat = marshall.bin__DateTime (bi)
+    
+    return {
+        id: ID,
+        sort: Sort,
+        createdat: Createdat,
+        updatedat: Updatedat,
+        p:  bin__pCAT (bi)
+    }
+}
+
 // [FBIND] Structure
 
 
@@ -422,6 +652,81 @@ export const FILE_empty = (): wyi.FILE => {
         updatedat: new Date(),
         sort: 0,
         p: pFILE_empty() }
+}
+
+export const pCLIENT_empty = (): wyi.pCLIENT => {
+    return {
+        Caption: "" }
+}
+
+export const CLIENT_empty = (): wyi.CLIENT => {
+    return {
+        id: 0,
+        createdat: new Date(),
+        updatedat: new Date(),
+        sort: 0,
+        p: pCLIENT_empty() }
+}
+
+export const pUNIT_empty = (): wyi.pUNIT => {
+    return {
+        Caption: "" }
+}
+
+export const UNIT_empty = (): wyi.UNIT => {
+    return {
+        id: 0,
+        createdat: new Date(),
+        updatedat: new Date(),
+        sort: 0,
+        p: pUNIT_empty() }
+}
+
+export const pUBILL_empty = (): wyi.pUBILL => {
+    return {
+        Cat: 0,
+        Provider: 0,
+        client: 0,
+        Unit: 0,
+        Amout: 0.0 }
+}
+
+export const UBILL_empty = (): wyi.UBILL => {
+    return {
+        id: 0,
+        createdat: new Date(),
+        updatedat: new Date(),
+        sort: 0,
+        p: pUBILL_empty() }
+}
+
+export const pUCAT_empty = (): wyi.pUCAT => {
+    return {
+        Caption: "" }
+}
+
+export const UCAT_empty = (): wyi.UCAT => {
+    return {
+        id: 0,
+        createdat: new Date(),
+        updatedat: new Date(),
+        sort: 0,
+        p: pUCAT_empty() }
+}
+
+export const pCAT_empty = (): wyi.pCAT => {
+    return {
+        Caption: "",
+        Cat: 0 }
+}
+
+export const CAT_empty = (): wyi.CAT => {
+    return {
+        id: 0,
+        createdat: new Date(),
+        updatedat: new Date(),
+        sort: 0,
+        p: pCAT_empty() }
 }
 
 export const pFBIND_empty = (): wyi.pFBIND => {

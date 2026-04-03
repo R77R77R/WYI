@@ -437,6 +437,471 @@ IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_ca_fileOwner')
     BEGIN
     ALTER TABLE ca_file DROP  CONSTRAINT [UniqueNonclustered_ca_fileOwner]
     END
+-- [kernel_client] ----------------------
+
+IF NOT EXISTS(SELECT * FROM sysobjects WHERE [name]='kernel_client' AND xtype='U')
+
+BEGIN
+
+    CREATE TABLE kernel_client ([ID] BIGINT NOT NULL
+        ,[Createdat] BIGINT NOT NULL
+        ,[Updatedat] BIGINT NOT NULL
+        ,[Sort] BIGINT NOT NULL,
+        [Caption] NVARCHAR(MAX)
+, CONSTRAINT [PK_kernel_client] PRIMARY KEY CLUSTERED ([ID] ASC)) ON [PRIMARY]
+END
+
+
+-- Dropping obsolete fields -----------
+DECLARE @name_kernel_client NVARCHAR(64)
+DECLARE cursor_kernel_client CURSOR FOR 
+    SELECT name FROM SYSCOLUMNS WHERE id=object_id('kernel_client') AND (name NOT IN ('ID','Createdat','Updatedat','Sort','Caption'))
+
+OPEN cursor_kernel_client
+FETCH NEXT FROM cursor_kernel_client INTO @name_kernel_client
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    PRINT 'Dropping kernel_client.' + @name_kernel_client;
+    
+    DECLARE @sql_kernel_client NVARCHAR(MAX);
+    SET @sql_kernel_client = 'ALTER TABLE kernel_client DROP COLUMN ' + QUOTENAME(@name_kernel_client)
+    EXEC sp_executesql @sql_kernel_client
+    
+    
+    FETCH NEXT FROM cursor_kernel_client INTO @name_kernel_client
+END
+
+CLOSE cursor_kernel_client;
+DEALLOCATE cursor_kernel_client;
+
+
+-- [kernel_client.Caption] -------------
+
+
+-- [kernel_client.Caption] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('kernel_client') AND name='Caption')
+    BEGIN
+     ALTER TABLE kernel_client ALTER COLUMN [Caption] NVARCHAR(MAX)
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_kernel_client_Caption NVARCHAR(MAX);
+    SET @sql_add_kernel_client_Caption = 'ALTER TABLE kernel_client ADD [Caption] NVARCHAR(MAX)'
+    EXEC sp_executesql @sql_add_kernel_client_Caption
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_clientCaption')
+    BEGIN
+    ALTER TABLE kernel_client DROP  CONSTRAINT [Constraint_kernel_clientCaption]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_clientCaption')
+    BEGIN
+    ALTER TABLE kernel_client DROP  CONSTRAINT [UniqueNonclustered_kernel_clientCaption]
+    END
+-- [kernel_unit] ----------------------
+
+IF NOT EXISTS(SELECT * FROM sysobjects WHERE [name]='kernel_unit' AND xtype='U')
+
+BEGIN
+
+    CREATE TABLE kernel_unit ([ID] BIGINT NOT NULL
+        ,[Createdat] BIGINT NOT NULL
+        ,[Updatedat] BIGINT NOT NULL
+        ,[Sort] BIGINT NOT NULL,
+        [Caption] NVARCHAR(MAX)
+, CONSTRAINT [PK_kernel_unit] PRIMARY KEY CLUSTERED ([ID] ASC)) ON [PRIMARY]
+END
+
+
+-- Dropping obsolete fields -----------
+DECLARE @name_kernel_unit NVARCHAR(64)
+DECLARE cursor_kernel_unit CURSOR FOR 
+    SELECT name FROM SYSCOLUMNS WHERE id=object_id('kernel_unit') AND (name NOT IN ('ID','Createdat','Updatedat','Sort','Caption'))
+
+OPEN cursor_kernel_unit
+FETCH NEXT FROM cursor_kernel_unit INTO @name_kernel_unit
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    PRINT 'Dropping kernel_unit.' + @name_kernel_unit;
+    
+    DECLARE @sql_kernel_unit NVARCHAR(MAX);
+    SET @sql_kernel_unit = 'ALTER TABLE kernel_unit DROP COLUMN ' + QUOTENAME(@name_kernel_unit)
+    EXEC sp_executesql @sql_kernel_unit
+    
+    
+    FETCH NEXT FROM cursor_kernel_unit INTO @name_kernel_unit
+END
+
+CLOSE cursor_kernel_unit;
+DEALLOCATE cursor_kernel_unit;
+
+
+-- [kernel_unit.Caption] -------------
+
+
+-- [kernel_unit.Caption] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('kernel_unit') AND name='Caption')
+    BEGIN
+     ALTER TABLE kernel_unit ALTER COLUMN [Caption] NVARCHAR(MAX)
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_kernel_unit_Caption NVARCHAR(MAX);
+    SET @sql_add_kernel_unit_Caption = 'ALTER TABLE kernel_unit ADD [Caption] NVARCHAR(MAX)'
+    EXEC sp_executesql @sql_add_kernel_unit_Caption
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_unitCaption')
+    BEGIN
+    ALTER TABLE kernel_unit DROP  CONSTRAINT [Constraint_kernel_unitCaption]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_unitCaption')
+    BEGIN
+    ALTER TABLE kernel_unit DROP  CONSTRAINT [UniqueNonclustered_kernel_unitCaption]
+    END
+-- [kernel_utilbill] ----------------------
+
+IF NOT EXISTS(SELECT * FROM sysobjects WHERE [name]='kernel_utilbill' AND xtype='U')
+
+BEGIN
+
+    CREATE TABLE kernel_utilbill ([ID] BIGINT NOT NULL
+        ,[Createdat] BIGINT NOT NULL
+        ,[Updatedat] BIGINT NOT NULL
+        ,[Sort] BIGINT NOT NULL,
+        [Cat] BIGINT
+        ,[Provider] BIGINT
+        ,[client] BIGINT
+        ,[Unit] BIGINT
+        ,[Amout] FLOAT
+, CONSTRAINT [PK_kernel_utilbill] PRIMARY KEY CLUSTERED ([ID] ASC)) ON [PRIMARY]
+END
+
+
+-- Dropping obsolete fields -----------
+DECLARE @name_kernel_utilbill NVARCHAR(64)
+DECLARE cursor_kernel_utilbill CURSOR FOR 
+    SELECT name FROM SYSCOLUMNS WHERE id=object_id('kernel_utilbill') AND (name NOT IN ('ID','Createdat','Updatedat','Sort','Cat','Provider','client','Unit','Amout'))
+
+OPEN cursor_kernel_utilbill
+FETCH NEXT FROM cursor_kernel_utilbill INTO @name_kernel_utilbill
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    PRINT 'Dropping kernel_utilbill.' + @name_kernel_utilbill;
+    
+    DECLARE @sql_kernel_utilbill NVARCHAR(MAX);
+    SET @sql_kernel_utilbill = 'ALTER TABLE kernel_utilbill DROP COLUMN ' + QUOTENAME(@name_kernel_utilbill)
+    EXEC sp_executesql @sql_kernel_utilbill
+    
+    
+    FETCH NEXT FROM cursor_kernel_utilbill INTO @name_kernel_utilbill
+END
+
+CLOSE cursor_kernel_utilbill;
+DEALLOCATE cursor_kernel_utilbill;
+
+
+-- [kernel_utilbill.Cat] -------------
+
+
+-- [kernel_utilbill.Cat] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('kernel_utilbill') AND name='Cat')
+    BEGIN
+     ALTER TABLE kernel_utilbill ALTER COLUMN [Cat] BIGINT
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_kernel_utilbill_Cat NVARCHAR(MAX);
+    SET @sql_add_kernel_utilbill_Cat = 'ALTER TABLE kernel_utilbill ADD [Cat] BIGINT'
+    EXEC sp_executesql @sql_add_kernel_utilbill_Cat
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_utilbillCat')
+    BEGIN
+    ALTER TABLE kernel_utilbill DROP  CONSTRAINT [Constraint_kernel_utilbillCat]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_utilbillCat')
+    BEGIN
+    ALTER TABLE kernel_utilbill DROP  CONSTRAINT [UniqueNonclustered_kernel_utilbillCat]
+    END
+
+-- [kernel_utilbill.Provider] -------------
+
+
+-- [kernel_utilbill.Provider] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('kernel_utilbill') AND name='Provider')
+    BEGIN
+     ALTER TABLE kernel_utilbill ALTER COLUMN [Provider] BIGINT
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_kernel_utilbill_Provider NVARCHAR(MAX);
+    SET @sql_add_kernel_utilbill_Provider = 'ALTER TABLE kernel_utilbill ADD [Provider] BIGINT'
+    EXEC sp_executesql @sql_add_kernel_utilbill_Provider
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_utilbillProvider')
+    BEGIN
+    ALTER TABLE kernel_utilbill DROP  CONSTRAINT [Constraint_kernel_utilbillProvider]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_utilbillProvider')
+    BEGIN
+    ALTER TABLE kernel_utilbill DROP  CONSTRAINT [UniqueNonclustered_kernel_utilbillProvider]
+    END
+
+-- [kernel_utilbill.client] -------------
+
+
+-- [kernel_utilbill.client] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('kernel_utilbill') AND name='client')
+    BEGIN
+     ALTER TABLE kernel_utilbill ALTER COLUMN [client] BIGINT
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_kernel_utilbill_client NVARCHAR(MAX);
+    SET @sql_add_kernel_utilbill_client = 'ALTER TABLE kernel_utilbill ADD [client] BIGINT'
+    EXEC sp_executesql @sql_add_kernel_utilbill_client
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_utilbillclient')
+    BEGIN
+    ALTER TABLE kernel_utilbill DROP  CONSTRAINT [Constraint_kernel_utilbillclient]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_utilbillclient')
+    BEGIN
+    ALTER TABLE kernel_utilbill DROP  CONSTRAINT [UniqueNonclustered_kernel_utilbillclient]
+    END
+
+-- [kernel_utilbill.Unit] -------------
+
+
+-- [kernel_utilbill.Unit] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('kernel_utilbill') AND name='Unit')
+    BEGIN
+     ALTER TABLE kernel_utilbill ALTER COLUMN [Unit] BIGINT
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_kernel_utilbill_Unit NVARCHAR(MAX);
+    SET @sql_add_kernel_utilbill_Unit = 'ALTER TABLE kernel_utilbill ADD [Unit] BIGINT'
+    EXEC sp_executesql @sql_add_kernel_utilbill_Unit
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_utilbillUnit')
+    BEGIN
+    ALTER TABLE kernel_utilbill DROP  CONSTRAINT [Constraint_kernel_utilbillUnit]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_utilbillUnit')
+    BEGIN
+    ALTER TABLE kernel_utilbill DROP  CONSTRAINT [UniqueNonclustered_kernel_utilbillUnit]
+    END
+
+-- [kernel_utilbill.Amout] -------------
+
+
+-- [kernel_utilbill.Amout] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('kernel_utilbill') AND name='Amout')
+    BEGIN
+     ALTER TABLE kernel_utilbill ALTER COLUMN [Amout] FLOAT
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_kernel_utilbill_Amout NVARCHAR(MAX);
+    SET @sql_add_kernel_utilbill_Amout = 'ALTER TABLE kernel_utilbill ADD [Amout] FLOAT'
+    EXEC sp_executesql @sql_add_kernel_utilbill_Amout
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_utilbillAmout')
+    BEGIN
+    ALTER TABLE kernel_utilbill DROP  CONSTRAINT [Constraint_kernel_utilbillAmout]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_utilbillAmout')
+    BEGIN
+    ALTER TABLE kernel_utilbill DROP  CONSTRAINT [UniqueNonclustered_kernel_utilbillAmout]
+    END
+-- [kernel_utilcat] ----------------------
+
+IF NOT EXISTS(SELECT * FROM sysobjects WHERE [name]='kernel_utilcat' AND xtype='U')
+
+BEGIN
+
+    CREATE TABLE kernel_utilcat ([ID] BIGINT NOT NULL
+        ,[Createdat] BIGINT NOT NULL
+        ,[Updatedat] BIGINT NOT NULL
+        ,[Sort] BIGINT NOT NULL,
+        [Caption] NVARCHAR(MAX)
+, CONSTRAINT [PK_kernel_utilcat] PRIMARY KEY CLUSTERED ([ID] ASC)) ON [PRIMARY]
+END
+
+
+-- Dropping obsolete fields -----------
+DECLARE @name_kernel_utilcat NVARCHAR(64)
+DECLARE cursor_kernel_utilcat CURSOR FOR 
+    SELECT name FROM SYSCOLUMNS WHERE id=object_id('kernel_utilcat') AND (name NOT IN ('ID','Createdat','Updatedat','Sort','Caption'))
+
+OPEN cursor_kernel_utilcat
+FETCH NEXT FROM cursor_kernel_utilcat INTO @name_kernel_utilcat
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    PRINT 'Dropping kernel_utilcat.' + @name_kernel_utilcat;
+    
+    DECLARE @sql_kernel_utilcat NVARCHAR(MAX);
+    SET @sql_kernel_utilcat = 'ALTER TABLE kernel_utilcat DROP COLUMN ' + QUOTENAME(@name_kernel_utilcat)
+    EXEC sp_executesql @sql_kernel_utilcat
+    
+    
+    FETCH NEXT FROM cursor_kernel_utilcat INTO @name_kernel_utilcat
+END
+
+CLOSE cursor_kernel_utilcat;
+DEALLOCATE cursor_kernel_utilcat;
+
+
+-- [kernel_utilcat.Caption] -------------
+
+
+-- [kernel_utilcat.Caption] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('kernel_utilcat') AND name='Caption')
+    BEGIN
+     ALTER TABLE kernel_utilcat ALTER COLUMN [Caption] NVARCHAR(MAX)
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_kernel_utilcat_Caption NVARCHAR(MAX);
+    SET @sql_add_kernel_utilcat_Caption = 'ALTER TABLE kernel_utilcat ADD [Caption] NVARCHAR(MAX)'
+    EXEC sp_executesql @sql_add_kernel_utilcat_Caption
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_utilcatCaption')
+    BEGIN
+    ALTER TABLE kernel_utilcat DROP  CONSTRAINT [Constraint_kernel_utilcatCaption]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_utilcatCaption')
+    BEGIN
+    ALTER TABLE kernel_utilcat DROP  CONSTRAINT [UniqueNonclustered_kernel_utilcatCaption]
+    END
+-- [kernel_utilprovider] ----------------------
+
+IF NOT EXISTS(SELECT * FROM sysobjects WHERE [name]='kernel_utilprovider' AND xtype='U')
+
+BEGIN
+
+    CREATE TABLE kernel_utilprovider ([ID] BIGINT NOT NULL
+        ,[Createdat] BIGINT NOT NULL
+        ,[Updatedat] BIGINT NOT NULL
+        ,[Sort] BIGINT NOT NULL,
+        [Caption] NVARCHAR(MAX)
+        ,[Cat] BIGINT
+, CONSTRAINT [PK_kernel_utilprovider] PRIMARY KEY CLUSTERED ([ID] ASC)) ON [PRIMARY]
+END
+
+
+-- Dropping obsolete fields -----------
+DECLARE @name_kernel_utilprovider NVARCHAR(64)
+DECLARE cursor_kernel_utilprovider CURSOR FOR 
+    SELECT name FROM SYSCOLUMNS WHERE id=object_id('kernel_utilprovider') AND (name NOT IN ('ID','Createdat','Updatedat','Sort','Caption','Cat'))
+
+OPEN cursor_kernel_utilprovider
+FETCH NEXT FROM cursor_kernel_utilprovider INTO @name_kernel_utilprovider
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    PRINT 'Dropping kernel_utilprovider.' + @name_kernel_utilprovider;
+    
+    DECLARE @sql_kernel_utilprovider NVARCHAR(MAX);
+    SET @sql_kernel_utilprovider = 'ALTER TABLE kernel_utilprovider DROP COLUMN ' + QUOTENAME(@name_kernel_utilprovider)
+    EXEC sp_executesql @sql_kernel_utilprovider
+    
+    
+    FETCH NEXT FROM cursor_kernel_utilprovider INTO @name_kernel_utilprovider
+END
+
+CLOSE cursor_kernel_utilprovider;
+DEALLOCATE cursor_kernel_utilprovider;
+
+
+-- [kernel_utilprovider.Caption] -------------
+
+
+-- [kernel_utilprovider.Caption] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('kernel_utilprovider') AND name='Caption')
+    BEGIN
+     ALTER TABLE kernel_utilprovider ALTER COLUMN [Caption] NVARCHAR(MAX)
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_kernel_utilprovider_Caption NVARCHAR(MAX);
+    SET @sql_add_kernel_utilprovider_Caption = 'ALTER TABLE kernel_utilprovider ADD [Caption] NVARCHAR(MAX)'
+    EXEC sp_executesql @sql_add_kernel_utilprovider_Caption
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_utilproviderCaption')
+    BEGIN
+    ALTER TABLE kernel_utilprovider DROP  CONSTRAINT [Constraint_kernel_utilproviderCaption]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_utilproviderCaption')
+    BEGIN
+    ALTER TABLE kernel_utilprovider DROP  CONSTRAINT [UniqueNonclustered_kernel_utilproviderCaption]
+    END
+
+-- [kernel_utilprovider.Cat] -------------
+
+
+-- [kernel_utilprovider.Cat] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('kernel_utilprovider') AND name='Cat')
+    BEGIN
+     ALTER TABLE kernel_utilprovider ALTER COLUMN [Cat] BIGINT
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_kernel_utilprovider_Cat NVARCHAR(MAX);
+    SET @sql_add_kernel_utilprovider_Cat = 'ALTER TABLE kernel_utilprovider ADD [Cat] BIGINT'
+    EXEC sp_executesql @sql_add_kernel_utilprovider_Cat
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_utilproviderCat')
+    BEGIN
+    ALTER TABLE kernel_utilprovider DROP  CONSTRAINT [Constraint_kernel_utilproviderCat]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_utilproviderCat')
+    BEGIN
+    ALTER TABLE kernel_utilprovider DROP  CONSTRAINT [UniqueNonclustered_kernel_utilproviderCat]
+    END
 -- [social_filebind] ----------------------
 
 IF NOT EXISTS(SELECT * FROM sysobjects WHERE [name]='social_filebind' AND xtype='U')
