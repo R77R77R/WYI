@@ -58,9 +58,13 @@ let incomingFile (formfile:IFormFile) =
         |> creator FILE_metadata with
     | Some rcd ->
 
-        use stream = new FileStream(path, FileMode.Create)
-        do! formfile.CopyToAsync(stream)
-        
+        do! async {
+            // 使用 use 确保离开这个 scope 时，文件句柄被立即 Dispose (释放锁)
+            use stream = new FileStream(path, FileMode.Create)
+            // 必须 AwaitTask 确保拷贝彻底完成
+            do! formfile.CopyToAsync(stream) |> Async.AwaitTask
+        } 
+
         if
             rcd
             |> updateRcd "" conn FILE_metadata None (fun p -> 
@@ -68,14 +72,23 @@ let incomingFile (formfile:IFormFile) =
                 p.Path <- filename
                 true) then
 
-            let msg = 
+            let prompt = 
+                """
+                从上传的文件中提取provider,账号，地址和金额，
+                输出的格式参考为：
+                Provider: [T-Mobile],
+                Account Number: [1234567890123],
+                Address: [Line1, Line2(optional), City/Township, HI 123456]
+                Amount: [$123.45]
+                """
+
+            let! msg = 
                 UtilKestrel.Open.Google.GeminiMultimodal
                     runtime.output 
                     runtime.data.apiKeyGemini
                     runtime.data.aiModel
-                    "从我上传的文件中提取金额" 
+                    prompt 
                     [| path |]
-                |> Async.RunSynchronously
 
             return msg
         else
