@@ -2,9 +2,11 @@
   <div class="upload-page">
     <div class="header">
       <h2>Upload Bills</h2>
-      <p v-if="s.rt.user" class="user-status">
-        <strong>{{ s.rt.user.eu.p.Caption }}</strong>
-      </p>
+    </div>
+
+    <div>
+      <p>Drop your files here or <span>Select</span></p>
+      <small>Max. 10GB</small>
     </div>
 
     <div 
@@ -23,13 +25,11 @@
         hidden 
       />
       <div class="icon">📄</div>
-      <p>Drop your files here or <span>Select</span></p>
-      <small>Max. 10GB</small>
     </div>
 
     <div>File list</div>
     <div class="flex flex-wrap gap-4 p-4">
-        <BillFile class="w-48 h-32 bg-slate-100 border-2 border-dashed border-slate-300 rounded-lg flex items-center justify-center" 
+        <BillFile class="w-48 h-32 bg-slate-100 border-2 border-dashed border-slate-300 rounded-lg flex" 
             v-for="filex in s.filexs"
             :filex="filex"></BillFile>
     </div>
@@ -46,10 +46,8 @@ import { ref } from 'vue'
 import { glib } from '~/lib/glib'
 
 import BillFile from '~/comps/BillFile.vue'
-import { UploadTask, FileComplex } from '~/comps/BillFile.vue'
+import { FileComplex } from '~/comps/BillFile.vue'
 
-
-// 适配你的全局 runtime 注入逻辑
 const s = glib.vue.reactive({
   filexs: [] as FileComplex[],
   rep: {},
@@ -74,65 +72,21 @@ const onDrop = (e: DragEvent) => {
 const handleFiles = (fileList: FileList | null) => {
   if (!fileList) return
   
-  // 校验业务 Session 是否就绪 (来自你的后置 loader)
-  /*
-  if (!s.rt.session || s.rt.session === "null") {
-    alert("Session 未就绪，请刷新页面。")
-    return
-  }
-  //*/
-
   Array.from(fileList).forEach(file => {
-    const task: UploadTask = {
+
+    let filex = { uploadTask: {}, file: file} as FileComplex
+
+    filex.uploadTask = {
       id: Math.random().toString(36).slice(2),
       file,
       progress: 0,
       status: 'pending'
     }
-
-    // 立即触发并行上传请求
-    executeUpload(task)
-
-    s.filexs.push({ uploadTask: task, file: file})
+    
+    s.filexs.push(filex)
   })
 }
 
-const executeUpload = async (task: UploadTask) => {
-  task.status = 'uploading'
-  task.progress = 20 // 模拟初始进度
-
-  // 获取 Clerk 令牌用于后端鉴权
-  const clerk = (window as any).Clerk
-  const token = await clerk?.session?.getToken()
-
-  const formData = new FormData()
-  formData.append('file', task.file)
-  formData.append('session', s.rt.session)
-
-  try {
-    const response = await fetch("/api/public/upload", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${token}`
-      },
-      body: formData
-    })
-
-    const result = await response.json()
-    
-    if (result.Er === "OK") {
-      task.status = 'success'
-      task.progress = 100
-    } else {
-      task.status = 'error'
-      task.message = result.Er
-    }
-  } catch (err: any) {
-    task.status = 'error'
-    task.message = "Network error or file too large"
-    console.error("Upload failed:", err)
-  }
-}
 
 </script>
 

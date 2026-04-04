@@ -1,21 +1,23 @@
 <template>
 
-<div>
-
-<div class="flex">
-  <div v-if="s.rt.user.eu.id > 0" class="p-[15px]">
+<div v-if="s.rt.user.eu.id > 0" class="flex items-center">
     <UserButton />
     <div>{{ s.rt.user.eu.p.Email }}</div>
     <div v-if="s.rt.user.eu.p.AuthType == 2" class="p-[15px]">
       <router-link to="/Admin">Admin</router-link>
     </div>
-  </div>
-  <div v-else class="p-[15px]">
-      <SignInButton /> via Google
-      <!--SignUpButton /-->
-  </div>
 </div>
-
+<div v-else class="flex items-center">
+      <div>Upload your bills by </div>
+      <SignInButton asChild>
+        <button class="px-2 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-sm shadow-md transition-all flex items-center gap-1">
+          <i class="ri-login-box-line"></i>
+          <span>Sign In</span>
+        </button>
+      </SignInButton>
+      <div class="px-2">with</div>
+      <img src="https://img.clerk.com/static/google.svg?width=160" />
+      <!--SignUpButton /-->
 </div>
 
 </template>
@@ -80,8 +82,6 @@ watch(isSignedIn, async (newVal) => {
         s.rt.user = eux;
         s.rt.session = session;
       }
-      
-      console.log('✅ 后端响应成功:', response);
     } catch (err) {
       console.error('❌ 请求后端失败，请检查终端日志或 C# 断面:', err);
     }

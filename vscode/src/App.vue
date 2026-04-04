@@ -1,22 +1,21 @@
 <template> 
 
-<div>https://whatsyourideal.com/</div>
-<div>Lower Your Bills On CruiseControl!</div>
+<div class="flex">
+
+<UserAuth @changed="onAuthChanged" />
+
+</div>
 
 <div class="lg:w-[1200px] mr-[10px]">
 
   <div class="main-color w-screen">
 
-  <div class="flex justify-start">
-    <UserAuth @changed="onAuthChanged" />
-  </div>  
-
-  <div class="w-full flex justify-center bg-[#262622]">
-    <router-link to="/">Home</router-link>
-    &nbsp;
+  <div class="w-full flex bg-[#9999ff] px-3 py-1 gap-5">
+    <router-link to="/" class="text-white hover:text-gray-400">Home</router-link>
+    <router-link to="/UploadBills" class="text-white hover:text-gray-400">Upload Bills</router-link>
   </div>
 
-  <router-view />
+  <router-view class="m-h-[600px]" />
 
   <div class="hor" />
 

@@ -104,7 +104,9 @@ let incomingFile (formfile:IFormFile) =
                 Amount: [$123.45]
                 """
 
-            let! msg = 
+            prompt |> output
+
+            let! (ex,msg) = 
                 UtilKestrel.Open.Google.GeminiMultimodal
                     runtime.output 
                     runtime.data.apiKeyGemini
@@ -112,8 +114,17 @@ let incomingFile (formfile:IFormFile) =
                     prompt 
                     [| path |]
 
-            return [|   ok 
-                        ("msg",Json.Str msg) |] |> Json.Braket
+            ex + msg |> output
+
+            if ex = "" then
+                
+                return [|   ok 
+                            ("filename",Json.Str rawfilename)
+                            ("msg",msg |> Json.Str) |] |> Json.Braket
+            else
+                return [|   ok 
+                            ("filename",Json.Str rawfilename)
+                            ("ex",ex |> Json.Str) |] |> Json.Braket
         else
             return er Er.Internal |> Json.Braket
 

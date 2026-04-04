@@ -2,7 +2,8 @@
 
 <div>Welcome</div>
 
-<button @click="s.rt.router.push('/UploadBills')">Upload Your Bills</button>
+<div>https://whatsyourideal.com/</div>
+<div>Lower Your Bills On CruiseControl!</div>
 
 <div>
   <div v-for="(item,index) in s.providers">
@@ -13,7 +14,6 @@
     </div>
   </div>
 </div>
-
 
 </template>
 

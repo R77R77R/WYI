@@ -1,16 +1,15 @@
 <template>
 
-    <div class="h-full w-full flex flex-col p-3">
+<div class="h-full w-full flex flex-col p-3">
 
-    <div>Preview</div>
-    <div>Unit</div>
-    <div>Provider</div>
-    <div>Amount</div>
-
-        <div class="file-meta">
-            <span class="file-name">{{ props.filex.file.name }}</span>
-            <span class="file-size">{{ (props.filex.file.size / 1024 / 1024).toFixed(2) }} MB</span>
+        <div class="w-[300px]">
+            Preview
         </div>
+        <div>Unit</div>
+        <div>Provider</div>
+        <div>Amount</div>
+        <div class="file-name">{{ props.filex.file.name }}</div>
+        <div class="file-size">{{ (props.filex.file.size / 1024 / 1024).toFixed(2) }} MB</div>
 
         <div class="progress-container">
             <div class="progress-fill" :style="{ width: props.filex.uploadTask.progress + '%' }"
@@ -24,7 +23,8 @@
             <span v-if="props.filex.uploadTask.message" class="error-detail"> - {{ props.filex.uploadTask.message }}</span>
         </div>
 
-    </div>
+        <div>{{ s.res }}</div>
+</div>
 
 </template>
 
@@ -37,6 +37,11 @@ import * as Common from '~/lib/store/common'
 
 const props = defineProps(['filex'])
 props.filex as FileComplex
+
+const s = glib.vue.reactive({
+  res: {},
+  rt: runtime
+})
 
 export interface UploadTask {
     id: string
@@ -60,6 +65,76 @@ const getStatusText = (task: UploadTask) => {
     default: return 'Pending ...'
   }
 }
+
+const executeUpload = async (task: UploadTask) => {
+    task.status = 'uploading';
+    task.progress = 0; // 重置为 0，交给 XHR 动态更新
+
+    // 1. 获取 Clerk 令牌 (保持异步获取)
+    const clerk = (window as any).Clerk;
+    const token = await clerk?.session?.getToken();
+
+    const formData = new FormData();
+    formData.append('file', task.file);
+    // 注意：确保 s.rt.session 在作用域内可用，或者作为参数传入
+    formData.append('session', s.rt.session); 
+
+    // 2. 使用 Promise 包装 XHR，以便保持 async/await 的调用方式
+    return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+
+        // 【关键】监听上传进度
+        xhr.upload.onprogress = (event) => {
+            if (event.lengthComputable) {
+                const percent = Math.round((event.loaded * 100) / event.total);
+                task.progress = Math.min(percent, 99);
+            }
+        };
+
+        // 监听请求完成
+        xhr.onload = () => {
+            if (xhr.status >= 200 && xhr.status < 300) {
+                try {
+                    s.res = JSON.parse(xhr.responseText);
+                    task.status = 'success';
+                    task.progress = 100;
+                    console.log(result)
+                    resolve(s.res);
+                } catch (e) {
+                    task.status = 'error';
+                    task.message = "Invalid JSON response";
+                    reject("Invalid JSON");
+                }
+            } else {
+                task.status = 'error';
+                task.message = `Server Error: ${xhr.status}`;
+                reject(xhr.status);
+            }
+        };
+
+        // 监听网络错误
+        xhr.onerror = () => {
+            task.status = 'error';
+            task.message = "Network error or file too large";
+            console.error("Upload failed");
+            reject("Network error");
+        };
+
+        // 3. 配置并发送请求
+        xhr.open("POST", "/api/public/upload");
+        
+        // 设置 Header (Clerk Token)
+        if (token) {
+            xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+        }
+
+        xhr.send(formData);
+    });
+};
+
+glib.vue.onMounted(async () => {
+    executeUpload(props.filex.uploadTask)
+})
 
 </script>
 
