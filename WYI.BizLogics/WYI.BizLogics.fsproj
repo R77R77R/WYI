@@ -13,6 +13,7 @@
     <Compile Include="Init.fs" />
     <Compile Include="Auth.fs" />
     <Compile Include="Branch.fs" />
+    <Compile Include="File.fs" />
     <Compile Include="SSR.fs" />
     <Compile Include="Launcher.fs" />
   </ItemGroup>

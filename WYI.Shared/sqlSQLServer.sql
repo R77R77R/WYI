@@ -243,7 +243,9 @@ BEGIN
         ,[Updatedat] BIGINT NOT NULL
         ,[Sort] BIGINT NOT NULL,
         [Caption] NVARCHAR(MAX)
-        ,[Desc] NVARCHAR(MAX)
+        ,[Path] NVARCHAR(MAX)
+        ,[State] INT
+        ,[ContentType] NVARCHAR(256) COLLATE Chinese_PRC_CI_AS
         ,[Suffix] NVARCHAR(4) COLLATE Chinese_PRC_CI_AS
         ,[Size] BIGINT
         ,[Thumbnail] VARBINARY(MAX)
@@ -255,7 +257,7 @@ END
 -- Dropping obsolete fields -----------
 DECLARE @name_ca_file NVARCHAR(64)
 DECLARE cursor_ca_file CURSOR FOR 
-    SELECT name FROM SYSCOLUMNS WHERE id=object_id('ca_file') AND (name NOT IN ('ID','Createdat','Updatedat','Sort','Caption','Desc','Suffix','Size','Thumbnail','Owner'))
+    SELECT name FROM SYSCOLUMNS WHERE id=object_id('ca_file') AND (name NOT IN ('ID','Createdat','Updatedat','Sort','Caption','Path','State','ContentType','Suffix','Size','Thumbnail','Owner'))
 
 OPEN cursor_ca_file
 FETCH NEXT FROM cursor_ca_file INTO @name_ca_file
@@ -303,31 +305,85 @@ IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_ca_fileCaption
     ALTER TABLE ca_file DROP  CONSTRAINT [UniqueNonclustered_ca_fileCaption]
     END
 
--- [ca_file.Desc] -------------
+-- [ca_file.Path] -------------
 
 
--- [ca_file.Desc] -------------
+-- [ca_file.Path] -------------
 
-IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('ca_file') AND name='Desc')
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('ca_file') AND name='Path')
     BEGIN
-     ALTER TABLE ca_file ALTER COLUMN [Desc] NVARCHAR(MAX)
+     ALTER TABLE ca_file ALTER COLUMN [Path] NVARCHAR(MAX)
     END
 ELSE
     BEGIN
-    DECLARE @sql_add_ca_file_Desc NVARCHAR(MAX);
-    SET @sql_add_ca_file_Desc = 'ALTER TABLE ca_file ADD [Desc] NVARCHAR(MAX)'
-    EXEC sp_executesql @sql_add_ca_file_Desc
+    DECLARE @sql_add_ca_file_Path NVARCHAR(MAX);
+    SET @sql_add_ca_file_Path = 'ALTER TABLE ca_file ADD [Path] NVARCHAR(MAX)'
+    EXEC sp_executesql @sql_add_ca_file_Path
     END
 
 
-IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_ca_fileDesc')
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_ca_filePath')
     BEGIN
-    ALTER TABLE ca_file DROP  CONSTRAINT [Constraint_ca_fileDesc]
+    ALTER TABLE ca_file DROP  CONSTRAINT [Constraint_ca_filePath]
     END
 
-IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_ca_fileDesc')
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_ca_filePath')
     BEGIN
-    ALTER TABLE ca_file DROP  CONSTRAINT [UniqueNonclustered_ca_fileDesc]
+    ALTER TABLE ca_file DROP  CONSTRAINT [UniqueNonclustered_ca_filePath]
+    END
+
+-- [ca_file.State] -------------
+
+
+-- [ca_file.State] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('ca_file') AND name='State')
+    BEGIN
+     ALTER TABLE ca_file ALTER COLUMN [State] INT
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_ca_file_State NVARCHAR(MAX);
+    SET @sql_add_ca_file_State = 'ALTER TABLE ca_file ADD [State] INT'
+    EXEC sp_executesql @sql_add_ca_file_State
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_ca_fileState')
+    BEGIN
+    ALTER TABLE ca_file DROP  CONSTRAINT [Constraint_ca_fileState]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_ca_fileState')
+    BEGIN
+    ALTER TABLE ca_file DROP  CONSTRAINT [UniqueNonclustered_ca_fileState]
+    END
+
+-- [ca_file.ContentType] -------------
+
+
+-- [ca_file.ContentType] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('ca_file') AND name='ContentType')
+    BEGIN
+     ALTER TABLE ca_file ALTER COLUMN [ContentType] NVARCHAR(256) COLLATE Chinese_PRC_CI_AS
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_ca_file_ContentType NVARCHAR(MAX);
+    SET @sql_add_ca_file_ContentType = 'ALTER TABLE ca_file ADD [ContentType] NVARCHAR(256) COLLATE Chinese_PRC_CI_AS'
+    EXEC sp_executesql @sql_add_ca_file_ContentType
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_ca_fileContentType')
+    BEGIN
+    ALTER TABLE ca_file DROP  CONSTRAINT [Constraint_ca_fileContentType]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_ca_fileContentType')
+    BEGIN
+    ALTER TABLE ca_file DROP  CONSTRAINT [UniqueNonclustered_ca_fileContentType]
     END
 
 -- [ca_file.Suffix] -------------

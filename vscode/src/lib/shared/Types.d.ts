@@ -17,6 +17,8 @@ m:MOMENT
 export type RuntimeData = {
 apiKeyGemini:string,
 
+aiModel:string,
+
 cats:{[key:number]: UCAT},
 
 providers:{[key:number]: UPROVIDER}

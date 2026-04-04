@@ -21,6 +21,7 @@ m: MOMENT }
 
 type RuntimeData = {
 mutable apiKeyGemini: string
+aiModel: string
 cats: ModDictInt64<UCAT>
 providers: ModDictInt64<UPROVIDER> }
 

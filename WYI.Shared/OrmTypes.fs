@@ -125,9 +125,37 @@ let EU_table = "Ca_EndUser"
 
 // [Ca_File] (FILE)
 
+type fileStateEnum = 
+| Normal = 0 // Normal
+| Failed = 1 // Failed
+
+let fileStateEnums = [| fileStateEnum.Normal; fileStateEnum.Failed |]
+let fileStateEnumstrs = [| "fileStateEnum"; "fileStateEnum" |]
+let fileStateNum = 2
+
+let int__fileStateEnum v =
+    match v with
+    | 0 -> Some fileStateEnum.Normal
+    | 1 -> Some fileStateEnum.Failed
+    | _ -> None
+
+let str__fileStateEnum s =
+    match s with
+    | "Normal" -> Some fileStateEnum.Normal
+    | "Failed" -> Some fileStateEnum.Failed
+    | _ -> None
+
+let fileStateEnum__caption e =
+    match e with
+    | fileStateEnum.Normal -> "Normal"
+    | fileStateEnum.Failed -> "Failed"
+    | _ -> ""
+
 type pFILE = {
 mutable Caption: Text
-mutable Desc: Text
+mutable Path: Text
+mutable State: fileStateEnum
+mutable ContentType: Chars
 mutable Suffix: Chars
 mutable Size: Integer
 mutable Thumbnail: Bin
@@ -139,13 +167,15 @@ type FILE = Rcd<pFILE>
 let FILE_fieldorders() =
     match rdbms with
     | Rdbms.SqlServer ->
-        "[ID],[Createdat],[Updatedat],[Sort],[Caption],[Desc],[Suffix],[Size],[Thumbnail],[Owner]"
+        "[ID],[Createdat],[Updatedat],[Sort],[Caption],[Path],[State],[ContentType],[Suffix],[Size],[Thumbnail],[Owner]"
     | Rdbms.PostgreSql ->
-        $""" "id","createdat","updatedat","sort", "caption","desc","suffix","size","thumbnail","owner" """
+        $""" "id","createdat","updatedat","sort", "caption","path","state","contenttype","suffix","size","thumbnail","owner" """
 
 let pFILE_fieldordersArray = [|
     "Caption"
-    "Desc"
+    "Path"
+    "State"
+    "ContentType"
     "Suffix"
     "Size"
     "Thumbnail"
@@ -153,15 +183,17 @@ let pFILE_fieldordersArray = [|
 
 let FILE_sql_update() =
     match rdbms with
-    | Rdbms.SqlServer -> "[Caption]=@Caption,[Desc]=@Desc,[Suffix]=@Suffix,[Size]=@Size,[Thumbnail]=@Thumbnail,[Owner]=@Owner"
-    | Rdbms.PostgreSql -> "caption=@caption,desc=@desc,suffix=@suffix,size=@size,thumbnail=@thumbnail,owner=@owner"
+    | Rdbms.SqlServer -> "[Caption]=@Caption,[Path]=@Path,[State]=@State,[ContentType]=@ContentType,[Suffix]=@Suffix,[Size]=@Size,[Thumbnail]=@Thumbnail,[Owner]=@Owner"
+    | Rdbms.PostgreSql -> "caption=@caption,path=@path,state=@state,contenttype=@contenttype,suffix=@suffix,size=@size,thumbnail=@thumbnail,owner=@owner"
 
 let pFILE_fields() =
     match rdbms with
     | Rdbms.SqlServer ->
         [|
             Text("Caption")
-            Text("Desc")
+            Text("Path")
+            SelectLines("State", [| ("Normal","Normal");("Failed","Failed") |])
+            Chars("ContentType", 256)
             Chars("Suffix", 4)
             Integer("Size")
             Bin("Thumbnail")
@@ -169,7 +201,9 @@ let pFILE_fields() =
     | Rdbms.PostgreSql ->
         [|
             Text("caption")
-            Text("desc")
+            Text("path")
+            SelectLines("state", [| ("Normal","Normal");("Failed","Failed") |])
+            Chars("contenttype", 256)
             Chars("suffix", 4)
             Integer("size")
             Bin("thumbnail")
@@ -177,7 +211,9 @@ let pFILE_fields() =
 
 let pFILE_empty(): pFILE = {
     Caption = ""
-    Desc = ""
+    Path = ""
+    State = EnumOfValue 0
+    ContentType = ""
     Suffix = ""
     Size = 0L
     Thumbnail = [||]

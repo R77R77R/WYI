@@ -26,10 +26,13 @@ p:pEU
 
 // [Ca_File] (FILE)
 
+
 export type pFILE = {
 [key:string]: any
     Caption: string
-    Desc: string
+    Path: string
+    State: number
+    ContentType: string
     Suffix: string
     Size: number
     Thumbnail: array

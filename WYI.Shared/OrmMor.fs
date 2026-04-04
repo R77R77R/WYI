@@ -225,9 +225,15 @@ let pFILE__bin (bb:BytesBuilder) (p:pFILE) =
     binCaption.Length |> BitConverter.GetBytes |> bb.append
     binCaption |> bb.append
     
-    let binDesc = p.Desc |> Encoding.UTF8.GetBytes
-    binDesc.Length |> BitConverter.GetBytes |> bb.append
-    binDesc |> bb.append
+    let binPath = p.Path |> Encoding.UTF8.GetBytes
+    binPath.Length |> BitConverter.GetBytes |> bb.append
+    binPath |> bb.append
+    
+    p.State |> EnumToValue |> BitConverter.GetBytes |> bb.append
+    
+    let binContentType = p.ContentType |> Encoding.UTF8.GetBytes
+    binContentType.Length |> BitConverter.GetBytes |> bb.append
+    binContentType |> bb.append
     
     let binSuffix = p.Suffix |> Encoding.UTF8.GetBytes
     binSuffix.Length |> BitConverter.GetBytes |> bb.append
@@ -259,10 +265,18 @@ let bin__pFILE (bi:BinIndexed):pFILE =
     p.Caption <- Encoding.UTF8.GetString(bin,index.Value,count_Caption)
     index.Value <- index.Value + count_Caption
     
-    let count_Desc = BitConverter.ToInt32(bin,index.Value)
+    let count_Path = BitConverter.ToInt32(bin,index.Value)
     index.Value <- index.Value + 4
-    p.Desc <- Encoding.UTF8.GetString(bin,index.Value,count_Desc)
-    index.Value <- index.Value + count_Desc
+    p.Path <- Encoding.UTF8.GetString(bin,index.Value,count_Path)
+    index.Value <- index.Value + count_Path
+    
+    p.State <- BitConverter.ToInt32(bin,index.Value) |> EnumOfValue
+    index.Value <- index.Value + 4
+    
+    let count_ContentType = BitConverter.ToInt32(bin,index.Value)
+    index.Value <- index.Value + 4
+    p.ContentType <- Encoding.UTF8.GetString(bin,index.Value,count_ContentType)
+    index.Value <- index.Value + count_ContentType
     
     let count_Suffix = BitConverter.ToInt32(bin,index.Value)
     index.Value <- index.Value + 4
@@ -306,7 +320,9 @@ let pFILE__json (p:pFILE) =
 
     [|
         ("Caption",p.Caption |> Json.Str)
-        ("Desc",p.Desc |> Json.Str)
+        ("Path",p.Path |> Json.Str)
+        ("State",(p.State |> EnumToValue).ToString() |> Json.Num)
+        ("ContentType",p.ContentType |> Json.Str)
         ("Suffix",p.Suffix |> Json.Str)
         ("Size",p.Size.ToString() |> Json.Num)
         ("Thumbnail",p.Thumbnail |> Convert.ToBase64String |> Json.Str)
@@ -338,7 +354,11 @@ let json__pFILEo (json:Json):pFILE option =
     
     p.Caption <- checkfield fields "Caption"
     
-    p.Desc <- checkfield fields "Desc"
+    p.Path <- checkfield fields "Path"
+    
+    p.State <- checkfield fields "State" |> parse_int32 |> EnumOfValue
+    
+    p.ContentType <- checkfieldz fields "ContentType" 256
     
     p.Suffix <- checkfieldz fields "Suffix" 4
     
@@ -1851,11 +1871,13 @@ let db__pFILE(line:Object[]): pFILE =
     let p = pFILE_empty()
 
     p.Caption <- string(line[4]).TrimEnd()
-    p.Desc <- string(line[5]).TrimEnd()
-    p.Suffix <- string(line[6]).TrimEnd()
-    p.Size <- if Convert.IsDBNull(line[7]) then 0L else line[7] :?> int64
-    p.Thumbnail <- if Convert.IsDBNull(line[8]) then [| |] else line[8] :?> byte[]
-    p.Owner <- if Convert.IsDBNull(line[9]) then 0L else line[9] :?> int64
+    p.Path <- string(line[5]).TrimEnd()
+    p.State <- EnumOfValue(if Convert.IsDBNull(line[6]) then 0 else line[6] :?> int)
+    p.ContentType <- string(line[7]).TrimEnd()
+    p.Suffix <- string(line[8]).TrimEnd()
+    p.Size <- if Convert.IsDBNull(line[9]) then 0L else line[9] :?> int64
+    p.Thumbnail <- if Convert.IsDBNull(line[10]) then [| |] else line[10] :?> byte[]
+    p.Owner <- if Convert.IsDBNull(line[11]) then 0L else line[11] :?> int64
 
     p
 
@@ -1864,7 +1886,9 @@ let pFILE__sps (p:pFILE) =
     | Rdbms.SqlServer ->
         [|
             ("Caption", p.Caption) |> kvp__sqlparam
-            ("Desc", p.Desc) |> kvp__sqlparam
+            ("Path", p.Path) |> kvp__sqlparam
+            ("State", EnumToValue p.State) |> kvp__sqlparam
+            ("ContentType", p.ContentType) |> kvp__sqlparam
             ("Suffix", p.Suffix) |> kvp__sqlparam
             ("Size", p.Size) |> kvp__sqlparam
             ("Thumbnail", p.Thumbnail) |> kvp__sqlparam
@@ -1872,7 +1896,9 @@ let pFILE__sps (p:pFILE) =
     | Rdbms.PostgreSql ->
         [|
             ("caption", p.Caption) |> kvp__sqlparam
-            ("desc", p.Desc) |> kvp__sqlparam
+            ("path", p.Path) |> kvp__sqlparam
+            ("state", EnumToValue p.State) |> kvp__sqlparam
+            ("contenttype", p.ContentType) |> kvp__sqlparam
             ("suffix", p.Suffix) |> kvp__sqlparam
             ("size", p.Size) |> kvp__sqlparam
             ("thumbnail", p.Thumbnail) |> kvp__sqlparam
@@ -1886,7 +1912,9 @@ let FILE_wrapper item: FILE =
 
 let pFILE_clone (p:pFILE): pFILE = {
     Caption = p.Caption
-    Desc = p.Desc
+    Path = p.Path
+    State = p.State
+    ContentType = p.ContentType
     Suffix = p.Suffix
     Size = p.Size
     Thumbnail = p.Thumbnail
@@ -1955,7 +1983,9 @@ let FILETxSqlServer =
     ,[Updatedat] BIGINT NOT NULL
     ,[Sort] BIGINT NOT NULL,
     ,[Caption]
-    ,[Desc]
+    ,[Path]
+    ,[State]
+    ,[ContentType]
     ,[Suffix]
     ,[Size]
     ,[Thumbnail]

@@ -10,6 +10,7 @@ open UtilKestrel.Common
 open UtilKestrel.Server
 
 open WYI.BizLogics.Common
+open WYI.BizLogics.File
 
 (*
 在ubuntu上，我把名为WYI的项目放在 /Dev/WYI 下，
@@ -75,7 +76,8 @@ let main argv =
     
     runServer 
         runtime
-        (devRoot,fsRoot,vueDistPath) 
+        vueDistPath 
+        (incomingFile,fileid__localpath)
         (cert,certpwd)
         WYI.BizLogics.Branch.branch
         (80,443)

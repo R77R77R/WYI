@@ -51,7 +51,17 @@
       },
       {
         "enum": "Text",
-        "name": "Desc"
+        "name": "Path"
+      },
+      {
+        "enum": "SelectLines",
+        "lines": "Normal//Normal///Failed//Failed",
+        "name": "State"
+      },
+      {
+        "enum": "Chars",
+        "length": 256,
+        "name": "ContentType"
       },
       {
         "enum": "Chars",

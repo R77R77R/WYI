@@ -73,7 +73,11 @@ export const pFILE__bin = (bb:BytesBuilder) => (p:wyi.pFILE) => {
     
     marshall.str__bin (bb) (p.Caption)
     
-    marshall.str__bin (bb) (p.Desc)
+    marshall.str__bin (bb) (p.Path)
+    
+    marshall.int32__bin (bb) (p.State)
+    
+    marshall.str__bin (bb) (p.ContentType)
     
     marshall.str__bin (bb) (p.Suffix)
     
@@ -98,7 +102,9 @@ export const bin__pFILE = (bi:BinIndexed):wyi.pFILE => {
 
     let p = pFILE_empty()
     p.Caption = marshall.bin__str (bi)
-    p.Desc = marshall.bin__str (bi)
+    p.Path = marshall.bin__str (bi)
+    p.State = marshall.bin__int32 (bi)
+    p.ContentType = marshall.bin__str (bi)
     p.Suffix = marshall.bin__str (bi)
     p.Size = marshall.bin__int64 (bi)
     
@@ -635,10 +641,15 @@ export const EU_empty = (): wyi.EU => {
         p: pEU_empty() }
 }
 
+export const fileStateEnum_Normal = 0 // Normal
+export const fileStateEnum_Failed = 1 // Failed
+
 export const pFILE_empty = (): wyi.pFILE => {
     return {
         Caption: "",
-        Desc: "",
+        Path: "",
+        State: 0,
+        ContentType: "",
         Suffix: "",
         Size: 0,
         Thumbnail: [],

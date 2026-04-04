@@ -169,7 +169,9 @@ BEGIN
             ,updatedat BIGINT NOT NULL
             ,sort BIGINT NOT NULL
             ,"caption" TEXT
-            ,"desc" TEXT
+            ,"path" TEXT
+            ,"state" INT
+            ,"contenttype" VARCHAR(256)
             ,"suffix" VARCHAR(4)
             ,"size" BIGINT
             ,"thumbnail" BYTEA
@@ -190,7 +192,7 @@ BEGIN
         FROM information_schema.columns 
         WHERE table_name = 'ca_file' 
           AND table_schema = 'public' 
-          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'caption', 'desc', 'suffix', 'size', 'thumbnail', 'owner'])
+          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'caption', 'path', 'state', 'contenttype', 'suffix', 'size', 'thumbnail', 'owner'])
     LOOP
         -- 对应 PRINT 'Dropping ' + @tname + '.' + @fn
         
@@ -214,17 +216,45 @@ BEGIN
     END IF;
 END $$;
 
--- [ca_file.Desc] -------------
+-- [ca_file.Path] -------------
 
 
 DO $$
 DECLARE
     condition boolean;
 BEGIN
-    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='ca_file' AND column_name='desc'));
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='ca_file' AND column_name='path'));
 
     IF not condition THEN
-        ALTER TABLE ca_file ADD "desc" text;
+        ALTER TABLE ca_file ADD "path" text;
+    END IF;
+END $$;
+
+-- [ca_file.State] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='ca_file' AND column_name='state'));
+
+    IF not condition THEN
+        ALTER TABLE ca_file ADD "state" int;
+    END IF;
+END $$;
+
+-- [ca_file.ContentType] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='ca_file' AND column_name='contenttype'));
+
+    IF not condition THEN
+        ALTER TABLE ca_file ADD "contenttype" varchar(256);
     END IF;
 END $$;
 

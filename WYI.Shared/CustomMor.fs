@@ -158,6 +158,7 @@ let MomentComplex_clone src =
 let RuntimeData_empty(): RuntimeData =
     {
         apiKeyGemini = ""
+        aiModel = ""
         cats = ModDict_empty()
         providers = ModDict_empty()
     }
@@ -165,6 +166,7 @@ let RuntimeData_empty(): RuntimeData =
 let RuntimeData__bin (bb:BytesBuilder) (v:RuntimeData) =
 
     str__bin bb v.apiKeyGemini
+    str__bin bb v.aiModel
     
     ModDictInt64__bin (UCAT__bin) bb v.cats
     
@@ -178,6 +180,9 @@ let bin__RuntimeData (bi:BinIndexed):RuntimeData =
         apiKeyGemini = 
             bi
             |> bin__str
+        aiModel = 
+            bi
+            |> bin__str
         cats = 
             bi
             |> bin__ModDictInt64(bin__UCAT)
@@ -189,6 +194,7 @@ let bin__RuntimeData (bi:BinIndexed):RuntimeData =
 let RuntimeData__json (v:RuntimeData) =
 
     [|  ("apiKeyGemini",str__json v.apiKeyGemini)
+        ("aiModel",str__json v.aiModel)
         ("cats",ModDictInt64__json (UCAT__json) v.cats)
         ("providers",ModDictInt64__json (UPROVIDER__json) v.providers)
          |]
@@ -208,6 +214,18 @@ let json__RuntimeDatao (json:Json):RuntimeData option =
 
     let apiKeyGeminio =
         match json__tryFindByName json "apiKeyGemini" with
+        | None ->
+            passOptions <- false
+            None
+        | Some v -> 
+            match v |> json__stro with
+            | Some res -> Some res
+            | None ->
+                passOptions <- false
+                None
+
+    let aiModelo =
+        match json__tryFindByName json "aiModel" with
         | None ->
             passOptions <- false
             None
@@ -245,6 +263,7 @@ let json__RuntimeDatao (json:Json):RuntimeData option =
     if passOptions then
         ({
             apiKeyGemini = apiKeyGeminio.Value
+            aiModel = aiModelo.Value
             cats = catso.Value
             providers = providerso.Value }:RuntimeData) |> Some
     else
