@@ -35,7 +35,7 @@ open WYI.BizLogics.Db
 let output = runtime.output
 
 let incomingFile (formfile:IFormFile) = 
-    task{
+    async{
 
     let rawfilename = formfile.FileName
     
@@ -72,10 +72,32 @@ let incomingFile (formfile:IFormFile) =
                 p.Path <- filename
                 true) then
 
+            let providerInfo =
+                let items = runtime.data.providers.Values
+                runtime.data.cats.Values
+                |> Array.map(fun ucat -> 
+                    let cattext = 
+                        "ID=" + ucat.ID.ToString() + ": " + ucat.p.Caption
+                    let providerstxt = 
+                        items
+                        |> Array.filter(fun i -> i.p.Cat = ucat.ID)
+                        |> Array.map(fun i -> 
+                            "ID=" + i.ID.ToString() + ": " + i.p.Caption)
+                        |> String.concat ", "
+                    cattext + ", Providers: " + providerstxt)
+                |> String.concat "; "
+
             let prompt = 
-                """
-                从上传的文件中提取provider,账号，地址和金额，
+                $"""
+                供应商provider及其分类cat的信息如下，
+                {providerInfo}
+
+                从上传的文件中提取cat,provider,账号，地址和金额，
+                若cat或provider在以上信息中存在，则提取其ID，否则ID=0
                 输出的格式参考为：
+                Category ID: [ID],
+                Category: [Cellphone],
+                Provider ID: [ID],
                 Provider: [T-Mobile],
                 Account Number: [1234567890123],
                 Address: [Line1, Line2(optional), City/Township, HI 123456]
@@ -90,11 +112,12 @@ let incomingFile (formfile:IFormFile) =
                     prompt 
                     [| path |]
 
-            return msg
+            return [|   ok 
+                        ("msg",Json.Str msg) |] |> Json.Braket
         else
-            return Er.Internal.ToString()
+            return er Er.Internal |> Json.Braket
 
-    | None -> return Er.Internal.ToString()
+    | None -> return er Er.Internal |> Json.Braket
     }
     
 let fileid__localpath id = 

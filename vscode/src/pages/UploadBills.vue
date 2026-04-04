@@ -34,6 +34,10 @@
             :filex="filex"></BillFile>
     </div>
 
+    <div v-for="msg in s.rep">
+      {{ msg }}
+    </div>
+
   </div>
 </template>
 
@@ -48,6 +52,7 @@ import { UploadTask, FileComplex } from '~/comps/BillFile.vue'
 // 适配你的全局 runtime 注入逻辑
 const s = glib.vue.reactive({
   filexs: [] as FileComplex[],
+  rep: {},
   rt: runtime
 })
 
@@ -112,8 +117,6 @@ const executeUpload = async (task: UploadTask) => {
       },
       body: formData
     })
-
-    if (!response.ok) throw new Error(`Server Error: ${response.status}`)
 
     const result = await response.json()
     
