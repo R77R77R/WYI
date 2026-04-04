@@ -158,13 +158,17 @@ let MomentComplex_clone src =
 let RuntimeData_empty(): RuntimeData =
     {
         apiKeyGemini = ""
-        desc = ""
+        cats = ModDict_empty()
+        providers = ModDict_empty()
     }
 
 let RuntimeData__bin (bb:BytesBuilder) (v:RuntimeData) =
 
     str__bin bb v.apiKeyGemini
-    str__bin bb v.desc
+    
+    ModDictInt64__bin (UCAT__bin) bb v.cats
+    
+    ModDictInt64__bin (UPROVIDER__bin) bb v.providers
     ()
 
 let bin__RuntimeData (bi:BinIndexed):RuntimeData =
@@ -174,15 +178,19 @@ let bin__RuntimeData (bi:BinIndexed):RuntimeData =
         apiKeyGemini = 
             bi
             |> bin__str
-        desc = 
+        cats = 
             bi
-            |> bin__str
+            |> bin__ModDictInt64(bin__UCAT)
+        providers = 
+            bi
+            |> bin__ModDictInt64(bin__UPROVIDER)
     }
 
 let RuntimeData__json (v:RuntimeData) =
 
     [|  ("apiKeyGemini",str__json v.apiKeyGemini)
-        ("desc",str__json v.desc)
+        ("cats",ModDictInt64__json (UCAT__json) v.cats)
+        ("providers",ModDictInt64__json (UPROVIDER__json) v.providers)
          |]
     |> Json.Braket
 
@@ -210,13 +218,25 @@ let json__RuntimeDatao (json:Json):RuntimeData option =
                 passOptions <- false
                 None
 
-    let desco =
-        match json__tryFindByName json "desc" with
+    let catso =
+        match json__tryFindByName json "cats" with
         | None ->
             passOptions <- false
             None
         | Some v -> 
-            match v |> json__stro with
+            match v |> (fun json ->json__ModDictInt64o (json__UCATo) (new Dictionary<int64,UCAT>()) json) with
+            | Some res -> Some res
+            | None ->
+                passOptions <- false
+                None
+
+    let providerso =
+        match json__tryFindByName json "providers" with
+        | None ->
+            passOptions <- false
+            None
+        | Some v -> 
+            match v |> (fun json ->json__ModDictInt64o (json__UPROVIDERo) (new Dictionary<int64,UPROVIDER>()) json) with
             | Some res -> Some res
             | None ->
                 passOptions <- false
@@ -225,7 +245,8 @@ let json__RuntimeDatao (json:Json):RuntimeData option =
     if passOptions then
         ({
             apiKeyGemini = apiKeyGeminio.Value
-            desc = desco.Value }:RuntimeData) |> Some
+            cats = catso.Value
+            providers = providerso.Value }:RuntimeData) |> Some
     else
         None
 

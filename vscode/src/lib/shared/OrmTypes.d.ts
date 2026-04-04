@@ -108,20 +108,20 @@ sort:number
 p:pUCAT
 }
 
-// [Kernel_UtilProvider] (CAT)
+// [Kernel_UtilProvider] (UPROVIDER)
 
-export type pCAT = {
+export type pUPROVIDER = {
 [key:string]: any
     Caption: string
     Cat: number
 }
 
-export type CAT = {
+export type UPROVIDER = {
 id:number
 createdat:Date
 updatedat:Date
 sort:number
-p:pCAT
+p:pUPROVIDER
 }
 
 // [Social_FileBind] (FBIND)

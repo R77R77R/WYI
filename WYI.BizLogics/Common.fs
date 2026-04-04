@@ -50,7 +50,8 @@ let runtime =
 
 
     {   apiKeyGemini = ""
-        desc = "" }
+        cats = createModDictInt64 8
+        providers = createModDictInt64 8 }
     |> empty__Runtime<EuComplex,unit,HostData,RuntimeData> "WYI" h
 
 let dbLoggero =

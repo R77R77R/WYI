@@ -363,32 +363,32 @@ let UCAT_id = ref 6461L
 let UCAT_count = ref 0
 let UCAT_table = "Kernel_UtilCat"
 
-// [Kernel_UtilProvider] (CAT)
+// [Kernel_UtilProvider] (UPROVIDER)
 
-type pCAT = {
+type pUPROVIDER = {
 mutable Caption: Text
 mutable Cat: FK}
 
 
-type CAT = Rcd<pCAT>
+type UPROVIDER = Rcd<pUPROVIDER>
 
-let CAT_fieldorders() =
+let UPROVIDER_fieldorders() =
     match rdbms with
     | Rdbms.SqlServer ->
         "[ID],[Createdat],[Updatedat],[Sort],[Caption],[Cat]"
     | Rdbms.PostgreSql ->
         $""" "id","createdat","updatedat","sort", "caption","cat" """
 
-let pCAT_fieldordersArray = [|
+let pUPROVIDER_fieldordersArray = [|
     "Caption"
     "Cat" |]
 
-let CAT_sql_update() =
+let UPROVIDER_sql_update() =
     match rdbms with
     | Rdbms.SqlServer -> "[Caption]=@Caption,[Cat]=@Cat"
     | Rdbms.PostgreSql -> "caption=@caption,cat=@cat"
 
-let pCAT_fields() =
+let pUPROVIDER_fields() =
     match rdbms with
     | Rdbms.SqlServer ->
         [|
@@ -399,13 +399,13 @@ let pCAT_fields() =
             Text("caption")
             FK("cat") |]
 
-let pCAT_empty(): pCAT = {
+let pUPROVIDER_empty(): pUPROVIDER = {
     Caption = ""
     Cat = 0L }
 
-let CAT_id = ref 254261L
-let CAT_count = ref 0
-let CAT_table = "Kernel_UtilProvider"
+let UPROVIDER_id = ref 254261L
+let UPROVIDER_count = ref 0
+let UPROVIDER_table = "Kernel_UtilProvider"
 
 // [Social_FileBind] (FBIND)
 

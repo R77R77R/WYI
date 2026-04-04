@@ -5,15 +5,14 @@
 <div class="flex">
   <div v-if="s.rt.user.eu.id > 0" class="p-[15px]">
     <UserButton />
-    {{ s.rt.user.eu.p.Caption }}
+    <div>{{ s.rt.user.eu.p.Email }}</div>
     <div v-if="s.rt.user.eu.p.AuthType == 2" class="p-[15px]">
       <router-link to="/Admin">Admin</router-link>
     </div>
   </div>
   <div v-else class="p-[15px]">
-    Visitor
-      <SignInButton />
-      <SignUpButton />
+      <SignInButton /> via Google
+      <!--SignUpButton /-->
   </div>
 </div>
 
@@ -28,9 +27,8 @@ import { useUser, Show, SignInButton, SignUpButton, UserButton } from '@clerk/vu
 
 import { stringify } from 'postcss'
 import { glib } from '~/lib/glib'
-import { post } from '~/lib/util/fetch' // 或者是你存放 fetch.ts 的具体路径
+import { post } from '~/lib/util/fetch'
 import { watch } from 'vue'
-import { EuComplex__bin } from '~/lib/shared/CustomMor'
 import * as Common from '~/lib/store/common'
 
 const { isSignedIn, user } = useUser()

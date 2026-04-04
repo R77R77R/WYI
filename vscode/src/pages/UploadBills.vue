@@ -3,8 +3,7 @@
     <div class="header">
       <h2>Upload Bills</h2>
       <p v-if="s.rt.user" class="user-status">
-        <strong>{{ s.rt.user.eu.p.Caption }}</strong> 
-        <span class="id-tag">(ID: {{ s.rt.user.id }})</span>
+        <strong>{{ s.rt.user.eu.p.Caption }}</strong>
       </p>
     </div>
 
@@ -27,7 +26,6 @@
       <p>Drop your files here or <span>Select</span></p>
       <small>Max. 10GB</small>
     </div>
-    <div>Utility Providers: ADT, ... see a full list.</div>
 
     <div>File list</div>
     <div class="flex flex-wrap gap-4 p-4">

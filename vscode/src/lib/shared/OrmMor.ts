@@ -312,10 +312,10 @@ export const bin__UCAT = (bi:BinIndexed):wyi.UCAT => {
     }
 }
 
-// [CAT] Structure
+// [UPROVIDER] Structure
 
 
-export const pCAT__bin = (bb:BytesBuilder) => (p:wyi.pCAT) => {
+export const pUPROVIDER__bin = (bb:BytesBuilder) => (p:wyi.pUPROVIDER) => {
 
     
     marshall.str__bin (bb) (p.Caption)
@@ -323,18 +323,18 @@ export const pCAT__bin = (bb:BytesBuilder) => (p:wyi.pCAT) => {
     marshall.int64__bin (bb) (p.Cat)
 }
 
-export const CAT__bin = (bb:BytesBuilder) => (v:wyi.CAT) => {
+export const UPROVIDER__bin = (bb:BytesBuilder) => (v:wyi.UPROVIDER) => {
     marshall.int64__bin (bb) (v.id)
     marshall.int64__bin (bb) (v.sort)
     marshall.DateTime__bin (bb) (v.createdat)
     marshall.DateTime__bin (bb) (v.updatedat)
 
-    pCAT__bin (bb) (v.p)
+    pUPROVIDER__bin (bb) (v.p)
 }
 
-export const bin__pCAT = (bi:BinIndexed):wyi.pCAT => {
+export const bin__pUPROVIDER = (bi:BinIndexed):wyi.pUPROVIDER => {
 
-    let p = pCAT_empty()
+    let p = pUPROVIDER_empty()
     p.Caption = marshall.bin__str (bi)
     p.Cat = marshall.bin__int64 (bi)
 
@@ -342,7 +342,7 @@ export const bin__pCAT = (bi:BinIndexed):wyi.pCAT => {
 }
 
 
-export const bin__CAT = (bi:BinIndexed):wyi.CAT => {
+export const bin__UPROVIDER = (bi:BinIndexed):wyi.UPROVIDER => {
 
     let ID = marshall.bin__int64 (bi)
     let Sort = marshall.bin__int64 (bi)
@@ -354,7 +354,7 @@ export const bin__CAT = (bi:BinIndexed):wyi.CAT => {
         sort: Sort,
         createdat: Createdat,
         updatedat: Updatedat,
-        p:  bin__pCAT (bi)
+        p:  bin__pUPROVIDER (bi)
     }
 }
 
@@ -714,19 +714,19 @@ export const UCAT_empty = (): wyi.UCAT => {
         p: pUCAT_empty() }
 }
 
-export const pCAT_empty = (): wyi.pCAT => {
+export const pUPROVIDER_empty = (): wyi.pUPROVIDER => {
     return {
         Caption: "",
         Cat: 0 }
 }
 
-export const CAT_empty = (): wyi.CAT => {
+export const UPROVIDER_empty = (): wyi.UPROVIDER => {
     return {
         id: 0,
         createdat: new Date(),
         updatedat: new Date(),
         sort: 0,
-        p: pCAT_empty() }
+        p: pUPROVIDER_empty() }
 }
 
 export const pFBIND_empty = (): wyi.pFBIND => {

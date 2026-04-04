@@ -14,7 +14,7 @@
 
   {
     "name": "Kernel_UtilProvider",
-    "shorthand": "cat",
+    "shorthand": "uprovider",
     "id": 254261,
     "fields": [
       {

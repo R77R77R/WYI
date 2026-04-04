@@ -6212,2318 +6212,6 @@ var vue_runtime_esm_bundler_exports = /* @__PURE__ */ __exportAll({
 });
 var compile = () => {};
 //#endregion
-//#region node_modules/@clerk/shared/dist/runtime/clerkRuntimeError-DqAmLuLY.mjs
-/**
-* Creates a type guard function for any error class.
-* The returned function can be called as a standalone function or as a method on an error object.
-*
-* @example
-* ```typescript
-* class MyError extends Error {}
-* const isMyError = createErrorTypeGuard(MyError);
-*
-* // As a standalone function
-* if (isMyError(error)) { ... }
-*
-* // As a method (when attached to error object)
-* if (error.isMyError()) { ... }
-* ```
-*/
-function createErrorTypeGuard(ErrorClass) {
-	function typeGuard(error) {
-		const target = error ?? this;
-		if (!target) throw new TypeError(`${ErrorClass.kind || ErrorClass.name} type guard requires an error object`);
-		if (ErrorClass.kind && typeof target === "object" && target !== null && "constructor" in target) {
-			if (target.constructor?.kind === ErrorClass.kind) return true;
-		}
-		return target instanceof ErrorClass;
-	}
-	return typeGuard;
-}
-var ClerkError = class ClerkError extends Error {
-	static kind = "ClerkError";
-	clerkError = true;
-	code;
-	longMessage;
-	docsUrl;
-	cause;
-	get name() {
-		return this.constructor.name;
-	}
-	constructor(opts) {
-		super(new.target.formatMessage(new.target.kind, opts.message, opts.code, opts.docsUrl), { cause: opts.cause });
-		Object.setPrototypeOf(this, ClerkError.prototype);
-		this.code = opts.code;
-		this.docsUrl = opts.docsUrl;
-		this.longMessage = opts.longMessage;
-		this.cause = opts.cause;
-	}
-	toString() {
-		return `[${this.name}]\nMessage:${this.message}`;
-	}
-	static formatMessage(name, msg, code, docsUrl) {
-		const prefix = "Clerk:";
-		const regex = new RegExp(prefix.replace(" ", "\\s*"), "i");
-		msg = msg.replace(regex, "");
-		msg = `${prefix} ${msg.trim()}\n\n(code="${code}")\n\n`;
-		if (docsUrl) msg += `\n\nDocs: ${docsUrl}`;
-		return msg;
-	}
-};
-/**
-* Custom error class for representing Clerk runtime errors.
-*
-* @class ClerkRuntimeError
-*
-* @example
-*   throw new ClerkRuntimeError('An error occurred', { code: 'password_invalid' });
-*/
-var ClerkRuntimeError = class ClerkRuntimeError extends ClerkError {
-	static kind = "ClerkRuntimeError";
-	/**
-	* @deprecated Use `clerkError` property instead. This property is maintained for backward compatibility.
-	*/
-	clerkRuntimeError = true;
-	constructor(message, options) {
-		super({
-			...options,
-			message
-		});
-		Object.setPrototypeOf(this, ClerkRuntimeError.prototype);
-	}
-};
-createErrorTypeGuard(ClerkRuntimeError);
-//#endregion
-//#region node_modules/@clerk/shared/dist/runtime/error-D-ayZ5nL.mjs
-/**
-* This error contains the specific error message, code, and any additional metadata that was returned by the Clerk API.
-*/
-var ClerkAPIError = class {
-	static kind = "ClerkAPIError";
-	code;
-	message;
-	longMessage;
-	meta;
-	constructor(json) {
-		const parsedError = {
-			code: json.code,
-			message: json.message,
-			longMessage: json.long_message,
-			meta: {
-				paramName: json.meta?.param_name,
-				sessionId: json.meta?.session_id,
-				emailAddresses: json.meta?.email_addresses,
-				identifiers: json.meta?.identifiers,
-				zxcvbn: json.meta?.zxcvbn,
-				plan: json.meta?.plan,
-				isPlanUpgradePossible: json.meta?.is_plan_upgrade_possible
-			}
-		};
-		this.code = parsedError.code;
-		this.message = parsedError.message;
-		this.longMessage = parsedError.longMessage;
-		this.meta = parsedError.meta;
-	}
-};
-createErrorTypeGuard(ClerkAPIError);
-createErrorTypeGuard(class ClerkAPIResponseError extends ClerkError {
-	static kind = "ClerkAPIResponseError";
-	status;
-	clerkTraceId;
-	retryAfter;
-	errors;
-	constructor(message, options) {
-		const { data: errorsJson, status, clerkTraceId, retryAfter } = options;
-		super({
-			...options,
-			message,
-			code: "api_response_error"
-		});
-		Object.setPrototypeOf(this, ClerkAPIResponseError.prototype);
-		this.status = status;
-		this.clerkTraceId = clerkTraceId;
-		this.retryAfter = retryAfter;
-		this.errors = (errorsJson || []).map((e) => new ClerkAPIError(e));
-	}
-	toString() {
-		let message = `[${this.name}]\nMessage:${this.message}\nStatus:${this.status}\nSerialized errors: ${this.errors.map((e) => JSON.stringify(e))}`;
-		if (this.clerkTraceId) message += `\nClerk Trace ID: ${this.clerkTraceId}`;
-		return message;
-	}
-	static formatMessage(name, msg, _, __) {
-		return msg;
-	}
-});
-var DefaultMessages = Object.freeze({
-	InvalidProxyUrlErrorMessage: `The proxyUrl passed to Clerk is invalid. The expected value for proxyUrl is an absolute URL or a relative path with a leading '/'. (key={{url}})`,
-	InvalidPublishableKeyErrorMessage: `The publishableKey passed to Clerk is invalid. You can get your Publishable key at https://dashboard.clerk.com/last-active?path=api-keys. (key={{key}})`,
-	MissingPublishableKeyErrorMessage: `Missing publishableKey. You can get your key at https://dashboard.clerk.com/last-active?path=api-keys.`,
-	MissingSecretKeyErrorMessage: `Missing secretKey. You can get your key at https://dashboard.clerk.com/last-active?path=api-keys.`,
-	MissingClerkProvider: `{{source}} can only be used within the <ClerkProvider /> component. Learn more: https://clerk.com/docs/components/clerk-provider`
-});
-/**
-* Builds an error thrower.
-*
-* @internal
-*/
-function buildErrorThrower({ packageName, customMessages }) {
-	let pkg = packageName;
-	/**
-	* Builds a message from a raw message and replacements.
-	*
-	* @internal
-	*/
-	function buildMessage(rawMessage, replacements) {
-		if (!replacements) return `${pkg}: ${rawMessage}`;
-		let msg = rawMessage;
-		const matches = rawMessage.matchAll(/{{([a-zA-Z0-9-_]+)}}/g);
-		for (const match of matches) {
-			const replacement = (replacements[match[1]] || "").toString();
-			msg = msg.replace(`{{${match[1]}}}`, replacement);
-		}
-		return `${pkg}: ${msg}`;
-	}
-	const messages = {
-		...DefaultMessages,
-		...customMessages
-	};
-	return {
-		setPackageName({ packageName: packageName$1 }) {
-			if (typeof packageName$1 === "string") pkg = packageName$1;
-			return this;
-		},
-		setMessages({ customMessages: customMessages$1 }) {
-			Object.assign(messages, customMessages$1 || {});
-			return this;
-		},
-		throwInvalidPublishableKeyError(params) {
-			throw new Error(buildMessage(messages.InvalidPublishableKeyErrorMessage, params));
-		},
-		throwInvalidProxyUrl(params) {
-			throw new Error(buildMessage(messages.InvalidProxyUrlErrorMessage, params));
-		},
-		throwMissingPublishableKeyError() {
-			throw new Error(buildMessage(messages.MissingPublishableKeyErrorMessage));
-		},
-		throwMissingSecretKeyError() {
-			throw new Error(buildMessage(messages.MissingSecretKeyErrorMessage));
-		},
-		throwMissingClerkProviderError(params) {
-			throw new Error(buildMessage(messages.MissingClerkProvider, params));
-		},
-		throw(message) {
-			throw new Error(buildMessage(message));
-		}
-	};
-}
-//#endregion
-//#region node_modules/@clerk/vue/dist/chunk-B47IFXQ7.js
-var errorThrower$1 = buildErrorThrower({ packageName: "@clerk/vue" });
-function setErrorThrowerOptions(options) {
-	errorThrower$1.setMessages(options).setPackageName(options);
-}
-var multipleChildrenInButtonComponent = (name) => `You've passed multiple children components to <${name}/>. You can only pass a single child component or text.`;
-var invalidStateError = "Invalid state. Feel free to submit a bug or reach out to support here: https://clerk.com/support";
-var userButtonMenuActionRenderedError = "<UserButton.Action /> component needs to be a direct child of `<UserButton.MenuItems />`.";
-var userButtonMenuLinkRenderedError = "<UserButton.Link /> component needs to be a direct child of `<UserButton.MenuItems />`.";
-var userButtonMenuItemLinkWrongProps = "Missing requirements. <UserButton.Link /> component requires props: href, label and slots: labelIcon.";
-var userButtonMenuItemActionWrongProps = "Missing requirements. <UserButton.Action /> component requires props: label and slots: labelIcon.";
-var userButtonMenuItemsRenderedError = "<UserButton.MenuItems /> component needs to be a direct child of `<UserButton />`.";
-var customPageWrongProps = (componentName) => `Missing requirements. <${componentName}.Page /> component requires props: url, label and slots: labelIcon and a default slot for page content`;
-var customLinkWrongProps = (componentName) => `Missing requirements. <${componentName}.Link /> component requires the following props: url, label and slots: labelIcon.`;
-var userProfilePageRenderedError = "<UserProfile.Page /> component needs to be a direct child of `<UserProfile />` or `<UserButton />`.";
-var userProfileLinkRenderedError = "<UserProfile.Link /> component needs to be a direct child of `<UserProfile />` or `<UserButton />`.";
-var organizationProfilePageRenderedError = "<OrganizationProfile.Page /> component needs to be a direct child of `<OrganizationProfile />` or `<OrganizationSwitcher />`.";
-var organizationProfileLinkRenderedError = "<OrganizationProfile.Link /> component needs to be a direct child of `<OrganizationProfile />` or `<OrganizationSwitcher />`.";
-//#endregion
-//#region node_modules/@clerk/shared/dist/runtime/authorization-Un7v7f6J.mjs
-var TYPES_TO_OBJECTS = {
-	strict_mfa: {
-		afterMinutes: 10,
-		level: "multi_factor"
-	},
-	strict: {
-		afterMinutes: 10,
-		level: "second_factor"
-	},
-	moderate: {
-		afterMinutes: 60,
-		level: "second_factor"
-	},
-	lax: {
-		afterMinutes: 1440,
-		level: "second_factor"
-	}
-};
-var ALLOWED_LEVELS = new Set([
-	"first_factor",
-	"second_factor",
-	"multi_factor"
-]);
-var ALLOWED_TYPES = new Set([
-	"strict_mfa",
-	"strict",
-	"moderate",
-	"lax"
-]);
-var ORG_SCOPES = new Set([
-	"o",
-	"org",
-	"organization"
-]);
-var USER_SCOPES = new Set(["u", "user"]);
-var isValidMaxAge = (maxAge) => typeof maxAge === "number" && maxAge > 0;
-var isValidLevel = (level) => ALLOWED_LEVELS.has(level);
-var isValidVerificationType = (type) => ALLOWED_TYPES.has(type);
-var prefixWithOrg = (value) => value.replace(/^(org:)*/, "org:");
-/**
-* Checks if a user has the required organization-level authorization.
-* Verifies if the user has the specified role or permission within their organization.
-*
-* @returns null, if unable to determine due to missing data or unspecified role/permission.
-*/
-var checkOrgAuthorization = (params, options) => {
-	const { orgId, orgRole, orgPermissions } = options;
-	if (!params.role && !params.permission) return null;
-	if (!orgId || !orgRole || !orgPermissions) return null;
-	if (params.permission) return orgPermissions.includes(prefixWithOrg(params.permission));
-	if (params.role) return prefixWithOrg(orgRole) === prefixWithOrg(params.role);
-	return null;
-};
-var checkForFeatureOrPlan = (claim, featureOrPlan) => {
-	const { org: orgFeatures, user: userFeatures } = splitByScope(claim);
-	const [rawScope, rawId] = featureOrPlan.split(":");
-	const hasExplicitScope = rawId !== void 0;
-	const scope = rawScope;
-	const id = rawId || rawScope;
-	if (hasExplicitScope && !ORG_SCOPES.has(scope) && !USER_SCOPES.has(scope)) throw new Error(`Invalid scope: ${scope}`);
-	if (hasExplicitScope) {
-		if (ORG_SCOPES.has(scope)) return orgFeatures.includes(id);
-		if (USER_SCOPES.has(scope)) return userFeatures.includes(id);
-	}
-	return [...orgFeatures, ...userFeatures].includes(id);
-};
-var checkBillingAuthorization = (params, options) => {
-	const { features, plans } = options;
-	if (params.feature && features) return checkForFeatureOrPlan(features, params.feature);
-	if (params.plan && plans) return checkForFeatureOrPlan(plans, params.plan);
-	return null;
-};
-var splitByScope = (fea) => {
-	const org = [];
-	const user = [];
-	if (!fea) return {
-		org,
-		user
-	};
-	const parts = fea.split(",");
-	for (let i = 0; i < parts.length; i++) {
-		const part = parts[i].trim();
-		const colonIndex = part.indexOf(":");
-		if (colonIndex === -1) throw new Error(`Invalid claim element (missing colon): ${part}`);
-		const scope = part.slice(0, colonIndex);
-		const value = part.slice(colonIndex + 1);
-		if (scope === "o") org.push(value);
-		else if (scope === "u") user.push(value);
-		else if (scope === "ou" || scope === "uo") {
-			org.push(value);
-			user.push(value);
-		}
-	}
-	return {
-		org,
-		user
-	};
-};
-var validateReverificationConfig = (config) => {
-	if (!config) return false;
-	const convertConfigToObject = (config$1) => {
-		if (typeof config$1 === "string") return TYPES_TO_OBJECTS[config$1];
-		return config$1;
-	};
-	const isValidStringValue = typeof config === "string" && isValidVerificationType(config);
-	const isValidObjectValue = typeof config === "object" && isValidLevel(config.level) && isValidMaxAge(config.afterMinutes);
-	if (isValidStringValue || isValidObjectValue) return convertConfigToObject.bind(null, config);
-	return false;
-};
-/**
-* Evaluates if the user meets re-verification authentication requirements.
-* Compares the user's factor verification ages against the specified maxAge.
-* Handles different verification levels (first factor, second factor, multi-factor).
-*
-* @returns null, if requirements or verification data are missing.
-*/
-var checkReverificationAuthorization = (params, { factorVerificationAge }) => {
-	if (!params.reverification || !factorVerificationAge) return null;
-	const isValidReverification = validateReverificationConfig(params.reverification);
-	if (!isValidReverification) return null;
-	const { level, afterMinutes } = isValidReverification();
-	const [factor1Age, factor2Age] = factorVerificationAge;
-	const isValidFactor1 = factor1Age !== -1 ? afterMinutes > factor1Age : null;
-	const isValidFactor2 = factor2Age !== -1 ? afterMinutes > factor2Age : null;
-	switch (level) {
-		case "first_factor": return isValidFactor1;
-		case "second_factor": return factor2Age !== -1 ? isValidFactor2 : isValidFactor1;
-		case "multi_factor": return factor2Age === -1 ? isValidFactor1 : isValidFactor1 && isValidFactor2;
-	}
-};
-/**
-* Creates a function for comprehensive user authorization checks.
-* Combines organization-level and reverification authentication checks.
-* The returned function authorizes if both checks pass, or if at least one passes
-* when the other is indeterminate. Fails if userId is missing.
-*/
-var createCheckAuthorization = (options) => {
-	return (params) => {
-		if (!options.userId) return false;
-		const billingAuthorization = checkBillingAuthorization(params, options);
-		const orgAuthorization = checkOrgAuthorization(params, options);
-		const reverificationAuthorization = checkReverificationAuthorization(params, options);
-		if ([billingAuthorization || orgAuthorization, reverificationAuthorization].some((a) => a === null)) return [billingAuthorization || orgAuthorization, reverificationAuthorization].some((a) => a === true);
-		return [billingAuthorization || orgAuthorization, reverificationAuthorization].every((a) => a === true);
-	};
-};
-/**
-* Shared utility function that centralizes auth state resolution logic,
-* preventing duplication across different packages.
-*
-* @internal
-*/
-var resolveAuthState = ({ authObject: { sessionId, sessionStatus, userId, actor, orgId, orgRole, orgSlug, signOut, getToken, has, sessionClaims }, options: { treatPendingAsSignedOut = true } }) => {
-	if (sessionId === void 0 && userId === void 0) return {
-		actor: void 0,
-		getToken,
-		has: () => false,
-		isLoaded: false,
-		isSignedIn: void 0,
-		orgId: void 0,
-		orgRole: void 0,
-		orgSlug: void 0,
-		sessionClaims: void 0,
-		sessionId,
-		signOut,
-		userId
-	};
-	if (sessionId === null && userId === null) return {
-		actor: null,
-		getToken,
-		has: () => false,
-		isLoaded: true,
-		isSignedIn: false,
-		orgId: null,
-		orgRole: null,
-		orgSlug: null,
-		sessionClaims: null,
-		sessionId,
-		signOut,
-		userId
-	};
-	if (treatPendingAsSignedOut && sessionStatus === "pending") return {
-		actor: null,
-		getToken,
-		has: () => false,
-		isLoaded: true,
-		isSignedIn: false,
-		orgId: null,
-		orgRole: null,
-		orgSlug: null,
-		sessionClaims: null,
-		sessionId: null,
-		signOut,
-		userId: null
-	};
-	if (!!sessionId && !!sessionClaims && !!userId && !!orgId && !!orgRole) return {
-		actor: actor || null,
-		getToken,
-		has,
-		isLoaded: true,
-		isSignedIn: true,
-		orgId,
-		orgRole,
-		orgSlug: orgSlug || null,
-		sessionClaims,
-		sessionId,
-		signOut,
-		userId
-	};
-	if (!!sessionId && !!sessionClaims && !!userId && !orgId) return {
-		actor: actor || null,
-		getToken,
-		has,
-		isLoaded: true,
-		isSignedIn: true,
-		orgId: null,
-		orgRole: null,
-		orgSlug: null,
-		sessionClaims,
-		sessionId,
-		signOut,
-		userId
-	};
-};
-//#endregion
-//#region node_modules/@clerk/vue/dist/chunk-7D4GN6SK.js
-var ClerkInjectionKey = Symbol("clerk");
-var UserButtonInjectionKey = Symbol("UserButton");
-var UserButtonMenuItemsInjectionKey = Symbol("UserButton.MenuItems");
-var UserProfileInjectionKey = Symbol("UserProfile");
-var OrganizationProfileInjectionKey = Symbol("OrganizationProfile");
-var PortalInjectionKey = Symbol("Portal");
-function useClerkContext(source) {
-	const ctx = inject(ClerkInjectionKey);
-	if (!ctx) return errorThrower$1.throw(`${source} can only be used when the Vue plugin is installed. Learn more: https://clerk.com/docs/reference/vue/clerk-plugin`);
-	return ctx;
-}
-var useClerk = () => {
-	const { clerk } = useClerkContext("useClerk");
-	return clerk;
-};
-var normalizeWithDefaultValue = (slotContent, defaultValue) => {
-	if (!slotContent) return h("button", defaultValue);
-	if (slotContent[0].type === Text) return h("button", slotContent);
-	return slotContent;
-};
-var assertSingleChild = (slotContent, name) => {
-	if (Array.isArray(slotContent)) {
-		if (slotContent.length > 1) return errorThrower$1.throw(multipleChildrenInButtonComponent(name));
-		return slotContent[0];
-	}
-	return slotContent;
-};
-function toComputedRefs(objectRef) {
-	const result = {};
-	for (const key in objectRef.value) result[key] = computed(() => objectRef.value[key]);
-	return result;
-}
-function clerkLoaded(clerk) {
-	return new Promise((resolve) => {
-		let unwatch;
-		unwatch = watch(clerk, (value) => {
-			if (value?.loaded) {
-				resolve(value);
-				unwatch?.();
-			}
-		}, { immediate: true });
-	});
-}
-function createGetToken(clerk) {
-	return async (options) => {
-		const loadedClerk = await clerkLoaded(clerk);
-		if (!loadedClerk.session) return null;
-		return loadedClerk.session.getToken(options);
-	};
-}
-function createSignOut(clerk) {
-	return async (...args) => {
-		return (await clerkLoaded(clerk)).signOut(...args);
-	};
-}
-var useAuth = (options = {}) => {
-	const { clerk, authCtx } = useClerkContext("useAuth");
-	const getToken = createGetToken(clerk);
-	const signOut = createSignOut(clerk);
-	return toComputedRefs(computed(() => {
-		const { userId, orgId, orgRole, orgPermissions, sessionClaims, factorVerificationAge } = authCtx.value;
-		const has = createCheckAuthorization({
-			userId,
-			orgId,
-			orgRole,
-			orgPermissions,
-			factorVerificationAge,
-			features: sessionClaims?.fea || "",
-			plans: sessionClaims?.pla || ""
-		});
-		const payload = resolveAuthState({
-			authObject: {
-				...authCtx.value,
-				getToken,
-				signOut,
-				has
-			},
-			options: { treatPendingAsSignedOut: options.treatPendingAsSignedOut }
-		});
-		if (!payload) return errorThrower$1.throw(invalidStateError);
-		return payload;
-	}));
-};
-var export_helper_default = (sfc, props) => {
-	const target = sfc.__vccOpts || sfc;
-	for (const [key, val] of props) target[key] = val;
-	return target;
-};
-//#endregion
-//#region node_modules/@clerk/shared/dist/runtime/constants-Bta24VLk.mjs
-var DEV_OR_STAGING_SUFFIXES = [
-	".lcl.dev",
-	".stg.dev",
-	".lclstage.dev",
-	".stgstage.dev",
-	".dev.lclclerk.com",
-	".stg.lclclerk.com",
-	".accounts.lclclerk.com",
-	"accountsstage.dev",
-	"accounts.dev"
-];
-//#endregion
-//#region node_modules/@clerk/shared/dist/runtime/isomorphicAtob-CoF80qYz.mjs
-/**
-* A function that decodes a string of data which has been encoded using base-64 encoding.
-* Uses `atob` if available, otherwise uses `Buffer` from `globalThis`. If neither are available, returns the data as-is.
-*/
-var isomorphicAtob = (data) => {
-	if (typeof atob !== "undefined" && typeof atob === "function") return atob(data);
-	else if (typeof globalThis.Buffer !== "undefined") return globalThis.Buffer.from(data, "base64").toString();
-	return data;
-};
-//#endregion
-//#region node_modules/@clerk/shared/dist/runtime/keys-DuxzP8MU.mjs
-/** Prefix used for production publishable keys */
-var PUBLISHABLE_KEY_LIVE_PREFIX = "pk_live_";
-/** Prefix used for development publishable keys */
-var PUBLISHABLE_KEY_TEST_PREFIX = "pk_test_";
-/**
-* Validates that a decoded publishable key has the correct format.
-* The decoded value should be a frontend API followed by exactly one '$' at the end.
-*
-* @param decoded - The decoded publishable key string to validate.
-* @returns `true` if the decoded key has valid format, `false` otherwise.
-*/
-function isValidDecodedPublishableKey(decoded) {
-	if (!decoded.endsWith("$")) return false;
-	const withoutTrailing = decoded.slice(0, -1);
-	if (withoutTrailing.includes("$")) return false;
-	return withoutTrailing.includes(".");
-}
-/**
-* Parses and validates a publishable key, extracting the frontend API and instance type.
-*
-* @param key - The publishable key to parse.
-* @param options - Configuration options for parsing.
-* @param options.fatal
-* @param options.domain
-* @param options.proxyUrl
-* @param options.isSatellite
-* @returns Parsed publishable key object with instanceType and frontendApi, or null if invalid.
-*
-* @throws {Error} When options.fatal is true and key is missing or invalid.
-*/
-function parsePublishableKey(key, options = {}) {
-	key = key || "";
-	if (!key || !isPublishableKey(key)) {
-		if (options.fatal && !key) throw new Error("Publishable key is missing. Ensure that your publishable key is correctly configured. Double-check your environment configuration for your keys, or access them here: https://dashboard.clerk.com/last-active?path=api-keys");
-		if (options.fatal && !isPublishableKey(key)) throw new Error("Publishable key not valid.");
-		return null;
-	}
-	const instanceType = key.startsWith(PUBLISHABLE_KEY_LIVE_PREFIX) ? "production" : "development";
-	let decodedFrontendApi;
-	try {
-		decodedFrontendApi = isomorphicAtob(key.split("_")[2]);
-	} catch {
-		if (options.fatal) throw new Error("Publishable key not valid: Failed to decode key.");
-		return null;
-	}
-	if (!isValidDecodedPublishableKey(decodedFrontendApi)) {
-		if (options.fatal) throw new Error("Publishable key not valid: Decoded key has invalid format.");
-		return null;
-	}
-	let frontendApi = decodedFrontendApi.slice(0, -1);
-	if (options.proxyUrl) frontendApi = options.proxyUrl;
-	else if (instanceType !== "development" && options.domain && options.isSatellite) frontendApi = `clerk.${options.domain}`;
-	return {
-		instanceType,
-		frontendApi
-	};
-}
-/**
-* Checks if the provided key is a valid publishable key.
-*
-* @param key - The key to be checked. Defaults to an empty string if not provided.
-* @returns `true` if 'key' is a valid publishable key, `false` otherwise.
-*/
-function isPublishableKey(key = "") {
-	try {
-		if (!(key.startsWith(PUBLISHABLE_KEY_LIVE_PREFIX) || key.startsWith(PUBLISHABLE_KEY_TEST_PREFIX))) return false;
-		const parts = key.split("_");
-		if (parts.length !== 3) return false;
-		const encodedPart = parts[2];
-		if (!encodedPart) return false;
-		return isValidDecodedPublishableKey(isomorphicAtob(encodedPart));
-	} catch {
-		return false;
-	}
-}
-/**
-* Creates a memoized cache for checking if URLs are development or staging environments.
-* Uses a Map to cache results for better performance on repeated checks.
-*
-* @returns An object with an isDevOrStagingUrl method that checks if a URL is dev/staging.
-*/
-function createDevOrStagingUrlCache() {
-	const devOrStagingUrlCache = /* @__PURE__ */ new Map();
-	return { isDevOrStagingUrl: (url) => {
-		if (!url) return false;
-		const hostname = typeof url === "string" ? url : url.hostname;
-		let res = devOrStagingUrlCache.get(hostname);
-		if (res === void 0) {
-			res = DEV_OR_STAGING_SUFFIXES.some((s) => hostname.endsWith(s));
-			devOrStagingUrlCache.set(hostname, res);
-		}
-		return res;
-	} };
-}
-//#endregion
-//#region node_modules/@clerk/shared/dist/runtime/retry-DqRIhHV5.mjs
-var defaultOptions = {
-	initialDelay: 125,
-	maxDelayBetweenRetries: 0,
-	factor: 2,
-	shouldRetry: (_, iteration) => iteration < 5,
-	retryImmediately: false,
-	jitter: true
-};
-var RETRY_IMMEDIATELY_DELAY = 100;
-var sleep$1 = async (ms) => new Promise((s) => setTimeout(s, ms));
-var applyJitter = (delay, jitter) => {
-	return jitter ? delay * (1 + Math.random()) : delay;
-};
-var createExponentialDelayAsyncFn = (opts) => {
-	let timesCalled = 0;
-	const calculateDelayInMs = () => {
-		const constant = opts.initialDelay;
-		const base = opts.factor;
-		let delay = constant * Math.pow(base, timesCalled);
-		delay = applyJitter(delay, opts.jitter);
-		return Math.min(opts.maxDelayBetweenRetries || delay, delay);
-	};
-	return async () => {
-		await sleep$1(calculateDelayInMs());
-		timesCalled++;
-	};
-};
-/**
-* Retries a callback until it succeeds or the shouldRetry function returns false.
-* See {@link RetryOptions} for the available options.
-*/
-var retry = async (callback, options = {}) => {
-	let iterations = 0;
-	const { shouldRetry, initialDelay, maxDelayBetweenRetries, factor, retryImmediately, jitter, onBeforeRetry } = {
-		...defaultOptions,
-		...options
-	};
-	const delay = createExponentialDelayAsyncFn({
-		initialDelay,
-		maxDelayBetweenRetries,
-		factor,
-		jitter
-	});
-	while (true) try {
-		return await callback();
-	} catch (e) {
-		iterations++;
-		if (!shouldRetry(e, iterations)) throw e;
-		if (onBeforeRetry) await onBeforeRetry(iterations);
-		if (retryImmediately && iterations === 1) await sleep$1(applyJitter(RETRY_IMMEDIATELY_DELAY, jitter));
-		else await delay();
-	}
-};
-//#endregion
-//#region node_modules/@clerk/shared/dist/runtime/loadScript-UG_epen4.mjs
-var NO_DOCUMENT_ERROR = "loadScript cannot be called when document does not exist";
-var NO_SRC_ERROR = "loadScript cannot be called without a src";
-/**
-*
-*/
-async function loadScript(src = "", opts) {
-	const { async, defer, beforeLoad, crossOrigin, nonce } = opts || {};
-	const load = () => {
-		return new Promise((resolve, reject) => {
-			if (!src) reject(new Error(NO_SRC_ERROR));
-			if (!document || !document.body) reject(new Error(NO_DOCUMENT_ERROR));
-			const script = document.createElement("script");
-			if (crossOrigin) script.setAttribute("crossorigin", crossOrigin);
-			script.async = async || false;
-			script.defer = defer || false;
-			script.addEventListener("load", () => {
-				script.remove();
-				resolve(script);
-			});
-			script.addEventListener("error", (event) => {
-				script.remove();
-				reject(event.error ?? /* @__PURE__ */ new Error(`failed to load script: ${src}`));
-			});
-			script.src = src;
-			script.nonce = nonce;
-			beforeLoad?.(script);
-			document.body.appendChild(script);
-		});
-	};
-	return retry(load, { shouldRetry: (_, iterations) => {
-		return iterations <= 5;
-	} });
-}
-//#endregion
-//#region node_modules/@clerk/shared/dist/runtime/proxy-BcfViKjn.mjs
-/**
-*
-*/
-function isValidProxyUrl(key) {
-	if (!key) return true;
-	return isHttpOrHttps(key) || isProxyUrlRelative(key);
-}
-/**
-*
-*/
-function isHttpOrHttps(key) {
-	return /^http(s)?:\/\//.test(key || "");
-}
-/**
-*
-*/
-function isProxyUrlRelative(key) {
-	return key.startsWith("/");
-}
-/**
-*
-*/
-function proxyUrlToAbsoluteURL(url) {
-	if (!url) return "";
-	return isProxyUrlRelative(url) ? new URL(url, window.location.origin).toString() : url;
-}
-//#endregion
-//#region node_modules/@clerk/shared/dist/runtime/url-C6gPMFx5.mjs
-/**
-*
-*/
-function addClerkPrefix(str) {
-	if (!str) return "";
-	let regex;
-	if (str.match(/^(clerk\.)+\w*$/)) regex = /(clerk\.)*(?=clerk\.)/;
-	else if (str.match(/\.clerk.accounts/)) return str;
-	else regex = /^(clerk\.)*/gi;
-	return `clerk.${str.replace(regex, "")}`;
-}
-//#endregion
-//#region node_modules/@clerk/shared/dist/runtime/versionSelector-Cx1-K89P.mjs
-/**
-* This version selector is a bit complicated, so here is the flow:
-* 1. Use the clerkJSVersion prop on the provider
-* 2. Use the exact `@clerk/clerk-js` version if it is a `@snapshot` prerelease
-* 3. Use the prerelease tag of `@clerk/clerk-js` or the packageVersion provided
-* 4. Fallback to the major version of `@clerk/clerk-js` or the packageVersion provided
-*
-* @param clerkJSVersion - The optional clerkJSVersion prop on the provider
-* @param packageVersion - The version of `@clerk/clerk-js` that will be used if an explicit version is not provided
-* @returns The npm tag, version or major version to use
-*/
-var versionSelector = (clerkJSVersion, packageVersion = "6.3.2") => {
-	if (clerkJSVersion) return clerkJSVersion;
-	const prereleaseTag = getPrereleaseTag(packageVersion);
-	if (prereleaseTag) {
-		if (prereleaseTag === "snapshot") return packageVersion;
-		return prereleaseTag;
-	}
-	return getMajorVersion(packageVersion);
-};
-var getPrereleaseTag = (packageVersion) => packageVersion.trim().replace(/^v/, "").match(/-(.+?)(\.|$)/)?.[1];
-var getMajorVersion = (packageVersion) => packageVersion.trim().replace(/^v/, "").split(".")[0];
-//#endregion
-//#region node_modules/@clerk/shared/dist/runtime/loadClerkJsScript.mjs
-var { isDevOrStagingUrl } = createDevOrStagingUrlCache();
-var errorThrower = buildErrorThrower({ packageName: "@clerk/shared" });
-/**
-* Validates that window.Clerk exists and is properly initialized.
-* This ensures we don't have false positives where the script loads but Clerk is malformed.
-*
-* @returns `true` if window.Clerk exists and has the expected structure with a load method.
-*/
-function isClerkGlobalProperlyLoaded(prop) {
-	if (typeof window === "undefined" || !window[prop]) return false;
-	return !!window[prop];
-}
-var isClerkProperlyLoaded = () => isClerkGlobalProperlyLoaded("Clerk");
-var isClerkUIProperlyLoaded = () => isClerkGlobalProperlyLoaded("__internal_ClerkUICtor");
-/**
-* Checks if an existing script has a request error using Performance API.
-*
-* @param scriptUrl - The URL of the script to check.
-* @returns True if the script has failed to load due to a network/HTTP error.
-*/
-function hasScriptRequestError(scriptUrl) {
-	if (typeof window === "undefined" || !window.performance) return false;
-	const entries = performance.getEntriesByName(scriptUrl, "resource");
-	if (entries.length === 0) return false;
-	const scriptEntry = entries[entries.length - 1];
-	if (scriptEntry.transferSize === 0 && scriptEntry.decodedBodySize === 0) {
-		if (scriptEntry.responseEnd === 0) return true;
-		if (scriptEntry.responseEnd > 0 && scriptEntry.responseStart > 0) return true;
-		if ("responseStatus" in scriptEntry) {
-			if (scriptEntry.responseStatus >= 400) return true;
-			if (scriptEntry.responseStatus === 0) return true;
-		}
-	}
-	return false;
-}
-/**
-* Hotloads the Clerk JS script with robust failure detection.
-*
-* Uses a timeout-based approach to ensure absolute certainty about load success/failure.
-* If the script fails to load within the timeout period, or loads but doesn't create
-* a proper Clerk instance, the promise rejects with an error.
-*
-* @param opts - The options used to build the Clerk JS script URL and load the script.
-*               Must include a `publishableKey` if no existing script is found.
-* @returns Promise that resolves with null if Clerk loads successfully, or rejects with an error.
-*
-* @example
-* ```typescript
-* try {
-*   await loadClerkJsScript({ publishableKey: 'pk_test_...' });
-*   console.log('Clerk loaded successfully');
-* } catch (error) {
-*   console.error('Failed to load Clerk:', error.message);
-* }
-* ```
-*/
-var loadClerkJSScript = async (opts) => {
-	const timeout = opts?.scriptLoadTimeout ?? 15e3;
-	const rejectWith = (error) => new ClerkRuntimeError("Failed to load Clerk JS" + (error?.message ? `, ${error.message}` : ""), {
-		code: "failed_to_load_clerk_js",
-		cause: error
-	});
-	if (isClerkProperlyLoaded()) return null;
-	if (!opts?.publishableKey) {
-		errorThrower.throwMissingPublishableKeyError();
-		return null;
-	}
-	const scriptUrl = clerkJSScriptUrl(opts);
-	const existingScript = document.querySelector("script[data-clerk-js-script]");
-	if (existingScript) if (hasScriptRequestError(scriptUrl)) existingScript.remove();
-	else try {
-		await waitForPredicateWithTimeout(timeout, isClerkProperlyLoaded, rejectWith(), existingScript);
-		return null;
-	} catch {
-		existingScript.remove();
-	}
-	const loadPromise = waitForPredicateWithTimeout(timeout, isClerkProperlyLoaded, rejectWith());
-	loadScript(scriptUrl, {
-		async: true,
-		crossOrigin: "anonymous",
-		nonce: opts.nonce,
-		beforeLoad: applyAttributesToScript(buildClerkJSScriptAttributes(opts))
-	}).catch((error) => {
-		throw rejectWith(error);
-	});
-	return loadPromise;
-};
-var loadClerkUIScript = async (opts) => {
-	const timeout = opts?.scriptLoadTimeout ?? 15e3;
-	const rejectWith = (error) => new ClerkRuntimeError("Failed to load Clerk UI" + (error?.message ? `, ${error.message}` : ""), {
-		code: "failed_to_load_clerk_ui",
-		cause: error
-	});
-	if (isClerkUIProperlyLoaded()) return null;
-	if (!opts?.publishableKey) {
-		errorThrower.throwMissingPublishableKeyError();
-		return null;
-	}
-	const scriptUrl = clerkUIScriptUrl(opts);
-	const existingScript = document.querySelector("script[data-clerk-ui-script]");
-	if (existingScript) if (hasScriptRequestError(scriptUrl)) existingScript.remove();
-	else try {
-		await waitForPredicateWithTimeout(timeout, isClerkUIProperlyLoaded, rejectWith(), existingScript);
-		return null;
-	} catch {
-		existingScript.remove();
-	}
-	const loadPromise = waitForPredicateWithTimeout(timeout, isClerkUIProperlyLoaded, rejectWith());
-	loadScript(scriptUrl, {
-		async: true,
-		crossOrigin: "anonymous",
-		nonce: opts.nonce,
-		beforeLoad: applyAttributesToScript(buildClerkUIScriptAttributes(opts))
-	}).catch((error) => {
-		throw rejectWith(error);
-	});
-	return loadPromise;
-};
-var clerkJSScriptUrl = (opts) => {
-	const { __internal_clerkJSUrl, __internal_clerkJSVersion, proxyUrl, domain, publishableKey } = opts;
-	if (__internal_clerkJSUrl) return __internal_clerkJSUrl;
-	return `https://${buildScriptHost({
-		publishableKey,
-		proxyUrl,
-		domain
-	})}/npm/@clerk/clerk-js@${versionSelector(__internal_clerkJSVersion)}/dist/clerk.browser.js`;
-};
-var clerkUIScriptUrl = (opts) => {
-	const { __internal_clerkUIUrl, __internal_clerkUIVersion, proxyUrl, domain, publishableKey } = opts;
-	if (__internal_clerkUIUrl) return __internal_clerkUIUrl;
-	return `https://${buildScriptHost({
-		publishableKey,
-		proxyUrl,
-		domain
-	})}/npm/@clerk/ui@${versionSelector(__internal_clerkUIVersion, "1.2.3")}/dist/ui.browser.js`;
-};
-var buildClerkJSScriptAttributes = (options) => {
-	const obj = {};
-	if (options.publishableKey) obj["data-clerk-publishable-key"] = options.publishableKey;
-	if (options.proxyUrl) obj["data-clerk-proxy-url"] = options.proxyUrl;
-	if (options.domain) obj["data-clerk-domain"] = options.domain;
-	if (options.nonce) obj.nonce = options.nonce;
-	return obj;
-};
-var buildClerkUIScriptAttributes = (options) => {
-	return buildClerkJSScriptAttributes(options);
-};
-var applyAttributesToScript = (attributes) => (script) => {
-	for (const attribute in attributes) script.setAttribute(attribute, attributes[attribute]);
-};
-var buildScriptHost = (opts) => {
-	const { proxyUrl, domain, publishableKey } = opts;
-	if (!!proxyUrl && isValidProxyUrl(proxyUrl)) return proxyUrlToAbsoluteURL(proxyUrl).replace(/http(s)?:\/\//, "");
-	else if (domain && !isDevOrStagingUrl(parsePublishableKey(publishableKey)?.frontendApi || "")) return addClerkPrefix(domain);
-	else return parsePublishableKey(publishableKey)?.frontendApi || "";
-};
-function waitForPredicateWithTimeout(timeoutMs, predicate, rejectWith, existingScript) {
-	return new Promise((resolve, reject) => {
-		let resolved = false;
-		const cleanup = (timeoutId$1, pollInterval$1) => {
-			clearTimeout(timeoutId$1);
-			clearInterval(pollInterval$1);
-		};
-		existingScript?.addEventListener("error", () => {
-			cleanup(timeoutId, pollInterval);
-			reject(rejectWith);
-		});
-		const checkAndResolve = () => {
-			if (resolved) return;
-			if (predicate()) {
-				resolved = true;
-				cleanup(timeoutId, pollInterval);
-				resolve(null);
-			}
-		};
-		const handleTimeout = () => {
-			if (resolved) return;
-			resolved = true;
-			cleanup(timeoutId, pollInterval);
-			if (!predicate()) reject(rejectWith);
-			else resolve(null);
-		};
-		const timeoutId = setTimeout(handleTimeout, timeoutMs);
-		checkAndResolve();
-		const pollInterval = setInterval(() => {
-			if (resolved) {
-				clearInterval(pollInterval);
-				return;
-			}
-			checkAndResolve();
-		}, 100);
-	});
-}
-function setClerkJSLoadingErrorPackageName(packageName) {
-	errorThrower.setPackageName({ packageName });
-}
-//#endregion
-//#region node_modules/@clerk/shared/dist/runtime/runtimeEnvironment-D1yr0yUs.mjs
-var isDevelopmentEnvironment = () => {
-	try {
-		return false;
-	} catch {}
-	return false;
-};
-//#endregion
-//#region node_modules/@clerk/shared/dist/runtime/underscore-ClYSgvuy.mjs
-/**
-* Converts a string from snake_case to camelCase.
-*/
-function snakeToCamel(str) {
-	return str ? str.replace(/([-_][a-z])/g, (match) => match.toUpperCase().replace(/-|_/, "")) : "";
-}
-/**
-* Converts a string from camelCase to snake_case.
-*/
-function camelToSnake(str) {
-	return str ? str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`) : "";
-}
-var createDeepObjectTransformer = (transform) => {
-	const deepTransform = (obj) => {
-		if (!obj) return obj;
-		if (Array.isArray(obj)) return obj.map((el) => {
-			if (typeof el === "object" || Array.isArray(el)) return deepTransform(el);
-			return el;
-		});
-		const copy = { ...obj };
-		const keys = Object.keys(copy);
-		for (const oldName of keys) {
-			const newName = transform(oldName.toString());
-			if (newName !== oldName) {
-				copy[newName] = copy[oldName];
-				delete copy[oldName];
-			}
-			if (typeof copy[newName] === "object") copy[newName] = deepTransform(copy[newName]);
-		}
-		return copy;
-	};
-	return deepTransform;
-};
-createDeepObjectTransformer(camelToSnake);
-createDeepObjectTransformer(snakeToCamel);
-//#endregion
-//#region node_modules/@clerk/shared/dist/runtime/utils-TXJdVJx7.mjs
-var logErrorInDevMode = (message) => {
-	if (isDevelopmentEnvironment()) console.error(`Clerk: ${message}`);
-};
-//#endregion
-//#region node_modules/@clerk/shared/dist/runtime/browser-CMFCxUv7.mjs
-/**
-* Checks if the window object is defined. You can also use this to check if something is happening on the client side.
-*
-* @returns
-*/
-function inBrowser() {
-	return typeof window !== "undefined";
-}
-new RegExp([
-	"bot",
-	"spider",
-	"crawl",
-	"APIs-Google",
-	"AdsBot",
-	"Googlebot",
-	"mediapartners",
-	"Google Favicon",
-	"FeedFetcher",
-	"Google-Read-Aloud",
-	"DuplexWeb-Google",
-	"googleweblight",
-	"bing",
-	"yandex",
-	"baidu",
-	"duckduck",
-	"yahoo",
-	"ecosia",
-	"ia_archiver",
-	"facebook",
-	"instagram",
-	"pinterest",
-	"reddit",
-	"slack",
-	"twitter",
-	"whatsapp",
-	"youtube",
-	"semrush"
-].join("|"), "i");
-//#endregion
-//#region node_modules/@clerk/shared/dist/runtime/deriveState-CQUgOdaO.mjs
-/**
-* Derives authentication state based on the current rendering context (SSR or client-side).
-*/
-var deriveState = (clerkOperational, state, initialState) => {
-	if (!clerkOperational && initialState) return deriveFromSsrInitialState(initialState);
-	return deriveFromClientSideState(state);
-};
-var deriveFromSsrInitialState = (initialState) => {
-	const userId = initialState.userId;
-	const user = initialState.user;
-	const sessionId = initialState.sessionId;
-	const sessionStatus = initialState.sessionStatus;
-	const sessionClaims = initialState.sessionClaims;
-	return {
-		userId,
-		user,
-		sessionId,
-		session: initialState.session,
-		sessionStatus,
-		sessionClaims,
-		organization: initialState.organization,
-		orgId: initialState.orgId,
-		orgRole: initialState.orgRole,
-		orgPermissions: initialState.orgPermissions,
-		orgSlug: initialState.orgSlug,
-		actor: initialState.actor,
-		factorVerificationAge: initialState.factorVerificationAge
-	};
-};
-var deriveFromClientSideState = (state) => {
-	const userId = state.user ? state.user.id : state.user;
-	const user = state.user;
-	const sessionId = state.session ? state.session.id : state.session;
-	const session = state.session;
-	const sessionStatus = state.session?.status;
-	const sessionClaims = state.session ? state.session.lastActiveToken?.jwt?.claims : null;
-	const factorVerificationAge = state.session ? state.session.factorVerificationAge : null;
-	const actor = session?.actor;
-	const organization = state.organization;
-	const orgId = state.organization ? state.organization.id : state.organization;
-	const orgSlug = organization?.slug;
-	const membership = organization ? user?.organizationMemberships?.find((om) => om.organization.id === orgId) : organization;
-	const orgPermissions = membership ? membership.permissions : membership;
-	return {
-		userId,
-		user,
-		sessionId,
-		session,
-		sessionStatus,
-		sessionClaims,
-		organization,
-		orgId,
-		orgRole: membership ? membership.role : membership,
-		orgSlug,
-		orgPermissions,
-		actor,
-		factorVerificationAge
-	};
-};
-//#endregion
-//#region node_modules/@clerk/vue/dist/index.js
-var usePortalRoot = () => {
-	const context = inject(PortalInjectionKey, null);
-	if (context && context.getContainer) return context.getContainer;
-	return () => null;
-};
-var useUser = () => {
-	const { userCtx } = useClerkContext("useUser");
-	return toComputedRefs(computed(() => {
-		if (userCtx.value === void 0) return {
-			isLoaded: false,
-			isSignedIn: void 0,
-			user: void 0
-		};
-		if (userCtx.value === null) return {
-			isLoaded: true,
-			isSignedIn: false,
-			user: null
-		};
-		return {
-			isLoaded: true,
-			isSignedIn: true,
-			user: userCtx.value
-		};
-	}));
-};
-var useClerkLoaded = (callback) => {
-	const clerk = useClerk();
-	let unwatch;
-	unwatch = watch(clerk, (unwrappedClerk) => {
-		if (!unwrappedClerk?.loaded) return;
-		callback(unwrappedClerk);
-		unwatch?.();
-	}, { immediate: true });
-};
-var ClerkLoaded = /* @__PURE__ */ defineComponent((_, { slots }) => {
-	const clerk = useClerk();
-	return () => clerk.value?.loaded ? slots.default?.() : null;
-});
-Object.defineProperty(/* @__PURE__ */ defineComponent((props) => {
-	const { sessionCtx, clientCtx } = useClerkContext("RedirectToSignIn");
-	useClerkLoaded((clerk) => {
-		const hasSignedInSessions = clientCtx.value?.signedInSessions && clientCtx.value.signedInSessions.length > 0;
-		if (sessionCtx.value === null && hasSignedInSessions) clerk.redirectToAfterSignOut();
-		else clerk.redirectToSignIn(props);
-	});
-	return () => null;
-}), "props", { value: [
-	"signInForceRedirectUrl",
-	"signInFallbackRedirectUrl",
-	"signUpForceRedirectUrl",
-	"signUpFallbackRedirectUrl",
-	"redirectUrl"
-] });
-Object.defineProperty(/* @__PURE__ */ defineComponent((props) => {
-	useClerkLoaded((clerk) => {
-		clerk.redirectToSignUp(props);
-	});
-	return () => null;
-}), "props", { value: [
-	"signInForceRedirectUrl",
-	"signInFallbackRedirectUrl",
-	"signUpForceRedirectUrl",
-	"signUpFallbackRedirectUrl",
-	"redirectUrl"
-] });
-Object.defineProperty(/* @__PURE__ */ defineComponent((props) => {
-	useClerkLoaded((clerk) => {
-		clerk.redirectToTasks(props);
-	});
-	return () => null;
-}), "props", { value: [
-	"signInForceRedirectUrl",
-	"signInFallbackRedirectUrl",
-	"signUpForceRedirectUrl",
-	"signUpFallbackRedirectUrl",
-	"redirectUrl"
-] });
-Object.defineProperty(/* @__PURE__ */ defineComponent((props) => {
-	useClerkLoaded((clerk) => {
-		clerk.handleRedirectCallback(props);
-	});
-	return () => null;
-}), "props", { value: [
-	"transferable",
-	"signInForceRedirectUrl",
-	"signInFallbackRedirectUrl",
-	"signUpForceRedirectUrl",
-	"signUpFallbackRedirectUrl",
-	"signInUrl",
-	"signUpUrl",
-	"firstFactorUrl",
-	"secondFactorUrl",
-	"resetPasswordUrl",
-	"continueSignUpUrl",
-	"verifyEmailAddressUrl",
-	"verifyPhoneNumberUrl",
-	"reloadResource",
-	"unsafeMetadata"
-] });
-var Show = /* @__PURE__ */ defineComponent((props, { slots }) => {
-	const { isLoaded, has, userId } = useAuth({ treatPendingAsSignedOut: props.treatPendingAsSignedOut });
-	return () => {
-		if (!isLoaded.value) return null;
-		const authorized = slots.default?.() ?? null;
-		const fallbackFromSlot = slots.fallback?.() ?? null;
-		const fallbackFromProp = props.fallback ?? null;
-		const unauthorized = fallbackFromSlot ?? fallbackFromProp ?? null;
-		if (props.when === "signed-out") return userId.value ? unauthorized : authorized;
-		if (!userId.value) return unauthorized;
-		if (props.when === "signed-in") return authorized;
-		const hasValue = has.value;
-		if (!hasValue) return unauthorized;
-		if (typeof props.when === "function") return props.when(hasValue) ? authorized : unauthorized;
-		return hasValue(props.when) ? authorized : unauthorized;
-	};
-});
-Object.defineProperty(Show, "props", { value: [
-	"treatPendingAsSignedOut",
-	"fallback",
-	"when"
-] });
-var CustomPortalsRenderer = /* @__PURE__ */ defineComponent((props) => {
-	return () => [...props?.customPagesPortals ?? [], ...props?.customMenuItemsPortals ?? []];
-});
-Object.defineProperty(CustomPortalsRenderer, "props", { value: ["customPagesPortals", "customMenuItemsPortals"] });
-var ClerkHostRenderer = /* @__PURE__ */ defineComponent({
-	props: {
-		mount: {
-			type: Function,
-			required: false
-		},
-		unmount: {
-			type: Function,
-			required: false
-		},
-		open: {
-			type: Function,
-			required: false
-		},
-		close: {
-			type: Function,
-			required: false
-		},
-		updateProps: {
-			type: Function,
-			required: false
-		},
-		props: {
-			type: Object,
-			required: false,
-			default: () => ({})
-		}
-	},
-	setup(props) {
-		const portalRef = ref(null);
-		const getContainer = usePortalRoot();
-		let isPortalMounted = false;
-		watchEffect(() => {
-			if (!portalRef.value || isPortalMounted) return;
-			const propsWithContainer = {
-				...props.props,
-				getContainer
-			};
-			if (props.mount) props.mount(portalRef.value, propsWithContainer);
-			if (props.open) props.open(propsWithContainer);
-			isPortalMounted = true;
-		});
-		watch(() => props.props, (newProps) => {
-			if (isPortalMounted && props.updateProps && portalRef.value) {
-				const propsWithContainer = {
-					...newProps,
-					getContainer
-				};
-				props.updateProps({
-					node: portalRef.value,
-					props: propsWithContainer
-				});
-			}
-		}, { deep: true });
-		onUnmounted(() => {
-			if (isPortalMounted && portalRef.value) {
-				if (props.unmount) props.unmount(portalRef.value);
-				if (props.close) props.close();
-			}
-		});
-		return () => h(ClerkLoaded, () => h("div", { ref: portalRef }));
-	}
-});
-var _sfc_main9 = /* @__PURE__ */ defineComponent({
-	__name: "OrganizationProfile",
-	props: {
-		path: {
-			type: null,
-			required: false
-		},
-		routing: {
-			type: String,
-			required: false
-		},
-		afterLeaveOrganizationUrl: {
-			type: String,
-			required: false
-		},
-		appearance: {
-			type: null,
-			required: false
-		},
-		__experimental_startPath: {
-			type: String,
-			required: false
-		},
-		apiKeysProps: {
-			type: Object,
-			required: false
-		}
-	},
-	setup(__props, { expose: __expose }) {
-		__expose();
-		const props = __props;
-		const clerk = useClerk();
-		const { customPages, customPagesPortals, addCustomPage } = useOrganizationProfileCustomPages();
-		const finalProps = computed(() => ({
-			...props,
-			customPages: customPages.value
-		}));
-		provide(OrganizationProfileInjectionKey, { addCustomPage });
-		const __returned__ = {
-			props,
-			clerk,
-			customPages,
-			customPagesPortals,
-			addCustomPage,
-			finalProps,
-			get ClerkHostRenderer() {
-				return ClerkHostRenderer;
-			},
-			get CustomPortalsRenderer() {
-				return CustomPortalsRenderer;
-			}
-		};
-		Object.defineProperty(__returned__, "__isScriptSetup", {
-			enumerable: false,
-			value: true
-		});
-		return __returned__;
-	}
-});
-function _sfc_render9(_ctx, _cache, $props, $setup, $data, $options) {
-	return openBlock(), createElementBlock(Fragment, null, [
-		createVNode($setup["ClerkHostRenderer"], {
-			mount: $setup.clerk?.mountOrganizationProfile,
-			unmount: $setup.clerk?.unmountOrganizationProfile,
-			props: $setup.finalProps,
-			"update-props": $setup.clerk?.__internal_updateProps
-		}, null, 8, [
-			"mount",
-			"unmount",
-			"props",
-			"update-props"
-		]),
-		createVNode($setup["CustomPortalsRenderer"], { "custom-pages-portals": $setup.customPagesPortals }, null, 8, ["custom-pages-portals"]),
-		renderSlot(_ctx.$slots, "default")
-	], 64);
-}
-var OrganizationProfile_default = /* @__PURE__ */ export_helper_default(_sfc_main9, [["render", _sfc_render9], ["__file", "/home/runner/work/javascript/javascript/packages/vue/src/components/ui-components/OrganizationProfile/OrganizationProfile.vue"]]);
-var OrganizationProfilePage = /* @__PURE__ */ defineComponent((props, { slots }) => {
-	const ctx = inject(OrganizationProfileInjectionKey);
-	if (!ctx) return errorThrower$1.throw(organizationProfilePageRenderedError);
-	ctx.addCustomPage({
-		props,
-		slots,
-		component: OrganizationProfilePage
-	});
-	return () => null;
-}, { name: "OrganizationProfilePage" });
-Object.defineProperty(OrganizationProfilePage, "props", { value: ["label", "url"] });
-var OrganizationProfileLink = /* @__PURE__ */ defineComponent((props, { slots }) => {
-	const ctx = inject(OrganizationProfileInjectionKey);
-	if (!ctx) return errorThrower$1.throw(organizationProfileLinkRenderedError);
-	ctx.addCustomPage({
-		props,
-		slots,
-		component: OrganizationProfileLink
-	});
-	return () => null;
-}, { name: "OrganizationProfileLink" });
-Object.defineProperty(OrganizationProfileLink, "props", { value: ["url", "label"] });
-Object.assign(OrganizationProfile_default, {
-	Page: OrganizationProfilePage,
-	Link: OrganizationProfileLink
-});
-var isThatComponent = (v, component) => {
-	return !!v && isRenderFunction(v) && v.name === component.name;
-};
-var isRenderFunction = (v) => {
-	return "name" in v && "setup" in v;
-};
-function generateElementIdentifier() {
-	return Math.random().toString(36).substring(2, 7);
-}
-var useCustomElementPortal = () => {
-	const rawPortals = ref([]);
-	const portals = computed(() => {
-		return rawPortals.value.map((item) => {
-			return h(Teleport, { to: item.el }, item.slot());
-		});
-	});
-	const mount = (el, slot) => {
-		const id = generateElementIdentifier();
-		el.setAttribute("data-clerk-mount-id", id);
-		rawPortals.value.push({
-			id,
-			el,
-			slot
-		});
-	};
-	const unmount = (el) => {
-		const id = el?.getAttribute("data-clerk-mount-id");
-		if (id) {
-			const index = rawPortals.value.findIndex((portal) => portal.id === id);
-			if (index !== -1) rawPortals.value.splice(index, 1);
-		}
-	};
-	return {
-		portals,
-		mount,
-		unmount
-	};
-};
-var useUserProfileCustomPages = () => {
-	const { customPages, customPagesPortals, addCustomPage } = useCustomPages({
-		reorderItemsLabels: [
-			"account",
-			"security",
-			"billing",
-			"apiKeys"
-		],
-		PageComponent: UserProfilePage,
-		LinkComponent: UserProfileLink,
-		componentName: "UserProfile"
-	});
-	const addUserProfileCustomPage = (params) => {
-		return addCustomPage(params);
-	};
-	return {
-		customPages,
-		customPagesPortals,
-		addCustomPage: addUserProfileCustomPage
-	};
-};
-var useOrganizationProfileCustomPages = () => {
-	const { customPages, customPagesPortals, addCustomPage } = useCustomPages({
-		reorderItemsLabels: [
-			"general",
-			"members",
-			"billing",
-			"apiKeys"
-		],
-		PageComponent: OrganizationProfilePage,
-		LinkComponent: OrganizationProfileLink,
-		componentName: "OrganizationProfile"
-	});
-	const addOrganizationProfileCustomPage = (params) => {
-		return addCustomPage(params);
-	};
-	return {
-		customPages,
-		customPagesPortals,
-		addCustomPage: addOrganizationProfileCustomPage
-	};
-};
-var useCustomPages = (customPagesParams) => {
-	const customPages = ref([]);
-	const { portals: customPagesPortals, mount, unmount } = useCustomElementPortal();
-	const { PageComponent, LinkComponent, reorderItemsLabels, componentName } = customPagesParams;
-	const addCustomPage = (params) => {
-		const { props, slots, component } = params;
-		const { label, url } = props;
-		if (isThatComponent(component, PageComponent)) if (isReorderItem(props, slots, reorderItemsLabels)) customPages.value.push({ label });
-		else if (isCustomPage(props, slots)) customPages.value.push({
-			label,
-			url,
-			mountIcon(el) {
-				mount(el, slots.labelIcon);
-			},
-			unmountIcon: unmount,
-			mount(el) {
-				mount(el, slots.default);
-			},
-			unmount
-		});
-		else {
-			logErrorInDevMode(customPageWrongProps(componentName));
-			return;
-		}
-		if (isThatComponent(component, LinkComponent)) if (isExternalLink(props, slots)) customPages.value.push({
-			label,
-			url,
-			mountIcon(el) {
-				mount(el, slots.labelIcon);
-			},
-			unmountIcon: unmount
-		});
-		else {
-			logErrorInDevMode(customLinkWrongProps(componentName));
-			return;
-		}
-	};
-	return {
-		customPages,
-		customPagesPortals,
-		addCustomPage
-	};
-};
-var isReorderItem = (props, slots, validItems) => {
-	const { label, url } = props;
-	const { default: defaultSlot, labelIcon } = slots;
-	return !defaultSlot && !url && !labelIcon && validItems.some((v) => v === label);
-};
-var isCustomPage = (props, slots) => {
-	const { label, url } = props;
-	const { default: defaultSlot, labelIcon } = slots;
-	return !!defaultSlot && !!url && !!labelIcon && !!label;
-};
-var isExternalLink = (props, slots) => {
-	const { label, url } = props;
-	const { default: defaultSlot, labelIcon } = slots;
-	return !defaultSlot && !!url && !!labelIcon && !!label;
-};
-var _sfc_main10 = /* @__PURE__ */ defineComponent({
-	__name: "UserProfile",
-	props: {
-		path: {
-			type: null,
-			required: false
-		},
-		routing: {
-			type: String,
-			required: false
-		},
-		appearance: {
-			type: null,
-			required: false
-		},
-		additionalOAuthScopes: {
-			type: Object,
-			required: false
-		},
-		__experimental_startPath: {
-			type: String,
-			required: false
-		},
-		apiKeysProps: {
-			type: Object,
-			required: false
-		}
-	},
-	setup(__props, { expose: __expose }) {
-		__expose();
-		const props = __props;
-		const clerk = useClerk();
-		const { customPages, customPagesPortals, addCustomPage } = useUserProfileCustomPages();
-		const finalProps = computed(() => ({
-			...props,
-			customPages: customPages.value
-		}));
-		provide(UserProfileInjectionKey, { addCustomPage });
-		const __returned__ = {
-			props,
-			clerk,
-			customPages,
-			customPagesPortals,
-			addCustomPage,
-			finalProps,
-			get ClerkHostRenderer() {
-				return ClerkHostRenderer;
-			},
-			get CustomPortalsRenderer() {
-				return CustomPortalsRenderer;
-			}
-		};
-		Object.defineProperty(__returned__, "__isScriptSetup", {
-			enumerable: false,
-			value: true
-		});
-		return __returned__;
-	}
-});
-function _sfc_render10(_ctx, _cache, $props, $setup, $data, $options) {
-	return openBlock(), createElementBlock(Fragment, null, [
-		createVNode($setup["ClerkHostRenderer"], {
-			mount: $setup.clerk?.mountUserProfile,
-			unmount: $setup.clerk?.unmountUserProfile,
-			props: $setup.finalProps,
-			"update-props": $setup.clerk?.__internal_updateProps
-		}, null, 8, [
-			"mount",
-			"unmount",
-			"props",
-			"update-props"
-		]),
-		createVNode($setup["CustomPortalsRenderer"], { "custom-pages-portals": $setup.customPagesPortals }, null, 8, ["custom-pages-portals"]),
-		renderSlot(_ctx.$slots, "default")
-	], 64);
-}
-var UserProfile_default = /* @__PURE__ */ export_helper_default(_sfc_main10, [["render", _sfc_render10], ["__file", "/home/runner/work/javascript/javascript/packages/vue/src/components/ui-components/UserProfile/UserProfile.vue"]]);
-var UserProfilePage = /* @__PURE__ */ defineComponent((props, { slots }) => {
-	const ctx = inject(UserProfileInjectionKey);
-	if (!ctx) return errorThrower$1.throw(userProfilePageRenderedError);
-	ctx.addCustomPage({
-		props,
-		slots,
-		component: UserProfilePage
-	});
-	return () => null;
-}, { name: "UserProfilePage" });
-Object.defineProperty(UserProfilePage, "props", { value: ["label", "url"] });
-var UserProfileLink = /* @__PURE__ */ defineComponent((props, { slots }) => {
-	const ctx = inject(UserProfileInjectionKey);
-	if (!ctx) return errorThrower$1.throw(userProfileLinkRenderedError);
-	ctx.addCustomPage({
-		props,
-		slots,
-		component: UserProfileLink
-	});
-	return () => null;
-}, { name: "UserProfileLink" });
-Object.defineProperty(UserProfileLink, "props", { value: ["url", "label"] });
-Object.assign(UserProfile_default, {
-	Page: UserProfilePage,
-	Link: UserProfileLink
-});
-var _sfc_main11 = /* @__PURE__ */ defineComponent({
-	__name: "OrganizationSwitcher",
-	props: {
-		createOrganizationUrl: {
-			type: null,
-			required: false
-		},
-		createOrganizationMode: {
-			type: String,
-			required: false
-		},
-		organizationProfileUrl: {
-			type: null,
-			required: false
-		},
-		organizationProfileMode: {
-			type: String,
-			required: false
-		},
-		defaultOpen: {
-			type: Boolean,
-			required: false
-		},
-		hidePersonal: {
-			type: Boolean,
-			required: false
-		},
-		afterCreateOrganizationUrl: {
-			type: [Function, Object],
-			required: false,
-			skipCheck: true
-		},
-		afterSelectOrganizationUrl: {
-			type: [Function, Object],
-			required: false,
-			skipCheck: true
-		},
-		afterSelectPersonalUrl: {
-			type: [Function, Object],
-			required: false,
-			skipCheck: true
-		},
-		afterLeaveOrganizationUrl: {
-			type: String,
-			required: false
-		},
-		skipInvitationScreen: {
-			type: Boolean,
-			required: false
-		},
-		appearance: {
-			type: null,
-			required: false
-		},
-		organizationProfileProps: {
-			type: Object,
-			required: false
-		}
-	},
-	setup(__props, { expose: __expose }) {
-		__expose();
-		const clerk = useClerk();
-		const props = __props;
-		const { customPages, customPagesPortals, addCustomPage } = useOrganizationProfileCustomPages();
-		const finalProps = computed(() => ({
-			...props,
-			organizationProfileProps: {
-				...props.organizationProfileProps || {},
-				customPages: customPages.value
-			}
-		}));
-		provide(OrganizationProfileInjectionKey, { addCustomPage });
-		const __returned__ = {
-			clerk,
-			props,
-			customPages,
-			customPagesPortals,
-			addCustomPage,
-			finalProps,
-			get ClerkHostRenderer() {
-				return ClerkHostRenderer;
-			},
-			get CustomPortalsRenderer() {
-				return CustomPortalsRenderer;
-			}
-		};
-		Object.defineProperty(__returned__, "__isScriptSetup", {
-			enumerable: false,
-			value: true
-		});
-		return __returned__;
-	}
-});
-function _sfc_render11(_ctx, _cache, $props, $setup, $data, $options) {
-	return openBlock(), createElementBlock(Fragment, null, [
-		createVNode($setup["ClerkHostRenderer"], {
-			mount: $setup.clerk?.mountOrganizationSwitcher,
-			unmount: $setup.clerk?.unmountOrganizationSwitcher,
-			"update-props": $setup.clerk?.__internal_updateProps,
-			props: $setup.finalProps
-		}, null, 8, [
-			"mount",
-			"unmount",
-			"update-props",
-			"props"
-		]),
-		createVNode($setup["CustomPortalsRenderer"], { "custom-pages-portals": $setup.customPagesPortals }, null, 8, ["custom-pages-portals"]),
-		renderSlot(_ctx.$slots, "default")
-	], 64);
-}
-Object.assign(/* @__PURE__ */ export_helper_default(_sfc_main11, [["render", _sfc_render11], ["__file", "/home/runner/work/javascript/javascript/packages/vue/src/components/ui-components/OrganizationSwitcher/OrganizationSwitcher.vue"]]), {
-	OrganizationProfilePage,
-	OrganizationProfileLink
-});
-var useUserButtonCustomMenuItems = () => {
-	const customMenuItems = ref([]);
-	const { portals: customMenuItemsPortals, mount, unmount } = useCustomElementPortal();
-	const reorderItemsLabels = ["manageAccount", "signOut"];
-	function addCustomMenuItem(params) {
-		const { props, component, slots } = params;
-		const { label, onClick, open, href } = props;
-		if (isThatComponent(component, MenuAction)) if (isReorderItem2(props, slots, reorderItemsLabels)) customMenuItems.value.push({ label });
-		else if (isCustomMenuItem(props, slots)) {
-			const baseItem = {
-				label,
-				mountIcon(el) {
-					mount(el, slots.labelIcon);
-				},
-				unmountIcon: unmount
-			};
-			if (onClick !== void 0) customMenuItems.value.push({
-				...baseItem,
-				onClick,
-				open
-			});
-			else if (open !== void 0) customMenuItems.value.push({
-				...baseItem,
-				open: open.startsWith("/") ? open : `/${open}`
-			});
-			else {
-				logErrorInDevMode("Custom menu item must have either onClick or open property");
-				return;
-			}
-		} else {
-			logErrorInDevMode(userButtonMenuItemActionWrongProps);
-			return;
-		}
-		if (isThatComponent(component, MenuLink)) if (isExternalLink2(props, slots)) customMenuItems.value.push({
-			label,
-			href,
-			mountIcon(el) {
-				mount(el, slots.labelIcon);
-			},
-			unmountIcon: unmount
-		});
-		else {
-			logErrorInDevMode(userButtonMenuItemLinkWrongProps);
-			return;
-		}
-	}
-	return {
-		customMenuItems,
-		customMenuItemsPortals,
-		addCustomMenuItem
-	};
-};
-var isReorderItem2 = (props, slots, validItems) => {
-	const { label, onClick } = props;
-	const { labelIcon } = slots;
-	return !onClick && !labelIcon && validItems.some((v) => v === label);
-};
-var isCustomMenuItem = (props, slots) => {
-	const { label, onClick, open } = props;
-	const { labelIcon } = slots;
-	return !!labelIcon && !!label && (typeof onClick === "function" || typeof open === "string");
-};
-var isExternalLink2 = (props, slots) => {
-	const { label, href } = props;
-	const { labelIcon } = slots;
-	return !!href && !!labelIcon && !!label;
-};
-var _sfc_main13 = /* @__PURE__ */ defineComponent({
-	__name: "UserButton",
-	props: {
-		userProfileUrl: {
-			type: null,
-			required: false
-		},
-		userProfileMode: {
-			type: String,
-			required: false
-		},
-		showName: {
-			type: Boolean,
-			required: false
-		},
-		defaultOpen: {
-			type: Boolean,
-			required: false
-		},
-		__experimental_asStandalone: {
-			type: [Boolean, Function],
-			required: false
-		},
-		signInUrl: {
-			type: String,
-			required: false
-		},
-		afterSwitchSessionUrl: {
-			type: String,
-			required: false
-		},
-		appearance: {
-			type: null,
-			required: false
-		},
-		userProfileProps: {
-			type: Object,
-			required: false
-		}
-	},
-	setup(__props, { expose: __expose }) {
-		__expose();
-		const props = __props;
-		const clerk = useClerk();
-		const { customMenuItems, customMenuItemsPortals, addCustomMenuItem } = useUserButtonCustomMenuItems();
-		const { customPages, customPagesPortals, addCustomPage } = useUserProfileCustomPages();
-		const finalProps = computed(() => ({
-			...props,
-			userProfileProps: {
-				...props.userProfileProps || {},
-				customPages: customPages.value
-			},
-			customMenuItems: customMenuItems.value
-		}));
-		provide(UserButtonInjectionKey, { addCustomMenuItem });
-		provide(UserProfileInjectionKey, { addCustomPage });
-		const __returned__ = {
-			props,
-			clerk,
-			customMenuItems,
-			customMenuItemsPortals,
-			addCustomMenuItem,
-			customPages,
-			customPagesPortals,
-			addCustomPage,
-			finalProps,
-			get ClerkHostRenderer() {
-				return ClerkHostRenderer;
-			},
-			get CustomPortalsRenderer() {
-				return CustomPortalsRenderer;
-			}
-		};
-		Object.defineProperty(__returned__, "__isScriptSetup", {
-			enumerable: false,
-			value: true
-		});
-		return __returned__;
-	}
-});
-function _sfc_render13(_ctx, _cache, $props, $setup, $data, $options) {
-	return openBlock(), createElementBlock(Fragment, null, [
-		createVNode($setup["ClerkHostRenderer"], {
-			mount: $setup.clerk?.mountUserButton,
-			unmount: $setup.clerk?.unmountUserButton,
-			props: $setup.finalProps,
-			"update-props": $setup.clerk?.__internal_updateProps
-		}, null, 8, [
-			"mount",
-			"unmount",
-			"props",
-			"update-props"
-		]),
-		createVNode($setup["CustomPortalsRenderer"], {
-			"custom-pages-portals": $setup.customPagesPortals,
-			"custom-menu-items-portals": $setup.customMenuItemsPortals
-		}, null, 8, ["custom-pages-portals", "custom-menu-items-portals"]),
-		renderSlot(_ctx.$slots, "default")
-	], 64);
-}
-var UserButton_default = /* @__PURE__ */ export_helper_default(_sfc_main13, [["render", _sfc_render13], ["__file", "/home/runner/work/javascript/javascript/packages/vue/src/components/ui-components/UserButton/UserButton.vue"]]);
-var MenuItems = /* @__PURE__ */ defineComponent((_, { slots }) => {
-	const ctx = inject(UserButtonInjectionKey);
-	if (!ctx) return errorThrower$1.throw(userButtonMenuItemsRenderedError);
-	provide(UserButtonMenuItemsInjectionKey, ctx);
-	return () => slots.default?.();
-});
-var MenuAction = /* @__PURE__ */ defineComponent((props, { slots }) => {
-	const ctx = inject(UserButtonMenuItemsInjectionKey);
-	if (!ctx) return errorThrower$1.throw(userButtonMenuActionRenderedError);
-	ctx.addCustomMenuItem({
-		props,
-		slots,
-		component: MenuAction
-	});
-	return () => null;
-}, { name: "MenuAction" });
-Object.defineProperty(MenuAction, "props", { value: [
-	"label",
-	"onClick",
-	"open"
-] });
-var MenuLink = /* @__PURE__ */ defineComponent((props, { slots }) => {
-	const ctx = inject(UserButtonMenuItemsInjectionKey);
-	if (!ctx) return errorThrower$1.throw(userButtonMenuLinkRenderedError);
-	ctx.addCustomMenuItem({
-		props,
-		slots,
-		component: MenuLink
-	});
-	return () => null;
-}, { name: "MenuLink" });
-Object.defineProperty(MenuLink, "props", { value: ["href", "label"] });
-var UserButton = Object.assign(UserButton_default, {
-	MenuItems,
-	Action: MenuAction,
-	Link: MenuLink,
-	UserProfilePage,
-	UserProfileLink
-});
-var _sfc_main14 = /* @__PURE__ */ defineComponent({
-	__name: "SignInButton",
-	props: {
-		mode: {
-			type: String,
-			required: false
-		},
-		appearance: {
-			type: null,
-			required: false
-		},
-		fallbackRedirectUrl: {
-			type: [String, null],
-			required: false
-		},
-		forceRedirectUrl: {
-			type: [String, null],
-			required: false
-		},
-		signUpForceRedirectUrl: {
-			type: [String, null],
-			required: false
-		},
-		signUpFallbackRedirectUrl: {
-			type: [String, null],
-			required: false
-		},
-		initialValues: {
-			type: Object,
-			required: false
-		},
-		withSignUp: {
-			type: Boolean,
-			required: false
-		},
-		oauthFlow: {
-			type: String,
-			required: false
-		}
-	},
-	setup(__props, { expose: __expose }) {
-		__expose();
-		const props = __props;
-		const clerk = useClerk();
-		const slots = useSlots();
-		const attrs = useAttrs();
-		function getChildComponent() {
-			return assertSingleChild(normalizeWithDefaultValue(slots.default?.({}), "Sign in"), "SignInButton");
-		}
-		function clickHandler() {
-			const { mode, ...opts } = props;
-			if (mode === "modal") return clerk.value?.openSignIn({
-				...opts,
-				appearance: props.appearance
-			});
-			const { withSignUp, ...redirectOpts } = opts;
-			clerk.value?.redirectToSignIn({
-				...redirectOpts,
-				signInFallbackRedirectUrl: props.fallbackRedirectUrl,
-				signInForceRedirectUrl: props.forceRedirectUrl
-			});
-		}
-		const __returned__ = {
-			props,
-			clerk,
-			slots,
-			attrs,
-			getChildComponent,
-			clickHandler
-		};
-		Object.defineProperty(__returned__, "__isScriptSetup", {
-			enumerable: false,
-			value: true
-		});
-		return __returned__;
-	}
-});
-function _sfc_render14(_ctx, _cache, $props, $setup, $data, $options) {
-	return openBlock(), createBlock(resolveDynamicComponent($setup.getChildComponent), mergeProps($setup.attrs, { onClick: $setup.clickHandler }), {
-		default: withCtx(() => [renderSlot(_ctx.$slots, "default")]),
-		_: 3
-	}, 16);
-}
-var SignInButton_default = /* @__PURE__ */ export_helper_default(_sfc_main14, [["render", _sfc_render14], ["__file", "/home/runner/work/javascript/javascript/packages/vue/src/components/SignInButton.vue"]]);
-var _sfc_main15 = /* @__PURE__ */ defineComponent({
-	__name: "SignUpButton",
-	props: {
-		mode: {
-			type: String,
-			required: false
-		},
-		appearance: {
-			type: null,
-			required: false
-		},
-		unsafeMetadata: {
-			type: null,
-			required: false
-		},
-		fallbackRedirectUrl: {
-			type: [String, null],
-			required: false
-		},
-		forceRedirectUrl: {
-			type: [String, null],
-			required: false
-		},
-		signInForceRedirectUrl: {
-			type: [String, null],
-			required: false
-		},
-		signInFallbackRedirectUrl: {
-			type: [String, null],
-			required: false
-		},
-		initialValues: {
-			type: Object,
-			required: false
-		},
-		oauthFlow: {
-			type: String,
-			required: false
-		}
-	},
-	setup(__props, { expose: __expose }) {
-		__expose();
-		const props = __props;
-		const clerk = useClerk();
-		const slots = useSlots();
-		const attrs = useAttrs();
-		function getChildComponent() {
-			return assertSingleChild(normalizeWithDefaultValue(slots.default?.({}), "Sign up"), "SignUpButton");
-		}
-		function clickHandler() {
-			const { mode, ...opts } = props;
-			if (mode === "modal") return clerk.value?.openSignUp({
-				...opts,
-				appearance: props.appearance
-			});
-			clerk.value?.redirectToSignUp({
-				...opts,
-				signUpFallbackRedirectUrl: props.fallbackRedirectUrl,
-				signUpForceRedirectUrl: props.forceRedirectUrl
-			});
-		}
-		const __returned__ = {
-			props,
-			clerk,
-			slots,
-			attrs,
-			getChildComponent,
-			clickHandler
-		};
-		Object.defineProperty(__returned__, "__isScriptSetup", {
-			enumerable: false,
-			value: true
-		});
-		return __returned__;
-	}
-});
-function _sfc_render15(_ctx, _cache, $props, $setup, $data, $options) {
-	return openBlock(), createBlock(resolveDynamicComponent($setup.getChildComponent), mergeProps($setup.attrs, { onClick: $setup.clickHandler }), {
-		default: withCtx(() => [renderSlot(_ctx.$slots, "default")]),
-		_: 3
-	}, 16);
-}
-var SignUpButton_default = /* @__PURE__ */ export_helper_default(_sfc_main15, [["render", _sfc_render15], ["__file", "/home/runner/work/javascript/javascript/packages/vue/src/components/SignUpButton.vue"]]);
-var SDK_METADATA = {
-	name: "@clerk/vue",
-	version: "2.0.7",
-	environment: "production"
-};
-var clerkPlugin = { install(app, pluginOptions) {
-	const { initialState } = pluginOptions || {};
-	const loaded = shallowRef(false);
-	const clerk = shallowRef(null);
-	const resources = ref({
-		client: void 0,
-		session: void 0,
-		user: void 0,
-		organization: void 0
-	});
-	const options = {
-		...pluginOptions,
-		sdkMetadata: pluginOptions.sdkMetadata || SDK_METADATA
-	};
-	if (inBrowser()) (async () => {
-		try {
-			const clerkPromise = loadClerkJSScript(options);
-			const uiProp = pluginOptions.ui;
-			const clerkUICtorPromise = uiProp?.ClerkUI ? Promise.resolve(uiProp.ClerkUI) : uiProp || pluginOptions.prefetchUI === false ? Promise.resolve(void 0) : (async () => {
-				await loadClerkUIScript(options);
-				if (!window.__internal_ClerkUICtor) throw new Error("Failed to download latest Clerk UI. Contact support@clerk.com.");
-				return window.__internal_ClerkUICtor;
-			})();
-			await clerkPromise;
-			if (!window.Clerk) throw new Error("Failed to download latest ClerkJS. Contact support@clerk.com.");
-			clerk.value = window.Clerk;
-			const loadOptions = {
-				...options,
-				ui: {
-					...pluginOptions.ui,
-					ClerkUI: clerkUICtorPromise
-				}
-			};
-			await window.Clerk.load(loadOptions);
-			loaded.value = true;
-			if (clerk.value) {
-				clerk.value.addListener((payload) => {
-					resources.value = payload;
-				});
-				triggerRef(clerk);
-			}
-		} catch (err) {
-			const error = err;
-			console.error(error.stack || error.message || error);
-		}
-	})();
-	const derivedState = computed(() => deriveState(loaded.value, resources.value, initialState));
-	const authCtx = computed(() => {
-		const { sessionId, userId, orgId, actor, orgRole, orgSlug, orgPermissions, sessionStatus, sessionClaims, factorVerificationAge } = derivedState.value;
-		return {
-			sessionId,
-			userId,
-			actor,
-			orgId,
-			orgRole,
-			orgSlug,
-			orgPermissions,
-			sessionStatus,
-			sessionClaims,
-			factorVerificationAge
-		};
-	});
-	const clientCtx = computed(() => resources.value.client);
-	const userCtx = computed(() => derivedState.value.user);
-	const sessionCtx = computed(() => derivedState.value.session);
-	const organizationCtx = computed(() => derivedState.value.organization);
-	app.provide(ClerkInjectionKey, {
-		loaded,
-		clerk,
-		authCtx,
-		clientCtx,
-		sessionCtx,
-		userCtx,
-		organizationCtx
-	});
-} };
-setErrorThrowerOptions({ packageName: "@clerk/vue" });
-setClerkJSLoadingErrorPackageName("@clerk/vue");
-//#endregion
-//#region src/lib/util/fetch.ts
-var checkUrl = (url) => {
-	const getbase = () => {
-		if (runtime.host.api) return runtime.host.api;
-		return `https://localhost`;
-	};
-	if (/^http(s?):/i.test(url)) return url;
-	const base = getbase();
-	if (base.endsWith("/") && url.startsWith("/")) return base + url.slice(1);
-	else if (!base.endsWith("/") && !url.startsWith("/") && base !== "") return base + "/" + url;
-	return base + url;
-};
-var request = (method) => async (url, data) => {
-	url = checkUrl(url);
-	let clerkToken = null;
-	if (window.Clerk?.session) clerkToken = await window.Clerk.session.getToken();
-	const inits = {
-		method,
-		mode: "cors",
-		headers: {
-			"Content-Type": "application/json",
-			"Authorization": clerkToken ? `Bearer ${clerkToken}` : ""
-		}
-	};
-	switch (method) {
-		case "POST":
-			if (runtime.session) data["session"] = runtime.session;
-			inits["body"] = JSON.stringify(data);
-			break;
-		case "GET":
-			const queryString = new URLSearchParams(data).toString();
-			url = queryString ? `${url}?${queryString}` : url;
-			break;
-	}
-	return fetch(url, inits).then((res) => {
-		return res.json();
-	}).catch((err) => {
-		console.error("Error:", err);
-	});
-};
-var post = request("POST");
-var get = request("GET");
-//#endregion
 //#region src/lib/util/check.ts
 var check_exports = /* @__PURE__ */ __exportAll({ is_local: () => is_local });
 var is_local = () => {
@@ -9365,12 +7053,55 @@ var RowCol__Cells = (row, col) => {
 	return res;
 };
 //#endregion
+//#region src/lib/util/fetch.ts
+var checkUrl = (url) => {
+	const getbase = () => {
+		if (runtime.host.api) return runtime.host.api;
+		return `https://localhost`;
+	};
+	if (/^http(s?):/i.test(url)) return url;
+	const base = getbase();
+	if (base.endsWith("/") && url.startsWith("/")) return base + url.slice(1);
+	else if (!base.endsWith("/") && !url.startsWith("/") && base !== "") return base + "/" + url;
+	return base + url;
+};
+var request = (method) => async (url, data) => {
+	url = checkUrl(url);
+	let clerkToken = null;
+	if (window.Clerk?.session) clerkToken = await window.Clerk.session.getToken();
+	const inits = {
+		method,
+		mode: "cors",
+		headers: {
+			"Content-Type": "application/json",
+			"Authorization": clerkToken ? `Bearer ${clerkToken}` : ""
+		}
+	};
+	switch (method) {
+		case "POST":
+			if (runtime.session) data["session"] = runtime.session;
+			inits["body"] = JSON.stringify(data);
+			break;
+		case "GET":
+			const queryString = new URLSearchParams(data).toString();
+			url = queryString ? `${url}?${queryString}` : url;
+			break;
+	}
+	return fetch(url, inits).then((res) => {
+		return res.json();
+	}).catch((err) => {
+		console.error("Error:", err);
+	});
+};
+var post = request("POST");
+var get = request("GET");
+//#endregion
 //#region src/lib/util/misc.ts
 var misc_exports = /* @__PURE__ */ __exportAll({
-	sleep: () => sleep,
+	sleep: () => sleep$1,
 	url__Params: () => url__Params
 });
-var sleep = (ms) => {
+var sleep$1 = (ms) => {
 	return new Promise((resolve) => setTimeout(resolve, ms));
 };
 var url__Params = (url) => {
@@ -11183,15 +8914,15 @@ function extractChangingRecords(to, from) {
 //#region src/comps/BillFile.vue?vue&type=script&setup=true&lang.ts
 var _withScopeId$2 = (n) => (pushScopeId("data-v-f0f65bef"), n = n(), popScopeId(), n);
 var _hoisted_1$5 = { class: "h-full w-full flex flex-col p-3" };
-var _hoisted_2$3 = /* @__PURE__ */ _withScopeId$2(() => /* @__PURE__ */ createBaseVNode("div", null, "Preview", -1));
+var _hoisted_2$4 = /* @__PURE__ */ _withScopeId$2(() => /* @__PURE__ */ createBaseVNode("div", null, "Preview", -1));
 var _hoisted_3$4 = /* @__PURE__ */ _withScopeId$2(() => /* @__PURE__ */ createBaseVNode("div", null, "Unit", -1));
 var _hoisted_4$4 = /* @__PURE__ */ _withScopeId$2(() => /* @__PURE__ */ createBaseVNode("div", null, "Provider", -1));
-var _hoisted_5$4 = /* @__PURE__ */ _withScopeId$2(() => /* @__PURE__ */ createBaseVNode("div", null, "Amount", -1));
-var _hoisted_6$4 = { class: "file-meta" };
-var _hoisted_7$4 = { class: "file-name" };
-var _hoisted_8$4 = { class: "file-size" };
-var _hoisted_9$3 = { class: "progress-container" };
-var _hoisted_10$3 = { class: "status-row" };
+var _hoisted_5$3 = /* @__PURE__ */ _withScopeId$2(() => /* @__PURE__ */ createBaseVNode("div", null, "Amount", -1));
+var _hoisted_6$3 = { class: "file-meta" };
+var _hoisted_7$3 = { class: "file-name" };
+var _hoisted_8$3 = { class: "file-size" };
+var _hoisted_9$2 = { class: "progress-container" };
+var _hoisted_10$2 = { class: "status-row" };
 var _hoisted_11$2 = {
 	key: 0,
 	class: "error-detail"
@@ -11212,16 +8943,16 @@ var BillFile_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */ defin
 		};
 		return (_ctx, _cache) => {
 			return openBlock(), createElementBlock("div", _hoisted_1$5, [
-				_hoisted_2$3,
+				_hoisted_2$4,
 				_hoisted_3$4,
 				_hoisted_4$4,
-				_hoisted_5$4,
-				createBaseVNode("div", _hoisted_6$4, [createBaseVNode("span", _hoisted_7$4, toDisplayString(props.filex.file.name), 1), createBaseVNode("span", _hoisted_8$4, toDisplayString((props.filex.file.size / 1024 / 1024).toFixed(2)) + " MB", 1)]),
-				createBaseVNode("div", _hoisted_9$3, [createBaseVNode("div", {
+				_hoisted_5$3,
+				createBaseVNode("div", _hoisted_6$3, [createBaseVNode("span", _hoisted_7$3, toDisplayString(props.filex.file.name), 1), createBaseVNode("span", _hoisted_8$3, toDisplayString((props.filex.file.size / 1024 / 1024).toFixed(2)) + " MB", 1)]),
+				createBaseVNode("div", _hoisted_9$2, [createBaseVNode("div", {
 					class: normalizeClass(["progress-fill", __props.filex.uploadTask.status]),
 					style: normalizeStyle({ width: props.filex.uploadTask.progress + "%" })
 				}, null, 6)]),
-				createBaseVNode("div", _hoisted_10$3, [createBaseVNode("span", { class: normalizeClass(["status-label", props.filex.uploadTask.status]) }, toDisplayString(getStatusText(props.filex.uploadTask)), 3), props.filex.uploadTask.message ? (openBlock(), createElementBlock("span", _hoisted_11$2, " - " + toDisplayString(props.filex.uploadTask.message), 1)) : createCommentVNode("", true)])
+				createBaseVNode("div", _hoisted_10$2, [createBaseVNode("span", { class: normalizeClass(["status-label", props.filex.uploadTask.status]) }, toDisplayString(getStatusText(props.filex.uploadTask)), 3), props.filex.uploadTask.message ? (openBlock(), createElementBlock("span", _hoisted_11$2, " - " + toDisplayString(props.filex.uploadTask.message), 1)) : createCommentVNode("", true)])
 			]);
 		};
 	}
@@ -11240,18 +8971,18 @@ var BillFile_default = /* @__PURE__ */ _plugin_vue_export_helper_default(BillFil
 //#region src/pages/UploadBills.vue?vue&type=script&setup=true&lang.ts
 var _withScopeId$1 = (n) => (pushScopeId("data-v-94d03db8"), n = n(), popScopeId(), n);
 var _hoisted_1$4 = { class: "upload-page" };
-var _hoisted_2$2 = { class: "header" };
+var _hoisted_2$3 = { class: "header" };
 var _hoisted_3$3 = /* @__PURE__ */ _withScopeId$1(() => /* @__PURE__ */ createBaseVNode("h2", null, "Upload Bills", -1));
 var _hoisted_4$3 = {
 	key: 0,
 	class: "user-status"
 };
-var _hoisted_5$3 = { class: "id-tag" };
-var _hoisted_6$3 = /* @__PURE__ */ _withScopeId$1(() => /* @__PURE__ */ createBaseVNode("div", { class: "icon" }, "📄", -1));
-var _hoisted_7$3 = /* @__PURE__ */ _withScopeId$1(() => /* @__PURE__ */ createBaseVNode("p", null, [/* @__PURE__ */ createTextVNode("Drop your files here or "), /* @__PURE__ */ createBaseVNode("span", null, "Select")], -1));
-var _hoisted_8$3 = /* @__PURE__ */ _withScopeId$1(() => /* @__PURE__ */ createBaseVNode("small", null, "Max. 10GB", -1));
-var _hoisted_9$2 = /* @__PURE__ */ _withScopeId$1(() => /* @__PURE__ */ createBaseVNode("div", null, "Utility Providers: ADT, ... see a full list.", -1));
-var _hoisted_10$2 = /* @__PURE__ */ _withScopeId$1(() => /* @__PURE__ */ createBaseVNode("div", null, "File list", -1));
+var _hoisted_5$2 = { class: "id-tag" };
+var _hoisted_6$2 = /* @__PURE__ */ _withScopeId$1(() => /* @__PURE__ */ createBaseVNode("div", { class: "icon" }, "📄", -1));
+var _hoisted_7$2 = /* @__PURE__ */ _withScopeId$1(() => /* @__PURE__ */ createBaseVNode("p", null, [/* @__PURE__ */ createTextVNode("Drop your files here or "), /* @__PURE__ */ createBaseVNode("span", null, "Select")], -1));
+var _hoisted_8$2 = /* @__PURE__ */ _withScopeId$1(() => /* @__PURE__ */ createBaseVNode("small", null, "Max. 10GB", -1));
+var _hoisted_9$1 = /* @__PURE__ */ _withScopeId$1(() => /* @__PURE__ */ createBaseVNode("div", null, "Utility Providers: ADT, ... see a full list.", -1));
+var _hoisted_10$1 = /* @__PURE__ */ _withScopeId$1(() => /* @__PURE__ */ createBaseVNode("div", null, "File list", -1));
 var _hoisted_11$1 = { class: "flex flex-wrap gap-4 p-4" };
 //#endregion
 //#region src/pages/UploadBills.vue
@@ -11319,7 +9050,7 @@ var UploadBills_default = /* @__PURE__ */ _plugin_vue_export_helper_default(/* @
 		};
 		return (_ctx, _cache) => {
 			return openBlock(), createElementBlock("div", _hoisted_1$4, [
-				createBaseVNode("div", _hoisted_2$2, [_hoisted_3$3, unref(s).rt.user ? (openBlock(), createElementBlock("p", _hoisted_4$3, [createBaseVNode("strong", null, toDisplayString(unref(s).rt.user.eu.p.Caption), 1), createBaseVNode("span", _hoisted_5$3, "(ID: " + toDisplayString(unref(s).rt.user.id) + ")", 1)])) : createCommentVNode("", true)]),
+				createBaseVNode("div", _hoisted_2$3, [_hoisted_3$3, unref(s).rt.user ? (openBlock(), createElementBlock("p", _hoisted_4$3, [createBaseVNode("strong", null, toDisplayString(unref(s).rt.user.eu.p.Caption), 1), createBaseVNode("span", _hoisted_5$2, "(ID: " + toDisplayString(unref(s).rt.user.id) + ")", 1)])) : createCommentVNode("", true)]),
 				createBaseVNode("div", {
 					class: normalizeClass(["drop-zone", { "is-dragging": isDragging.value }]),
 					onDragover: _cache[0] || (_cache[0] = withModifiers(($event) => isDragging.value = true, ["prevent"])),
@@ -11335,12 +9066,12 @@ var UploadBills_default = /* @__PURE__ */ _plugin_vue_export_helper_default(/* @
 						onChange: onFileSelect,
 						hidden: ""
 					}, null, 544),
-					_hoisted_6$3,
-					_hoisted_7$3,
-					_hoisted_8$3
+					_hoisted_6$2,
+					_hoisted_7$2,
+					_hoisted_8$2
 				], 34),
-				_hoisted_9$2,
-				_hoisted_10$2,
+				_hoisted_9$1,
+				_hoisted_10$1,
 				createBaseVNode("div", _hoisted_11$1, [(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).filexs, (filex) => {
 					return openBlock(), createBlock(BillFile_default, {
 						class: "w-48 h-32 bg-slate-100 border-2 border-dashed border-slate-300 rounded-lg flex items-center justify-center",
@@ -11379,15 +9110,15 @@ var loader = async (url, post, h) => {
 //#endregion
 //#region src/pages/Admin.vue?vue&type=script&setup=true&lang.ts
 var _hoisted_1$2 = { class: "flex justify-center" };
-var _hoisted_2$1 = { class: "hor-range" };
+var _hoisted_2$2 = { class: "hor-range" };
 var _hoisted_3$2 = /* @__PURE__ */ createBaseVNode("div", { class: "card" }, [/* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Admin Console")], -1);
 var _hoisted_4$2 = { class: "card" };
-var _hoisted_5$2 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Log", -1);
-var _hoisted_6$2 = ["innerHTML"];
-var _hoisted_7$2 = ["innerHTML"];
-var _hoisted_8$2 = /* @__PURE__ */ createBaseVNode("hr", { class: "mt-3" }, null, -1);
-var _hoisted_9$1 = { class: "card" };
-var _hoisted_10$1 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Page Log", -1);
+var _hoisted_5$1 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Log", -1);
+var _hoisted_6$1 = ["innerHTML"];
+var _hoisted_7$1 = ["innerHTML"];
+var _hoisted_8$1 = /* @__PURE__ */ createBaseVNode("hr", { class: "mt-3" }, null, -1);
+var _hoisted_9 = { class: "card" };
+var _hoisted_10 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Page Log", -1);
 var _hoisted_11 = /* @__PURE__ */ createBaseVNode("hr", { class: "mt-3" }, null, -1);
 var _hoisted_12 = /* @__PURE__ */ createBaseVNode("div", { class: "flex justify-center" }, [/* @__PURE__ */ createBaseVNode("div", { class: "hor-range" })], -1);
 //#endregion
@@ -11408,18 +9139,18 @@ var Admin_default = /* @__PURE__ */ defineComponent({
 			});
 		});
 		return (_ctx, _cache) => {
-			return openBlock(), createElementBlock(Fragment, null, [createBaseVNode("div", _hoisted_1$2, [createBaseVNode("div", _hoisted_2$1, [
+			return openBlock(), createElementBlock(Fragment, null, [createBaseVNode("div", _hoisted_1$2, [createBaseVNode("div", _hoisted_2$2, [
 				_hoisted_3$2,
-				createBaseVNode("div", _hoisted_4$2, [_hoisted_5$2, (openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).logs, (log) => {
+				createBaseVNode("div", _hoisted_4$2, [_hoisted_5$1, (openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).logs, (log) => {
 					return openBlock(), createElementBlock("div", null, [
 						createBaseVNode("div", null, toDisplayString(log.createdat), 1),
 						createBaseVNode("div", null, toDisplayString(log.p.Location), 1),
-						createBaseVNode("div", { innerHTML: log.p.Sql }, null, 8, _hoisted_6$2),
-						createBaseVNode("div", { innerHTML: log.p.Content }, null, 8, _hoisted_7$2),
-						_hoisted_8$2
+						createBaseVNode("div", { innerHTML: log.p.Sql }, null, 8, _hoisted_6$1),
+						createBaseVNode("div", { innerHTML: log.p.Content }, null, 8, _hoisted_7$1),
+						_hoisted_8$1
 					]);
 				}), 256))]),
-				createBaseVNode("div", _hoisted_9$1, [_hoisted_10$1, (openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).plogs, (plog) => {
+				createBaseVNode("div", _hoisted_9, [_hoisted_10, (openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).plogs, (plog) => {
 					return openBlock(), createElementBlock("div", null, [
 						createBaseVNode("div", null, toDisplayString(plog.time), 1),
 						createBaseVNode("div", null, toDisplayString(plog.ip), 1),
@@ -11538,6 +9269,10 @@ var initHost = () => {
 //#endregion
 //#region src/lib/shared/OrmMor.ts
 var OrmMor_exports = /* @__PURE__ */ __exportAll({
+	CAT__bin: () => CAT__bin,
+	CAT_empty: () => CAT_empty,
+	CLIENT__bin: () => CLIENT__bin,
+	CLIENT_empty: () => CLIENT_empty,
 	CONFIG__bin: () => CONFIG__bin,
 	CONFIG_empty: () => CONFIG_empty,
 	EU__bin: () => EU__bin,
@@ -11552,6 +9287,14 @@ var OrmMor_exports = /* @__PURE__ */ __exportAll({
 	MOMENT_empty: () => MOMENT_empty,
 	PLOG__bin: () => PLOG__bin,
 	PLOG_empty: () => PLOG_empty,
+	UBILL__bin: () => UBILL__bin,
+	UBILL_empty: () => UBILL_empty,
+	UCAT__bin: () => UCAT__bin,
+	UCAT_empty: () => UCAT_empty,
+	UNIT__bin: () => UNIT__bin,
+	UNIT_empty: () => UNIT_empty,
+	bin__CAT: () => bin__CAT,
+	bin__CLIENT: () => bin__CLIENT,
 	bin__CONFIG: () => bin__CONFIG,
 	bin__EU: () => bin__EU,
 	bin__FBIND: () => bin__FBIND,
@@ -11559,6 +9302,11 @@ var OrmMor_exports = /* @__PURE__ */ __exportAll({
 	bin__LOG: () => bin__LOG,
 	bin__MOMENT: () => bin__MOMENT,
 	bin__PLOG: () => bin__PLOG,
+	bin__UBILL: () => bin__UBILL,
+	bin__UCAT: () => bin__UCAT,
+	bin__UNIT: () => bin__UNIT,
+	bin__pCAT: () => bin__pCAT,
+	bin__pCLIENT: () => bin__pCLIENT,
 	bin__pCONFIG: () => bin__pCONFIG,
 	bin__pEU: () => bin__pEU,
 	bin__pFBIND: () => bin__pFBIND,
@@ -11566,6 +9314,9 @@ var OrmMor_exports = /* @__PURE__ */ __exportAll({
 	bin__pLOG: () => bin__pLOG,
 	bin__pMOMENT: () => bin__pMOMENT,
 	bin__pPLOG: () => bin__pPLOG,
+	bin__pUBILL: () => bin__pUBILL,
+	bin__pUCAT: () => bin__pUCAT,
+	bin__pUNIT: () => bin__pUNIT,
 	euAuthTypeEnum_Admin: () => 2,
 	euAuthTypeEnum_Authorized: () => 1,
 	euAuthTypeEnum_Normal: () => 0,
@@ -11587,6 +9338,10 @@ var OrmMor_exports = /* @__PURE__ */ __exportAll({
 	momentTypeEnum_Repost: () => 1,
 	momentTypeEnum_Thread: () => 2,
 	momentTypeEnum_WebPage: () => 10,
+	pCAT__bin: () => pCAT__bin,
+	pCAT_empty: () => pCAT_empty,
+	pCLIENT__bin: () => pCLIENT__bin,
+	pCLIENT_empty: () => pCLIENT_empty,
 	pCONFIG__bin: () => pCONFIG__bin,
 	pCONFIG_empty: () => pCONFIG_empty,
 	pEU__bin: () => pEU__bin,
@@ -11600,7 +9355,13 @@ var OrmMor_exports = /* @__PURE__ */ __exportAll({
 	pMOMENT__bin: () => pMOMENT__bin,
 	pMOMENT_empty: () => pMOMENT_empty,
 	pPLOG__bin: () => pPLOG__bin,
-	pPLOG_empty: () => pPLOG_empty
+	pPLOG_empty: () => pPLOG_empty,
+	pUBILL__bin: () => pUBILL__bin,
+	pUBILL_empty: () => pUBILL_empty,
+	pUCAT__bin: () => pUCAT__bin,
+	pUCAT_empty: () => pUCAT_empty,
+	pUNIT__bin: () => pUNIT__bin,
+	pUNIT_empty: () => pUNIT_empty
 });
 var marshall$1 = { ...bin_exports };
 var pEU__bin = (bb) => (p) => {
@@ -11674,6 +9435,136 @@ var bin__FILE = (bi) => {
 		createdat: marshall$1.bin__DateTime(bi),
 		updatedat: marshall$1.bin__DateTime(bi),
 		p: bin__pFILE(bi)
+	};
+};
+var pCLIENT__bin = (bb) => (p) => {
+	marshall$1.str__bin(bb)(p.Caption);
+};
+var CLIENT__bin = (bb) => (v) => {
+	marshall$1.int64__bin(bb)(v.id);
+	marshall$1.int64__bin(bb)(v.sort);
+	marshall$1.DateTime__bin(bb)(v.createdat);
+	marshall$1.DateTime__bin(bb)(v.updatedat);
+	pCLIENT__bin(bb)(v.p);
+};
+var bin__pCLIENT = (bi) => {
+	let p = pCLIENT_empty();
+	p.Caption = marshall$1.bin__str(bi);
+	return p;
+};
+var bin__CLIENT = (bi) => {
+	return {
+		id: marshall$1.bin__int64(bi),
+		sort: marshall$1.bin__int64(bi),
+		createdat: marshall$1.bin__DateTime(bi),
+		updatedat: marshall$1.bin__DateTime(bi),
+		p: bin__pCLIENT(bi)
+	};
+};
+var pUNIT__bin = (bb) => (p) => {
+	marshall$1.str__bin(bb)(p.Caption);
+};
+var UNIT__bin = (bb) => (v) => {
+	marshall$1.int64__bin(bb)(v.id);
+	marshall$1.int64__bin(bb)(v.sort);
+	marshall$1.DateTime__bin(bb)(v.createdat);
+	marshall$1.DateTime__bin(bb)(v.updatedat);
+	pUNIT__bin(bb)(v.p);
+};
+var bin__pUNIT = (bi) => {
+	let p = pUNIT_empty();
+	p.Caption = marshall$1.bin__str(bi);
+	return p;
+};
+var bin__UNIT = (bi) => {
+	return {
+		id: marshall$1.bin__int64(bi),
+		sort: marshall$1.bin__int64(bi),
+		createdat: marshall$1.bin__DateTime(bi),
+		updatedat: marshall$1.bin__DateTime(bi),
+		p: bin__pUNIT(bi)
+	};
+};
+var pUBILL__bin = (bb) => (p) => {
+	marshall$1.int64__bin(bb)(p.Cat);
+	marshall$1.int64__bin(bb)(p.Provider);
+	marshall$1.int64__bin(bb)(p.client);
+	marshall$1.int64__bin(bb)(p.Unit);
+	marshall$1.float__bin(bb)(p.Amout);
+};
+var UBILL__bin = (bb) => (v) => {
+	marshall$1.int64__bin(bb)(v.id);
+	marshall$1.int64__bin(bb)(v.sort);
+	marshall$1.DateTime__bin(bb)(v.createdat);
+	marshall$1.DateTime__bin(bb)(v.updatedat);
+	pUBILL__bin(bb)(v.p);
+};
+var bin__pUBILL = (bi) => {
+	let p = pUBILL_empty();
+	p.Cat = marshall$1.bin__int64(bi);
+	p.Provider = marshall$1.bin__int64(bi);
+	p.client = marshall$1.bin__int64(bi);
+	p.Unit = marshall$1.bin__int64(bi);
+	p.Amout = marshall$1.bin__float(bi);
+	return p;
+};
+var bin__UBILL = (bi) => {
+	return {
+		id: marshall$1.bin__int64(bi),
+		sort: marshall$1.bin__int64(bi),
+		createdat: marshall$1.bin__DateTime(bi),
+		updatedat: marshall$1.bin__DateTime(bi),
+		p: bin__pUBILL(bi)
+	};
+};
+var pUCAT__bin = (bb) => (p) => {
+	marshall$1.str__bin(bb)(p.Caption);
+};
+var UCAT__bin = (bb) => (v) => {
+	marshall$1.int64__bin(bb)(v.id);
+	marshall$1.int64__bin(bb)(v.sort);
+	marshall$1.DateTime__bin(bb)(v.createdat);
+	marshall$1.DateTime__bin(bb)(v.updatedat);
+	pUCAT__bin(bb)(v.p);
+};
+var bin__pUCAT = (bi) => {
+	let p = pUCAT_empty();
+	p.Caption = marshall$1.bin__str(bi);
+	return p;
+};
+var bin__UCAT = (bi) => {
+	return {
+		id: marshall$1.bin__int64(bi),
+		sort: marshall$1.bin__int64(bi),
+		createdat: marshall$1.bin__DateTime(bi),
+		updatedat: marshall$1.bin__DateTime(bi),
+		p: bin__pUCAT(bi)
+	};
+};
+var pCAT__bin = (bb) => (p) => {
+	marshall$1.str__bin(bb)(p.Caption);
+	marshall$1.int64__bin(bb)(p.Cat);
+};
+var CAT__bin = (bb) => (v) => {
+	marshall$1.int64__bin(bb)(v.id);
+	marshall$1.int64__bin(bb)(v.sort);
+	marshall$1.DateTime__bin(bb)(v.createdat);
+	marshall$1.DateTime__bin(bb)(v.updatedat);
+	pCAT__bin(bb)(v.p);
+};
+var bin__pCAT = (bi) => {
+	let p = pCAT_empty();
+	p.Caption = marshall$1.bin__str(bi);
+	p.Cat = marshall$1.bin__int64(bi);
+	return p;
+};
+var bin__CAT = (bi) => {
+	return {
+		id: marshall$1.bin__int64(bi),
+		sort: marshall$1.bin__int64(bi),
+		createdat: marshall$1.bin__DateTime(bi),
+		updatedat: marshall$1.bin__DateTime(bi),
+		p: bin__pCAT(bi)
 	};
 };
 var pFBIND__bin = (bb) => (p) => {
@@ -11859,6 +9750,75 @@ var FILE_empty = () => {
 		updatedat: /* @__PURE__ */ new Date(),
 		sort: 0,
 		p: pFILE_empty()
+	};
+};
+var pCLIENT_empty = () => {
+	return { Caption: "" };
+};
+var CLIENT_empty = () => {
+	return {
+		id: 0,
+		createdat: /* @__PURE__ */ new Date(),
+		updatedat: /* @__PURE__ */ new Date(),
+		sort: 0,
+		p: pCLIENT_empty()
+	};
+};
+var pUNIT_empty = () => {
+	return { Caption: "" };
+};
+var UNIT_empty = () => {
+	return {
+		id: 0,
+		createdat: /* @__PURE__ */ new Date(),
+		updatedat: /* @__PURE__ */ new Date(),
+		sort: 0,
+		p: pUNIT_empty()
+	};
+};
+var pUBILL_empty = () => {
+	return {
+		Cat: 0,
+		Provider: 0,
+		client: 0,
+		Unit: 0,
+		Amout: 0
+	};
+};
+var UBILL_empty = () => {
+	return {
+		id: 0,
+		createdat: /* @__PURE__ */ new Date(),
+		updatedat: /* @__PURE__ */ new Date(),
+		sort: 0,
+		p: pUBILL_empty()
+	};
+};
+var pUCAT_empty = () => {
+	return { Caption: "" };
+};
+var UCAT_empty = () => {
+	return {
+		id: 0,
+		createdat: /* @__PURE__ */ new Date(),
+		updatedat: /* @__PURE__ */ new Date(),
+		sort: 0,
+		p: pUCAT_empty()
+	};
+};
+var pCAT_empty = () => {
+	return {
+		Caption: "",
+		Cat: 0
+	};
+};
+var CAT_empty = () => {
+	return {
+		id: 0,
+		createdat: /* @__PURE__ */ new Date(),
+		updatedat: /* @__PURE__ */ new Date(),
+		sort: 0,
+		p: pCAT_empty()
 	};
 };
 var pFBIND_empty = () => {
@@ -12227,88 +10187,2248 @@ var glib = {
 	send: trySend,
 	setRT,
 	getRT,
-	sleep
+	sleep: sleep$1
 };
+//#endregion
+//#region node_modules/@clerk/shared/dist/runtime/clerkRuntimeError-DqAmLuLY.mjs
+/**
+* Creates a type guard function for any error class.
+* The returned function can be called as a standalone function or as a method on an error object.
+*
+* @example
+* ```typescript
+* class MyError extends Error {}
+* const isMyError = createErrorTypeGuard(MyError);
+*
+* // As a standalone function
+* if (isMyError(error)) { ... }
+*
+* // As a method (when attached to error object)
+* if (error.isMyError()) { ... }
+* ```
+*/
+function createErrorTypeGuard(ErrorClass) {
+	function typeGuard(error) {
+		const target = error ?? this;
+		if (!target) throw new TypeError(`${ErrorClass.kind || ErrorClass.name} type guard requires an error object`);
+		if (ErrorClass.kind && typeof target === "object" && target !== null && "constructor" in target) {
+			if (target.constructor?.kind === ErrorClass.kind) return true;
+		}
+		return target instanceof ErrorClass;
+	}
+	return typeGuard;
+}
+var ClerkError = class ClerkError extends Error {
+	static kind = "ClerkError";
+	clerkError = true;
+	code;
+	longMessage;
+	docsUrl;
+	cause;
+	get name() {
+		return this.constructor.name;
+	}
+	constructor(opts) {
+		super(new.target.formatMessage(new.target.kind, opts.message, opts.code, opts.docsUrl), { cause: opts.cause });
+		Object.setPrototypeOf(this, ClerkError.prototype);
+		this.code = opts.code;
+		this.docsUrl = opts.docsUrl;
+		this.longMessage = opts.longMessage;
+		this.cause = opts.cause;
+	}
+	toString() {
+		return `[${this.name}]\nMessage:${this.message}`;
+	}
+	static formatMessage(name, msg, code, docsUrl) {
+		const prefix = "Clerk:";
+		const regex = new RegExp(prefix.replace(" ", "\\s*"), "i");
+		msg = msg.replace(regex, "");
+		msg = `${prefix} ${msg.trim()}\n\n(code="${code}")\n\n`;
+		if (docsUrl) msg += `\n\nDocs: ${docsUrl}`;
+		return msg;
+	}
+};
+/**
+* Custom error class for representing Clerk runtime errors.
+*
+* @class ClerkRuntimeError
+*
+* @example
+*   throw new ClerkRuntimeError('An error occurred', { code: 'password_invalid' });
+*/
+var ClerkRuntimeError = class ClerkRuntimeError extends ClerkError {
+	static kind = "ClerkRuntimeError";
+	/**
+	* @deprecated Use `clerkError` property instead. This property is maintained for backward compatibility.
+	*/
+	clerkRuntimeError = true;
+	constructor(message, options) {
+		super({
+			...options,
+			message
+		});
+		Object.setPrototypeOf(this, ClerkRuntimeError.prototype);
+	}
+};
+createErrorTypeGuard(ClerkRuntimeError);
+//#endregion
+//#region node_modules/@clerk/shared/dist/runtime/error-D-ayZ5nL.mjs
+/**
+* This error contains the specific error message, code, and any additional metadata that was returned by the Clerk API.
+*/
+var ClerkAPIError = class {
+	static kind = "ClerkAPIError";
+	code;
+	message;
+	longMessage;
+	meta;
+	constructor(json) {
+		const parsedError = {
+			code: json.code,
+			message: json.message,
+			longMessage: json.long_message,
+			meta: {
+				paramName: json.meta?.param_name,
+				sessionId: json.meta?.session_id,
+				emailAddresses: json.meta?.email_addresses,
+				identifiers: json.meta?.identifiers,
+				zxcvbn: json.meta?.zxcvbn,
+				plan: json.meta?.plan,
+				isPlanUpgradePossible: json.meta?.is_plan_upgrade_possible
+			}
+		};
+		this.code = parsedError.code;
+		this.message = parsedError.message;
+		this.longMessage = parsedError.longMessage;
+		this.meta = parsedError.meta;
+	}
+};
+createErrorTypeGuard(ClerkAPIError);
+createErrorTypeGuard(class ClerkAPIResponseError extends ClerkError {
+	static kind = "ClerkAPIResponseError";
+	status;
+	clerkTraceId;
+	retryAfter;
+	errors;
+	constructor(message, options) {
+		const { data: errorsJson, status, clerkTraceId, retryAfter } = options;
+		super({
+			...options,
+			message,
+			code: "api_response_error"
+		});
+		Object.setPrototypeOf(this, ClerkAPIResponseError.prototype);
+		this.status = status;
+		this.clerkTraceId = clerkTraceId;
+		this.retryAfter = retryAfter;
+		this.errors = (errorsJson || []).map((e) => new ClerkAPIError(e));
+	}
+	toString() {
+		let message = `[${this.name}]\nMessage:${this.message}\nStatus:${this.status}\nSerialized errors: ${this.errors.map((e) => JSON.stringify(e))}`;
+		if (this.clerkTraceId) message += `\nClerk Trace ID: ${this.clerkTraceId}`;
+		return message;
+	}
+	static formatMessage(name, msg, _, __) {
+		return msg;
+	}
+});
+var DefaultMessages = Object.freeze({
+	InvalidProxyUrlErrorMessage: `The proxyUrl passed to Clerk is invalid. The expected value for proxyUrl is an absolute URL or a relative path with a leading '/'. (key={{url}})`,
+	InvalidPublishableKeyErrorMessage: `The publishableKey passed to Clerk is invalid. You can get your Publishable key at https://dashboard.clerk.com/last-active?path=api-keys. (key={{key}})`,
+	MissingPublishableKeyErrorMessage: `Missing publishableKey. You can get your key at https://dashboard.clerk.com/last-active?path=api-keys.`,
+	MissingSecretKeyErrorMessage: `Missing secretKey. You can get your key at https://dashboard.clerk.com/last-active?path=api-keys.`,
+	MissingClerkProvider: `{{source}} can only be used within the <ClerkProvider /> component. Learn more: https://clerk.com/docs/components/clerk-provider`
+});
+/**
+* Builds an error thrower.
+*
+* @internal
+*/
+function buildErrorThrower({ packageName, customMessages }) {
+	let pkg = packageName;
+	/**
+	* Builds a message from a raw message and replacements.
+	*
+	* @internal
+	*/
+	function buildMessage(rawMessage, replacements) {
+		if (!replacements) return `${pkg}: ${rawMessage}`;
+		let msg = rawMessage;
+		const matches = rawMessage.matchAll(/{{([a-zA-Z0-9-_]+)}}/g);
+		for (const match of matches) {
+			const replacement = (replacements[match[1]] || "").toString();
+			msg = msg.replace(`{{${match[1]}}}`, replacement);
+		}
+		return `${pkg}: ${msg}`;
+	}
+	const messages = {
+		...DefaultMessages,
+		...customMessages
+	};
+	return {
+		setPackageName({ packageName: packageName$1 }) {
+			if (typeof packageName$1 === "string") pkg = packageName$1;
+			return this;
+		},
+		setMessages({ customMessages: customMessages$1 }) {
+			Object.assign(messages, customMessages$1 || {});
+			return this;
+		},
+		throwInvalidPublishableKeyError(params) {
+			throw new Error(buildMessage(messages.InvalidPublishableKeyErrorMessage, params));
+		},
+		throwInvalidProxyUrl(params) {
+			throw new Error(buildMessage(messages.InvalidProxyUrlErrorMessage, params));
+		},
+		throwMissingPublishableKeyError() {
+			throw new Error(buildMessage(messages.MissingPublishableKeyErrorMessage));
+		},
+		throwMissingSecretKeyError() {
+			throw new Error(buildMessage(messages.MissingSecretKeyErrorMessage));
+		},
+		throwMissingClerkProviderError(params) {
+			throw new Error(buildMessage(messages.MissingClerkProvider, params));
+		},
+		throw(message) {
+			throw new Error(buildMessage(message));
+		}
+	};
+}
+//#endregion
+//#region node_modules/@clerk/vue/dist/chunk-B47IFXQ7.js
+var errorThrower$1 = buildErrorThrower({ packageName: "@clerk/vue" });
+function setErrorThrowerOptions(options) {
+	errorThrower$1.setMessages(options).setPackageName(options);
+}
+var multipleChildrenInButtonComponent = (name) => `You've passed multiple children components to <${name}/>. You can only pass a single child component or text.`;
+var invalidStateError = "Invalid state. Feel free to submit a bug or reach out to support here: https://clerk.com/support";
+var userButtonMenuActionRenderedError = "<UserButton.Action /> component needs to be a direct child of `<UserButton.MenuItems />`.";
+var userButtonMenuLinkRenderedError = "<UserButton.Link /> component needs to be a direct child of `<UserButton.MenuItems />`.";
+var userButtonMenuItemLinkWrongProps = "Missing requirements. <UserButton.Link /> component requires props: href, label and slots: labelIcon.";
+var userButtonMenuItemActionWrongProps = "Missing requirements. <UserButton.Action /> component requires props: label and slots: labelIcon.";
+var userButtonMenuItemsRenderedError = "<UserButton.MenuItems /> component needs to be a direct child of `<UserButton />`.";
+var customPageWrongProps = (componentName) => `Missing requirements. <${componentName}.Page /> component requires props: url, label and slots: labelIcon and a default slot for page content`;
+var customLinkWrongProps = (componentName) => `Missing requirements. <${componentName}.Link /> component requires the following props: url, label and slots: labelIcon.`;
+var userProfilePageRenderedError = "<UserProfile.Page /> component needs to be a direct child of `<UserProfile />` or `<UserButton />`.";
+var userProfileLinkRenderedError = "<UserProfile.Link /> component needs to be a direct child of `<UserProfile />` or `<UserButton />`.";
+var organizationProfilePageRenderedError = "<OrganizationProfile.Page /> component needs to be a direct child of `<OrganizationProfile />` or `<OrganizationSwitcher />`.";
+var organizationProfileLinkRenderedError = "<OrganizationProfile.Link /> component needs to be a direct child of `<OrganizationProfile />` or `<OrganizationSwitcher />`.";
+//#endregion
+//#region node_modules/@clerk/shared/dist/runtime/authorization-Un7v7f6J.mjs
+var TYPES_TO_OBJECTS = {
+	strict_mfa: {
+		afterMinutes: 10,
+		level: "multi_factor"
+	},
+	strict: {
+		afterMinutes: 10,
+		level: "second_factor"
+	},
+	moderate: {
+		afterMinutes: 60,
+		level: "second_factor"
+	},
+	lax: {
+		afterMinutes: 1440,
+		level: "second_factor"
+	}
+};
+var ALLOWED_LEVELS = new Set([
+	"first_factor",
+	"second_factor",
+	"multi_factor"
+]);
+var ALLOWED_TYPES = new Set([
+	"strict_mfa",
+	"strict",
+	"moderate",
+	"lax"
+]);
+var ORG_SCOPES = new Set([
+	"o",
+	"org",
+	"organization"
+]);
+var USER_SCOPES = new Set(["u", "user"]);
+var isValidMaxAge = (maxAge) => typeof maxAge === "number" && maxAge > 0;
+var isValidLevel = (level) => ALLOWED_LEVELS.has(level);
+var isValidVerificationType = (type) => ALLOWED_TYPES.has(type);
+var prefixWithOrg = (value) => value.replace(/^(org:)*/, "org:");
+/**
+* Checks if a user has the required organization-level authorization.
+* Verifies if the user has the specified role or permission within their organization.
+*
+* @returns null, if unable to determine due to missing data or unspecified role/permission.
+*/
+var checkOrgAuthorization = (params, options) => {
+	const { orgId, orgRole, orgPermissions } = options;
+	if (!params.role && !params.permission) return null;
+	if (!orgId || !orgRole || !orgPermissions) return null;
+	if (params.permission) return orgPermissions.includes(prefixWithOrg(params.permission));
+	if (params.role) return prefixWithOrg(orgRole) === prefixWithOrg(params.role);
+	return null;
+};
+var checkForFeatureOrPlan = (claim, featureOrPlan) => {
+	const { org: orgFeatures, user: userFeatures } = splitByScope(claim);
+	const [rawScope, rawId] = featureOrPlan.split(":");
+	const hasExplicitScope = rawId !== void 0;
+	const scope = rawScope;
+	const id = rawId || rawScope;
+	if (hasExplicitScope && !ORG_SCOPES.has(scope) && !USER_SCOPES.has(scope)) throw new Error(`Invalid scope: ${scope}`);
+	if (hasExplicitScope) {
+		if (ORG_SCOPES.has(scope)) return orgFeatures.includes(id);
+		if (USER_SCOPES.has(scope)) return userFeatures.includes(id);
+	}
+	return [...orgFeatures, ...userFeatures].includes(id);
+};
+var checkBillingAuthorization = (params, options) => {
+	const { features, plans } = options;
+	if (params.feature && features) return checkForFeatureOrPlan(features, params.feature);
+	if (params.plan && plans) return checkForFeatureOrPlan(plans, params.plan);
+	return null;
+};
+var splitByScope = (fea) => {
+	const org = [];
+	const user = [];
+	if (!fea) return {
+		org,
+		user
+	};
+	const parts = fea.split(",");
+	for (let i = 0; i < parts.length; i++) {
+		const part = parts[i].trim();
+		const colonIndex = part.indexOf(":");
+		if (colonIndex === -1) throw new Error(`Invalid claim element (missing colon): ${part}`);
+		const scope = part.slice(0, colonIndex);
+		const value = part.slice(colonIndex + 1);
+		if (scope === "o") org.push(value);
+		else if (scope === "u") user.push(value);
+		else if (scope === "ou" || scope === "uo") {
+			org.push(value);
+			user.push(value);
+		}
+	}
+	return {
+		org,
+		user
+	};
+};
+var validateReverificationConfig = (config) => {
+	if (!config) return false;
+	const convertConfigToObject = (config$1) => {
+		if (typeof config$1 === "string") return TYPES_TO_OBJECTS[config$1];
+		return config$1;
+	};
+	const isValidStringValue = typeof config === "string" && isValidVerificationType(config);
+	const isValidObjectValue = typeof config === "object" && isValidLevel(config.level) && isValidMaxAge(config.afterMinutes);
+	if (isValidStringValue || isValidObjectValue) return convertConfigToObject.bind(null, config);
+	return false;
+};
+/**
+* Evaluates if the user meets re-verification authentication requirements.
+* Compares the user's factor verification ages against the specified maxAge.
+* Handles different verification levels (first factor, second factor, multi-factor).
+*
+* @returns null, if requirements or verification data are missing.
+*/
+var checkReverificationAuthorization = (params, { factorVerificationAge }) => {
+	if (!params.reverification || !factorVerificationAge) return null;
+	const isValidReverification = validateReverificationConfig(params.reverification);
+	if (!isValidReverification) return null;
+	const { level, afterMinutes } = isValidReverification();
+	const [factor1Age, factor2Age] = factorVerificationAge;
+	const isValidFactor1 = factor1Age !== -1 ? afterMinutes > factor1Age : null;
+	const isValidFactor2 = factor2Age !== -1 ? afterMinutes > factor2Age : null;
+	switch (level) {
+		case "first_factor": return isValidFactor1;
+		case "second_factor": return factor2Age !== -1 ? isValidFactor2 : isValidFactor1;
+		case "multi_factor": return factor2Age === -1 ? isValidFactor1 : isValidFactor1 && isValidFactor2;
+	}
+};
+/**
+* Creates a function for comprehensive user authorization checks.
+* Combines organization-level and reverification authentication checks.
+* The returned function authorizes if both checks pass, or if at least one passes
+* when the other is indeterminate. Fails if userId is missing.
+*/
+var createCheckAuthorization = (options) => {
+	return (params) => {
+		if (!options.userId) return false;
+		const billingAuthorization = checkBillingAuthorization(params, options);
+		const orgAuthorization = checkOrgAuthorization(params, options);
+		const reverificationAuthorization = checkReverificationAuthorization(params, options);
+		if ([billingAuthorization || orgAuthorization, reverificationAuthorization].some((a) => a === null)) return [billingAuthorization || orgAuthorization, reverificationAuthorization].some((a) => a === true);
+		return [billingAuthorization || orgAuthorization, reverificationAuthorization].every((a) => a === true);
+	};
+};
+/**
+* Shared utility function that centralizes auth state resolution logic,
+* preventing duplication across different packages.
+*
+* @internal
+*/
+var resolveAuthState = ({ authObject: { sessionId, sessionStatus, userId, actor, orgId, orgRole, orgSlug, signOut, getToken, has, sessionClaims }, options: { treatPendingAsSignedOut = true } }) => {
+	if (sessionId === void 0 && userId === void 0) return {
+		actor: void 0,
+		getToken,
+		has: () => false,
+		isLoaded: false,
+		isSignedIn: void 0,
+		orgId: void 0,
+		orgRole: void 0,
+		orgSlug: void 0,
+		sessionClaims: void 0,
+		sessionId,
+		signOut,
+		userId
+	};
+	if (sessionId === null && userId === null) return {
+		actor: null,
+		getToken,
+		has: () => false,
+		isLoaded: true,
+		isSignedIn: false,
+		orgId: null,
+		orgRole: null,
+		orgSlug: null,
+		sessionClaims: null,
+		sessionId,
+		signOut,
+		userId
+	};
+	if (treatPendingAsSignedOut && sessionStatus === "pending") return {
+		actor: null,
+		getToken,
+		has: () => false,
+		isLoaded: true,
+		isSignedIn: false,
+		orgId: null,
+		orgRole: null,
+		orgSlug: null,
+		sessionClaims: null,
+		sessionId: null,
+		signOut,
+		userId: null
+	};
+	if (!!sessionId && !!sessionClaims && !!userId && !!orgId && !!orgRole) return {
+		actor: actor || null,
+		getToken,
+		has,
+		isLoaded: true,
+		isSignedIn: true,
+		orgId,
+		orgRole,
+		orgSlug: orgSlug || null,
+		sessionClaims,
+		sessionId,
+		signOut,
+		userId
+	};
+	if (!!sessionId && !!sessionClaims && !!userId && !orgId) return {
+		actor: actor || null,
+		getToken,
+		has,
+		isLoaded: true,
+		isSignedIn: true,
+		orgId: null,
+		orgRole: null,
+		orgSlug: null,
+		sessionClaims,
+		sessionId,
+		signOut,
+		userId
+	};
+};
+//#endregion
+//#region node_modules/@clerk/vue/dist/chunk-7D4GN6SK.js
+var ClerkInjectionKey = Symbol("clerk");
+var UserButtonInjectionKey = Symbol("UserButton");
+var UserButtonMenuItemsInjectionKey = Symbol("UserButton.MenuItems");
+var UserProfileInjectionKey = Symbol("UserProfile");
+var OrganizationProfileInjectionKey = Symbol("OrganizationProfile");
+var PortalInjectionKey = Symbol("Portal");
+function useClerkContext(source) {
+	const ctx = inject(ClerkInjectionKey);
+	if (!ctx) return errorThrower$1.throw(`${source} can only be used when the Vue plugin is installed. Learn more: https://clerk.com/docs/reference/vue/clerk-plugin`);
+	return ctx;
+}
+var useClerk = () => {
+	const { clerk } = useClerkContext("useClerk");
+	return clerk;
+};
+var normalizeWithDefaultValue = (slotContent, defaultValue) => {
+	if (!slotContent) return h("button", defaultValue);
+	if (slotContent[0].type === Text) return h("button", slotContent);
+	return slotContent;
+};
+var assertSingleChild = (slotContent, name) => {
+	if (Array.isArray(slotContent)) {
+		if (slotContent.length > 1) return errorThrower$1.throw(multipleChildrenInButtonComponent(name));
+		return slotContent[0];
+	}
+	return slotContent;
+};
+function toComputedRefs(objectRef) {
+	const result = {};
+	for (const key in objectRef.value) result[key] = computed(() => objectRef.value[key]);
+	return result;
+}
+function clerkLoaded(clerk) {
+	return new Promise((resolve) => {
+		let unwatch;
+		unwatch = watch(clerk, (value) => {
+			if (value?.loaded) {
+				resolve(value);
+				unwatch?.();
+			}
+		}, { immediate: true });
+	});
+}
+function createGetToken(clerk) {
+	return async (options) => {
+		const loadedClerk = await clerkLoaded(clerk);
+		if (!loadedClerk.session) return null;
+		return loadedClerk.session.getToken(options);
+	};
+}
+function createSignOut(clerk) {
+	return async (...args) => {
+		return (await clerkLoaded(clerk)).signOut(...args);
+	};
+}
+var useAuth = (options = {}) => {
+	const { clerk, authCtx } = useClerkContext("useAuth");
+	const getToken = createGetToken(clerk);
+	const signOut = createSignOut(clerk);
+	return toComputedRefs(computed(() => {
+		const { userId, orgId, orgRole, orgPermissions, sessionClaims, factorVerificationAge } = authCtx.value;
+		const has = createCheckAuthorization({
+			userId,
+			orgId,
+			orgRole,
+			orgPermissions,
+			factorVerificationAge,
+			features: sessionClaims?.fea || "",
+			plans: sessionClaims?.pla || ""
+		});
+		const payload = resolveAuthState({
+			authObject: {
+				...authCtx.value,
+				getToken,
+				signOut,
+				has
+			},
+			options: { treatPendingAsSignedOut: options.treatPendingAsSignedOut }
+		});
+		if (!payload) return errorThrower$1.throw(invalidStateError);
+		return payload;
+	}));
+};
+var export_helper_default = (sfc, props) => {
+	const target = sfc.__vccOpts || sfc;
+	for (const [key, val] of props) target[key] = val;
+	return target;
+};
+//#endregion
+//#region node_modules/@clerk/shared/dist/runtime/constants-Bta24VLk.mjs
+var DEV_OR_STAGING_SUFFIXES = [
+	".lcl.dev",
+	".stg.dev",
+	".lclstage.dev",
+	".stgstage.dev",
+	".dev.lclclerk.com",
+	".stg.lclclerk.com",
+	".accounts.lclclerk.com",
+	"accountsstage.dev",
+	"accounts.dev"
+];
+//#endregion
+//#region node_modules/@clerk/shared/dist/runtime/isomorphicAtob-CoF80qYz.mjs
+/**
+* A function that decodes a string of data which has been encoded using base-64 encoding.
+* Uses `atob` if available, otherwise uses `Buffer` from `globalThis`. If neither are available, returns the data as-is.
+*/
+var isomorphicAtob = (data) => {
+	if (typeof atob !== "undefined" && typeof atob === "function") return atob(data);
+	else if (typeof globalThis.Buffer !== "undefined") return globalThis.Buffer.from(data, "base64").toString();
+	return data;
+};
+//#endregion
+//#region node_modules/@clerk/shared/dist/runtime/keys-DuxzP8MU.mjs
+/** Prefix used for production publishable keys */
+var PUBLISHABLE_KEY_LIVE_PREFIX = "pk_live_";
+/** Prefix used for development publishable keys */
+var PUBLISHABLE_KEY_TEST_PREFIX = "pk_test_";
+/**
+* Validates that a decoded publishable key has the correct format.
+* The decoded value should be a frontend API followed by exactly one '$' at the end.
+*
+* @param decoded - The decoded publishable key string to validate.
+* @returns `true` if the decoded key has valid format, `false` otherwise.
+*/
+function isValidDecodedPublishableKey(decoded) {
+	if (!decoded.endsWith("$")) return false;
+	const withoutTrailing = decoded.slice(0, -1);
+	if (withoutTrailing.includes("$")) return false;
+	return withoutTrailing.includes(".");
+}
+/**
+* Parses and validates a publishable key, extracting the frontend API and instance type.
+*
+* @param key - The publishable key to parse.
+* @param options - Configuration options for parsing.
+* @param options.fatal
+* @param options.domain
+* @param options.proxyUrl
+* @param options.isSatellite
+* @returns Parsed publishable key object with instanceType and frontendApi, or null if invalid.
+*
+* @throws {Error} When options.fatal is true and key is missing or invalid.
+*/
+function parsePublishableKey(key, options = {}) {
+	key = key || "";
+	if (!key || !isPublishableKey(key)) {
+		if (options.fatal && !key) throw new Error("Publishable key is missing. Ensure that your publishable key is correctly configured. Double-check your environment configuration for your keys, or access them here: https://dashboard.clerk.com/last-active?path=api-keys");
+		if (options.fatal && !isPublishableKey(key)) throw new Error("Publishable key not valid.");
+		return null;
+	}
+	const instanceType = key.startsWith(PUBLISHABLE_KEY_LIVE_PREFIX) ? "production" : "development";
+	let decodedFrontendApi;
+	try {
+		decodedFrontendApi = isomorphicAtob(key.split("_")[2]);
+	} catch {
+		if (options.fatal) throw new Error("Publishable key not valid: Failed to decode key.");
+		return null;
+	}
+	if (!isValidDecodedPublishableKey(decodedFrontendApi)) {
+		if (options.fatal) throw new Error("Publishable key not valid: Decoded key has invalid format.");
+		return null;
+	}
+	let frontendApi = decodedFrontendApi.slice(0, -1);
+	if (options.proxyUrl) frontendApi = options.proxyUrl;
+	else if (instanceType !== "development" && options.domain && options.isSatellite) frontendApi = `clerk.${options.domain}`;
+	return {
+		instanceType,
+		frontendApi
+	};
+}
+/**
+* Checks if the provided key is a valid publishable key.
+*
+* @param key - The key to be checked. Defaults to an empty string if not provided.
+* @returns `true` if 'key' is a valid publishable key, `false` otherwise.
+*/
+function isPublishableKey(key = "") {
+	try {
+		if (!(key.startsWith(PUBLISHABLE_KEY_LIVE_PREFIX) || key.startsWith(PUBLISHABLE_KEY_TEST_PREFIX))) return false;
+		const parts = key.split("_");
+		if (parts.length !== 3) return false;
+		const encodedPart = parts[2];
+		if (!encodedPart) return false;
+		return isValidDecodedPublishableKey(isomorphicAtob(encodedPart));
+	} catch {
+		return false;
+	}
+}
+/**
+* Creates a memoized cache for checking if URLs are development or staging environments.
+* Uses a Map to cache results for better performance on repeated checks.
+*
+* @returns An object with an isDevOrStagingUrl method that checks if a URL is dev/staging.
+*/
+function createDevOrStagingUrlCache() {
+	const devOrStagingUrlCache = /* @__PURE__ */ new Map();
+	return { isDevOrStagingUrl: (url) => {
+		if (!url) return false;
+		const hostname = typeof url === "string" ? url : url.hostname;
+		let res = devOrStagingUrlCache.get(hostname);
+		if (res === void 0) {
+			res = DEV_OR_STAGING_SUFFIXES.some((s) => hostname.endsWith(s));
+			devOrStagingUrlCache.set(hostname, res);
+		}
+		return res;
+	} };
+}
+//#endregion
+//#region node_modules/@clerk/shared/dist/runtime/retry-DqRIhHV5.mjs
+var defaultOptions = {
+	initialDelay: 125,
+	maxDelayBetweenRetries: 0,
+	factor: 2,
+	shouldRetry: (_, iteration) => iteration < 5,
+	retryImmediately: false,
+	jitter: true
+};
+var RETRY_IMMEDIATELY_DELAY = 100;
+var sleep = async (ms) => new Promise((s) => setTimeout(s, ms));
+var applyJitter = (delay, jitter) => {
+	return jitter ? delay * (1 + Math.random()) : delay;
+};
+var createExponentialDelayAsyncFn = (opts) => {
+	let timesCalled = 0;
+	const calculateDelayInMs = () => {
+		const constant = opts.initialDelay;
+		const base = opts.factor;
+		let delay = constant * Math.pow(base, timesCalled);
+		delay = applyJitter(delay, opts.jitter);
+		return Math.min(opts.maxDelayBetweenRetries || delay, delay);
+	};
+	return async () => {
+		await sleep(calculateDelayInMs());
+		timesCalled++;
+	};
+};
+/**
+* Retries a callback until it succeeds or the shouldRetry function returns false.
+* See {@link RetryOptions} for the available options.
+*/
+var retry = async (callback, options = {}) => {
+	let iterations = 0;
+	const { shouldRetry, initialDelay, maxDelayBetweenRetries, factor, retryImmediately, jitter, onBeforeRetry } = {
+		...defaultOptions,
+		...options
+	};
+	const delay = createExponentialDelayAsyncFn({
+		initialDelay,
+		maxDelayBetweenRetries,
+		factor,
+		jitter
+	});
+	while (true) try {
+		return await callback();
+	} catch (e) {
+		iterations++;
+		if (!shouldRetry(e, iterations)) throw e;
+		if (onBeforeRetry) await onBeforeRetry(iterations);
+		if (retryImmediately && iterations === 1) await sleep(applyJitter(RETRY_IMMEDIATELY_DELAY, jitter));
+		else await delay();
+	}
+};
+//#endregion
+//#region node_modules/@clerk/shared/dist/runtime/loadScript-UG_epen4.mjs
+var NO_DOCUMENT_ERROR = "loadScript cannot be called when document does not exist";
+var NO_SRC_ERROR = "loadScript cannot be called without a src";
+/**
+*
+*/
+async function loadScript(src = "", opts) {
+	const { async, defer, beforeLoad, crossOrigin, nonce } = opts || {};
+	const load = () => {
+		return new Promise((resolve, reject) => {
+			if (!src) reject(new Error(NO_SRC_ERROR));
+			if (!document || !document.body) reject(new Error(NO_DOCUMENT_ERROR));
+			const script = document.createElement("script");
+			if (crossOrigin) script.setAttribute("crossorigin", crossOrigin);
+			script.async = async || false;
+			script.defer = defer || false;
+			script.addEventListener("load", () => {
+				script.remove();
+				resolve(script);
+			});
+			script.addEventListener("error", (event) => {
+				script.remove();
+				reject(event.error ?? /* @__PURE__ */ new Error(`failed to load script: ${src}`));
+			});
+			script.src = src;
+			script.nonce = nonce;
+			beforeLoad?.(script);
+			document.body.appendChild(script);
+		});
+	};
+	return retry(load, { shouldRetry: (_, iterations) => {
+		return iterations <= 5;
+	} });
+}
+//#endregion
+//#region node_modules/@clerk/shared/dist/runtime/proxy-BcfViKjn.mjs
+/**
+*
+*/
+function isValidProxyUrl(key) {
+	if (!key) return true;
+	return isHttpOrHttps(key) || isProxyUrlRelative(key);
+}
+/**
+*
+*/
+function isHttpOrHttps(key) {
+	return /^http(s)?:\/\//.test(key || "");
+}
+/**
+*
+*/
+function isProxyUrlRelative(key) {
+	return key.startsWith("/");
+}
+/**
+*
+*/
+function proxyUrlToAbsoluteURL(url) {
+	if (!url) return "";
+	return isProxyUrlRelative(url) ? new URL(url, window.location.origin).toString() : url;
+}
+//#endregion
+//#region node_modules/@clerk/shared/dist/runtime/url-C6gPMFx5.mjs
+/**
+*
+*/
+function addClerkPrefix(str) {
+	if (!str) return "";
+	let regex;
+	if (str.match(/^(clerk\.)+\w*$/)) regex = /(clerk\.)*(?=clerk\.)/;
+	else if (str.match(/\.clerk.accounts/)) return str;
+	else regex = /^(clerk\.)*/gi;
+	return `clerk.${str.replace(regex, "")}`;
+}
+//#endregion
+//#region node_modules/@clerk/shared/dist/runtime/versionSelector-Cx1-K89P.mjs
+/**
+* This version selector is a bit complicated, so here is the flow:
+* 1. Use the clerkJSVersion prop on the provider
+* 2. Use the exact `@clerk/clerk-js` version if it is a `@snapshot` prerelease
+* 3. Use the prerelease tag of `@clerk/clerk-js` or the packageVersion provided
+* 4. Fallback to the major version of `@clerk/clerk-js` or the packageVersion provided
+*
+* @param clerkJSVersion - The optional clerkJSVersion prop on the provider
+* @param packageVersion - The version of `@clerk/clerk-js` that will be used if an explicit version is not provided
+* @returns The npm tag, version or major version to use
+*/
+var versionSelector = (clerkJSVersion, packageVersion = "6.3.2") => {
+	if (clerkJSVersion) return clerkJSVersion;
+	const prereleaseTag = getPrereleaseTag(packageVersion);
+	if (prereleaseTag) {
+		if (prereleaseTag === "snapshot") return packageVersion;
+		return prereleaseTag;
+	}
+	return getMajorVersion(packageVersion);
+};
+var getPrereleaseTag = (packageVersion) => packageVersion.trim().replace(/^v/, "").match(/-(.+?)(\.|$)/)?.[1];
+var getMajorVersion = (packageVersion) => packageVersion.trim().replace(/^v/, "").split(".")[0];
+//#endregion
+//#region node_modules/@clerk/shared/dist/runtime/loadClerkJsScript.mjs
+var { isDevOrStagingUrl } = createDevOrStagingUrlCache();
+var errorThrower = buildErrorThrower({ packageName: "@clerk/shared" });
+/**
+* Validates that window.Clerk exists and is properly initialized.
+* This ensures we don't have false positives where the script loads but Clerk is malformed.
+*
+* @returns `true` if window.Clerk exists and has the expected structure with a load method.
+*/
+function isClerkGlobalProperlyLoaded(prop) {
+	if (typeof window === "undefined" || !window[prop]) return false;
+	return !!window[prop];
+}
+var isClerkProperlyLoaded = () => isClerkGlobalProperlyLoaded("Clerk");
+var isClerkUIProperlyLoaded = () => isClerkGlobalProperlyLoaded("__internal_ClerkUICtor");
+/**
+* Checks if an existing script has a request error using Performance API.
+*
+* @param scriptUrl - The URL of the script to check.
+* @returns True if the script has failed to load due to a network/HTTP error.
+*/
+function hasScriptRequestError(scriptUrl) {
+	if (typeof window === "undefined" || !window.performance) return false;
+	const entries = performance.getEntriesByName(scriptUrl, "resource");
+	if (entries.length === 0) return false;
+	const scriptEntry = entries[entries.length - 1];
+	if (scriptEntry.transferSize === 0 && scriptEntry.decodedBodySize === 0) {
+		if (scriptEntry.responseEnd === 0) return true;
+		if (scriptEntry.responseEnd > 0 && scriptEntry.responseStart > 0) return true;
+		if ("responseStatus" in scriptEntry) {
+			if (scriptEntry.responseStatus >= 400) return true;
+			if (scriptEntry.responseStatus === 0) return true;
+		}
+	}
+	return false;
+}
+/**
+* Hotloads the Clerk JS script with robust failure detection.
+*
+* Uses a timeout-based approach to ensure absolute certainty about load success/failure.
+* If the script fails to load within the timeout period, or loads but doesn't create
+* a proper Clerk instance, the promise rejects with an error.
+*
+* @param opts - The options used to build the Clerk JS script URL and load the script.
+*               Must include a `publishableKey` if no existing script is found.
+* @returns Promise that resolves with null if Clerk loads successfully, or rejects with an error.
+*
+* @example
+* ```typescript
+* try {
+*   await loadClerkJsScript({ publishableKey: 'pk_test_...' });
+*   console.log('Clerk loaded successfully');
+* } catch (error) {
+*   console.error('Failed to load Clerk:', error.message);
+* }
+* ```
+*/
+var loadClerkJSScript = async (opts) => {
+	const timeout = opts?.scriptLoadTimeout ?? 15e3;
+	const rejectWith = (error) => new ClerkRuntimeError("Failed to load Clerk JS" + (error?.message ? `, ${error.message}` : ""), {
+		code: "failed_to_load_clerk_js",
+		cause: error
+	});
+	if (isClerkProperlyLoaded()) return null;
+	if (!opts?.publishableKey) {
+		errorThrower.throwMissingPublishableKeyError();
+		return null;
+	}
+	const scriptUrl = clerkJSScriptUrl(opts);
+	const existingScript = document.querySelector("script[data-clerk-js-script]");
+	if (existingScript) if (hasScriptRequestError(scriptUrl)) existingScript.remove();
+	else try {
+		await waitForPredicateWithTimeout(timeout, isClerkProperlyLoaded, rejectWith(), existingScript);
+		return null;
+	} catch {
+		existingScript.remove();
+	}
+	const loadPromise = waitForPredicateWithTimeout(timeout, isClerkProperlyLoaded, rejectWith());
+	loadScript(scriptUrl, {
+		async: true,
+		crossOrigin: "anonymous",
+		nonce: opts.nonce,
+		beforeLoad: applyAttributesToScript(buildClerkJSScriptAttributes(opts))
+	}).catch((error) => {
+		throw rejectWith(error);
+	});
+	return loadPromise;
+};
+var loadClerkUIScript = async (opts) => {
+	const timeout = opts?.scriptLoadTimeout ?? 15e3;
+	const rejectWith = (error) => new ClerkRuntimeError("Failed to load Clerk UI" + (error?.message ? `, ${error.message}` : ""), {
+		code: "failed_to_load_clerk_ui",
+		cause: error
+	});
+	if (isClerkUIProperlyLoaded()) return null;
+	if (!opts?.publishableKey) {
+		errorThrower.throwMissingPublishableKeyError();
+		return null;
+	}
+	const scriptUrl = clerkUIScriptUrl(opts);
+	const existingScript = document.querySelector("script[data-clerk-ui-script]");
+	if (existingScript) if (hasScriptRequestError(scriptUrl)) existingScript.remove();
+	else try {
+		await waitForPredicateWithTimeout(timeout, isClerkUIProperlyLoaded, rejectWith(), existingScript);
+		return null;
+	} catch {
+		existingScript.remove();
+	}
+	const loadPromise = waitForPredicateWithTimeout(timeout, isClerkUIProperlyLoaded, rejectWith());
+	loadScript(scriptUrl, {
+		async: true,
+		crossOrigin: "anonymous",
+		nonce: opts.nonce,
+		beforeLoad: applyAttributesToScript(buildClerkUIScriptAttributes(opts))
+	}).catch((error) => {
+		throw rejectWith(error);
+	});
+	return loadPromise;
+};
+var clerkJSScriptUrl = (opts) => {
+	const { __internal_clerkJSUrl, __internal_clerkJSVersion, proxyUrl, domain, publishableKey } = opts;
+	if (__internal_clerkJSUrl) return __internal_clerkJSUrl;
+	return `https://${buildScriptHost({
+		publishableKey,
+		proxyUrl,
+		domain
+	})}/npm/@clerk/clerk-js@${versionSelector(__internal_clerkJSVersion)}/dist/clerk.browser.js`;
+};
+var clerkUIScriptUrl = (opts) => {
+	const { __internal_clerkUIUrl, __internal_clerkUIVersion, proxyUrl, domain, publishableKey } = opts;
+	if (__internal_clerkUIUrl) return __internal_clerkUIUrl;
+	return `https://${buildScriptHost({
+		publishableKey,
+		proxyUrl,
+		domain
+	})}/npm/@clerk/ui@${versionSelector(__internal_clerkUIVersion, "1.2.3")}/dist/ui.browser.js`;
+};
+var buildClerkJSScriptAttributes = (options) => {
+	const obj = {};
+	if (options.publishableKey) obj["data-clerk-publishable-key"] = options.publishableKey;
+	if (options.proxyUrl) obj["data-clerk-proxy-url"] = options.proxyUrl;
+	if (options.domain) obj["data-clerk-domain"] = options.domain;
+	if (options.nonce) obj.nonce = options.nonce;
+	return obj;
+};
+var buildClerkUIScriptAttributes = (options) => {
+	return buildClerkJSScriptAttributes(options);
+};
+var applyAttributesToScript = (attributes) => (script) => {
+	for (const attribute in attributes) script.setAttribute(attribute, attributes[attribute]);
+};
+var buildScriptHost = (opts) => {
+	const { proxyUrl, domain, publishableKey } = opts;
+	if (!!proxyUrl && isValidProxyUrl(proxyUrl)) return proxyUrlToAbsoluteURL(proxyUrl).replace(/http(s)?:\/\//, "");
+	else if (domain && !isDevOrStagingUrl(parsePublishableKey(publishableKey)?.frontendApi || "")) return addClerkPrefix(domain);
+	else return parsePublishableKey(publishableKey)?.frontendApi || "";
+};
+function waitForPredicateWithTimeout(timeoutMs, predicate, rejectWith, existingScript) {
+	return new Promise((resolve, reject) => {
+		let resolved = false;
+		const cleanup = (timeoutId$1, pollInterval$1) => {
+			clearTimeout(timeoutId$1);
+			clearInterval(pollInterval$1);
+		};
+		existingScript?.addEventListener("error", () => {
+			cleanup(timeoutId, pollInterval);
+			reject(rejectWith);
+		});
+		const checkAndResolve = () => {
+			if (resolved) return;
+			if (predicate()) {
+				resolved = true;
+				cleanup(timeoutId, pollInterval);
+				resolve(null);
+			}
+		};
+		const handleTimeout = () => {
+			if (resolved) return;
+			resolved = true;
+			cleanup(timeoutId, pollInterval);
+			if (!predicate()) reject(rejectWith);
+			else resolve(null);
+		};
+		const timeoutId = setTimeout(handleTimeout, timeoutMs);
+		checkAndResolve();
+		const pollInterval = setInterval(() => {
+			if (resolved) {
+				clearInterval(pollInterval);
+				return;
+			}
+			checkAndResolve();
+		}, 100);
+	});
+}
+function setClerkJSLoadingErrorPackageName(packageName) {
+	errorThrower.setPackageName({ packageName });
+}
+//#endregion
+//#region node_modules/@clerk/shared/dist/runtime/runtimeEnvironment-D1yr0yUs.mjs
+var isDevelopmentEnvironment = () => {
+	try {
+		return false;
+	} catch {}
+	return false;
+};
+//#endregion
+//#region node_modules/@clerk/shared/dist/runtime/underscore-ClYSgvuy.mjs
+/**
+* Converts a string from snake_case to camelCase.
+*/
+function snakeToCamel(str) {
+	return str ? str.replace(/([-_][a-z])/g, (match) => match.toUpperCase().replace(/-|_/, "")) : "";
+}
+/**
+* Converts a string from camelCase to snake_case.
+*/
+function camelToSnake(str) {
+	return str ? str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`) : "";
+}
+var createDeepObjectTransformer = (transform) => {
+	const deepTransform = (obj) => {
+		if (!obj) return obj;
+		if (Array.isArray(obj)) return obj.map((el) => {
+			if (typeof el === "object" || Array.isArray(el)) return deepTransform(el);
+			return el;
+		});
+		const copy = { ...obj };
+		const keys = Object.keys(copy);
+		for (const oldName of keys) {
+			const newName = transform(oldName.toString());
+			if (newName !== oldName) {
+				copy[newName] = copy[oldName];
+				delete copy[oldName];
+			}
+			if (typeof copy[newName] === "object") copy[newName] = deepTransform(copy[newName]);
+		}
+		return copy;
+	};
+	return deepTransform;
+};
+createDeepObjectTransformer(camelToSnake);
+createDeepObjectTransformer(snakeToCamel);
+//#endregion
+//#region node_modules/@clerk/shared/dist/runtime/utils-TXJdVJx7.mjs
+var logErrorInDevMode = (message) => {
+	if (isDevelopmentEnvironment()) console.error(`Clerk: ${message}`);
+};
+//#endregion
+//#region node_modules/@clerk/shared/dist/runtime/browser-CMFCxUv7.mjs
+/**
+* Checks if the window object is defined. You can also use this to check if something is happening on the client side.
+*
+* @returns
+*/
+function inBrowser() {
+	return typeof window !== "undefined";
+}
+new RegExp([
+	"bot",
+	"spider",
+	"crawl",
+	"APIs-Google",
+	"AdsBot",
+	"Googlebot",
+	"mediapartners",
+	"Google Favicon",
+	"FeedFetcher",
+	"Google-Read-Aloud",
+	"DuplexWeb-Google",
+	"googleweblight",
+	"bing",
+	"yandex",
+	"baidu",
+	"duckduck",
+	"yahoo",
+	"ecosia",
+	"ia_archiver",
+	"facebook",
+	"instagram",
+	"pinterest",
+	"reddit",
+	"slack",
+	"twitter",
+	"whatsapp",
+	"youtube",
+	"semrush"
+].join("|"), "i");
+//#endregion
+//#region node_modules/@clerk/shared/dist/runtime/deriveState-CQUgOdaO.mjs
+/**
+* Derives authentication state based on the current rendering context (SSR or client-side).
+*/
+var deriveState = (clerkOperational, state, initialState) => {
+	if (!clerkOperational && initialState) return deriveFromSsrInitialState(initialState);
+	return deriveFromClientSideState(state);
+};
+var deriveFromSsrInitialState = (initialState) => {
+	const userId = initialState.userId;
+	const user = initialState.user;
+	const sessionId = initialState.sessionId;
+	const sessionStatus = initialState.sessionStatus;
+	const sessionClaims = initialState.sessionClaims;
+	return {
+		userId,
+		user,
+		sessionId,
+		session: initialState.session,
+		sessionStatus,
+		sessionClaims,
+		organization: initialState.organization,
+		orgId: initialState.orgId,
+		orgRole: initialState.orgRole,
+		orgPermissions: initialState.orgPermissions,
+		orgSlug: initialState.orgSlug,
+		actor: initialState.actor,
+		factorVerificationAge: initialState.factorVerificationAge
+	};
+};
+var deriveFromClientSideState = (state) => {
+	const userId = state.user ? state.user.id : state.user;
+	const user = state.user;
+	const sessionId = state.session ? state.session.id : state.session;
+	const session = state.session;
+	const sessionStatus = state.session?.status;
+	const sessionClaims = state.session ? state.session.lastActiveToken?.jwt?.claims : null;
+	const factorVerificationAge = state.session ? state.session.factorVerificationAge : null;
+	const actor = session?.actor;
+	const organization = state.organization;
+	const orgId = state.organization ? state.organization.id : state.organization;
+	const orgSlug = organization?.slug;
+	const membership = organization ? user?.organizationMemberships?.find((om) => om.organization.id === orgId) : organization;
+	const orgPermissions = membership ? membership.permissions : membership;
+	return {
+		userId,
+		user,
+		sessionId,
+		session,
+		sessionStatus,
+		sessionClaims,
+		organization,
+		orgId,
+		orgRole: membership ? membership.role : membership,
+		orgSlug,
+		orgPermissions,
+		actor,
+		factorVerificationAge
+	};
+};
+//#endregion
+//#region node_modules/@clerk/vue/dist/index.js
+var usePortalRoot = () => {
+	const context = inject(PortalInjectionKey, null);
+	if (context && context.getContainer) return context.getContainer;
+	return () => null;
+};
+var useUser = () => {
+	const { userCtx } = useClerkContext("useUser");
+	return toComputedRefs(computed(() => {
+		if (userCtx.value === void 0) return {
+			isLoaded: false,
+			isSignedIn: void 0,
+			user: void 0
+		};
+		if (userCtx.value === null) return {
+			isLoaded: true,
+			isSignedIn: false,
+			user: null
+		};
+		return {
+			isLoaded: true,
+			isSignedIn: true,
+			user: userCtx.value
+		};
+	}));
+};
+var useClerkLoaded = (callback) => {
+	const clerk = useClerk();
+	let unwatch;
+	unwatch = watch(clerk, (unwrappedClerk) => {
+		if (!unwrappedClerk?.loaded) return;
+		callback(unwrappedClerk);
+		unwatch?.();
+	}, { immediate: true });
+};
+var ClerkLoaded = /* @__PURE__ */ defineComponent((_, { slots }) => {
+	const clerk = useClerk();
+	return () => clerk.value?.loaded ? slots.default?.() : null;
+});
+Object.defineProperty(/* @__PURE__ */ defineComponent((props) => {
+	const { sessionCtx, clientCtx } = useClerkContext("RedirectToSignIn");
+	useClerkLoaded((clerk) => {
+		const hasSignedInSessions = clientCtx.value?.signedInSessions && clientCtx.value.signedInSessions.length > 0;
+		if (sessionCtx.value === null && hasSignedInSessions) clerk.redirectToAfterSignOut();
+		else clerk.redirectToSignIn(props);
+	});
+	return () => null;
+}), "props", { value: [
+	"signInForceRedirectUrl",
+	"signInFallbackRedirectUrl",
+	"signUpForceRedirectUrl",
+	"signUpFallbackRedirectUrl",
+	"redirectUrl"
+] });
+Object.defineProperty(/* @__PURE__ */ defineComponent((props) => {
+	useClerkLoaded((clerk) => {
+		clerk.redirectToSignUp(props);
+	});
+	return () => null;
+}), "props", { value: [
+	"signInForceRedirectUrl",
+	"signInFallbackRedirectUrl",
+	"signUpForceRedirectUrl",
+	"signUpFallbackRedirectUrl",
+	"redirectUrl"
+] });
+Object.defineProperty(/* @__PURE__ */ defineComponent((props) => {
+	useClerkLoaded((clerk) => {
+		clerk.redirectToTasks(props);
+	});
+	return () => null;
+}), "props", { value: [
+	"signInForceRedirectUrl",
+	"signInFallbackRedirectUrl",
+	"signUpForceRedirectUrl",
+	"signUpFallbackRedirectUrl",
+	"redirectUrl"
+] });
+Object.defineProperty(/* @__PURE__ */ defineComponent((props) => {
+	useClerkLoaded((clerk) => {
+		clerk.handleRedirectCallback(props);
+	});
+	return () => null;
+}), "props", { value: [
+	"transferable",
+	"signInForceRedirectUrl",
+	"signInFallbackRedirectUrl",
+	"signUpForceRedirectUrl",
+	"signUpFallbackRedirectUrl",
+	"signInUrl",
+	"signUpUrl",
+	"firstFactorUrl",
+	"secondFactorUrl",
+	"resetPasswordUrl",
+	"continueSignUpUrl",
+	"verifyEmailAddressUrl",
+	"verifyPhoneNumberUrl",
+	"reloadResource",
+	"unsafeMetadata"
+] });
+Object.defineProperty(/* @__PURE__ */ defineComponent((props, { slots }) => {
+	const { isLoaded, has, userId } = useAuth({ treatPendingAsSignedOut: props.treatPendingAsSignedOut });
+	return () => {
+		if (!isLoaded.value) return null;
+		const authorized = slots.default?.() ?? null;
+		const fallbackFromSlot = slots.fallback?.() ?? null;
+		const fallbackFromProp = props.fallback ?? null;
+		const unauthorized = fallbackFromSlot ?? fallbackFromProp ?? null;
+		if (props.when === "signed-out") return userId.value ? unauthorized : authorized;
+		if (!userId.value) return unauthorized;
+		if (props.when === "signed-in") return authorized;
+		const hasValue = has.value;
+		if (!hasValue) return unauthorized;
+		if (typeof props.when === "function") return props.when(hasValue) ? authorized : unauthorized;
+		return hasValue(props.when) ? authorized : unauthorized;
+	};
+}), "props", { value: [
+	"treatPendingAsSignedOut",
+	"fallback",
+	"when"
+] });
+var CustomPortalsRenderer = /* @__PURE__ */ defineComponent((props) => {
+	return () => [...props?.customPagesPortals ?? [], ...props?.customMenuItemsPortals ?? []];
+});
+Object.defineProperty(CustomPortalsRenderer, "props", { value: ["customPagesPortals", "customMenuItemsPortals"] });
+var ClerkHostRenderer = /* @__PURE__ */ defineComponent({
+	props: {
+		mount: {
+			type: Function,
+			required: false
+		},
+		unmount: {
+			type: Function,
+			required: false
+		},
+		open: {
+			type: Function,
+			required: false
+		},
+		close: {
+			type: Function,
+			required: false
+		},
+		updateProps: {
+			type: Function,
+			required: false
+		},
+		props: {
+			type: Object,
+			required: false,
+			default: () => ({})
+		}
+	},
+	setup(props) {
+		const portalRef = ref(null);
+		const getContainer = usePortalRoot();
+		let isPortalMounted = false;
+		watchEffect(() => {
+			if (!portalRef.value || isPortalMounted) return;
+			const propsWithContainer = {
+				...props.props,
+				getContainer
+			};
+			if (props.mount) props.mount(portalRef.value, propsWithContainer);
+			if (props.open) props.open(propsWithContainer);
+			isPortalMounted = true;
+		});
+		watch(() => props.props, (newProps) => {
+			if (isPortalMounted && props.updateProps && portalRef.value) {
+				const propsWithContainer = {
+					...newProps,
+					getContainer
+				};
+				props.updateProps({
+					node: portalRef.value,
+					props: propsWithContainer
+				});
+			}
+		}, { deep: true });
+		onUnmounted(() => {
+			if (isPortalMounted && portalRef.value) {
+				if (props.unmount) props.unmount(portalRef.value);
+				if (props.close) props.close();
+			}
+		});
+		return () => h(ClerkLoaded, () => h("div", { ref: portalRef }));
+	}
+});
+var _sfc_main9 = /* @__PURE__ */ defineComponent({
+	__name: "OrganizationProfile",
+	props: {
+		path: {
+			type: null,
+			required: false
+		},
+		routing: {
+			type: String,
+			required: false
+		},
+		afterLeaveOrganizationUrl: {
+			type: String,
+			required: false
+		},
+		appearance: {
+			type: null,
+			required: false
+		},
+		__experimental_startPath: {
+			type: String,
+			required: false
+		},
+		apiKeysProps: {
+			type: Object,
+			required: false
+		}
+	},
+	setup(__props, { expose: __expose }) {
+		__expose();
+		const props = __props;
+		const clerk = useClerk();
+		const { customPages, customPagesPortals, addCustomPage } = useOrganizationProfileCustomPages();
+		const finalProps = computed(() => ({
+			...props,
+			customPages: customPages.value
+		}));
+		provide(OrganizationProfileInjectionKey, { addCustomPage });
+		const __returned__ = {
+			props,
+			clerk,
+			customPages,
+			customPagesPortals,
+			addCustomPage,
+			finalProps,
+			get ClerkHostRenderer() {
+				return ClerkHostRenderer;
+			},
+			get CustomPortalsRenderer() {
+				return CustomPortalsRenderer;
+			}
+		};
+		Object.defineProperty(__returned__, "__isScriptSetup", {
+			enumerable: false,
+			value: true
+		});
+		return __returned__;
+	}
+});
+function _sfc_render9(_ctx, _cache, $props, $setup, $data, $options) {
+	return openBlock(), createElementBlock(Fragment, null, [
+		createVNode($setup["ClerkHostRenderer"], {
+			mount: $setup.clerk?.mountOrganizationProfile,
+			unmount: $setup.clerk?.unmountOrganizationProfile,
+			props: $setup.finalProps,
+			"update-props": $setup.clerk?.__internal_updateProps
+		}, null, 8, [
+			"mount",
+			"unmount",
+			"props",
+			"update-props"
+		]),
+		createVNode($setup["CustomPortalsRenderer"], { "custom-pages-portals": $setup.customPagesPortals }, null, 8, ["custom-pages-portals"]),
+		renderSlot(_ctx.$slots, "default")
+	], 64);
+}
+var OrganizationProfile_default = /* @__PURE__ */ export_helper_default(_sfc_main9, [["render", _sfc_render9], ["__file", "/home/runner/work/javascript/javascript/packages/vue/src/components/ui-components/OrganizationProfile/OrganizationProfile.vue"]]);
+var OrganizationProfilePage = /* @__PURE__ */ defineComponent((props, { slots }) => {
+	const ctx = inject(OrganizationProfileInjectionKey);
+	if (!ctx) return errorThrower$1.throw(organizationProfilePageRenderedError);
+	ctx.addCustomPage({
+		props,
+		slots,
+		component: OrganizationProfilePage
+	});
+	return () => null;
+}, { name: "OrganizationProfilePage" });
+Object.defineProperty(OrganizationProfilePage, "props", { value: ["label", "url"] });
+var OrganizationProfileLink = /* @__PURE__ */ defineComponent((props, { slots }) => {
+	const ctx = inject(OrganizationProfileInjectionKey);
+	if (!ctx) return errorThrower$1.throw(organizationProfileLinkRenderedError);
+	ctx.addCustomPage({
+		props,
+		slots,
+		component: OrganizationProfileLink
+	});
+	return () => null;
+}, { name: "OrganizationProfileLink" });
+Object.defineProperty(OrganizationProfileLink, "props", { value: ["url", "label"] });
+Object.assign(OrganizationProfile_default, {
+	Page: OrganizationProfilePage,
+	Link: OrganizationProfileLink
+});
+var isThatComponent = (v, component) => {
+	return !!v && isRenderFunction(v) && v.name === component.name;
+};
+var isRenderFunction = (v) => {
+	return "name" in v && "setup" in v;
+};
+function generateElementIdentifier() {
+	return Math.random().toString(36).substring(2, 7);
+}
+var useCustomElementPortal = () => {
+	const rawPortals = ref([]);
+	const portals = computed(() => {
+		return rawPortals.value.map((item) => {
+			return h(Teleport, { to: item.el }, item.slot());
+		});
+	});
+	const mount = (el, slot) => {
+		const id = generateElementIdentifier();
+		el.setAttribute("data-clerk-mount-id", id);
+		rawPortals.value.push({
+			id,
+			el,
+			slot
+		});
+	};
+	const unmount = (el) => {
+		const id = el?.getAttribute("data-clerk-mount-id");
+		if (id) {
+			const index = rawPortals.value.findIndex((portal) => portal.id === id);
+			if (index !== -1) rawPortals.value.splice(index, 1);
+		}
+	};
+	return {
+		portals,
+		mount,
+		unmount
+	};
+};
+var useUserProfileCustomPages = () => {
+	const { customPages, customPagesPortals, addCustomPage } = useCustomPages({
+		reorderItemsLabels: [
+			"account",
+			"security",
+			"billing",
+			"apiKeys"
+		],
+		PageComponent: UserProfilePage,
+		LinkComponent: UserProfileLink,
+		componentName: "UserProfile"
+	});
+	const addUserProfileCustomPage = (params) => {
+		return addCustomPage(params);
+	};
+	return {
+		customPages,
+		customPagesPortals,
+		addCustomPage: addUserProfileCustomPage
+	};
+};
+var useOrganizationProfileCustomPages = () => {
+	const { customPages, customPagesPortals, addCustomPage } = useCustomPages({
+		reorderItemsLabels: [
+			"general",
+			"members",
+			"billing",
+			"apiKeys"
+		],
+		PageComponent: OrganizationProfilePage,
+		LinkComponent: OrganizationProfileLink,
+		componentName: "OrganizationProfile"
+	});
+	const addOrganizationProfileCustomPage = (params) => {
+		return addCustomPage(params);
+	};
+	return {
+		customPages,
+		customPagesPortals,
+		addCustomPage: addOrganizationProfileCustomPage
+	};
+};
+var useCustomPages = (customPagesParams) => {
+	const customPages = ref([]);
+	const { portals: customPagesPortals, mount, unmount } = useCustomElementPortal();
+	const { PageComponent, LinkComponent, reorderItemsLabels, componentName } = customPagesParams;
+	const addCustomPage = (params) => {
+		const { props, slots, component } = params;
+		const { label, url } = props;
+		if (isThatComponent(component, PageComponent)) if (isReorderItem(props, slots, reorderItemsLabels)) customPages.value.push({ label });
+		else if (isCustomPage(props, slots)) customPages.value.push({
+			label,
+			url,
+			mountIcon(el) {
+				mount(el, slots.labelIcon);
+			},
+			unmountIcon: unmount,
+			mount(el) {
+				mount(el, slots.default);
+			},
+			unmount
+		});
+		else {
+			logErrorInDevMode(customPageWrongProps(componentName));
+			return;
+		}
+		if (isThatComponent(component, LinkComponent)) if (isExternalLink(props, slots)) customPages.value.push({
+			label,
+			url,
+			mountIcon(el) {
+				mount(el, slots.labelIcon);
+			},
+			unmountIcon: unmount
+		});
+		else {
+			logErrorInDevMode(customLinkWrongProps(componentName));
+			return;
+		}
+	};
+	return {
+		customPages,
+		customPagesPortals,
+		addCustomPage
+	};
+};
+var isReorderItem = (props, slots, validItems) => {
+	const { label, url } = props;
+	const { default: defaultSlot, labelIcon } = slots;
+	return !defaultSlot && !url && !labelIcon && validItems.some((v) => v === label);
+};
+var isCustomPage = (props, slots) => {
+	const { label, url } = props;
+	const { default: defaultSlot, labelIcon } = slots;
+	return !!defaultSlot && !!url && !!labelIcon && !!label;
+};
+var isExternalLink = (props, slots) => {
+	const { label, url } = props;
+	const { default: defaultSlot, labelIcon } = slots;
+	return !defaultSlot && !!url && !!labelIcon && !!label;
+};
+var _sfc_main10 = /* @__PURE__ */ defineComponent({
+	__name: "UserProfile",
+	props: {
+		path: {
+			type: null,
+			required: false
+		},
+		routing: {
+			type: String,
+			required: false
+		},
+		appearance: {
+			type: null,
+			required: false
+		},
+		additionalOAuthScopes: {
+			type: Object,
+			required: false
+		},
+		__experimental_startPath: {
+			type: String,
+			required: false
+		},
+		apiKeysProps: {
+			type: Object,
+			required: false
+		}
+	},
+	setup(__props, { expose: __expose }) {
+		__expose();
+		const props = __props;
+		const clerk = useClerk();
+		const { customPages, customPagesPortals, addCustomPage } = useUserProfileCustomPages();
+		const finalProps = computed(() => ({
+			...props,
+			customPages: customPages.value
+		}));
+		provide(UserProfileInjectionKey, { addCustomPage });
+		const __returned__ = {
+			props,
+			clerk,
+			customPages,
+			customPagesPortals,
+			addCustomPage,
+			finalProps,
+			get ClerkHostRenderer() {
+				return ClerkHostRenderer;
+			},
+			get CustomPortalsRenderer() {
+				return CustomPortalsRenderer;
+			}
+		};
+		Object.defineProperty(__returned__, "__isScriptSetup", {
+			enumerable: false,
+			value: true
+		});
+		return __returned__;
+	}
+});
+function _sfc_render10(_ctx, _cache, $props, $setup, $data, $options) {
+	return openBlock(), createElementBlock(Fragment, null, [
+		createVNode($setup["ClerkHostRenderer"], {
+			mount: $setup.clerk?.mountUserProfile,
+			unmount: $setup.clerk?.unmountUserProfile,
+			props: $setup.finalProps,
+			"update-props": $setup.clerk?.__internal_updateProps
+		}, null, 8, [
+			"mount",
+			"unmount",
+			"props",
+			"update-props"
+		]),
+		createVNode($setup["CustomPortalsRenderer"], { "custom-pages-portals": $setup.customPagesPortals }, null, 8, ["custom-pages-portals"]),
+		renderSlot(_ctx.$slots, "default")
+	], 64);
+}
+var UserProfile_default = /* @__PURE__ */ export_helper_default(_sfc_main10, [["render", _sfc_render10], ["__file", "/home/runner/work/javascript/javascript/packages/vue/src/components/ui-components/UserProfile/UserProfile.vue"]]);
+var UserProfilePage = /* @__PURE__ */ defineComponent((props, { slots }) => {
+	const ctx = inject(UserProfileInjectionKey);
+	if (!ctx) return errorThrower$1.throw(userProfilePageRenderedError);
+	ctx.addCustomPage({
+		props,
+		slots,
+		component: UserProfilePage
+	});
+	return () => null;
+}, { name: "UserProfilePage" });
+Object.defineProperty(UserProfilePage, "props", { value: ["label", "url"] });
+var UserProfileLink = /* @__PURE__ */ defineComponent((props, { slots }) => {
+	const ctx = inject(UserProfileInjectionKey);
+	if (!ctx) return errorThrower$1.throw(userProfileLinkRenderedError);
+	ctx.addCustomPage({
+		props,
+		slots,
+		component: UserProfileLink
+	});
+	return () => null;
+}, { name: "UserProfileLink" });
+Object.defineProperty(UserProfileLink, "props", { value: ["url", "label"] });
+Object.assign(UserProfile_default, {
+	Page: UserProfilePage,
+	Link: UserProfileLink
+});
+var _sfc_main11 = /* @__PURE__ */ defineComponent({
+	__name: "OrganizationSwitcher",
+	props: {
+		createOrganizationUrl: {
+			type: null,
+			required: false
+		},
+		createOrganizationMode: {
+			type: String,
+			required: false
+		},
+		organizationProfileUrl: {
+			type: null,
+			required: false
+		},
+		organizationProfileMode: {
+			type: String,
+			required: false
+		},
+		defaultOpen: {
+			type: Boolean,
+			required: false
+		},
+		hidePersonal: {
+			type: Boolean,
+			required: false
+		},
+		afterCreateOrganizationUrl: {
+			type: [Function, Object],
+			required: false,
+			skipCheck: true
+		},
+		afterSelectOrganizationUrl: {
+			type: [Function, Object],
+			required: false,
+			skipCheck: true
+		},
+		afterSelectPersonalUrl: {
+			type: [Function, Object],
+			required: false,
+			skipCheck: true
+		},
+		afterLeaveOrganizationUrl: {
+			type: String,
+			required: false
+		},
+		skipInvitationScreen: {
+			type: Boolean,
+			required: false
+		},
+		appearance: {
+			type: null,
+			required: false
+		},
+		organizationProfileProps: {
+			type: Object,
+			required: false
+		}
+	},
+	setup(__props, { expose: __expose }) {
+		__expose();
+		const clerk = useClerk();
+		const props = __props;
+		const { customPages, customPagesPortals, addCustomPage } = useOrganizationProfileCustomPages();
+		const finalProps = computed(() => ({
+			...props,
+			organizationProfileProps: {
+				...props.organizationProfileProps || {},
+				customPages: customPages.value
+			}
+		}));
+		provide(OrganizationProfileInjectionKey, { addCustomPage });
+		const __returned__ = {
+			clerk,
+			props,
+			customPages,
+			customPagesPortals,
+			addCustomPage,
+			finalProps,
+			get ClerkHostRenderer() {
+				return ClerkHostRenderer;
+			},
+			get CustomPortalsRenderer() {
+				return CustomPortalsRenderer;
+			}
+		};
+		Object.defineProperty(__returned__, "__isScriptSetup", {
+			enumerable: false,
+			value: true
+		});
+		return __returned__;
+	}
+});
+function _sfc_render11(_ctx, _cache, $props, $setup, $data, $options) {
+	return openBlock(), createElementBlock(Fragment, null, [
+		createVNode($setup["ClerkHostRenderer"], {
+			mount: $setup.clerk?.mountOrganizationSwitcher,
+			unmount: $setup.clerk?.unmountOrganizationSwitcher,
+			"update-props": $setup.clerk?.__internal_updateProps,
+			props: $setup.finalProps
+		}, null, 8, [
+			"mount",
+			"unmount",
+			"update-props",
+			"props"
+		]),
+		createVNode($setup["CustomPortalsRenderer"], { "custom-pages-portals": $setup.customPagesPortals }, null, 8, ["custom-pages-portals"]),
+		renderSlot(_ctx.$slots, "default")
+	], 64);
+}
+Object.assign(/* @__PURE__ */ export_helper_default(_sfc_main11, [["render", _sfc_render11], ["__file", "/home/runner/work/javascript/javascript/packages/vue/src/components/ui-components/OrganizationSwitcher/OrganizationSwitcher.vue"]]), {
+	OrganizationProfilePage,
+	OrganizationProfileLink
+});
+var useUserButtonCustomMenuItems = () => {
+	const customMenuItems = ref([]);
+	const { portals: customMenuItemsPortals, mount, unmount } = useCustomElementPortal();
+	const reorderItemsLabels = ["manageAccount", "signOut"];
+	function addCustomMenuItem(params) {
+		const { props, component, slots } = params;
+		const { label, onClick, open, href } = props;
+		if (isThatComponent(component, MenuAction)) if (isReorderItem2(props, slots, reorderItemsLabels)) customMenuItems.value.push({ label });
+		else if (isCustomMenuItem(props, slots)) {
+			const baseItem = {
+				label,
+				mountIcon(el) {
+					mount(el, slots.labelIcon);
+				},
+				unmountIcon: unmount
+			};
+			if (onClick !== void 0) customMenuItems.value.push({
+				...baseItem,
+				onClick,
+				open
+			});
+			else if (open !== void 0) customMenuItems.value.push({
+				...baseItem,
+				open: open.startsWith("/") ? open : `/${open}`
+			});
+			else {
+				logErrorInDevMode("Custom menu item must have either onClick or open property");
+				return;
+			}
+		} else {
+			logErrorInDevMode(userButtonMenuItemActionWrongProps);
+			return;
+		}
+		if (isThatComponent(component, MenuLink)) if (isExternalLink2(props, slots)) customMenuItems.value.push({
+			label,
+			href,
+			mountIcon(el) {
+				mount(el, slots.labelIcon);
+			},
+			unmountIcon: unmount
+		});
+		else {
+			logErrorInDevMode(userButtonMenuItemLinkWrongProps);
+			return;
+		}
+	}
+	return {
+		customMenuItems,
+		customMenuItemsPortals,
+		addCustomMenuItem
+	};
+};
+var isReorderItem2 = (props, slots, validItems) => {
+	const { label, onClick } = props;
+	const { labelIcon } = slots;
+	return !onClick && !labelIcon && validItems.some((v) => v === label);
+};
+var isCustomMenuItem = (props, slots) => {
+	const { label, onClick, open } = props;
+	const { labelIcon } = slots;
+	return !!labelIcon && !!label && (typeof onClick === "function" || typeof open === "string");
+};
+var isExternalLink2 = (props, slots) => {
+	const { label, href } = props;
+	const { labelIcon } = slots;
+	return !!href && !!labelIcon && !!label;
+};
+var _sfc_main13 = /* @__PURE__ */ defineComponent({
+	__name: "UserButton",
+	props: {
+		userProfileUrl: {
+			type: null,
+			required: false
+		},
+		userProfileMode: {
+			type: String,
+			required: false
+		},
+		showName: {
+			type: Boolean,
+			required: false
+		},
+		defaultOpen: {
+			type: Boolean,
+			required: false
+		},
+		__experimental_asStandalone: {
+			type: [Boolean, Function],
+			required: false
+		},
+		signInUrl: {
+			type: String,
+			required: false
+		},
+		afterSwitchSessionUrl: {
+			type: String,
+			required: false
+		},
+		appearance: {
+			type: null,
+			required: false
+		},
+		userProfileProps: {
+			type: Object,
+			required: false
+		}
+	},
+	setup(__props, { expose: __expose }) {
+		__expose();
+		const props = __props;
+		const clerk = useClerk();
+		const { customMenuItems, customMenuItemsPortals, addCustomMenuItem } = useUserButtonCustomMenuItems();
+		const { customPages, customPagesPortals, addCustomPage } = useUserProfileCustomPages();
+		const finalProps = computed(() => ({
+			...props,
+			userProfileProps: {
+				...props.userProfileProps || {},
+				customPages: customPages.value
+			},
+			customMenuItems: customMenuItems.value
+		}));
+		provide(UserButtonInjectionKey, { addCustomMenuItem });
+		provide(UserProfileInjectionKey, { addCustomPage });
+		const __returned__ = {
+			props,
+			clerk,
+			customMenuItems,
+			customMenuItemsPortals,
+			addCustomMenuItem,
+			customPages,
+			customPagesPortals,
+			addCustomPage,
+			finalProps,
+			get ClerkHostRenderer() {
+				return ClerkHostRenderer;
+			},
+			get CustomPortalsRenderer() {
+				return CustomPortalsRenderer;
+			}
+		};
+		Object.defineProperty(__returned__, "__isScriptSetup", {
+			enumerable: false,
+			value: true
+		});
+		return __returned__;
+	}
+});
+function _sfc_render13(_ctx, _cache, $props, $setup, $data, $options) {
+	return openBlock(), createElementBlock(Fragment, null, [
+		createVNode($setup["ClerkHostRenderer"], {
+			mount: $setup.clerk?.mountUserButton,
+			unmount: $setup.clerk?.unmountUserButton,
+			props: $setup.finalProps,
+			"update-props": $setup.clerk?.__internal_updateProps
+		}, null, 8, [
+			"mount",
+			"unmount",
+			"props",
+			"update-props"
+		]),
+		createVNode($setup["CustomPortalsRenderer"], {
+			"custom-pages-portals": $setup.customPagesPortals,
+			"custom-menu-items-portals": $setup.customMenuItemsPortals
+		}, null, 8, ["custom-pages-portals", "custom-menu-items-portals"]),
+		renderSlot(_ctx.$slots, "default")
+	], 64);
+}
+var UserButton_default = /* @__PURE__ */ export_helper_default(_sfc_main13, [["render", _sfc_render13], ["__file", "/home/runner/work/javascript/javascript/packages/vue/src/components/ui-components/UserButton/UserButton.vue"]]);
+var MenuItems = /* @__PURE__ */ defineComponent((_, { slots }) => {
+	const ctx = inject(UserButtonInjectionKey);
+	if (!ctx) return errorThrower$1.throw(userButtonMenuItemsRenderedError);
+	provide(UserButtonMenuItemsInjectionKey, ctx);
+	return () => slots.default?.();
+});
+var MenuAction = /* @__PURE__ */ defineComponent((props, { slots }) => {
+	const ctx = inject(UserButtonMenuItemsInjectionKey);
+	if (!ctx) return errorThrower$1.throw(userButtonMenuActionRenderedError);
+	ctx.addCustomMenuItem({
+		props,
+		slots,
+		component: MenuAction
+	});
+	return () => null;
+}, { name: "MenuAction" });
+Object.defineProperty(MenuAction, "props", { value: [
+	"label",
+	"onClick",
+	"open"
+] });
+var MenuLink = /* @__PURE__ */ defineComponent((props, { slots }) => {
+	const ctx = inject(UserButtonMenuItemsInjectionKey);
+	if (!ctx) return errorThrower$1.throw(userButtonMenuLinkRenderedError);
+	ctx.addCustomMenuItem({
+		props,
+		slots,
+		component: MenuLink
+	});
+	return () => null;
+}, { name: "MenuLink" });
+Object.defineProperty(MenuLink, "props", { value: ["href", "label"] });
+var UserButton = Object.assign(UserButton_default, {
+	MenuItems,
+	Action: MenuAction,
+	Link: MenuLink,
+	UserProfilePage,
+	UserProfileLink
+});
+var _sfc_main14 = /* @__PURE__ */ defineComponent({
+	__name: "SignInButton",
+	props: {
+		mode: {
+			type: String,
+			required: false
+		},
+		appearance: {
+			type: null,
+			required: false
+		},
+		fallbackRedirectUrl: {
+			type: [String, null],
+			required: false
+		},
+		forceRedirectUrl: {
+			type: [String, null],
+			required: false
+		},
+		signUpForceRedirectUrl: {
+			type: [String, null],
+			required: false
+		},
+		signUpFallbackRedirectUrl: {
+			type: [String, null],
+			required: false
+		},
+		initialValues: {
+			type: Object,
+			required: false
+		},
+		withSignUp: {
+			type: Boolean,
+			required: false
+		},
+		oauthFlow: {
+			type: String,
+			required: false
+		}
+	},
+	setup(__props, { expose: __expose }) {
+		__expose();
+		const props = __props;
+		const clerk = useClerk();
+		const slots = useSlots();
+		const attrs = useAttrs();
+		function getChildComponent() {
+			return assertSingleChild(normalizeWithDefaultValue(slots.default?.({}), "Sign in"), "SignInButton");
+		}
+		function clickHandler() {
+			const { mode, ...opts } = props;
+			if (mode === "modal") return clerk.value?.openSignIn({
+				...opts,
+				appearance: props.appearance
+			});
+			const { withSignUp, ...redirectOpts } = opts;
+			clerk.value?.redirectToSignIn({
+				...redirectOpts,
+				signInFallbackRedirectUrl: props.fallbackRedirectUrl,
+				signInForceRedirectUrl: props.forceRedirectUrl
+			});
+		}
+		const __returned__ = {
+			props,
+			clerk,
+			slots,
+			attrs,
+			getChildComponent,
+			clickHandler
+		};
+		Object.defineProperty(__returned__, "__isScriptSetup", {
+			enumerable: false,
+			value: true
+		});
+		return __returned__;
+	}
+});
+function _sfc_render14(_ctx, _cache, $props, $setup, $data, $options) {
+	return openBlock(), createBlock(resolveDynamicComponent($setup.getChildComponent), mergeProps($setup.attrs, { onClick: $setup.clickHandler }), {
+		default: withCtx(() => [renderSlot(_ctx.$slots, "default")]),
+		_: 3
+	}, 16);
+}
+var SignInButton_default = /* @__PURE__ */ export_helper_default(_sfc_main14, [["render", _sfc_render14], ["__file", "/home/runner/work/javascript/javascript/packages/vue/src/components/SignInButton.vue"]]);
+var SDK_METADATA = {
+	name: "@clerk/vue",
+	version: "2.0.7",
+	environment: "production"
+};
+var clerkPlugin = { install(app, pluginOptions) {
+	const { initialState } = pluginOptions || {};
+	const loaded = shallowRef(false);
+	const clerk = shallowRef(null);
+	const resources = ref({
+		client: void 0,
+		session: void 0,
+		user: void 0,
+		organization: void 0
+	});
+	const options = {
+		...pluginOptions,
+		sdkMetadata: pluginOptions.sdkMetadata || SDK_METADATA
+	};
+	if (inBrowser()) (async () => {
+		try {
+			const clerkPromise = loadClerkJSScript(options);
+			const uiProp = pluginOptions.ui;
+			const clerkUICtorPromise = uiProp?.ClerkUI ? Promise.resolve(uiProp.ClerkUI) : uiProp || pluginOptions.prefetchUI === false ? Promise.resolve(void 0) : (async () => {
+				await loadClerkUIScript(options);
+				if (!window.__internal_ClerkUICtor) throw new Error("Failed to download latest Clerk UI. Contact support@clerk.com.");
+				return window.__internal_ClerkUICtor;
+			})();
+			await clerkPromise;
+			if (!window.Clerk) throw new Error("Failed to download latest ClerkJS. Contact support@clerk.com.");
+			clerk.value = window.Clerk;
+			const loadOptions = {
+				...options,
+				ui: {
+					...pluginOptions.ui,
+					ClerkUI: clerkUICtorPromise
+				}
+			};
+			await window.Clerk.load(loadOptions);
+			loaded.value = true;
+			if (clerk.value) {
+				clerk.value.addListener((payload) => {
+					resources.value = payload;
+				});
+				triggerRef(clerk);
+			}
+		} catch (err) {
+			const error = err;
+			console.error(error.stack || error.message || error);
+		}
+	})();
+	const derivedState = computed(() => deriveState(loaded.value, resources.value, initialState));
+	const authCtx = computed(() => {
+		const { sessionId, userId, orgId, actor, orgRole, orgSlug, orgPermissions, sessionStatus, sessionClaims, factorVerificationAge } = derivedState.value;
+		return {
+			sessionId,
+			userId,
+			actor,
+			orgId,
+			orgRole,
+			orgSlug,
+			orgPermissions,
+			sessionStatus,
+			sessionClaims,
+			factorVerificationAge
+		};
+	});
+	const clientCtx = computed(() => resources.value.client);
+	const userCtx = computed(() => derivedState.value.user);
+	const sessionCtx = computed(() => derivedState.value.session);
+	const organizationCtx = computed(() => derivedState.value.organization);
+	app.provide(ClerkInjectionKey, {
+		loaded,
+		clerk,
+		authCtx,
+		clientCtx,
+		sessionCtx,
+		userCtx,
+		organizationCtx
+	});
+} };
+setErrorThrowerOptions({ packageName: "@clerk/vue" });
+setClerkJSLoadingErrorPackageName("@clerk/vue");
 //#endregion
 //#region src/comps/UserAuth.vue?vue&type=script&setup=true&lang.ts
 var _hoisted_1$1 = { class: "flex" };
-var _hoisted_3$1 = [/* @__PURE__ */ createBaseVNode("img", {
-	class: "w-[50px]",
-	src: "https://i.imgur.com/wZFfVj8.jpeg"
-}, null, -1)];
-var _hoisted_4$1 = {
+var _hoisted_2$1 = {
 	key: 0,
 	class: "p-[15px]"
 };
-var _hoisted_5$1 = {
+var _hoisted_3$1 = {
+	key: 0,
+	class: "p-[15px]"
+};
+var _hoisted_4$1 = {
 	key: 1,
 	class: "p-[15px]"
 };
-var _hoisted_6$1 = { key: 0 };
-var _hoisted_7$1 = {
-	key: 0,
-	class: "p-[15px] flex"
-};
-var _hoisted_8$1 = {
-	key: 0,
-	class: "p-[15px]"
-};
-var _hoisted_9 = { class: "card" };
-var _hoisted_10 = { class: "flex" };
 //#endregion
 //#region src/comps/UserAuth.vue
 var UserAuth_default = /* @__PURE__ */ defineComponent({
 	__name: "UserAuth",
 	emits: ["changed"],
 	setup(__props, { emit: __emit }) {
-		const s = glib.vue.reactive({
-			user: runtime.user,
-			key: "",
-			expand: false
-		});
-		const emits = __emit;
-		const signOut = () => {
-			loader("/api/public/auth", { act: "sign-out" }, (rep) => {
-				runtime.user = glib.Mor.studio.EuComplex_empty();
-				runtime.session = "";
-				s.user = runtime.user;
-				localStorage.setItem("runtime.user", JSON.stringify(runtime.user));
-				localStorage.setItem("runtime.session", JSON.stringify(runtime.session));
-				s.expand = false;
-				emits("changed", runtime.user, runtime.session);
-			});
-		};
-		const authKey = () => {
-			loader("/api/public/auth", { key: s.key }, (rep) => {
-				runtime.user = rep.eux;
-				runtime.session = rep.session;
-				s.user = runtime.user;
-				localStorage.setItem("runtime.user", JSON.stringify(runtime.user));
-				localStorage.setItem("runtime.session", JSON.stringify(runtime.session));
-				s.expand = false;
-				emits("changed", runtime.user, runtime.session);
-			});
-		};
+		const { isSignedIn, user } = useUser();
+		const s = glib.vue.reactive({ rt: runtime });
 		glib.vue.onMounted(async () => {});
+		watch(isSignedIn, async (newVal) => {
+			if (newVal === true) {
+				console.log("🚀 登录成功，准备联调后端...");
+				try {
+					const response = await post("/api/public/auth", {
+						clerkId: user?.value?.id,
+						email: user?.value?.primaryEmailAddress?.emailAddress,
+						caption: user?.value?.fullName || user?.value?.username,
+						avatar: user?.value?.imageUrl
+					});
+					const { Er, session, eux } = response;
+					if (Er === "OK") {
+						s.rt.user = eux;
+						s.rt.session = session;
+					}
+					console.log("✅ 后端响应成功:", response);
+				} catch (err) {
+					console.error("❌ 请求后端失败，请检查终端日志或 C# 断面:", err);
+				}
+			}
+		});
 		return (_ctx, _cache) => {
 			const _component_router_link = resolveComponent("router-link");
-			return openBlock(), createElementBlock("div", null, [createBaseVNode("div", _hoisted_1$1, [
-				createBaseVNode("a", {
-					onClick: _cache[0] || (_cache[0] = () => {}),
-					class: "image-button"
-				}, _hoisted_3$1),
-				unref(s).user.eu.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_4$1, toDisplayString(unref(s).user.eu.p.Caption), 1)) : (openBlock(), createElementBlock("div", _hoisted_5$1, " Visitor ")),
-				createBaseVNode("button", { onClick: _cache[1] || (_cache[1] = ($event) => unref(s).expand = !unref(s).expand) }, "Toggle")
-			]), unref(s).expand ? (openBlock(), createElementBlock("div", _hoisted_6$1, [unref(s).user.eu.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_7$1, [unref(s).user.eu.p.AuthType == 2 ? (openBlock(), createElementBlock("div", _hoisted_8$1, [createVNode(_component_router_link, { to: "/Admin" }, {
-				default: withCtx(() => [createTextVNode("Admin")]),
-				_: 1
-			})])) : createCommentVNode("", true), createBaseVNode("button", {
-				class: "inline",
-				onClick: signOut
-			}, "Sign Out")])) : createCommentVNode("", true), createBaseVNode("div", _hoisted_9, [createBaseVNode("div", null, [createBaseVNode("div", _hoisted_10, [createTextVNode(" Key "), withDirectives(createBaseVNode("input", {
-				"onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => unref(s).key = $event),
-				type: "text"
-			}, null, 512), [[vModelText, unref(s).key]])])]), createBaseVNode("div", null, [createBaseVNode("button", { onClick: authKey }, "Authorize")])])])) : createCommentVNode("", true)]);
+			return openBlock(), createElementBlock("div", null, [createBaseVNode("div", _hoisted_1$1, [unref(s).rt.user.eu.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_2$1, [
+				createVNode(unref(UserButton)),
+				createTextVNode(" " + toDisplayString(unref(s).rt.user.eu.p.Caption) + " " + toDisplayString(unref(s).rt.user.eu.p) + " ", 1),
+				unref(s).rt.user.eu.p.AuthType == 2 ? (openBlock(), createElementBlock("div", _hoisted_3$1, [createVNode(_component_router_link, { to: "/Admin" }, {
+					default: withCtx(() => [createTextVNode("Admin")]),
+					_: 1
+				})])) : createCommentVNode("", true)
+			])) : (openBlock(), createElementBlock("div", _hoisted_4$1, [createVNode(unref(SignInButton_default)), createTextVNode(" via Google ")]))])]);
 		};
 	}
 });
@@ -12325,40 +12445,11 @@ var _hoisted_8 = /* @__PURE__ */ createBaseVNode("div", { class: "flex justify-c
 var _sfc_main = {
 	__name: "App",
 	setup(__props) {
-		const { isSignedIn, user } = useUser();
-		const s = glib.vue.reactive({ rt: runtime });
-		watch(isSignedIn, async (newVal) => {
-			if (newVal === true) {
-				console.log("🚀 登录成功，准备联调后端...");
-				try {
-					const response = await post("/api/public/auth", {
-						clerkId: user.value.id,
-						email: user.value.primaryEmailAddress?.emailAddress,
-						caption: user.value.fullName || user.value.username,
-						avatar: user.value.imageUrl
-					});
-					const { Er, session, eux } = response;
-					if (Er === "OK") {
-						s.rt.user = eux;
-						s.rt.session = session;
-					}
-					console.log("✅ 后端响应成功:", response);
-				} catch (err) {
-					console.error("❌ 请求后端失败，请检查终端日志或 C# 断面:", err);
-				}
-			}
-		});
+		glib.vue.reactive({ rt: runtime });
 		return (_ctx, _cache) => {
 			const _component_router_link = resolveComponent("router-link");
 			const _component_router_view = resolveComponent("router-view");
 			return openBlock(), createElementBlock(Fragment, null, [
-				createBaseVNode("header", null, [createVNode(unref(Show), { when: "signed-out" }, {
-					default: withCtx(() => [createVNode(unref(SignInButton_default)), createVNode(unref(SignUpButton_default))]),
-					_: 1
-				}), createVNode(unref(Show), { when: "signed-in" }, {
-					default: withCtx(() => [createVNode(unref(UserButton))]),
-					_: 1
-				})]),
 				_hoisted_1,
 				_hoisted_2,
 				createBaseVNode("div", _hoisted_3, [createBaseVNode("div", _hoisted_4, [

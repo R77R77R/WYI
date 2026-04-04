@@ -98,6 +98,99 @@ let init (runtime:Runtime) =
         |> Async.RunSynchronously
         |> runtime.output
 
+    (fun (i:UCAT) -> runtime.data.cats[i.ID] <- i)
+    |> loadAll runtime.output conn UCAT_metadata
+
+    (fun (i:UPROVIDER) -> runtime.data.providers[i.ID] <- i)
+    |> loadAll runtime.output conn UPROVIDER_metadata
+
+    let importUtilProviders () = 
+        let txt = """
+    Internet | Spectrum
+    Internet | Comcast
+    Internet | Windstream
+    Cellphone | Verizon
+    Cellphone | AT&T
+    Cellphone | T-Mobile
+    Landlines | Verizon
+    Cable TV | Spectrum
+    Cable TV | Comcast
+    Cable TV | Optimum
+    Satellite TV | Direct TV
+    Satellite TV | Dish
+    Satellite Radio | Sirius XM
+    Security Monitoring | ADT
+    Security Monitoring | Vivint
+    Security Monitoring | Brinks
+    Payroll | ADP
+    Payroll | Paychex
+    Credit Card Processing | Global
+    Credit Card Processing | World Pay
+    Trash | Waste Mgmt.
+    Trash | Republic
+    Trash | GFL
+    Trash | Local companies
+    Pest Control | Terminix
+    Pest Control | Orkin
+    Lawn Care | TruGreen
+    Subscriptions/Memberships | Adobe
+    Subscriptions/Memberships | Salesforce
+    Subscriptions/Memberships | HubSpot
+    Advertising | Billboards
+    Advertising | Newspapers
+    Advertising | Magazines
+    Advertising | Yellow Pages
+    Water Delivery | Ready Refresh
+    Water Delivery | Primo
+    Water Delivery | Crystal Rock
+    Propane Gas | (Not specified)
+    Heating Oil | (Not specified)
+    Elevator Maintenance Contracts | Otis
+    CO2 (for Restaurants) | (Not specified)
+    Monthly Recurring Bills | (Miscellaneous)    """
+
+        txt.Split Util.Text.crlf
+        |> Array.map(fun s -> s.Trim())
+        |> Array.filter(fun s -> s.Contains "|")
+        |> Array.map(fun s -> 
+            let ss = s.Split "|"
+            let cat = ss[0].Trim()
+            let provider = ss[1].Trim()
+            cat,provider)
+        |> Array.filter(fun (cat,provider) -> 
+            provider.StartsWith "(" = false && provider.EndsWith ")" = false)
+        |> Array.map(fun (cat,provider) -> 
+            match
+                (match
+                    runtime.data.cats.Values
+                    |> Array.tryFind(fun i -> i.p.Caption = cat) with
+                | Some ucat -> Some ucat
+                | None ->
+                    match
+                        (fun (p:pUCAT) -> 
+                            p.Caption <- cat) 
+                        |> creator UCAT_metadata with
+                    | Some v -> 
+                        runtime.data.cats[v.ID] <- v
+                        Some v
+                    | None -> None) with
+            | Some ucat -> 
+                match
+                    runtime.data.providers.Values
+                    |> Array.tryFind(fun i -> i.p.Caption = provider) with
+                | Some uprovider -> ()
+                | None ->
+                    match
+                        (fun (p:pUPROVIDER) ->
+                            p.Cat <- ucat.ID
+                            p.Caption <- provider) 
+                        |> creator UPROVIDER_metadata with
+                    | Some v -> 
+                        runtime.data.providers[v.ID] <- v
+                    | None -> ()            
+            | None -> ())
+    //importUtilProviders()
+
     (fun (i:EU) -> runtime.users[i.ID] <- { eu = i })
     |> loadAll runtime.output conn EU_metadata
 

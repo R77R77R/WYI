@@ -638,9 +638,6 @@ video {
 .mt-5 {
   margin-top: 1.25rem;
 }
-.inline {
-  display: inline;
-}
 .flex {
   display: flex;
 }
@@ -682,9 +679,6 @@ video {
 }
 .w-\[370px\] {
   width: 370px;
-}
-.w-\[50px\] {
-  width: 50px;
 }
 .w-\[800px\] {
   width: 800px;

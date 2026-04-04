@@ -43,6 +43,22 @@ let branching (x:X) =
         match x.Struct.api with
         | "ping" -> bindx apiPing
         | "auth" -> bindx auth
+        | "providers" -> 
+            (fun (x:X) ->
+                let providers = runtime.data.providers.Values
+                runtime.data.cats.Values
+                |> Array.map(fun ucat -> 
+                    let ary = 
+                        providers 
+                        |> Array.filter(fun i -> i.p.Cat = ucat.ID)
+                        |> Array.map UPROVIDER__json
+                        |> Json.Ary
+
+                    [|  ("ucat", ucat |> UCAT__json) 
+                        ("providers",ary)  |]
+                    |> Json.Braket)
+                |> Json.Ary
+                |> wrapOk "data") |> bindx
         | "msg" -> (fun (x:X) -> 
             let json = x.Json
             let name = (tryFindStrByAtt "name" json).Trim()
