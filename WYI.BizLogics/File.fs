@@ -72,10 +72,10 @@ let incomingFile (formfile:IFormFile) =
                 p.Path <- filename
                 true) then
 
-            let rep = 
-                rcd
-                |> FILE__json
-                |> wrapOk "data"
+            let rep =
+                [|  ok  
+                    ("file",rcd |> FILE__json)
+                    ("billx",BillComplex_empty() |> BillComplex__json) |]
                 |> Json.Braket
 
             return rep

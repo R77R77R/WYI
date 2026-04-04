@@ -7,11 +7,11 @@
         </div>
 
         <div v-if="props.filex.rcd.id > 0">
-        <div>Cat: {{ props.filex.rcd.p.Cat }}</div>
-        <div>Provider: {{ props.filex.rcd.p.Provider }}</div>
-        <div>Unit: {{ props.filex.rcd.p.Unit }}</div>
-        <div>Acct Number: </div>
-        <div>Amount: </div>
+        <div>Cat: {{ s.billx.cato?.p.Caption }}</div>
+        <div>Provider: {{ s.billx.providero?.p.Caption  }}</div>
+        <div>Unit: {{ s.billx.unito?.p.Caption  }}</div>
+        <div>Acct Number: {{ s.billx.accto?.p.AcctNum }}</div>
+        <div>Amount: {{ s.billx.bill.p.Amout }}</div>
         <div>File Name: {{ props.filex.file.name }}</div>
         <div>File Size: {{ (props.filex.file.size / 1024 / 1024).toFixed(2) }} MB</div>
         </div>
@@ -37,11 +37,13 @@ import { getCurrentInstance, toRefs, watch } from 'vue'
 import { glib } from '~/lib/glib'
 import { ref } from 'vue'
 import * as Common from '~/lib/store/common'
+import { BillComplex_empty } from '~/lib/shared/CustomMor'
 
 const props = defineProps(['filex'])
 props.filex as FileComplex
 
 const s = glib.vue.reactive({
+  billx: BillComplex_empty(),
   rt: runtime
 })
 
@@ -99,8 +101,10 @@ const executeUpload = async (task: UploadTask) => {
             if (xhr.status >= 200 && xhr.status < 300) {
                 try {
                     let rep = JSON.parse(xhr.responseText);
-                    if(rep.Er == "OK")
-                        props.filex.rcd = rep.data
+                    if(rep.Er == "OK"){
+                        props.filex.rcd = rep.file
+                        s.billx = rep.billx
+                    }
                     task.status = 'success';
                     task.progress = 100;
                     resolve(rep);
