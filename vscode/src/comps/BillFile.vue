@@ -7,11 +7,11 @@
         </div>
 
         <div v-if="props.filex.rcd.id > 0">
-        <div>Cat: {{ s.billx.cato?.p.Caption }}</div>
-        <div>Provider: {{ s.billx.providero?.p.Caption  }}</div>
-        <div>Unit: {{ s.billx.unito?.p.Caption  }}</div>
-        <div>Acct Number: {{ s.billx.accto?.p.AcctNum }}</div>
-        <div>Amount: {{ s.billx.bill.p.Amout }}</div>
+        <div v-if="s.billx.cato">Cat: {{ s.billx.cato?.p.Caption }}</div>
+        <div v-if="s.billx.providero">Provider: {{ s.billx.providero?.p.Caption  }}</div>
+        <div v-if="s.billx.unito">Unit: {{ s.billx.unito?.p.Caption  }}</div>
+        <div v-if="s.billx.accto">Acct Number: {{ s.billx.accto?.p.AcctNum }}</div>
+        <div v-if="s.billx.bill.id > 0">Amount: {{ s.billx.bill.p.Amout }}</div>
         <div>File Name: {{ props.filex.file.name }}</div>
         <div>File Size: {{ (props.filex.file.size / 1024 / 1024).toFixed(2) }} MB</div>
         </div>

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "v/DJGeERwf8=",
+  "dgSpecHash": "r5s73JiQy3Q=",
   "success": true,
   "projectFilePath": "C:\\Dev\\WYI\\WYI.BizLogics\\WYI.BizLogics.fsproj",
   "expectedPackageFiles": [
@@ -24,6 +24,8 @@
     "C:\\Users\\RR\\.nuget\\packages\\fsharpaux.io\\2.0.0\\fsharpaux.io.2.0.0.nupkg.sha512",
     "C:\\Users\\RR\\.nuget\\packages\\fsharpx.async\\1.14.1\\fsharpx.async.1.14.1.nupkg.sha512",
     "C:\\Users\\RR\\.nuget\\packages\\lambda2js.signed\\3.1.4\\lambda2js.signed.3.1.4.nupkg.sha512",
+    "C:\\Users\\RR\\.nuget\\packages\\magick.net-q8-anycpu\\14.11.1\\magick.net-q8-anycpu.14.11.1.nupkg.sha512",
+    "C:\\Users\\RR\\.nuget\\packages\\magick.net.core\\14.11.1\\magick.net.core.14.11.1.nupkg.sha512",
     "C:\\Users\\RR\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\8.0.0\\microsoft.aspnetcore.authentication.jwtbearer.8.0.0.nupkg.sha512",
     "C:\\Users\\RR\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\8.0.13\\microsoft.aspnetcore.jsonpatch.8.0.13.nupkg.sha512",
     "C:\\Users\\RR\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\6.0.0\\microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",

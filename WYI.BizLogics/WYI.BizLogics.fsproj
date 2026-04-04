@@ -20,6 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Magick.NET-Q8-AnyCPU" Version="14.11.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Common\UtilKestrel\UtilKestrel.fsproj" />
     <ProjectReference Include="..\..\Common\Util\Util.fsproj" />
     <ProjectReference Include="..\WYI.Shared\WYI.Shared.fsproj" />

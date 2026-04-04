@@ -28,11 +28,40 @@ open UtilKestrel.Json
 open UtilKestrel.SSR
 open UtilKestrel.Server
 
+open ImageMagick
+
 open WYI.BizLogics.Common
 open WYI.BizLogics.Auth
 open WYI.BizLogics.Db
 
 let output = runtime.output
+
+
+open ImageMagick
+open System.IO
+
+
+let generateThumbnailBytes (fileStream: Stream) (isPdf: bool) =
+    try
+        // 1. 配置读取参数
+        let settings = MagickReadSettings()
+        if isPdf then
+            settings.FrameIndex <- uint32 0 // 只读取 PDF 第一页
+            settings.FrameCount <- uint32 1
+            settings.Density <- Density(96.0) // 设置渲染分辨率，96 足够清晰且速度快
+
+        // 2. 加载图片/PDF
+        using (new MagickImage(fileStream, settings)) (fun image ->
+            // 3. 图像处理
+            image.Format <- MagickFormat.Jpeg // 统一转为 Jpeg 缩小体积
+            image.Resize(MagickGeometry(uint32 200, uint32 0)) // 宽度固定 200px，高度按比例缩放
+            image.Strip() // 移除所有元数据（如相机信息、坐标等）以压缩体积
+
+            // 4. 返回字节流用于存入数据库
+            image.ToByteArray()
+        )
+    with ex ->
+        [||]
 
 let incomingFile (formfile:IFormFile) = 
     async{
@@ -70,6 +99,10 @@ let incomingFile (formfile:IFormFile) =
             |> updateRcd "" conn FILE_metadata None (fun p -> 
                 p.State <- fileStateEnum.Normal
                 p.Path <- filename
+                p.Thumbnail <-
+                    let stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read)
+                    let isPdf = p.Suffix.ToLower() = "pdf"
+                    generateThumbnailBytes stream isPdf
                 true) then
 
             let rep =
@@ -87,3 +120,7 @@ let incomingFile (formfile:IFormFile) =
     
 let fileid__localpath id = 
     ""
+
+let thumbnail id = 
+
+    ()
