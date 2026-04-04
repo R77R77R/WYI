@@ -37,6 +37,10 @@ export type pFILE = {
     Size: number
     Thumbnail: array
     Owner: number
+    Cat: number
+    Provider: number
+    Unit: number
+    Bill: number
 }
 
 export type FILE = {
@@ -67,6 +71,10 @@ p:pCLIENT
 export type pUNIT = {
 [key:string]: any
     Caption: string
+    UnitNum: string
+    Address: string
+    State: string
+    Zip: string
 }
 
 export type UNIT = {
@@ -77,6 +85,25 @@ sort:number
 p:pUNIT
 }
 
+// [Kernel_UtilAcct] (UACCT)
+
+export type pUACCT = {
+[key:string]: any
+    Cat: number
+    Provider: number
+    client: number
+    Unit: number
+    AcctNum: string
+}
+
+export type UACCT = {
+id:number
+createdat:Date
+updatedat:Date
+sort:number
+p:pUACCT
+}
+
 // [Kernel_UtilBill] (UBILL)
 
 export type pUBILL = {
@@ -85,6 +112,7 @@ export type pUBILL = {
     Provider: number
     client: number
     Unit: number
+    UAcct: number
     Amout: number
 }
 

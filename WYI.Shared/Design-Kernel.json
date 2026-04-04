@@ -50,6 +50,57 @@
       {
         "enum": "Text",
         "name": "Caption"
+      },
+      {
+        "enum": "Chars",
+        "length": 5,
+        "name": "UnitNum"
+      },
+      {
+        "enum": "Text",
+        "name": "Address"
+      },
+      {
+        "enum": "Chars",
+        "length": 2,
+        "name": "State"
+      },
+      {
+        "enum": "Chars",
+        "length": 5,
+        "name": "Zip"
+      }
+    ]
+  },
+
+  {
+    "name": "Kernel_UtilAcct",
+    "shorthand": "uacct",
+    "id": 54229561,
+    "fields": [
+      {
+        "enum": "FK",
+        "ref": "Kernel_UtilCat",
+        "name": "Cat"
+      },
+      {
+        "enum": "FK",
+        "ref": "Kernel_UtilProvider",
+        "name": "Provider"
+      },
+      {
+        "enum": "FK",
+        "ref": "Kernel_Client",
+        "name": "client"
+      },
+      {
+        "enum": "FK",
+        "ref": "Kernel_Unit",
+        "name": "Unit"
+      },
+      {
+        "enum": "Text",
+        "name": "AcctNum"
       }
     ]
   },
@@ -78,6 +129,11 @@
         "enum": "FK",
         "ref": "Kernel_Unit",
         "name": "Unit"
+      },
+      {
+        "enum": "FK",
+        "ref": "Kernel_UnitAcct",
+        "name": "UAcct"
       },
       {
         "enum": "Float",

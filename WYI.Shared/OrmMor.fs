@@ -245,6 +245,14 @@ let pFILE__bin (bb:BytesBuilder) (p:pFILE) =
     p.Thumbnail |> bb.append
     
     p.Owner |> BitConverter.GetBytes |> bb.append
+    
+    p.Cat |> BitConverter.GetBytes |> bb.append
+    
+    p.Provider |> BitConverter.GetBytes |> bb.append
+    
+    p.Unit |> BitConverter.GetBytes |> bb.append
+    
+    p.Bill |> BitConverter.GetBytes |> bb.append
 
 let FILE__bin (bb:BytesBuilder) (v:FILE) =
     v.ID |> BitConverter.GetBytes |> bb.append
@@ -294,6 +302,18 @@ let bin__pFILE (bi:BinIndexed):pFILE =
     p.Owner <- BitConverter.ToInt64(bin,index.Value)
     index.Value <- index.Value + 8
     
+    p.Cat <- BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    p.Provider <- BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    p.Unit <- BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    p.Bill <- BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
     p
 
 let bin__FILE (bi:BinIndexed):FILE =
@@ -326,7 +346,11 @@ let pFILE__json (p:pFILE) =
         ("Suffix",p.Suffix |> Json.Str)
         ("Size",p.Size.ToString() |> Json.Num)
         ("Thumbnail",p.Thumbnail |> Convert.ToBase64String |> Json.Str)
-        ("Owner",p.Owner.ToString() |> Json.Num) |]
+        ("Owner",p.Owner.ToString() |> Json.Num)
+        ("Cat",p.Cat.ToString() |> Json.Num)
+        ("Provider",p.Provider.ToString() |> Json.Num)
+        ("Unit",p.Unit.ToString() |> Json.Num)
+        ("Bill",p.Bill.ToString() |> Json.Num) |]
     |> Json.Braket
 
 let FILE__json (v:FILE) =
@@ -365,6 +389,14 @@ let json__pFILEo (json:Json):pFILE option =
     p.Size <- checkfield fields "Size" |> parse_int64
     
     p.Owner <- checkfield fields "Owner" |> parse_int64
+    
+    p.Cat <- checkfield fields "Cat" |> parse_int64
+    
+    p.Provider <- checkfield fields "Provider" |> parse_int64
+    
+    p.Unit <- checkfield fields "Unit" |> parse_int64
+    
+    p.Bill <- checkfield fields "Bill" |> parse_int64
     
     p |> Some
     
@@ -527,6 +559,22 @@ let pUNIT__bin (bb:BytesBuilder) (p:pUNIT) =
     let binCaption = p.Caption |> Encoding.UTF8.GetBytes
     binCaption.Length |> BitConverter.GetBytes |> bb.append
     binCaption |> bb.append
+    
+    let binUnitNum = p.UnitNum |> Encoding.UTF8.GetBytes
+    binUnitNum.Length |> BitConverter.GetBytes |> bb.append
+    binUnitNum |> bb.append
+    
+    let binAddress = p.Address |> Encoding.UTF8.GetBytes
+    binAddress.Length |> BitConverter.GetBytes |> bb.append
+    binAddress |> bb.append
+    
+    let binState = p.State |> Encoding.UTF8.GetBytes
+    binState.Length |> BitConverter.GetBytes |> bb.append
+    binState |> bb.append
+    
+    let binZip = p.Zip |> Encoding.UTF8.GetBytes
+    binZip.Length |> BitConverter.GetBytes |> bb.append
+    binZip |> bb.append
 
 let UNIT__bin (bb:BytesBuilder) (v:UNIT) =
     v.ID |> BitConverter.GetBytes |> bb.append
@@ -546,6 +594,26 @@ let bin__pUNIT (bi:BinIndexed):pUNIT =
     index.Value <- index.Value + 4
     p.Caption <- Encoding.UTF8.GetString(bin,index.Value,count_Caption)
     index.Value <- index.Value + count_Caption
+    
+    let count_UnitNum = BitConverter.ToInt32(bin,index.Value)
+    index.Value <- index.Value + 4
+    p.UnitNum <- Encoding.UTF8.GetString(bin,index.Value,count_UnitNum)
+    index.Value <- index.Value + count_UnitNum
+    
+    let count_Address = BitConverter.ToInt32(bin,index.Value)
+    index.Value <- index.Value + 4
+    p.Address <- Encoding.UTF8.GetString(bin,index.Value,count_Address)
+    index.Value <- index.Value + count_Address
+    
+    let count_State = BitConverter.ToInt32(bin,index.Value)
+    index.Value <- index.Value + 4
+    p.State <- Encoding.UTF8.GetString(bin,index.Value,count_State)
+    index.Value <- index.Value + count_State
+    
+    let count_Zip = BitConverter.ToInt32(bin,index.Value)
+    index.Value <- index.Value + 4
+    p.Zip <- Encoding.UTF8.GetString(bin,index.Value,count_Zip)
+    index.Value <- index.Value + count_Zip
     
     p
 
@@ -572,7 +640,11 @@ let bin__UNIT (bi:BinIndexed):UNIT =
 let pUNIT__json (p:pUNIT) =
 
     [|
-        ("Caption",p.Caption |> Json.Str) |]
+        ("Caption",p.Caption |> Json.Str)
+        ("UnitNum",p.UnitNum |> Json.Str)
+        ("Address",p.Address |> Json.Str)
+        ("State",p.State |> Json.Str)
+        ("Zip",p.Zip |> Json.Str) |]
     |> Json.Braket
 
 let UNIT__json (v:UNIT) =
@@ -599,6 +671,14 @@ let json__pUNITo (json:Json):pUNIT option =
     let p = pUNIT_empty()
     
     p.Caption <- checkfield fields "Caption"
+    
+    p.UnitNum <- checkfieldz fields "UnitNum" 5
+    
+    p.Address <- checkfield fields "Address"
+    
+    p.State <- checkfieldz fields "State" 2
+    
+    p.Zip <- checkfieldz fields "Zip" 5
     
     p |> Some
     
@@ -635,6 +715,155 @@ let UNIT_clone src =
     UNIT__bin bb src
     bin__UNIT (bb.bytes(),ref 0)
 
+// [UACCT] Structure
+
+
+let pUACCT__bin (bb:BytesBuilder) (p:pUACCT) =
+
+    
+    p.Cat |> BitConverter.GetBytes |> bb.append
+    
+    p.Provider |> BitConverter.GetBytes |> bb.append
+    
+    p.client |> BitConverter.GetBytes |> bb.append
+    
+    p.Unit |> BitConverter.GetBytes |> bb.append
+    
+    let binAcctNum = p.AcctNum |> Encoding.UTF8.GetBytes
+    binAcctNum.Length |> BitConverter.GetBytes |> bb.append
+    binAcctNum |> bb.append
+
+let UACCT__bin (bb:BytesBuilder) (v:UACCT) =
+    v.ID |> BitConverter.GetBytes |> bb.append
+    v.Sort |> BitConverter.GetBytes |> bb.append
+    DateTime__bin bb v.Createdat
+    DateTime__bin bb v.Updatedat
+    
+    pUACCT__bin bb v.p
+    ()
+
+let bin__pUACCT (bi:BinIndexed):pUACCT =
+    let bin,index = bi
+
+    let p = pUACCT_empty()
+    
+    p.Cat <- BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    p.Provider <- BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    p.client <- BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    p.Unit <- BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    let count_AcctNum = BitConverter.ToInt32(bin,index.Value)
+    index.Value <- index.Value + 4
+    p.AcctNum <- Encoding.UTF8.GetString(bin,index.Value,count_AcctNum)
+    index.Value <- index.Value + count_AcctNum
+    
+    p
+
+let bin__UACCT (bi:BinIndexed):UACCT =
+    let bin,index = bi
+
+    let ID = BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    let Sort = BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    let Createdat = bin__DateTime bi
+    
+    let Updatedat = bin__DateTime bi
+    
+    {
+        ID = ID
+        Sort = Sort
+        Createdat = Createdat
+        Updatedat = Updatedat
+        p = bin__pUACCT bi }
+
+let pUACCT__json (p:pUACCT) =
+
+    [|
+        ("Cat",p.Cat.ToString() |> Json.Num)
+        ("Provider",p.Provider.ToString() |> Json.Num)
+        ("client",p.client.ToString() |> Json.Num)
+        ("Unit",p.Unit.ToString() |> Json.Num)
+        ("AcctNum",p.AcctNum |> Json.Str) |]
+    |> Json.Braket
+
+let UACCT__json (v:UACCT) =
+
+    let p = v.p
+    
+    [|  ("id",v.ID.ToString() |> Json.Num)
+        ("sort",v.Sort.ToString() |> Json.Num)
+        ("createdat",(v.Createdat |> Util.Time.wintime__unixtime).ToString() |> Json.Num)
+        ("updatedat",(v.Updatedat |> Util.Time.wintime__unixtime).ToString() |> Json.Num)
+        ("p",pUACCT__json v.p) |]
+    |> Json.Braket
+
+let UACCT__jsonTbw (w:TextBlockWriter) (v:UACCT) =
+    json__str w (UACCT__json v)
+
+let UACCT__jsonStr (v:UACCT) =
+    (UACCT__json v) |> json__strFinal
+
+
+let json__pUACCTo (json:Json):pUACCT option =
+    let fields = json |> json__items
+
+    let p = pUACCT_empty()
+    
+    p.Cat <- checkfield fields "Cat" |> parse_int64
+    
+    p.Provider <- checkfield fields "Provider" |> parse_int64
+    
+    p.client <- checkfield fields "client" |> parse_int64
+    
+    p.Unit <- checkfield fields "Unit" |> parse_int64
+    
+    p.AcctNum <- checkfield fields "AcctNum"
+    
+    p |> Some
+    
+
+let json__UACCTo (json:Json):UACCT option =
+    let fields = json |> json__items
+
+    let ID = checkfield fields "id" |> parse_int64
+    let Sort = checkfield fields "sort" |> parse_int64
+    let Createdat = checkfield fields "createdat" |> parse_int64 |> DateTime.FromBinary
+    let Updatedat = checkfield fields "updatedat" |> parse_int64 |> DateTime.FromBinary
+    
+    let o  =
+        match
+            json
+            |> tryFindByAtt "p" with
+        | Some (s,v) -> json__pUACCTo v
+        | None -> None
+    
+    match o with
+    | Some p ->
+        
+        {
+            ID = ID
+            Sort = Sort
+            Createdat = Createdat
+            Updatedat = Updatedat
+            p = p } |> Some
+        
+    | None -> None
+
+let UACCT_clone src =
+    let bb = new BytesBuilder()
+    UACCT__bin bb src
+    bin__UACCT (bb.bytes(),ref 0)
+
 // [UBILL] Structure
 
 
@@ -648,6 +877,8 @@ let pUBILL__bin (bb:BytesBuilder) (p:pUBILL) =
     p.client |> BitConverter.GetBytes |> bb.append
     
     p.Unit |> BitConverter.GetBytes |> bb.append
+    
+    p.UAcct |> BitConverter.GetBytes |> bb.append
     
     p.Amout |> BitConverter.GetBytes |> bb.append
 
@@ -675,6 +906,9 @@ let bin__pUBILL (bi:BinIndexed):pUBILL =
     index.Value <- index.Value + 8
     
     p.Unit <- BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    p.UAcct <- BitConverter.ToInt64(bin,index.Value)
     index.Value <- index.Value + 8
     
     p.Amout <- BitConverter.ToDouble(bin,index.Value)
@@ -709,6 +943,7 @@ let pUBILL__json (p:pUBILL) =
         ("Provider",p.Provider.ToString() |> Json.Num)
         ("client",p.client.ToString() |> Json.Num)
         ("Unit",p.Unit.ToString() |> Json.Num)
+        ("UAcct",p.UAcct.ToString() |> Json.Num)
         ("Amout",p.Amout.ToString() |> Json.Num) |]
     |> Json.Braket
 
@@ -742,6 +977,8 @@ let json__pUBILLo (json:Json):pUBILL option =
     p.client <- checkfield fields "client" |> parse_int64
     
     p.Unit <- checkfield fields "Unit" |> parse_int64
+    
+    p.UAcct <- checkfield fields "UAcct" |> parse_int64
     
     p.Amout <- checkfield fields "Amout" |> parse_float
     
@@ -1878,6 +2115,10 @@ let db__pFILE(line:Object[]): pFILE =
     p.Size <- if Convert.IsDBNull(line[9]) then 0L else line[9] :?> int64
     p.Thumbnail <- if Convert.IsDBNull(line[10]) then [| |] else line[10] :?> byte[]
     p.Owner <- if Convert.IsDBNull(line[11]) then 0L else line[11] :?> int64
+    p.Cat <- if Convert.IsDBNull(line[12]) then 0L else line[12] :?> int64
+    p.Provider <- if Convert.IsDBNull(line[13]) then 0L else line[13] :?> int64
+    p.Unit <- if Convert.IsDBNull(line[14]) then 0L else line[14] :?> int64
+    p.Bill <- if Convert.IsDBNull(line[15]) then 0L else line[15] :?> int64
 
     p
 
@@ -1892,7 +2133,11 @@ let pFILE__sps (p:pFILE) =
             ("Suffix", p.Suffix) |> kvp__sqlparam
             ("Size", p.Size) |> kvp__sqlparam
             ("Thumbnail", p.Thumbnail) |> kvp__sqlparam
-            ("Owner", p.Owner) |> kvp__sqlparam |]
+            ("Owner", p.Owner) |> kvp__sqlparam
+            ("Cat", p.Cat) |> kvp__sqlparam
+            ("Provider", p.Provider) |> kvp__sqlparam
+            ("Unit", p.Unit) |> kvp__sqlparam
+            ("Bill", p.Bill) |> kvp__sqlparam |]
     | Rdbms.PostgreSql ->
         [|
             ("caption", p.Caption) |> kvp__sqlparam
@@ -1902,7 +2147,11 @@ let pFILE__sps (p:pFILE) =
             ("suffix", p.Suffix) |> kvp__sqlparam
             ("size", p.Size) |> kvp__sqlparam
             ("thumbnail", p.Thumbnail) |> kvp__sqlparam
-            ("owner", p.Owner) |> kvp__sqlparam |]
+            ("owner", p.Owner) |> kvp__sqlparam
+            ("cat", p.Cat) |> kvp__sqlparam
+            ("provider", p.Provider) |> kvp__sqlparam
+            ("unit", p.Unit) |> kvp__sqlparam
+            ("bill", p.Bill) |> kvp__sqlparam |]
 
 let db__FILE = db__Rcd db__pFILE
 
@@ -1918,7 +2167,11 @@ let pFILE_clone (p:pFILE): pFILE = {
     Suffix = p.Suffix
     Size = p.Size
     Thumbnail = p.Thumbnail
-    Owner = p.Owner }
+    Owner = p.Owner
+    Cat = p.Cat
+    Provider = p.Provider
+    Unit = p.Unit
+    Bill = p.Bill }
 
 let FILE_update_transaction output (updater,suc,fail) (rcd:FILE) =
     let rollback_p = rcd.p |> pFILE_clone
@@ -1989,7 +2242,11 @@ let FILETxSqlServer =
     ,[Suffix]
     ,[Size]
     ,[Thumbnail]
-    ,[Owner])
+    ,[Owner]
+    ,[Cat]
+    ,[Provider]
+    ,[Unit]
+    ,[Bill])
     END
     """
 
@@ -2090,6 +2347,10 @@ let db__pUNIT(line:Object[]): pUNIT =
     let p = pUNIT_empty()
 
     p.Caption <- string(line[4]).TrimEnd()
+    p.UnitNum <- string(line[5]).TrimEnd()
+    p.Address <- string(line[6]).TrimEnd()
+    p.State <- string(line[7]).TrimEnd()
+    p.Zip <- string(line[8]).TrimEnd()
 
     p
 
@@ -2097,10 +2358,18 @@ let pUNIT__sps (p:pUNIT) =
     match rdbms with
     | Rdbms.SqlServer ->
         [|
-            ("Caption", p.Caption) |> kvp__sqlparam |]
+            ("Caption", p.Caption) |> kvp__sqlparam
+            ("UnitNum", p.UnitNum) |> kvp__sqlparam
+            ("Address", p.Address) |> kvp__sqlparam
+            ("State", p.State) |> kvp__sqlparam
+            ("Zip", p.Zip) |> kvp__sqlparam |]
     | Rdbms.PostgreSql ->
         [|
-            ("caption", p.Caption) |> kvp__sqlparam |]
+            ("caption", p.Caption) |> kvp__sqlparam
+            ("unitnum", p.UnitNum) |> kvp__sqlparam
+            ("address", p.Address) |> kvp__sqlparam
+            ("state", p.State) |> kvp__sqlparam
+            ("zip", p.Zip) |> kvp__sqlparam |]
 
 let db__UNIT = db__Rcd db__pUNIT
 
@@ -2109,7 +2378,11 @@ let UNIT_wrapper item: UNIT =
     { ID = i; Createdat = c; Updatedat = u; Sort = s; p = p }
 
 let pUNIT_clone (p:pUNIT): pUNIT = {
-    Caption = p.Caption }
+    Caption = p.Caption
+    UnitNum = p.UnitNum
+    Address = p.Address
+    State = p.State
+    Zip = p.Zip }
 
 let UNIT_update_transaction output (updater,suc,fail) (rcd:UNIT) =
     let rollback_p = rcd.p |> pUNIT_clone
@@ -2173,7 +2446,123 @@ let UNITTxSqlServer =
     ,[Createdat] BIGINT NOT NULL
     ,[Updatedat] BIGINT NOT NULL
     ,[Sort] BIGINT NOT NULL,
-    ,[Caption])
+    ,[Caption]
+    ,[UnitNum]
+    ,[Address]
+    ,[State]
+    ,[Zip])
+    END
+    """
+
+
+let db__pUACCT(line:Object[]): pUACCT =
+    let p = pUACCT_empty()
+
+    p.Cat <- if Convert.IsDBNull(line[4]) then 0L else line[4] :?> int64
+    p.Provider <- if Convert.IsDBNull(line[5]) then 0L else line[5] :?> int64
+    p.client <- if Convert.IsDBNull(line[6]) then 0L else line[6] :?> int64
+    p.Unit <- if Convert.IsDBNull(line[7]) then 0L else line[7] :?> int64
+    p.AcctNum <- string(line[8]).TrimEnd()
+
+    p
+
+let pUACCT__sps (p:pUACCT) =
+    match rdbms with
+    | Rdbms.SqlServer ->
+        [|
+            ("Cat", p.Cat) |> kvp__sqlparam
+            ("Provider", p.Provider) |> kvp__sqlparam
+            ("client", p.client) |> kvp__sqlparam
+            ("Unit", p.Unit) |> kvp__sqlparam
+            ("AcctNum", p.AcctNum) |> kvp__sqlparam |]
+    | Rdbms.PostgreSql ->
+        [|
+            ("cat", p.Cat) |> kvp__sqlparam
+            ("provider", p.Provider) |> kvp__sqlparam
+            ("client", p.client) |> kvp__sqlparam
+            ("unit", p.Unit) |> kvp__sqlparam
+            ("acctnum", p.AcctNum) |> kvp__sqlparam |]
+
+let db__UACCT = db__Rcd db__pUACCT
+
+let UACCT_wrapper item: UACCT =
+    let (i,c,u,s),p = item
+    { ID = i; Createdat = c; Updatedat = u; Sort = s; p = p }
+
+let pUACCT_clone (p:pUACCT): pUACCT = {
+    Cat = p.Cat
+    Provider = p.Provider
+    client = p.client
+    Unit = p.Unit
+    AcctNum = p.AcctNum }
+
+let UACCT_update_transaction output (updater,suc,fail) (rcd:UACCT) =
+    let rollback_p = rcd.p |> pUACCT_clone
+    let rollback_updatedat = rcd.Updatedat
+    updater rcd.p
+    let ctime,res =
+        (rcd.ID,rcd.p,rollback_p,rollback_updatedat)
+        |> update (conn,output,UACCT_table,UACCT_sql_update(),pUACCT__sps,suc,fail)
+    match res with
+    | Suc ctx ->
+        rcd.Updatedat <- ctime
+        suc(ctime,ctx)
+    | Fail(eso,ctx) ->
+        rcd.p <- rollback_p
+        rcd.Updatedat <- rollback_updatedat
+        fail eso
+
+let UACCT_update output (rcd:UACCT) =
+    rcd
+    |> UACCT_update_transaction output ((fun p -> ()),(fun (ctime,ctx) -> ()),(fun dte -> ()))
+
+let UACCT_create_incremental_transaction output (suc,fail) p =
+    let cid = Interlocked.Increment UACCT_id
+    let ctime = DateTime.UtcNow
+    match create (conn,output,UACCT_table,pUACCT__sps) (cid,ctime,p) with
+    | Suc ctx -> ((cid,ctime,ctime,cid),p) |> UACCT_wrapper |> suc
+    | Fail(eso,ctx) -> fail(eso,ctx)
+
+let UACCT_create output p =
+    UACCT_create_incremental_transaction output ((fun rcd -> ()),(fun (eso,ctx) -> ())) p
+    
+
+let id__UACCTo id: UACCT option = id__rcd(conn,UACCT_fieldorders(),UACCT_table,db__UACCT) id
+
+let UACCT_metadata = {
+    fieldorders = UACCT_fieldorders
+    db__rcd = db__UACCT 
+    wrapper = UACCT_wrapper
+    sps = pUACCT__sps
+    id = UACCT_id
+    id__rcdo = id__UACCTo
+    clone = pUACCT_clone
+    empty__p = pUACCT_empty
+    rcd__bin = UACCT__bin
+    bin__rcd = bin__UACCT
+    p__json = pUACCT__json
+    json__po = json__pUACCTo
+    rcd__json = UACCT__json
+    json__rcdo = json__UACCTo
+    sql_update = UACCT_sql_update
+    rcd_update = UACCT_update
+    table = UACCT_table
+    shorthand = "uacct" }
+
+let UACCTTxSqlServer =
+    """
+    IF NOT EXISTS(SELECT * FROM sysobjects WHERE [name]='Kernel_UtilAcct' AND xtype='U')
+    BEGIN
+
+        CREATE TABLE Kernel_UtilAcct ([ID] BIGINT NOT NULL
+    ,[Createdat] BIGINT NOT NULL
+    ,[Updatedat] BIGINT NOT NULL
+    ,[Sort] BIGINT NOT NULL,
+    ,[Cat]
+    ,[Provider]
+    ,[client]
+    ,[Unit]
+    ,[AcctNum])
     END
     """
 
@@ -2185,7 +2574,8 @@ let db__pUBILL(line:Object[]): pUBILL =
     p.Provider <- if Convert.IsDBNull(line[5]) then 0L else line[5] :?> int64
     p.client <- if Convert.IsDBNull(line[6]) then 0L else line[6] :?> int64
     p.Unit <- if Convert.IsDBNull(line[7]) then 0L else line[7] :?> int64
-    p.Amout <- if Convert.IsDBNull(line[8]) then 0.0 else line[8] :?> float
+    p.UAcct <- if Convert.IsDBNull(line[8]) then 0L else line[8] :?> int64
+    p.Amout <- if Convert.IsDBNull(line[9]) then 0.0 else line[9] :?> float
 
     p
 
@@ -2197,6 +2587,7 @@ let pUBILL__sps (p:pUBILL) =
             ("Provider", p.Provider) |> kvp__sqlparam
             ("client", p.client) |> kvp__sqlparam
             ("Unit", p.Unit) |> kvp__sqlparam
+            ("UAcct", p.UAcct) |> kvp__sqlparam
             ("Amout", p.Amout) |> kvp__sqlparam |]
     | Rdbms.PostgreSql ->
         [|
@@ -2204,6 +2595,7 @@ let pUBILL__sps (p:pUBILL) =
             ("provider", p.Provider) |> kvp__sqlparam
             ("client", p.client) |> kvp__sqlparam
             ("unit", p.Unit) |> kvp__sqlparam
+            ("uacct", p.UAcct) |> kvp__sqlparam
             ("amout", p.Amout) |> kvp__sqlparam |]
 
 let db__UBILL = db__Rcd db__pUBILL
@@ -2217,6 +2609,7 @@ let pUBILL_clone (p:pUBILL): pUBILL = {
     Provider = p.Provider
     client = p.client
     Unit = p.Unit
+    UAcct = p.UAcct
     Amout = p.Amout }
 
 let UBILL_update_transaction output (updater,suc,fail) (rcd:UBILL) =
@@ -2285,6 +2678,7 @@ let UBILLTxSqlServer =
     ,[Provider]
     ,[client]
     ,[Unit]
+    ,[UAcct]
     ,[Amout])
     END
     """
@@ -3009,20 +3403,22 @@ type MetadataEnum =
 | FILE = 1
 | CLIENT = 2
 | UNIT = 3
-| UBILL = 4
-| UCAT = 5
-| UPROVIDER = 6
-| FBIND = 7
-| MOMENT = 8
-| CONFIG = 9
-| LOG = 10
-| PLOG = 11
+| UACCT = 4
+| UBILL = 5
+| UCAT = 6
+| UPROVIDER = 7
+| FBIND = 8
+| MOMENT = 9
+| CONFIG = 10
+| LOG = 11
+| PLOG = 12
 
 let tablenames = [|
     EU_metadata.table
     FILE_metadata.table
     CLIENT_metadata.table
     UNIT_metadata.table
+    UACCT_metadata.table
     UBILL_metadata.table
     UCAT_metadata.table
     UPROVIDER_metadata.table
@@ -3105,6 +3501,25 @@ let init() =
     match singlevalue_query conn (str__sql sqlCountKernel_Unit) with
     | Some v ->
         UNIT_count.Value <-
+            match rdbms with
+            | Rdbms.SqlServer -> v :?> int32
+            | Rdbms.PostgreSql -> v :?> int64 |> int32
+    | None -> ()
+
+    let sqlMaxKernel_UtilAcct, sqlCountKernel_UtilAcct =
+        match rdbms with
+        | Rdbms.SqlServer -> "SELECT MAX(ID) FROM [Kernel_UtilAcct]", "SELECT COUNT(ID) FROM [Kernel_UtilAcct]"
+        | Rdbms.PostgreSql -> "SELECT MAX(id) FROM kernel_utilacct", "SELECT COUNT(id) FROM kernel_utilacct"
+    match singlevalue_query conn (str__sql sqlMaxKernel_UtilAcct) with
+    | Some v ->
+        let max = v :?> int64
+        if max > UACCT_id.Value then
+            UACCT_id.Value <- max
+    | None -> ()
+
+    match singlevalue_query conn (str__sql sqlCountKernel_UtilAcct) with
+    | Some v ->
+        UACCT_count.Value <-
             match rdbms with
             | Rdbms.SqlServer -> v :?> int32
             | Rdbms.PostgreSql -> v :?> int64 |> int32

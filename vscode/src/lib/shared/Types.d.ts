@@ -13,6 +13,21 @@ export type MomentComplex = {
 m:MOMENT
 }
 
+// [BillComplex]
+export type BillComplex = {
+cato:UCAT | null,
+
+providero:UPROVIDER | null,
+
+cliento:CLIENT | null,
+
+unito:UNIT | null,
+
+accto:UACCT | null,
+
+bill:UBILL
+}
+
 // [RuntimeData]
 export type RuntimeData = {
 apiKeyGemini:string,
@@ -20,6 +35,8 @@ apiKeyGemini:string,
 aiModel:string,
 
 cats:{[key:number]: UCAT},
+
+bills:{[key:number]: BillComplex},
 
 providers:{[key:number]: UPROVIDER}
 }

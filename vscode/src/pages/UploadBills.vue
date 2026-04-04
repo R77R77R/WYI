@@ -47,6 +47,7 @@ import { glib } from '~/lib/glib'
 
 import BillFile from '~/comps/BillFile.vue'
 import { FileComplex } from '~/comps/BillFile.vue'
+import { FILE_empty } from '~/lib/shared/OrmMor'
 
 const s = glib.vue.reactive({
   filexs: [] as FileComplex[],
@@ -74,7 +75,10 @@ const handleFiles = (fileList: FileList | null) => {
   
   Array.from(fileList).forEach(file => {
 
-    let filex = { uploadTask: {}, file: file} as FileComplex
+    let filex = { 
+      uploadTask: {}, 
+      rcd: FILE_empty(),
+      file: file} as FileComplex
 
     filex.uploadTask = {
       id: Math.random().toString(36).slice(2),

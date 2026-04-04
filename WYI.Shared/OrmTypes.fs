@@ -159,7 +159,11 @@ mutable ContentType: Chars
 mutable Suffix: Chars
 mutable Size: Integer
 mutable Thumbnail: Bin
-mutable Owner: FK}
+mutable Owner: FK
+mutable Cat: FK
+mutable Provider: FK
+mutable Unit: FK
+mutable Bill: FK}
 
 
 type FILE = Rcd<pFILE>
@@ -167,9 +171,9 @@ type FILE = Rcd<pFILE>
 let FILE_fieldorders() =
     match rdbms with
     | Rdbms.SqlServer ->
-        "[ID],[Createdat],[Updatedat],[Sort],[Caption],[Path],[State],[ContentType],[Suffix],[Size],[Thumbnail],[Owner]"
+        "[ID],[Createdat],[Updatedat],[Sort],[Caption],[Path],[State],[ContentType],[Suffix],[Size],[Thumbnail],[Owner],[Cat],[Provider],[Unit],[Bill]"
     | Rdbms.PostgreSql ->
-        $""" "id","createdat","updatedat","sort", "caption","path","state","contenttype","suffix","size","thumbnail","owner" """
+        $""" "id","createdat","updatedat","sort", "caption","path","state","contenttype","suffix","size","thumbnail","owner","cat","provider","unit","bill" """
 
 let pFILE_fieldordersArray = [|
     "Caption"
@@ -179,12 +183,16 @@ let pFILE_fieldordersArray = [|
     "Suffix"
     "Size"
     "Thumbnail"
-    "Owner" |]
+    "Owner"
+    "Cat"
+    "Provider"
+    "Unit"
+    "Bill" |]
 
 let FILE_sql_update() =
     match rdbms with
-    | Rdbms.SqlServer -> "[Caption]=@Caption,[Path]=@Path,[State]=@State,[ContentType]=@ContentType,[Suffix]=@Suffix,[Size]=@Size,[Thumbnail]=@Thumbnail,[Owner]=@Owner"
-    | Rdbms.PostgreSql -> "caption=@caption,path=@path,state=@state,contenttype=@contenttype,suffix=@suffix,size=@size,thumbnail=@thumbnail,owner=@owner"
+    | Rdbms.SqlServer -> "[Caption]=@Caption,[Path]=@Path,[State]=@State,[ContentType]=@ContentType,[Suffix]=@Suffix,[Size]=@Size,[Thumbnail]=@Thumbnail,[Owner]=@Owner,[Cat]=@Cat,[Provider]=@Provider,[Unit]=@Unit,[Bill]=@Bill"
+    | Rdbms.PostgreSql -> "caption=@caption,path=@path,state=@state,contenttype=@contenttype,suffix=@suffix,size=@size,thumbnail=@thumbnail,owner=@owner,cat=@cat,provider=@provider,unit=@unit,bill=@bill"
 
 let pFILE_fields() =
     match rdbms with
@@ -197,7 +205,11 @@ let pFILE_fields() =
             Chars("Suffix", 4)
             Integer("Size")
             Bin("Thumbnail")
-            FK("Owner") |]
+            FK("Owner")
+            FK("Cat")
+            FK("Provider")
+            FK("Unit")
+            FK("Bill") |]
     | Rdbms.PostgreSql ->
         [|
             Text("caption")
@@ -207,7 +219,11 @@ let pFILE_fields() =
             Chars("suffix", 4)
             Integer("size")
             Bin("thumbnail")
-            FK("owner") |]
+            FK("owner")
+            FK("cat")
+            FK("provider")
+            FK("unit")
+            FK("bill") |]
 
 let pFILE_empty(): pFILE = {
     Caption = ""
@@ -217,7 +233,11 @@ let pFILE_empty(): pFILE = {
     Suffix = ""
     Size = 0L
     Thumbnail = [||]
-    Owner = 0L }
+    Owner = 0L
+    Cat = 0L
+    Provider = 0L
+    Unit = 0L
+    Bill = 0L }
 
 let FILE_id = ref 35461231L
 let FILE_count = ref 0
@@ -265,7 +285,11 @@ let CLIENT_table = "Kernel_Client"
 // [Kernel_Unit] (UNIT)
 
 type pUNIT = {
-mutable Caption: Text}
+mutable Caption: Text
+mutable UnitNum: Chars
+mutable Address: Text
+mutable State: Chars
+mutable Zip: Chars}
 
 
 type UNIT = Rcd<pUNIT>
@@ -273,33 +297,108 @@ type UNIT = Rcd<pUNIT>
 let UNIT_fieldorders() =
     match rdbms with
     | Rdbms.SqlServer ->
-        "[ID],[Createdat],[Updatedat],[Sort],[Caption]"
+        "[ID],[Createdat],[Updatedat],[Sort],[Caption],[UnitNum],[Address],[State],[Zip]"
     | Rdbms.PostgreSql ->
-        $""" "id","createdat","updatedat","sort", "caption" """
+        $""" "id","createdat","updatedat","sort", "caption","unitnum","address","state","zip" """
 
 let pUNIT_fieldordersArray = [|
-    "Caption" |]
+    "Caption"
+    "UnitNum"
+    "Address"
+    "State"
+    "Zip" |]
 
 let UNIT_sql_update() =
     match rdbms with
-    | Rdbms.SqlServer -> "[Caption]=@Caption"
-    | Rdbms.PostgreSql -> "caption=@caption"
+    | Rdbms.SqlServer -> "[Caption]=@Caption,[UnitNum]=@UnitNum,[Address]=@Address,[State]=@State,[Zip]=@Zip"
+    | Rdbms.PostgreSql -> "caption=@caption,unitnum=@unitnum,address=@address,state=@state,zip=@zip"
 
 let pUNIT_fields() =
     match rdbms with
     | Rdbms.SqlServer ->
         [|
-            Text("Caption") |]
+            Text("Caption")
+            Chars("UnitNum", 5)
+            Text("Address")
+            Chars("State", 2)
+            Chars("Zip", 5) |]
     | Rdbms.PostgreSql ->
         [|
-            Text("caption") |]
+            Text("caption")
+            Chars("unitnum", 5)
+            Text("address")
+            Chars("state", 2)
+            Chars("zip", 5) |]
 
 let pUNIT_empty(): pUNIT = {
-    Caption = "" }
+    Caption = ""
+    UnitNum = ""
+    Address = ""
+    State = ""
+    Zip = "" }
 
 let UNIT_id = ref 29554261L
 let UNIT_count = ref 0
 let UNIT_table = "Kernel_Unit"
+
+// [Kernel_UtilAcct] (UACCT)
+
+type pUACCT = {
+mutable Cat: FK
+mutable Provider: FK
+mutable client: FK
+mutable Unit: FK
+mutable AcctNum: Text}
+
+
+type UACCT = Rcd<pUACCT>
+
+let UACCT_fieldorders() =
+    match rdbms with
+    | Rdbms.SqlServer ->
+        "[ID],[Createdat],[Updatedat],[Sort],[Cat],[Provider],[client],[Unit],[AcctNum]"
+    | Rdbms.PostgreSql ->
+        $""" "id","createdat","updatedat","sort", "cat","provider","client","unit","acctnum" """
+
+let pUACCT_fieldordersArray = [|
+    "Cat"
+    "Provider"
+    "client"
+    "Unit"
+    "AcctNum" |]
+
+let UACCT_sql_update() =
+    match rdbms with
+    | Rdbms.SqlServer -> "[Cat]=@Cat,[Provider]=@Provider,[client]=@client,[Unit]=@Unit,[AcctNum]=@AcctNum"
+    | Rdbms.PostgreSql -> "cat=@cat,provider=@provider,client=@client,unit=@unit,acctnum=@acctnum"
+
+let pUACCT_fields() =
+    match rdbms with
+    | Rdbms.SqlServer ->
+        [|
+            FK("Cat")
+            FK("Provider")
+            FK("client")
+            FK("Unit")
+            Text("AcctNum") |]
+    | Rdbms.PostgreSql ->
+        [|
+            FK("cat")
+            FK("provider")
+            FK("client")
+            FK("unit")
+            Text("acctnum") |]
+
+let pUACCT_empty(): pUACCT = {
+    Cat = 0L
+    Provider = 0L
+    client = 0L
+    Unit = 0L
+    AcctNum = "" }
+
+let UACCT_id = ref 54229561L
+let UACCT_count = ref 0
+let UACCT_table = "Kernel_UtilAcct"
 
 // [Kernel_UtilBill] (UBILL)
 
@@ -308,6 +407,7 @@ mutable Cat: FK
 mutable Provider: FK
 mutable client: FK
 mutable Unit: FK
+mutable UAcct: FK
 mutable Amout: Float}
 
 
@@ -316,21 +416,22 @@ type UBILL = Rcd<pUBILL>
 let UBILL_fieldorders() =
     match rdbms with
     | Rdbms.SqlServer ->
-        "[ID],[Createdat],[Updatedat],[Sort],[Cat],[Provider],[client],[Unit],[Amout]"
+        "[ID],[Createdat],[Updatedat],[Sort],[Cat],[Provider],[client],[Unit],[UAcct],[Amout]"
     | Rdbms.PostgreSql ->
-        $""" "id","createdat","updatedat","sort", "cat","provider","client","unit","amout" """
+        $""" "id","createdat","updatedat","sort", "cat","provider","client","unit","uacct","amout" """
 
 let pUBILL_fieldordersArray = [|
     "Cat"
     "Provider"
     "client"
     "Unit"
+    "UAcct"
     "Amout" |]
 
 let UBILL_sql_update() =
     match rdbms with
-    | Rdbms.SqlServer -> "[Cat]=@Cat,[Provider]=@Provider,[client]=@client,[Unit]=@Unit,[Amout]=@Amout"
-    | Rdbms.PostgreSql -> "cat=@cat,provider=@provider,client=@client,unit=@unit,amout=@amout"
+    | Rdbms.SqlServer -> "[Cat]=@Cat,[Provider]=@Provider,[client]=@client,[Unit]=@Unit,[UAcct]=@UAcct,[Amout]=@Amout"
+    | Rdbms.PostgreSql -> "cat=@cat,provider=@provider,client=@client,unit=@unit,uacct=@uacct,amout=@amout"
 
 let pUBILL_fields() =
     match rdbms with
@@ -340,6 +441,7 @@ let pUBILL_fields() =
             FK("Provider")
             FK("client")
             FK("Unit")
+            FK("UAcct")
             Float("Amout") |]
     | Rdbms.PostgreSql ->
         [|
@@ -347,6 +449,7 @@ let pUBILL_fields() =
             FK("provider")
             FK("client")
             FK("unit")
+            FK("uacct")
             Float("amout") |]
 
 let pUBILL_empty(): pUBILL = {
@@ -354,6 +457,7 @@ let pUBILL_empty(): pUBILL = {
     Provider = 0L
     client = 0L
     Unit = 0L
+    UAcct = 0L
     Amout = 0.0 }
 
 let UBILL_id = ref 4426561L

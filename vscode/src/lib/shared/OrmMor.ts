@@ -87,6 +87,14 @@ export const pFILE__bin = (bb:BytesBuilder) => (p:wyi.pFILE) => {
     bb.append(p.Thumbnail)
     
     marshall.int64__bin (bb) (p.Owner)
+    
+    marshall.int64__bin (bb) (p.Cat)
+    
+    marshall.int64__bin (bb) (p.Provider)
+    
+    marshall.int64__bin (bb) (p.Unit)
+    
+    marshall.int64__bin (bb) (p.Bill)
 }
 
 export const FILE__bin = (bb:BytesBuilder) => (v:wyi.FILE) => {
@@ -113,6 +121,10 @@ export const bin__pFILE = (bi:BinIndexed):wyi.pFILE => {
     bi.index += lengthThumbnail
     
     p.Owner = marshall.bin__int64 (bi)
+    p.Cat = marshall.bin__int64 (bi)
+    p.Provider = marshall.bin__int64 (bi)
+    p.Unit = marshall.bin__int64 (bi)
+    p.Bill = marshall.bin__int64 (bi)
 
     return p
 }
@@ -184,6 +196,14 @@ export const pUNIT__bin = (bb:BytesBuilder) => (p:wyi.pUNIT) => {
 
     
     marshall.str__bin (bb) (p.Caption)
+    
+    marshall.str__bin (bb) (p.UnitNum)
+    
+    marshall.str__bin (bb) (p.Address)
+    
+    marshall.str__bin (bb) (p.State)
+    
+    marshall.str__bin (bb) (p.Zip)
 }
 
 export const UNIT__bin = (bb:BytesBuilder) => (v:wyi.UNIT) => {
@@ -199,6 +219,10 @@ export const bin__pUNIT = (bi:BinIndexed):wyi.pUNIT => {
 
     let p = pUNIT_empty()
     p.Caption = marshall.bin__str (bi)
+    p.UnitNum = marshall.bin__str (bi)
+    p.Address = marshall.bin__str (bi)
+    p.State = marshall.bin__str (bi)
+    p.Zip = marshall.bin__str (bi)
 
     return p
 }
@@ -220,6 +244,61 @@ export const bin__UNIT = (bi:BinIndexed):wyi.UNIT => {
     }
 }
 
+// [UACCT] Structure
+
+
+export const pUACCT__bin = (bb:BytesBuilder) => (p:wyi.pUACCT) => {
+
+    
+    marshall.int64__bin (bb) (p.Cat)
+    
+    marshall.int64__bin (bb) (p.Provider)
+    
+    marshall.int64__bin (bb) (p.client)
+    
+    marshall.int64__bin (bb) (p.Unit)
+    
+    marshall.str__bin (bb) (p.AcctNum)
+}
+
+export const UACCT__bin = (bb:BytesBuilder) => (v:wyi.UACCT) => {
+    marshall.int64__bin (bb) (v.id)
+    marshall.int64__bin (bb) (v.sort)
+    marshall.DateTime__bin (bb) (v.createdat)
+    marshall.DateTime__bin (bb) (v.updatedat)
+
+    pUACCT__bin (bb) (v.p)
+}
+
+export const bin__pUACCT = (bi:BinIndexed):wyi.pUACCT => {
+
+    let p = pUACCT_empty()
+    p.Cat = marshall.bin__int64 (bi)
+    p.Provider = marshall.bin__int64 (bi)
+    p.client = marshall.bin__int64 (bi)
+    p.Unit = marshall.bin__int64 (bi)
+    p.AcctNum = marshall.bin__str (bi)
+
+    return p
+}
+
+
+export const bin__UACCT = (bi:BinIndexed):wyi.UACCT => {
+
+    let ID = marshall.bin__int64 (bi)
+    let Sort = marshall.bin__int64 (bi)
+    let Createdat = marshall.bin__DateTime (bi)
+    let Updatedat = marshall.bin__DateTime (bi)
+    
+    return {
+        id: ID,
+        sort: Sort,
+        createdat: Createdat,
+        updatedat: Updatedat,
+        p:  bin__pUACCT (bi)
+    }
+}
+
 // [UBILL] Structure
 
 
@@ -233,6 +312,8 @@ export const pUBILL__bin = (bb:BytesBuilder) => (p:wyi.pUBILL) => {
     marshall.int64__bin (bb) (p.client)
     
     marshall.int64__bin (bb) (p.Unit)
+    
+    marshall.int64__bin (bb) (p.UAcct)
     
     marshall.float__bin (bb) (p.Amout)
 }
@@ -253,6 +334,7 @@ export const bin__pUBILL = (bi:BinIndexed):wyi.pUBILL => {
     p.Provider = marshall.bin__int64 (bi)
     p.client = marshall.bin__int64 (bi)
     p.Unit = marshall.bin__int64 (bi)
+    p.UAcct = marshall.bin__int64 (bi)
     p.Amout = marshall.bin__float (bi)
 
     return p
@@ -653,7 +735,11 @@ export const pFILE_empty = (): wyi.pFILE => {
         Suffix: "",
         Size: 0,
         Thumbnail: [],
-        Owner: 0 }
+        Owner: 0,
+        Cat: 0,
+        Provider: 0,
+        Unit: 0,
+        Bill: 0 }
 }
 
 export const FILE_empty = (): wyi.FILE => {
@@ -681,7 +767,11 @@ export const CLIENT_empty = (): wyi.CLIENT => {
 
 export const pUNIT_empty = (): wyi.pUNIT => {
     return {
-        Caption: "" }
+        Caption: "",
+        UnitNum: "",
+        Address: "",
+        State: "",
+        Zip: "" }
 }
 
 export const UNIT_empty = (): wyi.UNIT => {
@@ -693,12 +783,31 @@ export const UNIT_empty = (): wyi.UNIT => {
         p: pUNIT_empty() }
 }
 
+export const pUACCT_empty = (): wyi.pUACCT => {
+    return {
+        Cat: 0,
+        Provider: 0,
+        client: 0,
+        Unit: 0,
+        AcctNum: "" }
+}
+
+export const UACCT_empty = (): wyi.UACCT => {
+    return {
+        id: 0,
+        createdat: new Date(),
+        updatedat: new Date(),
+        sort: 0,
+        p: pUACCT_empty() }
+}
+
 export const pUBILL_empty = (): wyi.pUBILL => {
     return {
         Cat: 0,
         Provider: 0,
         client: 0,
         Unit: 0,
+        UAcct: 0,
         Amout: 0.0 }
 }
 

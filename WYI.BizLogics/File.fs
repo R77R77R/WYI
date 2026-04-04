@@ -72,65 +72,13 @@ let incomingFile (formfile:IFormFile) =
                 p.Path <- filename
                 true) then
 
-            let providerInfo =
-                let items = runtime.data.providers.Values
-                runtime.data.cats.Values
-                |> Array.map(fun ucat -> 
-                    let cattext = 
-                        "ID=" + ucat.ID.ToString() + ": " + ucat.p.Caption
-                    let providerstxt = 
-                        items
-                        |> Array.filter(fun i -> i.p.Cat = ucat.ID)
-                        |> Array.map(fun i -> 
-                            "ID=" + i.ID.ToString() + ": " + i.p.Caption)
-                        |> String.concat ", "
-                    cattext + ", Providers: " + providerstxt)
-                |> String.concat "; "
+            let rep = 
+                rcd
+                |> FILE__json
+                |> wrapOk "data"
+                |> Json.Braket
 
-            let prompt = 
-                $"""
-                供应商provider及其分类cat的信息如下，
-                {providerInfo}
-
-                从上传的文件中提取cat,provider,账号，地址和金额，
-                若cat或provider在以上信息中存在，则提取其ID，否则ID=0
-                输出的格式参考为：
-                Category ID: [ID],
-                Category: [Cellphone],
-                Provider ID: [ID],
-                Provider: [T-Mobile],
-                Account Number: [1234567890123],
-                Address: [Line1, Line2(optional), City/Township, HI 123456]
-                Amount: [$123.45]
-                """
-
-            prompt |> output
-
-            let! (ex,msg) = 
-                UtilKestrel.Open.Google.GeminiMultimodal
-                    runtime.output 
-                    runtime.data.apiKeyGemini
-                    runtime.data.aiModel
-                    prompt 
-                    [| path |]
-
-            ex + msg |> output
-
-            let ucat,uprovider,acctnum,addr,amt = 
-                if ex = "" then
-                    "-","-","-","-","-"
-                else
-                    "-","-","-","-","-"
-                
-            return [|   ok 
-                        ("filename",Json.Str rawfilename)
-                        ("ucat", ucat |> Json.Str)
-                        ("uprovider", uprovider |> Json.Str)
-                        ("acctnum", acctnum |> Json.Str)
-                        ("addr", addr |> Json.Str)
-                        ("amt", amt |> Json.Num)
-                        ("ex",ex |> Json.Str)
-                        ("msg",msg |> Json.Str) |] |> Json.Braket
+            return rep
         else
             return er Er.Internal |> Json.Braket
 

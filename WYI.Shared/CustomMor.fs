@@ -153,6 +153,163 @@ let MomentComplex_clone src =
     MomentComplex__bin bb src
     bin__MomentComplex (bb.bytes(),ref 0)
 
+// [BillComplex] Structure
+
+let BillComplex_empty(): BillComplex =
+    {
+        cato = None
+        providero = None
+        cliento = None
+        unito = None
+        accto = None
+        bill = { ID = 0L; Sort = 0L; Createdat = DateTime.MinValue; Updatedat = DateTime.MinValue; p = pUBILL_empty() }
+    }
+
+let BillComplex__bin (bb:BytesBuilder) (v:BillComplex) =
+
+    Option__bin (UCAT__bin) bb v.cato
+    Option__bin (UPROVIDER__bin) bb v.providero
+    Option__bin (CLIENT__bin) bb v.cliento
+    Option__bin (UNIT__bin) bb v.unito
+    Option__bin (UACCT__bin) bb v.accto
+    UBILL__bin bb v.bill
+    ()
+
+let bin__BillComplex (bi:BinIndexed):BillComplex =
+    let bin,index = bi
+
+    {
+        cato = 
+            bi
+            |> bin__Option (bin__UCAT)
+        providero = 
+            bi
+            |> bin__Option (bin__UPROVIDER)
+        cliento = 
+            bi
+            |> bin__Option (bin__CLIENT)
+        unito = 
+            bi
+            |> bin__Option (bin__UNIT)
+        accto = 
+            bi
+            |> bin__Option (bin__UACCT)
+        bill = 
+            bi
+            |> bin__UBILL
+    }
+
+let BillComplex__json (v:BillComplex) =
+
+    [|  ("cato",Option__json (UCAT__json) v.cato)
+        ("providero",Option__json (UPROVIDER__json) v.providero)
+        ("cliento",Option__json (CLIENT__json) v.cliento)
+        ("unito",Option__json (UNIT__json) v.unito)
+        ("accto",Option__json (UACCT__json) v.accto)
+        ("bill",UBILL__json v.bill)
+         |]
+    |> Json.Braket
+
+let BillComplex__jsonTbw (w:TextBlockWriter) (v:BillComplex) =
+    json__str w (BillComplex__json v)
+
+let BillComplex__jsonStr (v:BillComplex) =
+    (BillComplex__json v) |> json__strFinal
+
+
+let json__BillComplexo (json:Json):BillComplex option =
+    let fields = json |> json__items
+
+    let mutable passOptions = true
+
+    let catoo =
+        match json__tryFindByName json "cato" with
+        | None ->
+            passOptions <- false
+            None
+        | Some v -> 
+            match v |> json__Optiono (json__UCATo) with
+            | Some res -> Some res
+            | None ->
+                passOptions <- false
+                None
+
+    let provideroo =
+        match json__tryFindByName json "providero" with
+        | None ->
+            passOptions <- false
+            None
+        | Some v -> 
+            match v |> json__Optiono (json__UPROVIDERo) with
+            | Some res -> Some res
+            | None ->
+                passOptions <- false
+                None
+
+    let clientoo =
+        match json__tryFindByName json "cliento" with
+        | None ->
+            passOptions <- false
+            None
+        | Some v -> 
+            match v |> json__Optiono (json__CLIENTo) with
+            | Some res -> Some res
+            | None ->
+                passOptions <- false
+                None
+
+    let unitoo =
+        match json__tryFindByName json "unito" with
+        | None ->
+            passOptions <- false
+            None
+        | Some v -> 
+            match v |> json__Optiono (json__UNITo) with
+            | Some res -> Some res
+            | None ->
+                passOptions <- false
+                None
+
+    let acctoo =
+        match json__tryFindByName json "accto" with
+        | None ->
+            passOptions <- false
+            None
+        | Some v -> 
+            match v |> json__Optiono (json__UACCTo) with
+            | Some res -> Some res
+            | None ->
+                passOptions <- false
+                None
+
+    let billo =
+        match json__tryFindByName json "bill" with
+        | None ->
+            passOptions <- false
+            None
+        | Some v -> 
+            match v |> json__UBILLo with
+            | Some res -> Some res
+            | None ->
+                passOptions <- false
+                None
+
+    if passOptions then
+        ({
+            cato = catoo.Value
+            providero = provideroo.Value
+            cliento = clientoo.Value
+            unito = unitoo.Value
+            accto = acctoo.Value
+            bill = billo.Value }:BillComplex) |> Some
+    else
+        None
+
+let BillComplex_clone src =
+    let bb = new BytesBuilder()
+    BillComplex__bin bb src
+    bin__BillComplex (bb.bytes(),ref 0)
+
 // [RuntimeData] Structure
 
 let RuntimeData_empty(): RuntimeData =
@@ -160,6 +317,7 @@ let RuntimeData_empty(): RuntimeData =
         apiKeyGemini = ""
         aiModel = ""
         cats = ModDict_empty()
+        bills = ModDict_empty()
         providers = ModDict_empty()
     }
 
@@ -169,6 +327,8 @@ let RuntimeData__bin (bb:BytesBuilder) (v:RuntimeData) =
     str__bin bb v.aiModel
     
     ModDictInt64__bin (UCAT__bin) bb v.cats
+    
+    ModDictInt64__bin (BillComplex__bin) bb v.bills
     
     ModDictInt64__bin (UPROVIDER__bin) bb v.providers
     ()
@@ -186,6 +346,9 @@ let bin__RuntimeData (bi:BinIndexed):RuntimeData =
         cats = 
             bi
             |> bin__ModDictInt64(bin__UCAT)
+        bills = 
+            bi
+            |> bin__ModDictInt64(bin__BillComplex)
         providers = 
             bi
             |> bin__ModDictInt64(bin__UPROVIDER)
@@ -196,6 +359,7 @@ let RuntimeData__json (v:RuntimeData) =
     [|  ("apiKeyGemini",str__json v.apiKeyGemini)
         ("aiModel",str__json v.aiModel)
         ("cats",ModDictInt64__json (UCAT__json) v.cats)
+        ("bills",ModDictInt64__json (BillComplex__json) v.bills)
         ("providers",ModDictInt64__json (UPROVIDER__json) v.providers)
          |]
     |> Json.Braket
@@ -248,6 +412,18 @@ let json__RuntimeDatao (json:Json):RuntimeData option =
                 passOptions <- false
                 None
 
+    let billso =
+        match json__tryFindByName json "bills" with
+        | None ->
+            passOptions <- false
+            None
+        | Some v -> 
+            match v |> (fun json ->json__ModDictInt64o (json__BillComplexo) (new Dictionary<int64,BillComplex>()) json) with
+            | Some res -> Some res
+            | None ->
+                passOptions <- false
+                None
+
     let providerso =
         match json__tryFindByName json "providers" with
         | None ->
@@ -265,6 +441,7 @@ let json__RuntimeDatao (json:Json):RuntimeData option =
             apiKeyGemini = apiKeyGeminio.Value
             aiModel = aiModelo.Value
             cats = catso.Value
+            bills = billso.Value
             providers = providerso.Value }:RuntimeData) |> Some
     else
         None

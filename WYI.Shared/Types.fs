@@ -19,10 +19,19 @@ eu: EU }
 type MomentComplex = {
 m: MOMENT }
 
+type BillComplex = {
+mutable cato: UCAT option
+mutable providero: UPROVIDER option
+mutable cliento: CLIENT option
+mutable unito: UNIT option
+mutable accto: UACCT option
+bill: UBILL }
+
 type RuntimeData = {
 mutable apiKeyGemini: string
 aiModel: string
 cats: ModDictInt64<UCAT>
+bills: ModDictInt64<BillComplex>
 providers: ModDictInt64<UPROVIDER> }
 
 type ClientRuntime = {

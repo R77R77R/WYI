@@ -5,13 +5,16 @@
         <div class="w-[300px]">
             Preview
         </div>
-        <div>Cat: {{ s.res.ucat }}</div>
-        <div>Provider: {{ s.res.uprovider }}</div>
-        <div>Unit: {{ s.res.addr }}</div>
-        <div>Acct Number: {{ s.res.acctnum }}</div>
-        <div>Amount: {{ s.res.amt }}</div>
+
+        <div v-if="props.filex.rcd.id > 0">
+        <div>Cat: {{ props.filex.rcd.p.Cat }}</div>
+        <div>Provider: {{ props.filex.rcd.p.Provider }}</div>
+        <div>Unit: {{ props.filex.rcd.p.Unit }}</div>
+        <div>Acct Number: </div>
+        <div>Amount: </div>
         <div>File Name: {{ props.filex.file.name }}</div>
         <div>File Size: {{ (props.filex.file.size / 1024 / 1024).toFixed(2) }} MB</div>
+        </div>
 
         <div class="progress-container">
             <div class="progress-fill" :style="{ width: props.filex.uploadTask.progress + '%' }"
@@ -24,8 +27,6 @@
             </span>
             <span v-if="props.filex.uploadTask.message" class="error-detail"> - {{ props.filex.uploadTask.message }}</span>
         </div>
-
-        <div>{{ s.res }}</div>
 </div>
 
 </template>
@@ -41,7 +42,6 @@ const props = defineProps(['filex'])
 props.filex as FileComplex
 
 const s = glib.vue.reactive({
-  res: {} as any,
   rt: runtime
 })
 
@@ -55,6 +55,7 @@ export interface UploadTask {
 
 export type FileComplex = {
     uploadTask: UploadTask,
+    rcd: wyi.FILE,
     file: File
 }
 
@@ -96,12 +97,13 @@ const executeUpload = async (task: UploadTask) => {
         // 监听请求完成
         xhr.onload = () => {
             if (xhr.status >= 200 && xhr.status < 300) {
-                console.log(xhr.responseText)
                 try {
-                    s.res = JSON.parse(xhr.responseText);
+                    let rep = JSON.parse(xhr.responseText);
+                    if(rep.Er == "OK")
+                        props.filex.rcd = rep.data
                     task.status = 'success';
                     task.progress = 100;
-                    resolve(s.res);
+                    resolve(rep);
                 } catch (e) {
                     task.status = 'error';
                     task.message = "Invalid JSON response";
