@@ -5,11 +5,13 @@
         <div class="w-[300px]">
             Preview
         </div>
-        <div>Unit</div>
-        <div>Provider</div>
-        <div>Amount</div>
-        <div class="file-name">{{ props.filex.file.name }}</div>
-        <div class="file-size">{{ (props.filex.file.size / 1024 / 1024).toFixed(2) }} MB</div>
+        <div>Cat: {{ s.res.ucat }}</div>
+        <div>Provider: {{ s.res.uprovider }}</div>
+        <div>Unit: {{ s.res.addr }}</div>
+        <div>Acct Number: {{ s.res.acctnum }}</div>
+        <div>Amount: {{ s.res.amt }}</div>
+        <div>File Name: {{ props.filex.file.name }}</div>
+        <div>File Size: {{ (props.filex.file.size / 1024 / 1024).toFixed(2) }} MB</div>
 
         <div class="progress-container">
             <div class="progress-fill" :style="{ width: props.filex.uploadTask.progress + '%' }"
@@ -39,7 +41,7 @@ const props = defineProps(['filex'])
 props.filex as FileComplex
 
 const s = glib.vue.reactive({
-  res: {},
+  res: {} as any,
   rt: runtime
 })
 
@@ -94,11 +96,11 @@ const executeUpload = async (task: UploadTask) => {
         // 监听请求完成
         xhr.onload = () => {
             if (xhr.status >= 200 && xhr.status < 300) {
+                console.log(xhr.responseText)
                 try {
                     s.res = JSON.parse(xhr.responseText);
                     task.status = 'success';
                     task.progress = 100;
-                    console.log(result)
                     resolve(s.res);
                 } catch (e) {
                     task.status = 'error';

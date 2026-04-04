@@ -116,15 +116,21 @@ let incomingFile (formfile:IFormFile) =
 
             ex + msg |> output
 
-            if ex = "" then
+            let ucat,uprovider,acctnum,addr,amt = 
+                if ex = "" then
+                    "-","-","-","-","-"
+                else
+                    "-","-","-","-","-"
                 
-                return [|   ok 
-                            ("filename",Json.Str rawfilename)
-                            ("msg",msg |> Json.Str) |] |> Json.Braket
-            else
-                return [|   ok 
-                            ("filename",Json.Str rawfilename)
-                            ("ex",ex |> Json.Str) |] |> Json.Braket
+            return [|   ok 
+                        ("filename",Json.Str rawfilename)
+                        ("ucat", ucat |> Json.Str)
+                        ("uprovider", uprovider |> Json.Str)
+                        ("acctnum", acctnum |> Json.Str)
+                        ("addr", addr |> Json.Str)
+                        ("amt", amt |> Json.Num)
+                        ("ex",ex |> Json.Str)
+                        ("msg",msg |> Json.Str) |] |> Json.Braket
         else
             return er Er.Internal |> Json.Braket
 
