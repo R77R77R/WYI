@@ -121,6 +121,11 @@ let incomingFile (formfile:IFormFile) =
 let fileid__localpath id = 
     ""
 
-let thumbnail id = 
-
-    ()
+let id__thumbnail id = 
+    match 
+        id
+        |> parse_int64
+        |> id__FILEo with
+    | Some v -> v.p.Thumbnail
+    | None -> [||]
+        

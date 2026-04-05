@@ -2,8 +2,9 @@
 
 <div class="h-full w-full flex flex-col p-3">
 
-        <div class="w-[300px]">
-            Preview
+        <div class="w-[300px]"
+            v-if="props.filex.rcd.id > 0">
+            <img :src='"/thumbnail/" + props.filex.rcd.id'/>
         </div>
 
         <div v-if="props.filex.rcd.id > 0">

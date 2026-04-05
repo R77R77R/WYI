@@ -34,8 +34,8 @@
             :filex="filex"></BillFile>
     </div>
 
-    <div v-for="msg in s.rep">
-      {{ msg }}
+    <div>
+      <button>Submit Your Bills for a Review</button>
     </div>
 
   </div>
