@@ -20,7 +20,13 @@ export default defineConfig({
           proxy.on('proxyReq', (proxyReq, req, res) => {
             console.log('代理发送请求:', req.method, req.url, '->', options.target + proxyReq.path);
           })}
-      }
+      },
+
+      '/thumbnail': {
+        target: 'http://localhost', // 指向你的 Kestrel 端口
+        changeOrigin: true,
+      }      
+
     }
   },
   resolve: {
