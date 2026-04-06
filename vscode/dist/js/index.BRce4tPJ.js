@@ -8911,366 +8911,8 @@ function extractChangingRecords(to, from) {
 	];
 }
 //#endregion
-//#region src/comps/BillFile.vue?vue&type=script&setup=true&lang.ts
-var _withScopeId$2 = (n) => (pushScopeId("data-v-f0f65bef"), n = n(), popScopeId(), n);
-var _hoisted_1$5 = { class: "h-full w-full flex flex-col p-3" };
-var _hoisted_2$4 = /* @__PURE__ */ _withScopeId$2(() => /* @__PURE__ */ createBaseVNode("div", null, "Preview", -1));
-var _hoisted_3$4 = /* @__PURE__ */ _withScopeId$2(() => /* @__PURE__ */ createBaseVNode("div", null, "Unit", -1));
-var _hoisted_4$4 = /* @__PURE__ */ _withScopeId$2(() => /* @__PURE__ */ createBaseVNode("div", null, "Provider", -1));
-var _hoisted_5$3 = /* @__PURE__ */ _withScopeId$2(() => /* @__PURE__ */ createBaseVNode("div", null, "Amount", -1));
-var _hoisted_6$3 = { class: "file-meta" };
-var _hoisted_7$3 = { class: "file-name" };
-var _hoisted_8$3 = { class: "file-size" };
-var _hoisted_9$2 = { class: "progress-container" };
-var _hoisted_10$2 = { class: "status-row" };
-var _hoisted_11$2 = {
-	key: 0,
-	class: "error-detail"
-};
-var BillFile_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */ defineComponent({
-	__name: "BillFile",
-	props: ["filex"],
-	setup(__props) {
-		const props = __props;
-		props.filex;
-		const getStatusText = (task) => {
-			switch (task.status) {
-				case "uploading": return "Uploading ...";
-				case "success": return "Succeeded";
-				case "error": return "Failed";
-				default: return "Pending ...";
-			}
-		};
-		return (_ctx, _cache) => {
-			return openBlock(), createElementBlock("div", _hoisted_1$5, [
-				_hoisted_2$4,
-				_hoisted_3$4,
-				_hoisted_4$4,
-				_hoisted_5$3,
-				createBaseVNode("div", _hoisted_6$3, [createBaseVNode("span", _hoisted_7$3, toDisplayString(props.filex.file.name), 1), createBaseVNode("span", _hoisted_8$3, toDisplayString((props.filex.file.size / 1024 / 1024).toFixed(2)) + " MB", 1)]),
-				createBaseVNode("div", _hoisted_9$2, [createBaseVNode("div", {
-					class: normalizeClass(["progress-fill", __props.filex.uploadTask.status]),
-					style: normalizeStyle({ width: props.filex.uploadTask.progress + "%" })
-				}, null, 6)]),
-				createBaseVNode("div", _hoisted_10$2, [createBaseVNode("span", { class: normalizeClass(["status-label", props.filex.uploadTask.status]) }, toDisplayString(getStatusText(props.filex.uploadTask)), 3), props.filex.uploadTask.message ? (openBlock(), createElementBlock("span", _hoisted_11$2, " - " + toDisplayString(props.filex.uploadTask.message), 1)) : createCommentVNode("", true)])
-			]);
-		};
-	}
-});
-//#endregion
-//#region \0plugin-vue:export-helper
-var _plugin_vue_export_helper_default = (sfc, props) => {
-	const target = sfc.__vccOpts || sfc;
-	for (const [key, val] of props) target[key] = val;
-	return target;
-};
-//#endregion
-//#region src/comps/BillFile.vue
-var BillFile_default = /* @__PURE__ */ _plugin_vue_export_helper_default(BillFile_vue_vue_type_script_setup_true_lang_default, [["__scopeId", "data-v-f0f65bef"]]);
-//#endregion
-//#region src/pages/UploadBills.vue?vue&type=script&setup=true&lang.ts
-var _withScopeId$1 = (n) => (pushScopeId("data-v-94d03db8"), n = n(), popScopeId(), n);
-var _hoisted_1$4 = { class: "upload-page" };
-var _hoisted_2$3 = { class: "header" };
-var _hoisted_3$3 = /* @__PURE__ */ _withScopeId$1(() => /* @__PURE__ */ createBaseVNode("h2", null, "Upload Bills", -1));
-var _hoisted_4$3 = {
-	key: 0,
-	class: "user-status"
-};
-var _hoisted_5$2 = { class: "id-tag" };
-var _hoisted_6$2 = /* @__PURE__ */ _withScopeId$1(() => /* @__PURE__ */ createBaseVNode("div", { class: "icon" }, "📄", -1));
-var _hoisted_7$2 = /* @__PURE__ */ _withScopeId$1(() => /* @__PURE__ */ createBaseVNode("p", null, [/* @__PURE__ */ createTextVNode("Drop your files here or "), /* @__PURE__ */ createBaseVNode("span", null, "Select")], -1));
-var _hoisted_8$2 = /* @__PURE__ */ _withScopeId$1(() => /* @__PURE__ */ createBaseVNode("small", null, "Max. 10GB", -1));
-var _hoisted_9$1 = /* @__PURE__ */ _withScopeId$1(() => /* @__PURE__ */ createBaseVNode("div", null, "Utility Providers: ADT, ... see a full list.", -1));
-var _hoisted_10$1 = /* @__PURE__ */ _withScopeId$1(() => /* @__PURE__ */ createBaseVNode("div", null, "File list", -1));
-var _hoisted_11$1 = { class: "flex flex-wrap gap-4 p-4" };
-//#endregion
-//#region src/pages/UploadBills.vue
-var UploadBills_default = /* @__PURE__ */ _plugin_vue_export_helper_default(/* @__PURE__ */ defineComponent({
-	__name: "UploadBills",
-	setup(__props) {
-		const s = glib.vue.reactive({
-			filexs: [],
-			rt: runtime
-		});
-		const isDragging = ref(false);
-		const fileInput = ref(null);
-		const triggerSelect = () => fileInput.value?.click();
-		const onFileSelect = (e) => {
-			const files = e.target.files;
-			handleFiles(files);
-		};
-		const onDrop = (e) => {
-			isDragging.value = false;
-			handleFiles(e.dataTransfer?.files || null);
-		};
-		const handleFiles = (fileList) => {
-			if (!fileList) return;
-			Array.from(fileList).forEach((file) => {
-				const task = {
-					id: Math.random().toString(36).slice(2),
-					file,
-					progress: 0,
-					status: "pending"
-				};
-				executeUpload(task);
-				s.filexs.push({
-					uploadTask: task,
-					file
-				});
-			});
-		};
-		const executeUpload = async (task) => {
-			task.status = "uploading";
-			task.progress = 20;
-			const token = await window.Clerk?.session?.getToken();
-			const formData = new FormData();
-			formData.append("file", task.file);
-			formData.append("session", s.rt.session);
-			try {
-				const response = await fetch("/api/public/upload", {
-					method: "POST",
-					headers: { "Authorization": `Bearer ${token}` },
-					body: formData
-				});
-				if (!response.ok) throw new Error(`Server Error: ${response.status}`);
-				const result = await response.json();
-				if (result.Er === "OK") {
-					task.status = "success";
-					task.progress = 100;
-				} else {
-					task.status = "error";
-					task.message = result.Er;
-				}
-			} catch (err) {
-				task.status = "error";
-				task.message = "Network error or file too large";
-				console.error("Upload failed:", err);
-			}
-		};
-		return (_ctx, _cache) => {
-			return openBlock(), createElementBlock("div", _hoisted_1$4, [
-				createBaseVNode("div", _hoisted_2$3, [_hoisted_3$3, unref(s).rt.user ? (openBlock(), createElementBlock("p", _hoisted_4$3, [createBaseVNode("strong", null, toDisplayString(unref(s).rt.user.eu.p.Caption), 1), createBaseVNode("span", _hoisted_5$2, "(ID: " + toDisplayString(unref(s).rt.user.id) + ")", 1)])) : createCommentVNode("", true)]),
-				createBaseVNode("div", {
-					class: normalizeClass(["drop-zone", { "is-dragging": isDragging.value }]),
-					onDragover: _cache[0] || (_cache[0] = withModifiers(($event) => isDragging.value = true, ["prevent"])),
-					onDragleave: _cache[1] || (_cache[1] = withModifiers(($event) => isDragging.value = false, ["prevent"])),
-					onDrop: withModifiers(onDrop, ["prevent"]),
-					onClick: triggerSelect
-				}, [
-					createBaseVNode("input", {
-						type: "file",
-						multiple: "",
-						ref_key: "fileInput",
-						ref: fileInput,
-						onChange: onFileSelect,
-						hidden: ""
-					}, null, 544),
-					_hoisted_6$2,
-					_hoisted_7$2,
-					_hoisted_8$2
-				], 34),
-				_hoisted_9$1,
-				_hoisted_10$1,
-				createBaseVNode("div", _hoisted_11$1, [(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).filexs, (filex) => {
-					return openBlock(), createBlock(BillFile_default, {
-						class: "w-48 h-32 bg-slate-100 border-2 border-dashed border-slate-300 rounded-lg flex items-center justify-center",
-						filex
-					}, null, 8, ["filex"]);
-				}), 256))])
-			]);
-		};
-	}
-}), [["__scopeId", "data-v-94d03db8"]]);
-//#endregion
-//#region src/pages/HomeCustomer.vue?vue&type=script&setup=true&lang.ts
-var _withScopeId = (n) => (pushScopeId("data-v-c112724e"), n = n(), popScopeId(), n);
-var _hoisted_1$3 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", null, "Welcome", -1));
-//#endregion
-//#region src/pages/HomeCustomer.vue
-var HomeCustomer_default = /* @__PURE__ */ _plugin_vue_export_helper_default(/* @__PURE__ */ defineComponent({
-	__name: "HomeCustomer",
-	setup(__props) {
-		const s = glib.vue.reactive({ rt: runtime });
-		ref([]);
-		ref(false);
-		ref(null);
-		return (_ctx, _cache) => {
-			return openBlock(), createElementBlock(Fragment, null, [_hoisted_1$3, createBaseVNode("button", { onClick: _cache[0] || (_cache[0] = ($event) => unref(s).rt.router.push("/UploadBills")) }, "Upload Your Bills")], 64);
-		};
-	}
-}), [["__scopeId", "data-v-c112724e"]]);
-//#endregion
-//#region src/lib/store/common.ts
-var loader = async (url, post, h) => {
-	post.session = runtime.session;
-	let rep = await glib.post(url, post);
-	if (rep?.Er == "OK") h(rep);
-};
-//#endregion
-//#region src/pages/Admin.vue?vue&type=script&setup=true&lang.ts
-var _hoisted_1$2 = { class: "flex justify-center" };
-var _hoisted_2$2 = { class: "hor-range" };
-var _hoisted_3$2 = /* @__PURE__ */ createBaseVNode("div", { class: "card" }, [/* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Admin Console")], -1);
-var _hoisted_4$2 = { class: "card" };
-var _hoisted_5$1 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Log", -1);
-var _hoisted_6$1 = ["innerHTML"];
-var _hoisted_7$1 = ["innerHTML"];
-var _hoisted_8$1 = /* @__PURE__ */ createBaseVNode("hr", { class: "mt-3" }, null, -1);
-var _hoisted_9 = { class: "card" };
-var _hoisted_10 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Page Log", -1);
-var _hoisted_11 = /* @__PURE__ */ createBaseVNode("hr", { class: "mt-3" }, null, -1);
-var _hoisted_12 = /* @__PURE__ */ createBaseVNode("div", { class: "flex justify-center" }, [/* @__PURE__ */ createBaseVNode("div", { class: "hor-range" })], -1);
-//#endregion
-//#region src/pages/Admin.vue
-var Admin_default = /* @__PURE__ */ defineComponent({
-	__name: "Admin",
-	setup(__props) {
-		const s = glib.vue.reactive({
-			logs: [],
-			plogs: []
-		});
-		glib.vue.onMounted(async () => {
-			loader("/api/admin/logs", {}, (rep) => {
-				s.logs = rep.list;
-			});
-			loader("/api/admin/plogs", {}, (rep) => {
-				s.plogs = rep.list;
-			});
-		});
-		return (_ctx, _cache) => {
-			return openBlock(), createElementBlock(Fragment, null, [createBaseVNode("div", _hoisted_1$2, [createBaseVNode("div", _hoisted_2$2, [
-				_hoisted_3$2,
-				createBaseVNode("div", _hoisted_4$2, [_hoisted_5$1, (openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).logs, (log) => {
-					return openBlock(), createElementBlock("div", null, [
-						createBaseVNode("div", null, toDisplayString(log.createdat), 1),
-						createBaseVNode("div", null, toDisplayString(log.p.Location), 1),
-						createBaseVNode("div", { innerHTML: log.p.Sql }, null, 8, _hoisted_6$1),
-						createBaseVNode("div", { innerHTML: log.p.Content }, null, 8, _hoisted_7$1),
-						_hoisted_8$1
-					]);
-				}), 256))]),
-				createBaseVNode("div", _hoisted_9, [_hoisted_10, (openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).plogs, (plog) => {
-					return openBlock(), createElementBlock("div", null, [
-						createBaseVNode("div", null, toDisplayString(plog.time), 1),
-						createBaseVNode("div", null, toDisplayString(plog.ip), 1),
-						createBaseVNode("div", null, toDisplayString(plog.pathline), 1),
-						createBaseVNode("div", null, toDisplayString(plog.from), 1),
-						_hoisted_11
-					]);
-				}), 256))])
-			])]), _hoisted_12], 64);
-		};
-	}
-});
-//#endregion
-//#region src/lib/mod/route.ts
-var route_exports = /* @__PURE__ */ __exportAll({
-	incomingRoute: () => incomingRoute,
-	navigate: () => navigate,
-	router: () => router
-});
-var routes = [
-	{
-		path: "/",
-		component: HomeCustomer_default
-	},
-	{
-		path: "/UploadBills",
-		component: UploadBills_default
-	},
-	{
-		path: "/admin",
-		component: Admin_default
-	}
-];
-var router = createRouter({
-	history: createMemoryHistory(),
-	routes
-});
-var navigate = (href, name, id) => {
-	let url = href;
-	if (url.indexOf("/zh/") > 0) {
-		runtime.lang = "zh";
-		localStorage.setItem("runtime.lang", runtime.lang);
-		url = url.replace("/zh/", "/");
-	}
-	if (url.indexOf("/en/") > 0) {
-		runtime.lang = "en";
-		localStorage.setItem("runtime.lang", runtime.lang);
-		url = url.replace("/en/", "/");
-	}
-	window.location.href = url;
-	if (id != 0) router.push({
-		name,
-		params: { id }
-	});
-	else router.push(name);
-};
-var pages = [];
-var incomingRoute = () => {
-	let path = window.location.pathname;
-	let hit = false;
-	pages.forEach((page) => {
-		let pattern = "/" + page + "/";
-		if (path.startsWith(pattern)) {
-			hit = true;
-			let id = path.substring(pattern.length);
-			router.push({
-				name: page,
-				params: { id }
-			});
-		}
-	});
-	if (hit == false) if (path.startsWith("/admin")) router.push("/admin");
-	else router.push("/");
-};
-//#endregion
-//#region src/lib/mod/panel.ts
-var panel_exports = /* @__PURE__ */ __exportAll({ tglPanel: () => tglPanel });
-var tglPanel = () => {
-	globalThis.panelrt.showpanel = !globalThis.panelrt.showpanel;
-};
-//#endregion
-//#region src/lib/store/host.ts
-var host_exports = /* @__PURE__ */ __exportAll({
-	checkDomain: () => checkDomain,
-	initHost: () => initHost
-});
-var checkDomain = (domain) => {
-	return [domain].includes(window.location.hostname);
-};
-var initHost = () => {
-	const hostname = window.location.hostname;
-	const host = {
-		hostname,
-		api: `${window.location.protocol}//${hostname}`,
-		wsurl: `wss://${hostname}/ws/`,
-		discordAPPID: "1254790111913181274",
-		discordRedirect: `${window.location.protocol}//${window.location.host}/redirect/DISCORD`
-	};
-	switch (host.hostname) {
-		case "localhost":
-			host.hostname = "localhost";
-			host.api = "https://localhost";
-			host.wsurl = "wss://localhost/";
-			break;
-		case "127.0.0.1":
-			host.hostname = "127.0.0.1";
-			host.api = "http://localhost";
-			host.wsurl = "wss://localhost/";
-			break;
-	}
-	console.log("host.hostname: " + host.hostname);
-	console.log("host.api: " + host.api);
-	console.log("host.wsurl: " + host.wsurl);
-	return host;
-};
-//#endregion
 //#region src/lib/shared/OrmMor.ts
 var OrmMor_exports = /* @__PURE__ */ __exportAll({
-	CAT__bin: () => CAT__bin,
-	CAT_empty: () => CAT_empty,
 	CLIENT__bin: () => CLIENT__bin,
 	CLIENT_empty: () => CLIENT_empty,
 	CONFIG__bin: () => CONFIG__bin,
@@ -9287,13 +8929,16 @@ var OrmMor_exports = /* @__PURE__ */ __exportAll({
 	MOMENT_empty: () => MOMENT_empty,
 	PLOG__bin: () => PLOG__bin,
 	PLOG_empty: () => PLOG_empty,
+	UACCT__bin: () => UACCT__bin,
+	UACCT_empty: () => UACCT_empty,
 	UBILL__bin: () => UBILL__bin,
 	UBILL_empty: () => UBILL_empty,
 	UCAT__bin: () => UCAT__bin,
 	UCAT_empty: () => UCAT_empty,
 	UNIT__bin: () => UNIT__bin,
 	UNIT_empty: () => UNIT_empty,
-	bin__CAT: () => bin__CAT,
+	UPROVIDER__bin: () => UPROVIDER__bin,
+	UPROVIDER_empty: () => UPROVIDER_empty,
 	bin__CLIENT: () => bin__CLIENT,
 	bin__CONFIG: () => bin__CONFIG,
 	bin__EU: () => bin__EU,
@@ -9302,10 +8947,11 @@ var OrmMor_exports = /* @__PURE__ */ __exportAll({
 	bin__LOG: () => bin__LOG,
 	bin__MOMENT: () => bin__MOMENT,
 	bin__PLOG: () => bin__PLOG,
+	bin__UACCT: () => bin__UACCT,
 	bin__UBILL: () => bin__UBILL,
 	bin__UCAT: () => bin__UCAT,
 	bin__UNIT: () => bin__UNIT,
-	bin__pCAT: () => bin__pCAT,
+	bin__UPROVIDER: () => bin__UPROVIDER,
 	bin__pCLIENT: () => bin__pCLIENT,
 	bin__pCONFIG: () => bin__pCONFIG,
 	bin__pEU: () => bin__pEU,
@@ -9314,12 +8960,16 @@ var OrmMor_exports = /* @__PURE__ */ __exportAll({
 	bin__pLOG: () => bin__pLOG,
 	bin__pMOMENT: () => bin__pMOMENT,
 	bin__pPLOG: () => bin__pPLOG,
+	bin__pUACCT: () => bin__pUACCT,
 	bin__pUBILL: () => bin__pUBILL,
 	bin__pUCAT: () => bin__pUCAT,
 	bin__pUNIT: () => bin__pUNIT,
+	bin__pUPROVIDER: () => bin__pUPROVIDER,
 	euAuthTypeEnum_Admin: () => 2,
 	euAuthTypeEnum_Authorized: () => 1,
 	euAuthTypeEnum_Normal: () => 0,
+	fileStateEnum_Failed: () => 1,
+	fileStateEnum_Normal: () => 0,
 	momentMediaTypeEnum_Audio: () => 2,
 	momentMediaTypeEnum_None: () => 0,
 	momentMediaTypeEnum_Video: () => 1,
@@ -9338,8 +8988,6 @@ var OrmMor_exports = /* @__PURE__ */ __exportAll({
 	momentTypeEnum_Repost: () => 1,
 	momentTypeEnum_Thread: () => 2,
 	momentTypeEnum_WebPage: () => 10,
-	pCAT__bin: () => pCAT__bin,
-	pCAT_empty: () => pCAT_empty,
 	pCLIENT__bin: () => pCLIENT__bin,
 	pCLIENT_empty: () => pCLIENT_empty,
 	pCONFIG__bin: () => pCONFIG__bin,
@@ -9356,12 +9004,16 @@ var OrmMor_exports = /* @__PURE__ */ __exportAll({
 	pMOMENT_empty: () => pMOMENT_empty,
 	pPLOG__bin: () => pPLOG__bin,
 	pPLOG_empty: () => pPLOG_empty,
+	pUACCT__bin: () => pUACCT__bin,
+	pUACCT_empty: () => pUACCT_empty,
 	pUBILL__bin: () => pUBILL__bin,
 	pUBILL_empty: () => pUBILL_empty,
 	pUCAT__bin: () => pUCAT__bin,
 	pUCAT_empty: () => pUCAT_empty,
 	pUNIT__bin: () => pUNIT__bin,
-	pUNIT_empty: () => pUNIT_empty
+	pUNIT_empty: () => pUNIT_empty,
+	pUPROVIDER__bin: () => pUPROVIDER__bin,
+	pUPROVIDER_empty: () => pUPROVIDER_empty
 });
 var marshall$1 = { ...bin_exports };
 var pEU__bin = (bb) => (p) => {
@@ -9402,12 +9054,18 @@ var bin__EU = (bi) => {
 };
 var pFILE__bin = (bb) => (p) => {
 	marshall$1.str__bin(bb)(p.Caption);
-	marshall$1.str__bin(bb)(p.Desc);
+	marshall$1.str__bin(bb)(p.Path);
+	marshall$1.int32__bin(bb)(p.State);
+	marshall$1.str__bin(bb)(p.ContentType);
 	marshall$1.str__bin(bb)(p.Suffix);
 	marshall$1.int64__bin(bb)(p.Size);
 	marshall$1.int32__bin(bb)(p.Thumbnail.length);
 	bb.append(p.Thumbnail);
 	marshall$1.int64__bin(bb)(p.Owner);
+	marshall$1.int64__bin(bb)(p.Cat);
+	marshall$1.int64__bin(bb)(p.Provider);
+	marshall$1.int64__bin(bb)(p.Unit);
+	marshall$1.int64__bin(bb)(p.Bill);
 };
 var FILE__bin = (bb) => (v) => {
 	marshall$1.int64__bin(bb)(v.id);
@@ -9419,13 +9077,19 @@ var FILE__bin = (bb) => (v) => {
 var bin__pFILE = (bi) => {
 	let p = pFILE_empty();
 	p.Caption = marshall$1.bin__str(bi);
-	p.Desc = marshall$1.bin__str(bi);
+	p.Path = marshall$1.bin__str(bi);
+	p.State = marshall$1.bin__int32(bi);
+	p.ContentType = marshall$1.bin__str(bi);
 	p.Suffix = marshall$1.bin__str(bi);
 	p.Size = marshall$1.bin__int64(bi);
 	let lengthThumbnail = bin__int32(bi);
 	p.Thumbnail = bi.bin.slice(bi.index, lengthThumbnail);
 	bi.index += lengthThumbnail;
 	p.Owner = marshall$1.bin__int64(bi);
+	p.Cat = marshall$1.bin__int64(bi);
+	p.Provider = marshall$1.bin__int64(bi);
+	p.Unit = marshall$1.bin__int64(bi);
+	p.Bill = marshall$1.bin__int64(bi);
 	return p;
 };
 var bin__FILE = (bi) => {
@@ -9463,6 +9127,10 @@ var bin__CLIENT = (bi) => {
 };
 var pUNIT__bin = (bb) => (p) => {
 	marshall$1.str__bin(bb)(p.Caption);
+	marshall$1.str__bin(bb)(p.UnitNum);
+	marshall$1.str__bin(bb)(p.Address);
+	marshall$1.str__bin(bb)(p.State);
+	marshall$1.str__bin(bb)(p.Zip);
 };
 var UNIT__bin = (bb) => (v) => {
 	marshall$1.int64__bin(bb)(v.id);
@@ -9474,6 +9142,10 @@ var UNIT__bin = (bb) => (v) => {
 var bin__pUNIT = (bi) => {
 	let p = pUNIT_empty();
 	p.Caption = marshall$1.bin__str(bi);
+	p.UnitNum = marshall$1.bin__str(bi);
+	p.Address = marshall$1.bin__str(bi);
+	p.State = marshall$1.bin__str(bi);
+	p.Zip = marshall$1.bin__str(bi);
 	return p;
 };
 var bin__UNIT = (bi) => {
@@ -9485,11 +9157,44 @@ var bin__UNIT = (bi) => {
 		p: bin__pUNIT(bi)
 	};
 };
+var pUACCT__bin = (bb) => (p) => {
+	marshall$1.int64__bin(bb)(p.Cat);
+	marshall$1.int64__bin(bb)(p.Provider);
+	marshall$1.int64__bin(bb)(p.client);
+	marshall$1.int64__bin(bb)(p.Unit);
+	marshall$1.str__bin(bb)(p.AcctNum);
+};
+var UACCT__bin = (bb) => (v) => {
+	marshall$1.int64__bin(bb)(v.id);
+	marshall$1.int64__bin(bb)(v.sort);
+	marshall$1.DateTime__bin(bb)(v.createdat);
+	marshall$1.DateTime__bin(bb)(v.updatedat);
+	pUACCT__bin(bb)(v.p);
+};
+var bin__pUACCT = (bi) => {
+	let p = pUACCT_empty();
+	p.Cat = marshall$1.bin__int64(bi);
+	p.Provider = marshall$1.bin__int64(bi);
+	p.client = marshall$1.bin__int64(bi);
+	p.Unit = marshall$1.bin__int64(bi);
+	p.AcctNum = marshall$1.bin__str(bi);
+	return p;
+};
+var bin__UACCT = (bi) => {
+	return {
+		id: marshall$1.bin__int64(bi),
+		sort: marshall$1.bin__int64(bi),
+		createdat: marshall$1.bin__DateTime(bi),
+		updatedat: marshall$1.bin__DateTime(bi),
+		p: bin__pUACCT(bi)
+	};
+};
 var pUBILL__bin = (bb) => (p) => {
 	marshall$1.int64__bin(bb)(p.Cat);
 	marshall$1.int64__bin(bb)(p.Provider);
 	marshall$1.int64__bin(bb)(p.client);
 	marshall$1.int64__bin(bb)(p.Unit);
+	marshall$1.int64__bin(bb)(p.UAcct);
 	marshall$1.float__bin(bb)(p.Amout);
 };
 var UBILL__bin = (bb) => (v) => {
@@ -9505,6 +9210,7 @@ var bin__pUBILL = (bi) => {
 	p.Provider = marshall$1.bin__int64(bi);
 	p.client = marshall$1.bin__int64(bi);
 	p.Unit = marshall$1.bin__int64(bi);
+	p.UAcct = marshall$1.bin__int64(bi);
 	p.Amout = marshall$1.bin__float(bi);
 	return p;
 };
@@ -9541,30 +9247,30 @@ var bin__UCAT = (bi) => {
 		p: bin__pUCAT(bi)
 	};
 };
-var pCAT__bin = (bb) => (p) => {
+var pUPROVIDER__bin = (bb) => (p) => {
 	marshall$1.str__bin(bb)(p.Caption);
 	marshall$1.int64__bin(bb)(p.Cat);
 };
-var CAT__bin = (bb) => (v) => {
+var UPROVIDER__bin = (bb) => (v) => {
 	marshall$1.int64__bin(bb)(v.id);
 	marshall$1.int64__bin(bb)(v.sort);
 	marshall$1.DateTime__bin(bb)(v.createdat);
 	marshall$1.DateTime__bin(bb)(v.updatedat);
-	pCAT__bin(bb)(v.p);
+	pUPROVIDER__bin(bb)(v.p);
 };
-var bin__pCAT = (bi) => {
-	let p = pCAT_empty();
+var bin__pUPROVIDER = (bi) => {
+	let p = pUPROVIDER_empty();
 	p.Caption = marshall$1.bin__str(bi);
 	p.Cat = marshall$1.bin__int64(bi);
 	return p;
 };
-var bin__CAT = (bi) => {
+var bin__UPROVIDER = (bi) => {
 	return {
 		id: marshall$1.bin__int64(bi),
 		sort: marshall$1.bin__int64(bi),
 		createdat: marshall$1.bin__DateTime(bi),
 		updatedat: marshall$1.bin__DateTime(bi),
-		p: bin__pCAT(bi)
+		p: bin__pUPROVIDER(bi)
 	};
 };
 var pFBIND__bin = (bb) => (p) => {
@@ -9736,11 +9442,17 @@ var EU_empty = () => {
 var pFILE_empty = () => {
 	return {
 		Caption: "",
-		Desc: "",
+		Path: "",
+		State: 0,
+		ContentType: "",
 		Suffix: "",
 		Size: 0,
 		Thumbnail: [],
-		Owner: 0
+		Owner: 0,
+		Cat: 0,
+		Provider: 0,
+		Unit: 0,
+		Bill: 0
 	};
 };
 var FILE_empty = () => {
@@ -9765,7 +9477,13 @@ var CLIENT_empty = () => {
 	};
 };
 var pUNIT_empty = () => {
-	return { Caption: "" };
+	return {
+		Caption: "",
+		UnitNum: "",
+		Address: "",
+		State: "",
+		Zip: ""
+	};
 };
 var UNIT_empty = () => {
 	return {
@@ -9776,12 +9494,31 @@ var UNIT_empty = () => {
 		p: pUNIT_empty()
 	};
 };
+var pUACCT_empty = () => {
+	return {
+		Cat: 0,
+		Provider: 0,
+		client: 0,
+		Unit: 0,
+		AcctNum: ""
+	};
+};
+var UACCT_empty = () => {
+	return {
+		id: 0,
+		createdat: /* @__PURE__ */ new Date(),
+		updatedat: /* @__PURE__ */ new Date(),
+		sort: 0,
+		p: pUACCT_empty()
+	};
+};
 var pUBILL_empty = () => {
 	return {
 		Cat: 0,
 		Provider: 0,
 		client: 0,
 		Unit: 0,
+		UAcct: 0,
 		Amout: 0
 	};
 };
@@ -9806,19 +9543,19 @@ var UCAT_empty = () => {
 		p: pUCAT_empty()
 	};
 };
-var pCAT_empty = () => {
+var pUPROVIDER_empty = () => {
 	return {
 		Caption: "",
 		Cat: 0
 	};
 };
-var CAT_empty = () => {
+var UPROVIDER_empty = () => {
 	return {
 		id: 0,
 		createdat: /* @__PURE__ */ new Date(),
 		updatedat: /* @__PURE__ */ new Date(),
 		sort: 0,
-		p: pCAT_empty()
+		p: pUPROVIDER_empty()
 	};
 };
 var pFBIND_empty = () => {
@@ -9907,6 +9644,8 @@ var PLOG_empty = () => {
 //#endregion
 //#region src/lib/shared/CustomMor.ts
 var CustomMor_exports = /* @__PURE__ */ __exportAll({
+	BillComplex__bin: () => BillComplex__bin,
+	BillComplex_empty: () => BillComplex_empty,
 	ClientRuntime__bin: () => ClientRuntime__bin,
 	ClientRuntime_empty: () => ClientRuntime_empty,
 	ErEnum: () => ErEnum,
@@ -9921,6 +9660,7 @@ var CustomMor_exports = /* @__PURE__ */ __exportAll({
 	Msg_empty: () => Msg_empty,
 	RuntimeData__bin: () => RuntimeData__bin,
 	RuntimeData_empty: () => RuntimeData_empty,
+	bin__BillComplex: () => bin__BillComplex,
 	bin__ClientRuntime: () => bin__ClientRuntime,
 	bin__Er: () => bin__Er,
 	bin__EuComplex: () => bin__EuComplex,
@@ -9976,20 +9716,63 @@ var MomentComplex__bin = (bb) => (v) => {
 var bin__MomentComplex = (bi) => {
 	return { m: marshall.bin__MOMENT(bi) };
 };
+var BillComplex_empty = () => {
+	return {
+		cato: null,
+		providero: null,
+		cliento: null,
+		unito: null,
+		accto: null,
+		bill: {
+			id: 0,
+			sort: 0,
+			createdat: /* @__PURE__ */ new Date(),
+			updatedat: /* @__PURE__ */ new Date(),
+			p: marshall.pUBILL_empty()
+		}
+	};
+};
+var BillComplex__bin = (bb) => (v) => {
+	marshall.option__bin(marshall.UCAT__bin)(bb)(v.cato);
+	marshall.option__bin(marshall.UPROVIDER__bin)(bb)(v.providero);
+	marshall.option__bin(marshall.CLIENT__bin)(bb)(v.cliento);
+	marshall.option__bin(marshall.UNIT__bin)(bb)(v.unito);
+	marshall.option__bin(marshall.UACCT__bin)(bb)(v.accto);
+	marshall.UBILL__bin(bb)(v.bill);
+};
+var bin__BillComplex = (bi) => {
+	return {
+		cato: marshall.bin__option(marshall.bin__UCAT)(bi),
+		providero: marshall.bin__option(marshall.bin__UPROVIDER)(bi),
+		cliento: marshall.bin__option(marshall.bin__CLIENT)(bi),
+		unito: marshall.bin__option(marshall.bin__UNIT)(bi),
+		accto: marshall.bin__option(marshall.bin__UACCT)(bi),
+		bill: marshall.bin__UBILL(bi)
+	};
+};
 var RuntimeData_empty = () => {
 	return {
 		apiKeyGemini: "",
-		desc: ""
+		aiModel: "",
+		cats: {},
+		bills: {},
+		providers: {}
 	};
 };
 var RuntimeData__bin = (bb) => (v) => {
 	marshall.str__bin(bb)(v.apiKeyGemini);
-	marshall.str__bin(bb)(v.desc);
+	marshall.str__bin(bb)(v.aiModel);
+	marshall.dict__bin(marshall.int64__bin)(marshall.UCAT__bin)(bb)(v.cats);
+	marshall.dict__bin(marshall.int64__bin)(BillComplex__bin)(bb)(v.bills);
+	marshall.dict__bin(marshall.int64__bin)(marshall.UPROVIDER__bin)(bb)(v.providers);
 };
 var bin__RuntimeData = (bi) => {
 	return {
 		apiKeyGemini: marshall.bin__str(bi),
-		desc: marshall.bin__str(bi)
+		aiModel: marshall.bin__str(bi),
+		cats: marshall.bin__dict(marshall.bin__int64)(marshall.bin__UCAT)(bi),
+		bills: marshall.bin__dict(marshall.bin__int64)(bin__BillComplex)(bi),
+		providers: marshall.bin__dict(marshall.bin__int64)(marshall.bin__UPROVIDER)(bi)
 	};
 };
 var ClientRuntime_empty = () => {
@@ -10066,6 +9849,413 @@ var bin__Er = (bi) => {
 		case 0: break;
 	}
 	return v;
+};
+//#endregion
+//#region src/comps/BillFile.vue?vue&type=script&setup=true&lang.ts
+var _hoisted_1$5 = { class: "h-full w-full flex flex-col p-3" };
+var _hoisted_2$5 = {
+	key: 0,
+	class: "w-[300px]"
+};
+var _hoisted_3$5 = ["src"];
+var _hoisted_4$4 = { key: 1 };
+var _hoisted_5$4 = { key: 0 };
+var _hoisted_6$4 = { key: 1 };
+var _hoisted_7$3 = { key: 2 };
+var _hoisted_8$1 = { key: 3 };
+var _hoisted_9$1 = { key: 4 };
+var _hoisted_10$1 = { class: "progress-container" };
+var _hoisted_11$1 = { class: "status-row" };
+var _hoisted_12$1 = {
+	key: 0,
+	class: "error-detail"
+};
+var BillFile_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */ defineComponent({
+	__name: "BillFile",
+	props: ["filex"],
+	setup(__props) {
+		const props = __props;
+		props.filex;
+		const s = glib.vue.reactive({
+			billx: BillComplex_empty(),
+			rt: runtime
+		});
+		const getStatusText = (task) => {
+			switch (task.status) {
+				case "uploading": return "Uploading ...";
+				case "success": return "Succeeded";
+				case "error": return "Failed";
+				default: return "Pending ...";
+			}
+		};
+		const executeUpload = async (task) => {
+			task.status = "uploading";
+			task.progress = 0;
+			const token = await window.Clerk?.session?.getToken();
+			const formData = new FormData();
+			formData.append("file", task.file);
+			formData.append("session", s.rt.session);
+			return new Promise((resolve, reject) => {
+				const xhr = new XMLHttpRequest();
+				xhr.upload.onprogress = (event) => {
+					if (event.lengthComputable) {
+						const percent = Math.round(event.loaded * 100 / event.total);
+						task.progress = Math.min(percent, 99);
+					}
+				};
+				xhr.onload = () => {
+					if (xhr.status >= 200 && xhr.status < 300) try {
+						let rep = JSON.parse(xhr.responseText);
+						if (rep.Er == "OK") {
+							props.filex.rcd = rep.file;
+							s.billx = rep.billx;
+						}
+						task.status = "success";
+						task.progress = 100;
+						resolve(rep);
+					} catch (e) {
+						task.status = "error";
+						task.message = "Invalid JSON response";
+						reject("Invalid JSON");
+					}
+					else {
+						task.status = "error";
+						task.message = `Server Error: ${xhr.status}`;
+						reject(xhr.status);
+					}
+				};
+				xhr.onerror = () => {
+					task.status = "error";
+					task.message = "Network error or file too large";
+					console.error("Upload failed");
+					reject("Network error");
+				};
+				xhr.open("POST", "/api/public/upload");
+				if (token) xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+				xhr.send(formData);
+			});
+		};
+		glib.vue.onMounted(async () => {
+			executeUpload(props.filex.uploadTask);
+		});
+		return (_ctx, _cache) => {
+			return openBlock(), createElementBlock("div", _hoisted_1$5, [
+				props.filex.rcd.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_2$5, [createBaseVNode("img", { src: "/thumbnail/" + props.filex.rcd.id }, null, 8, _hoisted_3$5)])) : createCommentVNode("", true),
+				props.filex.rcd.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_4$4, [
+					unref(s).billx.cato ? (openBlock(), createElementBlock("div", _hoisted_5$4, "Cat: " + toDisplayString(unref(s).billx.cato?.p.Caption), 1)) : createCommentVNode("", true),
+					unref(s).billx.providero ? (openBlock(), createElementBlock("div", _hoisted_6$4, "Provider: " + toDisplayString(unref(s).billx.providero?.p.Caption), 1)) : createCommentVNode("", true),
+					unref(s).billx.unito ? (openBlock(), createElementBlock("div", _hoisted_7$3, "Unit: " + toDisplayString(unref(s).billx.unito?.p.Caption), 1)) : createCommentVNode("", true),
+					unref(s).billx.accto ? (openBlock(), createElementBlock("div", _hoisted_8$1, "Acct Number: " + toDisplayString(unref(s).billx.accto?.p.AcctNum), 1)) : createCommentVNode("", true),
+					unref(s).billx.bill.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_9$1, "Amount: " + toDisplayString(unref(s).billx.bill.p.Amout), 1)) : createCommentVNode("", true),
+					createBaseVNode("div", null, "File Name: " + toDisplayString(props.filex.file.name), 1),
+					createBaseVNode("div", null, "File Size: " + toDisplayString((props.filex.file.size / 1024 / 1024).toFixed(2)) + " MB", 1)
+				])) : createCommentVNode("", true),
+				createBaseVNode("div", _hoisted_10$1, [createBaseVNode("div", {
+					class: normalizeClass(["progress-fill", __props.filex.uploadTask.status]),
+					style: normalizeStyle({ width: props.filex.uploadTask.progress + "%" })
+				}, null, 6)]),
+				createBaseVNode("div", _hoisted_11$1, [createBaseVNode("span", { class: normalizeClass(["status-label", props.filex.uploadTask.status]) }, toDisplayString(getStatusText(props.filex.uploadTask)), 3), props.filex.uploadTask.message ? (openBlock(), createElementBlock("span", _hoisted_12$1, " - " + toDisplayString(props.filex.uploadTask.message), 1)) : createCommentVNode("", true)])
+			]);
+		};
+	}
+});
+//#endregion
+//#region \0plugin-vue:export-helper
+var _plugin_vue_export_helper_default = (sfc, props) => {
+	const target = sfc.__vccOpts || sfc;
+	for (const [key, val] of props) target[key] = val;
+	return target;
+};
+//#endregion
+//#region src/comps/BillFile.vue
+var BillFile_default = /* @__PURE__ */ _plugin_vue_export_helper_default(BillFile_vue_vue_type_script_setup_true_lang_default, [["__scopeId", "data-v-6ada0c57"]]);
+//#endregion
+//#region src/pages/UploadBills.vue?vue&type=script&setup=true&lang.ts
+var _withScopeId = (n) => (pushScopeId("data-v-100b7084"), n = n(), popScopeId(), n);
+var _hoisted_1$4 = { class: "upload-page" };
+var _hoisted_2$4 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", { class: "header" }, [/* @__PURE__ */ createBaseVNode("h2", null, "Upload Bills")], -1));
+var _hoisted_3$4 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", null, [/* @__PURE__ */ createBaseVNode("p", null, [/* @__PURE__ */ createTextVNode("Drop your files here or "), /* @__PURE__ */ createBaseVNode("span", null, "Select")]), /* @__PURE__ */ createBaseVNode("small", null, "Max. 10GB")], -1));
+var _hoisted_4$3 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", { class: "icon" }, "📄", -1));
+var _hoisted_5$3 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", null, "File list", -1));
+var _hoisted_6$3 = { class: "flex flex-wrap gap-4 p-4" };
+var _hoisted_7$2 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", null, [/* @__PURE__ */ createBaseVNode("button", null, "Submit Your Bills for a Review")], -1));
+//#endregion
+//#region src/pages/UploadBills.vue
+var UploadBills_default = /* @__PURE__ */ _plugin_vue_export_helper_default(/* @__PURE__ */ defineComponent({
+	__name: "UploadBills",
+	setup(__props) {
+		const s = glib.vue.reactive({
+			filexs: [],
+			rep: {},
+			rt: runtime
+		});
+		const isDragging = ref(false);
+		const fileInput = ref(null);
+		const triggerSelect = () => fileInput.value?.click();
+		const onFileSelect = (e) => {
+			const files = e.target.files;
+			handleFiles(files);
+		};
+		const onDrop = (e) => {
+			isDragging.value = false;
+			handleFiles(e.dataTransfer?.files || null);
+		};
+		const handleFiles = (fileList) => {
+			if (!fileList) return;
+			Array.from(fileList).forEach((file) => {
+				let filex = {
+					uploadTask: {},
+					rcd: FILE_empty(),
+					file
+				};
+				filex.uploadTask = {
+					id: Math.random().toString(36).slice(2),
+					file,
+					progress: 0,
+					status: "pending"
+				};
+				s.filexs.push(filex);
+			});
+		};
+		return (_ctx, _cache) => {
+			return openBlock(), createElementBlock("div", _hoisted_1$4, [
+				_hoisted_2$4,
+				_hoisted_3$4,
+				createBaseVNode("div", {
+					class: normalizeClass(["drop-zone", { "is-dragging": isDragging.value }]),
+					onDragover: _cache[0] || (_cache[0] = withModifiers(($event) => isDragging.value = true, ["prevent"])),
+					onDragleave: _cache[1] || (_cache[1] = withModifiers(($event) => isDragging.value = false, ["prevent"])),
+					onDrop: withModifiers(onDrop, ["prevent"]),
+					onClick: triggerSelect
+				}, [createBaseVNode("input", {
+					type: "file",
+					multiple: "",
+					ref_key: "fileInput",
+					ref: fileInput,
+					onChange: onFileSelect,
+					hidden: ""
+				}, null, 544), _hoisted_4$3], 34),
+				_hoisted_5$3,
+				createBaseVNode("div", _hoisted_6$3, [(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).filexs, (filex) => {
+					return openBlock(), createBlock(BillFile_default, {
+						class: "w-48 h-32 bg-slate-100 border-2 border-dashed border-slate-300 rounded-lg flex",
+						filex
+					}, null, 8, ["filex"]);
+				}), 256))]),
+				_hoisted_7$2
+			]);
+		};
+	}
+}), [["__scopeId", "data-v-100b7084"]]);
+//#endregion
+//#region src/lib/store/common.ts
+var loader = async (url, post, h) => {
+	post.session = runtime.session;
+	let rep = await glib.post(url, post);
+	if (rep?.Er == "OK") h(rep);
+};
+//#endregion
+//#region src/pages/HomeCustomer.vue?vue&type=script&setup=true&lang.ts
+var _hoisted_1$3 = /* @__PURE__ */ createBaseVNode("div", null, "Welcome", -1);
+var _hoisted_2$3 = /* @__PURE__ */ createBaseVNode("div", null, "https://whatsyourideal.com/", -1);
+var _hoisted_3$3 = /* @__PURE__ */ createBaseVNode("div", null, "Lower Your Bills On CruiseControl!", -1);
+//#endregion
+//#region src/pages/HomeCustomer.vue
+var HomeCustomer_default = /* @__PURE__ */ defineComponent({
+	__name: "HomeCustomer",
+	setup(__props) {
+		const s = glib.vue.reactive({
+			providers: [],
+			rt: runtime
+		});
+		glib.vue.onMounted(async () => {
+			loader("/api/public/providers", {}, (rep) => {
+				s.providers = [];
+				rep.data.forEach((e) => {
+					let ucat = e.ucat;
+					let providers = [];
+					e.providers.forEach((p) => {
+						providers.push(p.p.Caption);
+					});
+					s.providers.push({
+						ucat: ucat.p.Caption,
+						uproviders: providers
+					});
+				});
+			});
+		});
+		return (_ctx, _cache) => {
+			return openBlock(), createElementBlock(Fragment, null, [
+				_hoisted_1$3,
+				_hoisted_2$3,
+				_hoisted_3$3,
+				createBaseVNode("div", null, [(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).providers, (item, index) => {
+					return openBlock(), createElementBlock("div", null, [createBaseVNode("div", null, [createBaseVNode("b", null, toDisplayString(item.ucat), 1), (openBlock(true), createElementBlock(Fragment, null, renderList(item.uproviders, (ii) => {
+						return openBlock(), createElementBlock("span", null, " | " + toDisplayString(ii), 1);
+					}), 256))])]);
+				}), 256))])
+			], 64);
+		};
+	}
+});
+//#endregion
+//#region src/pages/Admin.vue?vue&type=script&setup=true&lang.ts
+var _hoisted_1$2 = { class: "flex justify-center" };
+var _hoisted_2$2 = { class: "hor-range" };
+var _hoisted_3$2 = /* @__PURE__ */ createBaseVNode("div", { class: "card" }, [/* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Admin Console")], -1);
+var _hoisted_4$2 = { class: "card" };
+var _hoisted_5$2 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Log", -1);
+var _hoisted_6$2 = ["innerHTML"];
+var _hoisted_7$1 = ["innerHTML"];
+var _hoisted_8 = /* @__PURE__ */ createBaseVNode("hr", { class: "mt-3" }, null, -1);
+var _hoisted_9 = { class: "card" };
+var _hoisted_10 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Page Log", -1);
+var _hoisted_11 = /* @__PURE__ */ createBaseVNode("hr", { class: "mt-3" }, null, -1);
+var _hoisted_12 = /* @__PURE__ */ createBaseVNode("div", { class: "flex justify-center" }, [/* @__PURE__ */ createBaseVNode("div", { class: "hor-range" })], -1);
+//#endregion
+//#region src/pages/Admin.vue
+var Admin_default = /* @__PURE__ */ defineComponent({
+	__name: "Admin",
+	setup(__props) {
+		const s = glib.vue.reactive({
+			logs: [],
+			plogs: []
+		});
+		glib.vue.onMounted(async () => {
+			loader("/api/admin/logs", {}, (rep) => {
+				s.logs = rep.list;
+			});
+			loader("/api/admin/plogs", {}, (rep) => {
+				s.plogs = rep.list;
+			});
+		});
+		return (_ctx, _cache) => {
+			return openBlock(), createElementBlock(Fragment, null, [createBaseVNode("div", _hoisted_1$2, [createBaseVNode("div", _hoisted_2$2, [
+				_hoisted_3$2,
+				createBaseVNode("div", _hoisted_4$2, [_hoisted_5$2, (openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).logs, (log) => {
+					return openBlock(), createElementBlock("div", null, [
+						createBaseVNode("div", null, toDisplayString(log.createdat), 1),
+						createBaseVNode("div", null, toDisplayString(log.p.Location), 1),
+						createBaseVNode("div", { innerHTML: log.p.Sql }, null, 8, _hoisted_6$2),
+						createBaseVNode("div", { innerHTML: log.p.Content }, null, 8, _hoisted_7$1),
+						_hoisted_8
+					]);
+				}), 256))]),
+				createBaseVNode("div", _hoisted_9, [_hoisted_10, (openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).plogs, (plog) => {
+					return openBlock(), createElementBlock("div", null, [
+						createBaseVNode("div", null, toDisplayString(plog.time), 1),
+						createBaseVNode("div", null, toDisplayString(plog.ip), 1),
+						createBaseVNode("div", null, toDisplayString(plog.pathline), 1),
+						createBaseVNode("div", null, toDisplayString(plog.from), 1),
+						_hoisted_11
+					]);
+				}), 256))])
+			])]), _hoisted_12], 64);
+		};
+	}
+});
+//#endregion
+//#region src/lib/mod/route.ts
+var route_exports = /* @__PURE__ */ __exportAll({
+	incomingRoute: () => incomingRoute,
+	navigate: () => navigate,
+	router: () => router
+});
+var routes = [
+	{
+		path: "/",
+		component: HomeCustomer_default
+	},
+	{
+		path: "/UploadBills",
+		component: UploadBills_default
+	},
+	{
+		path: "/admin",
+		component: Admin_default
+	}
+];
+var router = createRouter({
+	history: createMemoryHistory(),
+	routes
+});
+var navigate = (href, name, id) => {
+	let url = href;
+	if (url.indexOf("/zh/") > 0) {
+		runtime.lang = "zh";
+		localStorage.setItem("runtime.lang", runtime.lang);
+		url = url.replace("/zh/", "/");
+	}
+	if (url.indexOf("/en/") > 0) {
+		runtime.lang = "en";
+		localStorage.setItem("runtime.lang", runtime.lang);
+		url = url.replace("/en/", "/");
+	}
+	window.location.href = url;
+	if (id != 0) router.push({
+		name,
+		params: { id }
+	});
+	else router.push(name);
+};
+var pages = [];
+var incomingRoute = () => {
+	let path = window.location.pathname;
+	let hit = false;
+	pages.forEach((page) => {
+		let pattern = "/" + page + "/";
+		if (path.startsWith(pattern)) {
+			hit = true;
+			let id = path.substring(pattern.length);
+			router.push({
+				name: page,
+				params: { id }
+			});
+		}
+	});
+	if (hit == false) if (path.startsWith("/admin")) router.push("/admin");
+	else router.push("/");
+};
+//#endregion
+//#region src/lib/mod/panel.ts
+var panel_exports = /* @__PURE__ */ __exportAll({ tglPanel: () => tglPanel });
+var tglPanel = () => {
+	globalThis.panelrt.showpanel = !globalThis.panelrt.showpanel;
+};
+//#endregion
+//#region src/lib/store/host.ts
+var host_exports = /* @__PURE__ */ __exportAll({
+	checkDomain: () => checkDomain,
+	initHost: () => initHost
+});
+var checkDomain = (domain) => {
+	return [domain].includes(window.location.hostname);
+};
+var initHost = () => {
+	const hostname = window.location.hostname;
+	const host = {
+		hostname,
+		api: `${window.location.protocol}//${hostname}`,
+		wsurl: `wss://${hostname}/ws/`,
+		discordAPPID: "1254790111913181274",
+		discordRedirect: `${window.location.protocol}//${window.location.host}/redirect/DISCORD`
+	};
+	switch (host.hostname) {
+		case "localhost":
+			host.hostname = "localhost";
+			host.api = "https://localhost";
+			host.wsurl = "wss://localhost/";
+			break;
+		case "127.0.0.1":
+			host.hostname = "127.0.0.1";
+			host.api = "http://localhost";
+			host.wsurl = "wss://localhost/";
+			break;
+	}
+	console.log("host.hostname: " + host.hostname);
+	console.log("host.api: " + host.api);
+	console.log("host.wsurl: " + host.wsurl);
+	return host;
 };
 //#endregion
 //#region src/lib/store/init.ts
@@ -12376,19 +12566,22 @@ setErrorThrowerOptions({ packageName: "@clerk/vue" });
 setClerkJSLoadingErrorPackageName("@clerk/vue");
 //#endregion
 //#region src/comps/UserAuth.vue?vue&type=script&setup=true&lang.ts
-var _hoisted_1$1 = { class: "flex" };
+var _hoisted_1$1 = {
+	key: 0,
+	class: "flex items-center"
+};
 var _hoisted_2$1 = {
 	key: 0,
 	class: "p-[15px]"
 };
 var _hoisted_3$1 = {
-	key: 0,
-	class: "p-[15px]"
-};
-var _hoisted_4$1 = {
 	key: 1,
-	class: "p-[15px]"
+	class: "flex items-center"
 };
+var _hoisted_4$1 = /* @__PURE__ */ createBaseVNode("div", null, "Upload your bills by ", -1);
+var _hoisted_5$1 = /* @__PURE__ */ createBaseVNode("button", { class: "px-2 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-sm shadow-md transition-all flex items-center gap-1" }, [/* @__PURE__ */ createBaseVNode("i", { class: "ri-login-box-line" }), /* @__PURE__ */ createBaseVNode("span", null, "Sign In")], -1);
+var _hoisted_6$1 = /* @__PURE__ */ createBaseVNode("div", { class: "px-2" }, "with", -1);
+var _hoisted_7 = /* @__PURE__ */ createBaseVNode("img", { src: "https://img.clerk.com/static/google.svg?width=160" }, null, -1);
 //#endregion
 //#region src/comps/UserAuth.vue
 var UserAuth_default = /* @__PURE__ */ defineComponent({
@@ -12402,18 +12595,16 @@ var UserAuth_default = /* @__PURE__ */ defineComponent({
 			if (newVal === true) {
 				console.log("🚀 登录成功，准备联调后端...");
 				try {
-					const response = await post("/api/public/auth", {
+					const { Er, session, eux } = await post("/api/public/auth", {
 						clerkId: user?.value?.id,
 						email: user?.value?.primaryEmailAddress?.emailAddress,
 						caption: user?.value?.fullName || user?.value?.username,
 						avatar: user?.value?.imageUrl
 					});
-					const { Er, session, eux } = response;
 					if (Er === "OK") {
 						s.rt.user = eux;
 						s.rt.session = session;
 					}
-					console.log("✅ 后端响应成功:", response);
 				} catch (err) {
 					console.error("❌ 请求后端失败，请检查终端日志或 C# 断面:", err);
 				}
@@ -12421,27 +12612,33 @@ var UserAuth_default = /* @__PURE__ */ defineComponent({
 		});
 		return (_ctx, _cache) => {
 			const _component_router_link = resolveComponent("router-link");
-			return openBlock(), createElementBlock("div", null, [createBaseVNode("div", _hoisted_1$1, [unref(s).rt.user.eu.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_2$1, [
+			return unref(s).rt.user.eu.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_1$1, [
 				createVNode(unref(UserButton)),
-				createTextVNode(" " + toDisplayString(unref(s).rt.user.eu.p.Caption) + " " + toDisplayString(unref(s).rt.user.eu.p) + " ", 1),
-				unref(s).rt.user.eu.p.AuthType == 2 ? (openBlock(), createElementBlock("div", _hoisted_3$1, [createVNode(_component_router_link, { to: "/Admin" }, {
+				createBaseVNode("div", null, toDisplayString(unref(s).rt.user.eu.p.Email), 1),
+				unref(s).rt.user.eu.p.AuthType == 2 ? (openBlock(), createElementBlock("div", _hoisted_2$1, [createVNode(_component_router_link, { to: "/Admin" }, {
 					default: withCtx(() => [createTextVNode("Admin")]),
 					_: 1
 				})])) : createCommentVNode("", true)
-			])) : (openBlock(), createElementBlock("div", _hoisted_4$1, [createVNode(unref(SignInButton_default)), createTextVNode(" via Google ")]))])]);
+			])) : (openBlock(), createElementBlock("div", _hoisted_3$1, [
+				_hoisted_4$1,
+				createVNode(unref(SignInButton_default), { asChild: "" }, {
+					default: withCtx(() => [_hoisted_5$1]),
+					_: 1
+				}),
+				_hoisted_6$1,
+				_hoisted_7
+			]));
 		};
 	}
 });
 //#endregion
 //#region src/App.vue
-var _hoisted_1 = /* @__PURE__ */ createBaseVNode("div", null, "https://whatsyourideal.com/", -1);
-var _hoisted_2 = /* @__PURE__ */ createBaseVNode("div", null, "Lower Your Bills On CruiseControl!", -1);
-var _hoisted_3 = { class: "lg:w-[1200px] mr-[10px]" };
-var _hoisted_4 = { class: "main-color w-screen" };
-var _hoisted_5 = { class: "flex justify-start" };
-var _hoisted_6 = { class: "w-full flex justify-center bg-[#262622]" };
-var _hoisted_7 = /* @__PURE__ */ createBaseVNode("div", { class: "hor" }, null, -1);
-var _hoisted_8 = /* @__PURE__ */ createBaseVNode("div", { class: "flex justify-center" }, [/* @__PURE__ */ createBaseVNode("div", { class: "hor-range" }, [/* @__PURE__ */ createBaseVNode("div", { class: "pt-2 pb-5" }, [/* @__PURE__ */ createBaseVNode("br"), /* @__PURE__ */ createTextVNode("© 2026 WYI ")])])], -1);
+var _hoisted_1 = { class: "flex" };
+var _hoisted_2 = { class: "lg:w-[1200px] mr-[10px]" };
+var _hoisted_3 = { class: "main-color w-screen" };
+var _hoisted_4 = { class: "w-full flex bg-[#9999ff] px-3 py-1 gap-5" };
+var _hoisted_5 = /* @__PURE__ */ createBaseVNode("div", { class: "hor" }, null, -1);
+var _hoisted_6 = /* @__PURE__ */ createBaseVNode("div", { class: "flex justify-center" }, [/* @__PURE__ */ createBaseVNode("div", { class: "hor-range" }, [/* @__PURE__ */ createBaseVNode("div", { class: "pt-2 pb-5" }, [/* @__PURE__ */ createBaseVNode("br"), /* @__PURE__ */ createTextVNode("© 2026 WYI ")])])], -1);
 var _sfc_main = {
 	__name: "App",
 	setup(__props) {
@@ -12449,20 +12646,24 @@ var _sfc_main = {
 		return (_ctx, _cache) => {
 			const _component_router_link = resolveComponent("router-link");
 			const _component_router_view = resolveComponent("router-view");
-			return openBlock(), createElementBlock(Fragment, null, [
-				_hoisted_1,
-				_hoisted_2,
-				createBaseVNode("div", _hoisted_3, [createBaseVNode("div", _hoisted_4, [
-					createBaseVNode("div", _hoisted_5, [createVNode(UserAuth_default, { onChanged: _ctx.onAuthChanged }, null, 8, ["onChanged"])]),
-					createBaseVNode("div", _hoisted_6, [createVNode(_component_router_link, { to: "/" }, {
-						default: withCtx(() => [createTextVNode("Home")]),
-						_: 1
-					}), createTextVNode(" \xA0 ")]),
-					createVNode(_component_router_view),
-					_hoisted_7,
-					_hoisted_8
-				])])
-			], 64);
+			return openBlock(), createElementBlock(Fragment, null, [createBaseVNode("div", _hoisted_1, [createVNode(UserAuth_default, { onChanged: _ctx.onAuthChanged }, null, 8, ["onChanged"])]), createBaseVNode("div", _hoisted_2, [createBaseVNode("div", _hoisted_3, [
+				createBaseVNode("div", _hoisted_4, [createVNode(_component_router_link, {
+					to: "/",
+					class: "text-white hover:text-gray-400"
+				}, {
+					default: withCtx(() => [createTextVNode("Home")]),
+					_: 1
+				}), createVNode(_component_router_link, {
+					to: "/UploadBills",
+					class: "text-white hover:text-gray-400"
+				}, {
+					default: withCtx(() => [createTextVNode("Upload Bills")]),
+					_: 1
+				})]),
+				createVNode(_component_router_view, { class: "m-h-[600px]" }),
+				_hoisted_5,
+				_hoisted_6
+			])])], 64);
 		};
 	}
 };
