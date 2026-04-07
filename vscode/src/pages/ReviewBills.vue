@@ -3,7 +3,7 @@
 <h2>Review Bills</h2>
 
 <div>
-  Files: {{ s.files }}
+  Files: {{ s.fids }}
 </div>
 
 </template>
@@ -17,13 +17,16 @@ import BillFile from '~/comps/BillFile.vue'
 import { FileComplex } from '~/comps/BillFile.vue'
 
 const s = glib.vue.reactive({
-  files:[],
+  fids:[],
   rt: runtime
 })
 
 
 glib.vue.onMounted(async () => {
-  s.files = history.state.files
+  s.fids = history.state.fids
+
+  console.log(history.state)
+
 })
 
 
