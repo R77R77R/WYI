@@ -26,10 +26,11 @@ open UtilKestrel.Ctx
 open UtilKestrel.Api
 open UtilKestrel.Json
 open UtilKestrel.SSR
-open UtilKestrel.Server
+open UtilKestrel.Open.Google
 
 open WYI.BizLogics.Common
 open WYI.BizLogics.Auth
+open WYI.BizLogics.Ai
 
 let output = runtime.output
 
@@ -49,57 +50,35 @@ let providers x =
     |> Json.Ary
     |> wrapOk "data"
 
-let reviewBills x =
+let reviewBills (x:X) =
 
-    //let providerInfo =
-    //    let items = runtime.data.providers.Values
-    //    runtime.data.cats.Values
-    //    |> Array.map(fun ucat -> 
-    //        let cattext = 
-    //            "ID=" + ucat.ID.ToString() + ": " + ucat.p.Caption
-    //        let providerstxt = 
-    //            items
-    //            |> Array.filter(fun i -> i.p.Cat = ucat.ID)
-    //            |> Array.map(fun i -> 
-    //                "ID=" + i.ID.ToString() + ": " + i.p.Caption)
-    //            |> String.concat ", "
-    //        cattext + ", Providers: " + providerstxt)
-    //    |> String.concat "; "
+    let files = 
+        x.Json
+        |> tryFindAryByAtt "fids"
+        |> Array.map(fun item -> 
+            match item with
+            | Json.Num v -> parse_int64 v
+            | _ -> 0L)
+        |> Array.filter(fun id -> id > 0L)
+        |> Array.distinct
+        |> Array.map id__FILEo
+        |> Array.filter(fun o -> o.IsSome)
+        |> Array.map(fun o -> Path.Combine(runtime.host.fsDir,o.Value.p.Path))
 
-    //let prompt = 
-    //    $"""
-    //    供应商provider及其分类cat的信息如下，
-    //    {providerInfo}
+    async{
+        let! (ex,msg) = 
+            GeminiMultimodal
+                runtime.output 
+                runtime.data.apiKeyGemini
+                runtime.data.aiModel
+                prompt 
+                files
+        ex + msg |> output
+    }
+    |> Async.RunSynchronously
 
-    //    从上传的文件中提取cat,provider,账号，地址和金额，
-    //    若cat或provider在以上信息中存在，则提取其ID，否则ID=0
-    //    输出的格式参考为：
-    //    Category ID: [ID],
-    //    Category: [Cellphone],
-    //    Provider ID: [ID],
-    //    Provider: [T-Mobile],
-    //    Account Number: [1234567890123],
-    //    Address: [Line1, Line2(optional), City/Township, HI 123456]
-    //    Amount: [$123.45]
-    //    """
-
-    //prompt |> output
-
-    //let path = Path.Combine(runtime.host.fsDir,filename)
-
-    //async{
-    //    let! (ex,msg) = 
-    //        UtilKestrel.Open.Google.GeminiMultimodal
-    //            runtime.output 
-    //            runtime.data.apiKeyGemini
-    //            runtime.data.aiModel
-    //            prompt 
-    //            [| path |]
-
-    //    ex + msg |> output
-    //}
-    //|> Async.RunSynchronously
-
+    
+    
     [| ok |]
 
 

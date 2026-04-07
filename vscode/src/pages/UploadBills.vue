@@ -92,15 +92,15 @@ const handleFiles = (fileList: FileList | null) => {
   })
 }
 
-const review = () => {
+const review = async() => {
 
   let fids: number[] =
     s.filexs.map<number>((filex:FileComplex) =>
       filex.rcd.id )
 
-  router.push({
-    path: '/ReviewBills',
-    state: {files:fids}})
+  sessionStorage.setItem('fids', JSON.stringify(fids))
+
+  await router.push('/ReviewBills')
 }
 
 </script>
