@@ -35,7 +35,7 @@
     </div>
 
     <div>
-      <button>Submit Your Bills for a Review</button>
+      <button @click="review">Submit Your Bills for a Review</button>
     </div>
 
   </div>
@@ -48,6 +48,7 @@ import { glib } from '~/lib/glib'
 import BillFile from '~/comps/BillFile.vue'
 import { FileComplex } from '~/comps/BillFile.vue'
 import { FILE_empty } from '~/lib/shared/OrmMor'
+import { router } from '~/lib/mod/route'
 
 const s = glib.vue.reactive({
   filexs: [] as FileComplex[],
@@ -91,6 +92,16 @@ const handleFiles = (fileList: FileList | null) => {
   })
 }
 
+const review = () => {
+
+  let fids: number[] =
+    s.filexs.map<number>((filex:FileComplex) =>
+      filex.rcd.id )
+
+  router.push({
+    path: '/ReviewBills',
+    state: {files:fids}})
+}
 
 </script>
 

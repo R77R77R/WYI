@@ -1,6 +1,7 @@
 import { createMemoryHistory, createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
 import UploadBills from '~/pages/UploadBills.vue'
+import ReviewBills from '~/pages/ReviewBills.vue'
 import HomeCustomer from '~/pages/HomeCustomer.vue'
 
 import Admin from '~/pages/Admin.vue'
@@ -8,6 +9,7 @@ import Admin from '~/pages/Admin.vue'
 const routes = [
   { path: '/', component: HomeCustomer },
   { path: '/UploadBills', component: UploadBills },
+  { path: '/ReviewBills', component: ReviewBills },
   { path: '/admin', component: Admin },
 ]
 

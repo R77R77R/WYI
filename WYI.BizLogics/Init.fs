@@ -34,16 +34,15 @@ let init (runtime:Runtime) =
     "Init ..."
     |> runtime.output
 
-    conn <- runtime.host.conn
-    rdbms <- runtime.host.rdbms
-
     let mutable rootPath = ""
     match Environment.MachineName with
     | "ubuntu-2gb-hil-1" -> 
+        runtime.host.conn <- @"Host=5.78.201.21;Port=5432;Database=wyi;Username=wyi;Password=e2TpqcaTEYLfkvFMkc"
         runtime.host.updateDatabase <- false
         runtime.host.cert <- "/root/aspnetapp.pfx"
         rootPath <- "/root"
     | _ -> 
+        runtime.host.conn <- @"Host=localhost;Port=5432;Database=wyi;Username=wyi;Password=e2TpqcaTEYLfkvFMkc"
         runtime.host.cert <- 
             Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "aspnetapp.pfx")
         rootPath <- @"C:"
@@ -52,6 +51,9 @@ let init (runtime:Runtime) =
     runtime.host.VsDirSolution <- rootPath + "/Dev/WYI"
     runtime.host.fsDir <- rootPath + "/FsRoot/WYI"
     runtime.host.req__vueDeployDir <- runtime.host.VsDirSolution + "/vscode/dist"
+
+    conn <- runtime.host.conn
+    rdbms <- runtime.host.rdbms
 
     if runtime.host.updateDatabase then
         updateDbStructure runtime conn
