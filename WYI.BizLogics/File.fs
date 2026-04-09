@@ -37,10 +37,6 @@ open WYI.BizLogics.Db
 let output = runtime.output
 
 
-open ImageMagick
-open System.IO
-
-
 let generateThumbnailBytes (fileStream: Stream) (isPdf: bool) =
     try
         // 1. 配置读取参数
@@ -100,7 +96,7 @@ let incomingFile (formfile:IFormFile) =
                 p.State <- fileStateEnum.Normal
                 p.Path <- filename
                 p.Thumbnail <-
-                    let stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read)
+                    use stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read)
                     let isPdf = p.Suffix.ToLower() = "pdf"
                     generateThumbnailBytes stream isPdf
                 true) then

@@ -1,4 +1,4 @@
-﻿module WYI.BizLogics.Api
+﻿module WYI.BizLogics.ApiPublic
 
 open System
 open System.Text
@@ -15,6 +15,8 @@ open Util.CollectionModDict
 open Util.Perf
 open Util.Json
 open Util.Orm
+open Util.Db
+open Util.DbTx
 
 open WYI.Shared.OrmTypes
 open WYI.Shared.Types
@@ -25,10 +27,11 @@ open UtilKestrel.Types
 open UtilKestrel.Ctx
 open UtilKestrel.Api
 open UtilKestrel.Json
-open UtilKestrel.SSR
+open UtilKestrel.Db
 open UtilKestrel.Open.Google
 
 open WYI.BizLogics.Common
+open WYI.BizLogics.Db
 open WYI.BizLogics.Auth
 open WYI.BizLogics.Ai
 
@@ -49,37 +52,3 @@ let providers x =
         |> Json.Braket)
     |> Json.Ary
     |> wrapOk "data"
-
-let reviewBills (x:X) =
-
-    let files = 
-        x.Json
-        |> tryFindAryByAtt "fids"
-        |> Array.map(fun item -> 
-            match item with
-            | Json.Num v -> parse_int64 v
-            | _ -> 0L)
-        |> Array.filter(fun id -> id > 0L)
-        |> Array.distinct
-        |> Array.map id__FILEo
-        |> Array.filter(fun o -> o.IsSome)
-        |> Array.map(fun o -> Path.Combine(runtime.host.fsDir,o.Value.p.Path))
-
-    async{
-        let! (ex,msg) = 
-            GeminiMultimodal
-                runtime.output 
-                runtime.data.apiKeyGemini
-                runtime.data.aiModel
-                prompt 
-                files
-        ex + msg |> output
-    }
-    |> Async.RunSynchronously
-
-    
-    
-    [| ok |]
-
-
-

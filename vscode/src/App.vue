@@ -6,7 +6,7 @@
 
 </div>
 
-<div class="lg:w-[1200px] mr-[10px]">
+<div class="lg:w-[1200px] m-[10px]">
 
   <div class="main-color w-screen">
 

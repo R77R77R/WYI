@@ -77,7 +77,10 @@ let auth (x:X) =
             p.Avatar <- avatar
 
             EU_create_incremental_transaction output ((fun rcd -> 
-                let eux = { eu = rcd }
+                let eux = { 
+                    units = createModDictInt64 2
+                    billxs = createModDictInt64 2
+                    eu = rcd }
                 runtime.users[eux.eu.ID] <- eux
                 euxo <- Some eux),(fun (eso,ctx) -> ())) p
 
@@ -88,7 +91,8 @@ let auth (x:X) =
             let s = UtilKestrel.Session.user__session runtime.sessions eux
             [|  ok
                 "session", s.session |> str__json
-                "eux", eux |> EuComplex__json |]
+                //"eux", eux |> EuComplex__json 
+                    |]
         | None -> er Er.Internal
 
     else

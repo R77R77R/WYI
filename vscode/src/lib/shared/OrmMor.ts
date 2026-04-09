@@ -146,49 +146,6 @@ export const bin__FILE = (bi:BinIndexed):wyi.FILE => {
     }
 }
 
-// [CLIENT] Structure
-
-
-export const pCLIENT__bin = (bb:BytesBuilder) => (p:wyi.pCLIENT) => {
-
-    
-    marshall.str__bin (bb) (p.Caption)
-}
-
-export const CLIENT__bin = (bb:BytesBuilder) => (v:wyi.CLIENT) => {
-    marshall.int64__bin (bb) (v.id)
-    marshall.int64__bin (bb) (v.sort)
-    marshall.DateTime__bin (bb) (v.createdat)
-    marshall.DateTime__bin (bb) (v.updatedat)
-
-    pCLIENT__bin (bb) (v.p)
-}
-
-export const bin__pCLIENT = (bi:BinIndexed):wyi.pCLIENT => {
-
-    let p = pCLIENT_empty()
-    p.Caption = marshall.bin__str (bi)
-
-    return p
-}
-
-
-export const bin__CLIENT = (bi:BinIndexed):wyi.CLIENT => {
-
-    let ID = marshall.bin__int64 (bi)
-    let Sort = marshall.bin__int64 (bi)
-    let Createdat = marshall.bin__DateTime (bi)
-    let Updatedat = marshall.bin__DateTime (bi)
-    
-    return {
-        id: ID,
-        sort: Sort,
-        createdat: Createdat,
-        updatedat: Updatedat,
-        p:  bin__pCLIENT (bi)
-    }
-}
-
 // [UNIT] Structure
 
 
@@ -197,9 +154,15 @@ export const pUNIT__bin = (bb:BytesBuilder) => (p:wyi.pUNIT) => {
     
     marshall.str__bin (bb) (p.Caption)
     
+    marshall.int64__bin (bb) (p.Owner)
+    
     marshall.str__bin (bb) (p.UnitNum)
     
+    marshall.str__bin (bb) (p.AcctNum)
+    
     marshall.str__bin (bb) (p.Address)
+    
+    marshall.str__bin (bb) (p.Town)
     
     marshall.str__bin (bb) (p.State)
     
@@ -219,8 +182,11 @@ export const bin__pUNIT = (bi:BinIndexed):wyi.pUNIT => {
 
     let p = pUNIT_empty()
     p.Caption = marshall.bin__str (bi)
+    p.Owner = marshall.bin__int64 (bi)
     p.UnitNum = marshall.bin__str (bi)
+    p.AcctNum = marshall.bin__str (bi)
     p.Address = marshall.bin__str (bi)
+    p.Town = marshall.bin__str (bi)
     p.State = marshall.bin__str (bi)
     p.Zip = marshall.bin__str (bi)
 
@@ -309,13 +275,17 @@ export const pUBILL__bin = (bb:BytesBuilder) => (p:wyi.pUBILL) => {
     
     marshall.int64__bin (bb) (p.Provider)
     
-    marshall.int64__bin (bb) (p.client)
+    marshall.str__bin (bb) (p.ProviderText)
+    
+    marshall.int64__bin (bb) (p.Owner)
     
     marshall.int64__bin (bb) (p.Unit)
     
+    marshall.str__bin (bb) (p.UnitText)
+    
     marshall.int64__bin (bb) (p.UAcct)
     
-    marshall.float__bin (bb) (p.Amout)
+    marshall.float__bin (bb) (p.Amt)
 }
 
 export const UBILL__bin = (bb:BytesBuilder) => (v:wyi.UBILL) => {
@@ -332,10 +302,12 @@ export const bin__pUBILL = (bi:BinIndexed):wyi.pUBILL => {
     let p = pUBILL_empty()
     p.Cat = marshall.bin__int64 (bi)
     p.Provider = marshall.bin__int64 (bi)
-    p.client = marshall.bin__int64 (bi)
+    p.ProviderText = marshall.bin__str (bi)
+    p.Owner = marshall.bin__int64 (bi)
     p.Unit = marshall.bin__int64 (bi)
+    p.UnitText = marshall.bin__str (bi)
     p.UAcct = marshall.bin__int64 (bi)
-    p.Amout = marshall.bin__float (bi)
+    p.Amt = marshall.bin__float (bi)
 
     return p
 }
@@ -751,25 +723,14 @@ export const FILE_empty = (): wyi.FILE => {
         p: pFILE_empty() }
 }
 
-export const pCLIENT_empty = (): wyi.pCLIENT => {
-    return {
-        Caption: "" }
-}
-
-export const CLIENT_empty = (): wyi.CLIENT => {
-    return {
-        id: 0,
-        createdat: new Date(),
-        updatedat: new Date(),
-        sort: 0,
-        p: pCLIENT_empty() }
-}
-
 export const pUNIT_empty = (): wyi.pUNIT => {
     return {
         Caption: "",
+        Owner: 0,
         UnitNum: "",
+        AcctNum: "",
         Address: "",
+        Town: "",
         State: "",
         Zip: "" }
 }
@@ -805,10 +766,12 @@ export const pUBILL_empty = (): wyi.pUBILL => {
     return {
         Cat: 0,
         Provider: 0,
-        client: 0,
+        ProviderText: "",
+        Owner: 0,
         Unit: 0,
+        UnitText: "",
         UAcct: 0,
-        Amout: 0.0 }
+        Amt: 0.0 }
 }
 
 export const UBILL_empty = (): wyi.UBILL => {

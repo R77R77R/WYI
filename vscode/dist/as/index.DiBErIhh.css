@@ -27,11 +27,11 @@
 .error-detail[data-v-6ada0c57] { color: #999;
 }
 
-.upload-page[data-v-100b7084] { max-width: 800px; margin: 0 auto; padding: 2rem;
+.upload-page[data-v-3f95fb36] { max-width: 800px; margin: 0 auto; padding: 2rem;
 }
-.user-status[data-v-100b7084] { font-size: 0.9rem; color: #666; margin-bottom: 1.5rem;
+.user-status[data-v-3f95fb36] { font-size: 0.9rem; color: #666; margin-bottom: 1.5rem;
 }
-.drop-zone[data-v-100b7084] {
+.drop-zone[data-v-3f95fb36] {
   border: 2px dashed #ccd0d7;
   border-radius: 8px;
   padding: 4rem 1rem;
@@ -40,11 +40,11 @@
   cursor: pointer;
   transition: all 0.2s;
 }
-.drop-zone.is-dragging[data-v-100b7084] { border-color: #409eff; background: #ecf5ff;
+.drop-zone.is-dragging[data-v-3f95fb36] { border-color: #409eff; background: #ecf5ff;
 }
-.icon[data-v-100b7084] { font-size: 3rem; margin-bottom: 1rem;
+.icon[data-v-3f95fb36] { font-size: 3rem; margin-bottom: 1rem;
 }
-.task-list[data-v-100b7084] { margin-top: 2rem;
+.task-list[data-v-3f95fb36] { margin-top: 2rem;
 }
 /*
 ! tailwindcss v3.4.4 | MIT License | https://tailwindcss.com

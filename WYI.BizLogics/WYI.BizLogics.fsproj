@@ -13,7 +13,8 @@
     <Compile Include="Init.fs" />
     <Compile Include="Auth.fs" />
     <Compile Include="Ai.fs" />
-    <Compile Include="Api.fs" />
+    <Compile Include="ApiPublic.fs" />
+    <Compile Include="ApiEu.fs" />
     <Compile Include="Branch.fs" />
     <Compile Include="File.fs" />
     <Compile Include="SSR.fs" />

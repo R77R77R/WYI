@@ -373,66 +373,6 @@ BEGIN
         ALTER TABLE ca_file ADD "bill" bigint;
     END IF;
 END $$;
--- [kernel_client] ----------------------
-
--- [kernel_client] ----------------------
-
-DO $$
-DECLARE
-    condition boolean;
-BEGIN
-    condition := (SELECT EXISTS(
-        SELECT 1 FROM information_schema.tables 
-        WHERE table_name = 'kernel_client' 
-          AND table_schema = 'public'
-    ));
-
-    IF not condition THEN
-        CREATE TABLE "kernel_client" (
-            id BIGINT NOT NULL
-            ,createdat BIGINT NOT NULL
-            ,updatedat BIGINT NOT NULL
-            ,sort BIGINT NOT NULL
-            ,"caption" TEXT
-            ,CONSTRAINT "pk_kernel_client" PRIMARY KEY (id)
-        );
-    END IF;
-END $$;
-
-
--- PostgreSQL: Dropping obsolete fields -----------
-DO $$ 
-DECLARE
-    fn TEXT;
-BEGIN
-    FOR fn IN 
-        SELECT column_name 
-        FROM information_schema.columns 
-        WHERE table_name = 'kernel_client' 
-          AND table_schema = 'public' 
-          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'caption'])
-    LOOP
-        -- 对应 PRINT 'Dropping ' + @tname + '.' + @fn
-        
-        -- 对应 EXEC sp_executesql @sql (format %I 对应 QUOTENAME)
-        EXECUTE format('ALTER TABLE %I DROP COLUMN %I', 'kernel_client', fn);
-    END LOOP;
-END $$;
-
-
--- [kernel_client.Caption] -------------
-
-
-DO $$
-DECLARE
-    condition boolean;
-BEGIN
-    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_client' AND column_name='caption'));
-
-    IF not condition THEN
-        ALTER TABLE kernel_client ADD "caption" text;
-    END IF;
-END $$;
 -- [kernel_unit] ----------------------
 
 -- [kernel_unit] ----------------------
@@ -454,10 +394,13 @@ BEGIN
             ,updatedat BIGINT NOT NULL
             ,sort BIGINT NOT NULL
             ,"caption" TEXT
+            ,"owner" BIGINT
             ,"unitnum" VARCHAR(5)
+            ,"acctnum" TEXT
             ,"address" TEXT
+            ,"town" TEXT
             ,"state" VARCHAR(2)
-            ,"zip" VARCHAR(5)
+            ,"zip" VARCHAR(10)
             ,CONSTRAINT "pk_kernel_unit" PRIMARY KEY (id)
         );
     END IF;
@@ -474,7 +417,7 @@ BEGIN
         FROM information_schema.columns 
         WHERE table_name = 'kernel_unit' 
           AND table_schema = 'public' 
-          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'caption', 'unitnum', 'address', 'state', 'zip'])
+          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'caption', 'owner', 'unitnum', 'acctnum', 'address', 'town', 'state', 'zip'])
     LOOP
         -- 对应 PRINT 'Dropping ' + @tname + '.' + @fn
         
@@ -498,6 +441,20 @@ BEGIN
     END IF;
 END $$;
 
+-- [kernel_unit.Owner] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_unit' AND column_name='owner'));
+
+    IF not condition THEN
+        ALTER TABLE kernel_unit ADD "owner" bigint;
+    END IF;
+END $$;
+
 -- [kernel_unit.UnitNum] -------------
 
 
@@ -512,6 +469,20 @@ BEGIN
     END IF;
 END $$;
 
+-- [kernel_unit.AcctNum] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_unit' AND column_name='acctnum'));
+
+    IF not condition THEN
+        ALTER TABLE kernel_unit ADD "acctnum" text;
+    END IF;
+END $$;
+
 -- [kernel_unit.Address] -------------
 
 
@@ -523,6 +494,20 @@ BEGIN
 
     IF not condition THEN
         ALTER TABLE kernel_unit ADD "address" text;
+    END IF;
+END $$;
+
+-- [kernel_unit.Town] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_unit' AND column_name='town'));
+
+    IF not condition THEN
+        ALTER TABLE kernel_unit ADD "town" text;
     END IF;
 END $$;
 
@@ -550,7 +535,7 @@ BEGIN
     condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_unit' AND column_name='zip'));
 
     IF not condition THEN
-        ALTER TABLE kernel_unit ADD "zip" varchar(5);
+        ALTER TABLE kernel_unit ADD "zip" varchar(10);
     END IF;
 END $$;
 -- [kernel_utilacct] ----------------------
@@ -695,10 +680,12 @@ BEGIN
             ,sort BIGINT NOT NULL
             ,"cat" BIGINT
             ,"provider" BIGINT
-            ,"client" BIGINT
+            ,"providertext" TEXT
+            ,"owner" BIGINT
             ,"unit" BIGINT
+            ,"unittext" TEXT
             ,"uacct" BIGINT
-            ,"amout" FLOAT
+            ,"amt" FLOAT
             ,CONSTRAINT "pk_kernel_utilbill" PRIMARY KEY (id)
         );
     END IF;
@@ -715,7 +702,7 @@ BEGIN
         FROM information_schema.columns 
         WHERE table_name = 'kernel_utilbill' 
           AND table_schema = 'public' 
-          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'cat', 'provider', 'client', 'unit', 'uacct', 'amout'])
+          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'cat', 'provider', 'providertext', 'owner', 'unit', 'unittext', 'uacct', 'amt'])
     LOOP
         -- 对应 PRINT 'Dropping ' + @tname + '.' + @fn
         
@@ -753,17 +740,31 @@ BEGIN
     END IF;
 END $$;
 
--- [kernel_utilbill.client] -------------
+-- [kernel_utilbill.ProviderText] -------------
 
 
 DO $$
 DECLARE
     condition boolean;
 BEGIN
-    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_utilbill' AND column_name='client'));
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_utilbill' AND column_name='providertext'));
 
     IF not condition THEN
-        ALTER TABLE kernel_utilbill ADD "client" bigint;
+        ALTER TABLE kernel_utilbill ADD "providertext" text;
+    END IF;
+END $$;
+
+-- [kernel_utilbill.Owner] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_utilbill' AND column_name='owner'));
+
+    IF not condition THEN
+        ALTER TABLE kernel_utilbill ADD "owner" bigint;
     END IF;
 END $$;
 
@@ -781,6 +782,20 @@ BEGIN
     END IF;
 END $$;
 
+-- [kernel_utilbill.UnitText] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_utilbill' AND column_name='unittext'));
+
+    IF not condition THEN
+        ALTER TABLE kernel_utilbill ADD "unittext" text;
+    END IF;
+END $$;
+
 -- [kernel_utilbill.UAcct] -------------
 
 
@@ -795,17 +810,17 @@ BEGIN
     END IF;
 END $$;
 
--- [kernel_utilbill.Amout] -------------
+-- [kernel_utilbill.Amt] -------------
 
 
 DO $$
 DECLARE
     condition boolean;
 BEGIN
-    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_utilbill' AND column_name='amout'));
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_utilbill' AND column_name='amt'));
 
     IF not condition THEN
-        ALTER TABLE kernel_utilbill ADD "amout" float;
+        ALTER TABLE kernel_utilbill ADD "amt" float;
     END IF;
 END $$;
 -- [kernel_utilcat] ----------------------

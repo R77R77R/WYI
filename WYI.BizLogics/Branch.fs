@@ -29,11 +29,12 @@ open UtilKestrel.Server
 
 open WYI.BizLogics.Common
 open WYI.BizLogics.Auth
-open WYI.BizLogics.Api
+open WYI.BizLogics.ApiPublic
+open WYI.BizLogics.ApiEu
 
 let output = runtime.output
 
-let branching (x:X) = 
+let branching (euxo:EuComplex option) (x:X) = 
 
     let bindx p = 
         x.Struct.proco <- Some p
@@ -45,7 +46,6 @@ let branching (x:X) =
         | "ping" -> bindx apiPing
         | "auth" -> bindx auth
         | "providers" -> bindx providers
-        | "review-bills" -> bindx reviewBills
         | "msg" -> (fun (x:X) -> 
             let json = x.Json
             let name = (tryFindStrByAtt "name" json).Trim()
@@ -55,7 +55,10 @@ let branching (x:X) =
             [| ok |]) |> bindx
         | _ -> Fail(Er.ApiNotExists,x)
     | "eu" -> 
+        let eux = euxo.Value
         match x.Struct.api with
+        | "review-bill-files" -> reviewBillFiles eux |> bindx
+        | "submit-bill" -> bindx submitBill
         | _ -> Fail(Er.ApiNotExists,x)
     | "admin" -> 
         match x.Struct.api with
@@ -78,28 +81,40 @@ let branch (x:X) =
 
     use cw = new CodeWrapper("Server.WebHandler.branch")
     
-    //match service with
-    //| "eu" ->
-    //    x <- 
-    //        x 
-    //        |> bind checkSession
-    //        |> bind checkSessionEu
-    //| "admin" ->
-    //    x <- 
-    //        x 
-    //        |> bind checkSession
-    //        |> bind checkSessionEu
-    //| "open" ->
-    //    x <- 
-    //        x 
-    //        |> bind checkSession
-    //        |> bind checkSessionEu
+    let checkEuxo() = 
+        let session =
+            x.Json
+            |> tryFindStrByAtt "session"
+        
+        match
+            runtime.sessions.TryGet session with
+        | Some s -> 
+            if DateTime.UtcNow.Ticks > s.expiry.Ticks then
+                runtime.sessions.Remove session
+                None
+            else
+                x.Struct.sessiono <- Some s
+                s.identity
+        | None -> None
 
-    //| _ -> ()
+    let authorized,euxo = 
+        match x.Struct.scheme with
+        | "eu" -> 
+            match checkEuxo() with
+            | Some eux -> true,Some eux
+            | None -> false,None
+        | "admin" -> 
+            match checkEuxo() with
+            | Some eux -> eux.eu.p.AuthType = euAuthTypeEnum.Admin,Some eux
+            | None -> false,None
+        | _ -> true,None
 
     x.Struct.contentType <- "application/json; charset=utf-8"
     x.Struct.rep <-
-        runApi branching x 
+        if authorized then
+            runApi (branching euxo) x 
+        else
+            er Er.Unauthorized
         |> Braket
         |> json__strFinal
         |> Encoding.UTF8.GetBytes

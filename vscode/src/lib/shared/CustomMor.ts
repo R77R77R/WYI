@@ -16,25 +16,73 @@ export const enum ErEnum {
     Unauthorized = 2,//Unauthorized
     NotAvailable = 3,//NotAvailable
     Internal = 4,//Internal
+    API3rdParty = 5,//API3rdParty
 }
 
+
+// [BillComplex] Structure
+
+export const BillComplex_empty = (): wyi.BillComplex => { 
+    return {
+        cato: null,
+        providero: null,
+        owner: { id: 0, sort: 0, createdat: new Date(), updatedat: new Date(), p: marshall.pEU_empty() },
+        unito: null,
+        accto: null,
+        files: [],
+        bill: { id: 0, sort: 0, createdat: new Date(), updatedat: new Date(), p: marshall.pUBILL_empty() },
+    } as wyi.BillComplex
+}
+
+export const BillComplex__bin = (bb:BytesBuilder) => (v:any) => {
+
+    marshall.option__bin (marshall.UCAT__bin) (bb) (v.cato)
+    marshall.option__bin (marshall.UPROVIDER__bin) (bb) (v.providero)
+    marshall.EU__bin (bb) (v.owner)
+    marshall.option__bin (marshall.UNIT__bin) (bb) (v.unito)
+    marshall.option__bin (marshall.UACCT__bin) (bb) (v.accto)
+    
+    marshall.array__bin (marshall.FILE__bin) (bb) (v.files)
+    marshall.UBILL__bin (bb) (v.bill)
+}
+
+export const bin__BillComplex = (bi:BinIndexed):wyi.BillComplex => {
+
+    return {
+        cato: marshall.bin__option (marshall.bin__UCAT) (bi),
+        providero: marshall.bin__option (marshall.bin__UPROVIDER) (bi),
+        owner: marshall.bin__EU (bi),
+        unito: marshall.bin__option (marshall.bin__UNIT) (bi),
+        accto: marshall.bin__option (marshall.bin__UACCT) (bi),
+        files: marshall.bin__array (marshall.bin__FILE) (bi),
+        bill: marshall.bin__UBILL (bi),
+    }
+}
 
 // [EuComplex] Structure
 
 export const EuComplex_empty = (): wyi.EuComplex => { 
     return {
+        units: {},
+        billxs: {},
         eu: { id: 0, sort: 0, createdat: new Date(), updatedat: new Date(), p: marshall.pEU_empty() },
     } as wyi.EuComplex
 }
 
 export const EuComplex__bin = (bb:BytesBuilder) => (v:any) => {
 
+    
+    marshall.dict__bin (marshall.int64__bin)(marshall.UNIT__bin) (bb) (v.units)
+    
+    marshall.dict__bin (marshall.int64__bin)(BillComplex__bin) (bb) (v.billxs)
     marshall.EU__bin (bb) (v.eu)
 }
 
 export const bin__EuComplex = (bi:BinIndexed):wyi.EuComplex => {
 
     return {
+        units: marshall.bin__dict(marshall.bin__int64)(marshall.bin__UNIT) (bi),
+        billxs: marshall.bin__dict(marshall.bin__int64)(bin__BillComplex) (bi),
         eu: marshall.bin__EU (bi),
     }
 }
@@ -59,41 +107,6 @@ export const bin__MomentComplex = (bi:BinIndexed):wyi.MomentComplex => {
     }
 }
 
-// [BillComplex] Structure
-
-export const BillComplex_empty = (): wyi.BillComplex => { 
-    return {
-        cato: null,
-        providero: null,
-        cliento: null,
-        unito: null,
-        accto: null,
-        bill: { id: 0, sort: 0, createdat: new Date(), updatedat: new Date(), p: marshall.pUBILL_empty() },
-    } as wyi.BillComplex
-}
-
-export const BillComplex__bin = (bb:BytesBuilder) => (v:any) => {
-
-    marshall.option__bin (marshall.UCAT__bin) (bb) (v.cato)
-    marshall.option__bin (marshall.UPROVIDER__bin) (bb) (v.providero)
-    marshall.option__bin (marshall.CLIENT__bin) (bb) (v.cliento)
-    marshall.option__bin (marshall.UNIT__bin) (bb) (v.unito)
-    marshall.option__bin (marshall.UACCT__bin) (bb) (v.accto)
-    marshall.UBILL__bin (bb) (v.bill)
-}
-
-export const bin__BillComplex = (bi:BinIndexed):wyi.BillComplex => {
-
-    return {
-        cato: marshall.bin__option (marshall.bin__UCAT) (bi),
-        providero: marshall.bin__option (marshall.bin__UPROVIDER) (bi),
-        cliento: marshall.bin__option (marshall.bin__CLIENT) (bi),
-        unito: marshall.bin__option (marshall.bin__UNIT) (bi),
-        accto: marshall.bin__option (marshall.bin__UACCT) (bi),
-        bill: marshall.bin__UBILL (bi),
-    }
-}
-
 // [RuntimeData] Structure
 
 export const RuntimeData_empty = (): wyi.RuntimeData => { 
@@ -101,7 +114,6 @@ export const RuntimeData_empty = (): wyi.RuntimeData => {
         apiKeyGemini: "",
         aiModel: "",
         cats: {},
-        bills: {},
         providers: {},
     } as wyi.RuntimeData
 }
@@ -113,8 +125,6 @@ export const RuntimeData__bin = (bb:BytesBuilder) => (v:any) => {
     
     marshall.dict__bin (marshall.int64__bin)(marshall.UCAT__bin) (bb) (v.cats)
     
-    marshall.dict__bin (marshall.int64__bin)(BillComplex__bin) (bb) (v.bills)
-    
     marshall.dict__bin (marshall.int64__bin)(marshall.UPROVIDER__bin) (bb) (v.providers)
 }
 
@@ -124,7 +134,6 @@ export const bin__RuntimeData = (bi:BinIndexed):wyi.RuntimeData => {
         apiKeyGemini: marshall.bin__str (bi),
         aiModel: marshall.bin__str (bi),
         cats: marshall.bin__dict(marshall.bin__int64)(marshall.bin__UCAT) (bi),
-        bills: marshall.bin__dict(marshall.bin__int64)(bin__BillComplex) (bi),
         providers: marshall.bin__dict(marshall.bin__int64)(marshall.bin__UPROVIDER) (bi),
     }
 }
@@ -211,6 +220,8 @@ export const Er__bin = (bb:BytesBuilder) => (v:any) => {
             break
         case 4:
             break
+        case 5:
+            break
     }
 }
 
@@ -219,6 +230,8 @@ export const bin__Er = (bi:BinIndexed):wyi.Er => {
     let v:wyi.Er = { e:0, val:{} }
     v.e = marshall.bin__int32 (bi)
     switch (v.e) {
+        case 5:
+            break
         case 4:
             break
         case 3:

@@ -51,28 +51,16 @@ sort:number
 p:pFILE
 }
 
-// [Kernel_Client] (CLIENT)
-
-export type pCLIENT = {
-[key:string]: any
-    Caption: string
-}
-
-export type CLIENT = {
-id:number
-createdat:Date
-updatedat:Date
-sort:number
-p:pCLIENT
-}
-
 // [Kernel_Unit] (UNIT)
 
 export type pUNIT = {
 [key:string]: any
     Caption: string
+    Owner: number
     UnitNum: string
+    AcctNum: string
     Address: string
+    Town: string
     State: string
     Zip: string
 }
@@ -110,10 +98,12 @@ export type pUBILL = {
 [key:string]: any
     Cat: number
     Provider: number
-    client: number
+    ProviderText: string
+    Owner: number
     Unit: number
+    UnitText: string
     UAcct: number
-    Amout: number
+    Amt: number
 }
 
 export type UBILL = {

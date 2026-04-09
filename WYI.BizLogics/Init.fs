@@ -10,7 +10,7 @@ open Util.Runtime
 open Util.Bin
 open Util.Concurrent
 open Util.Json
-open Util.Collection
+open Util.CollectionModDict
 open Util.Db
 open Util.DbTx
 open Util.Orm
@@ -170,7 +170,10 @@ let init (runtime:Runtime) =
             | None -> ())
     //importUtilProviders()
 
-    (fun (i:EU) -> runtime.users[i.ID] <- { eu = i })
+    (fun (i:EU) -> runtime.users[i.ID] <- { 
+        units = createModDictInt64 2
+        billxs = createModDictInt64 2
+        eu = i })
     |> loadAll runtime.output conn EU_metadata
 
     let users = runtime.users.Values |> Seq.toArray
@@ -187,7 +190,10 @@ let init (runtime:Runtime) =
         match createEU 
             "sa" sapwd
             "System Administrator" euAuthTypeEnum.Admin with
-        | Some rcd -> runtime.users[rcd.ID] <- { eu = rcd }
+        | Some rcd -> runtime.users[rcd.ID] <- { 
+            units = createModDictInt64 2
+            billxs = createModDictInt64 2
+            eu = rcd }
         | None -> halt runtime.output ("BizLogics.Init.createEU") ""
 
 

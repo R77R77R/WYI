@@ -27,6 +27,18 @@ import { RouteRecordRaw } from 'vue-router';
       }]
     },
     {
+      path: '//ReviewBills',
+      component: ()=>import ( "/src/layouts/blank.vue" ),
+      meta: {"layout":"blank"},
+      children: [{
+        path: "",
+        name: '-ReviewBills',
+        component:()=> import("~/pages//ReviewBills.vue"),
+        meta: {"layout":"blank"},
+        props: true
+      }]
+    },
+    {
       path: '//UploadBills',
       component: ()=>import ( "/src/layouts/blank.vue" ),
       meta: {"layout":"blank"},

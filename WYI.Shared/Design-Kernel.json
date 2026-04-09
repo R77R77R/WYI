@@ -29,18 +29,6 @@
     ]
   },
 
-  {
-    "name": "Kernel_Client",
-    "shorthand": "client",
-    "id": 9554261,
-    "fields": [
-      {
-        "enum": "Text",
-        "name": "Caption"
-      }
-    ]
-  },
-
 
   {
     "name": "Kernel_Unit",
@@ -52,13 +40,26 @@
         "name": "Caption"
       },
       {
+        "enum": "FK",
+        "ref": "Ca_EndUser",
+        "name": "Owner"
+      },
+      {
         "enum": "Chars",
         "length": 5,
         "name": "UnitNum"
       },
       {
         "enum": "Text",
+        "name": "AcctNum"
+      },
+      {
+        "enum": "Text",
         "name": "Address"
+      },
+      {
+        "enum": "Text",
+        "name": "Town"
       },
       {
         "enum": "Chars",
@@ -67,7 +68,7 @@
       },
       {
         "enum": "Chars",
-        "length": 5,
+        "length": 10,
         "name": "Zip"
       }
     ]
@@ -121,14 +122,22 @@
         "name": "Provider"
       },
       {
+        "enum": "Text",
+        "name": "ProviderText"
+      },
+      {
         "enum": "FK",
-        "ref": "Kernel_Client",
-        "name": "client"
+        "ref": "Ca_EndUser",
+        "name": "Owner"
       },
       {
         "enum": "FK",
         "ref": "Kernel_Unit",
         "name": "Unit"
+      },
+      {
+        "enum": "Text",
+        "name": "UnitText"
       },
       {
         "enum": "FK",
@@ -137,7 +146,7 @@
       },
       {
         "enum": "Float",
-        "name": "Amout"
+        "name": "Amt"
       }
     ]
   }

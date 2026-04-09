@@ -13,25 +13,28 @@ open WYI.Shared.OrmTypes
 
 //[TypeManaged]{
 
+type BillComplex = {
+mutable cato: UCAT option
+mutable providero: UPROVIDER option
+mutable owner: EU
+mutable unito: UNIT option
+mutable accto: UACCT option
+mutable files: FILE[]
+bill: UBILL }
+
 type EuComplex = {
+units: ModDictInt64<UNIT>
+billxs: ModDictInt64<BillComplex>
 eu: EU }
 
 type MomentComplex = {
 m: MOMENT }
 
-type BillComplex = {
-mutable cato: UCAT option
-mutable providero: UPROVIDER option
-mutable cliento: CLIENT option
-mutable unito: UNIT option
-mutable accto: UACCT option
-bill: UBILL }
 
 type RuntimeData = {
 mutable apiKeyGemini: string
 aiModel: string
 cats: ModDictInt64<UCAT>
-bills: ModDictInt64<BillComplex>
 providers: ModDictInt64<UPROVIDER> }
 
 type ClientRuntime = {
@@ -48,6 +51,7 @@ type Er =
 | Unauthorized
 | NotAvailable
 | Internal
+| API3rdParty
 
 //}
 

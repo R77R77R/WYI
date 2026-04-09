@@ -9128,7 +9128,9 @@ var bin__CLIENT = (bi) => {
 var pUNIT__bin = (bb) => (p) => {
 	marshall$1.str__bin(bb)(p.Caption);
 	marshall$1.str__bin(bb)(p.UnitNum);
+	marshall$1.str__bin(bb)(p.AcctNum);
 	marshall$1.str__bin(bb)(p.Address);
+	marshall$1.str__bin(bb)(p.Town);
 	marshall$1.str__bin(bb)(p.State);
 	marshall$1.str__bin(bb)(p.Zip);
 };
@@ -9143,7 +9145,9 @@ var bin__pUNIT = (bi) => {
 	let p = pUNIT_empty();
 	p.Caption = marshall$1.bin__str(bi);
 	p.UnitNum = marshall$1.bin__str(bi);
+	p.AcctNum = marshall$1.bin__str(bi);
 	p.Address = marshall$1.bin__str(bi);
+	p.Town = marshall$1.bin__str(bi);
 	p.State = marshall$1.bin__str(bi);
 	p.Zip = marshall$1.bin__str(bi);
 	return p;
@@ -9480,7 +9484,9 @@ var pUNIT_empty = () => {
 	return {
 		Caption: "",
 		UnitNum: "",
+		AcctNum: "",
 		Address: "",
+		Town: "",
 		State: "",
 		Zip: ""
 	};
@@ -9852,16 +9858,16 @@ var bin__Er = (bi) => {
 };
 //#endregion
 //#region src/comps/BillFile.vue?vue&type=script&setup=true&lang.ts
-var _hoisted_1$5 = { class: "h-full w-full flex flex-col p-3" };
-var _hoisted_2$5 = {
+var _hoisted_1$6 = { class: "h-full w-full flex flex-col p-3" };
+var _hoisted_2$6 = {
 	key: 0,
 	class: "w-[300px]"
 };
-var _hoisted_3$5 = ["src"];
-var _hoisted_4$4 = { key: 1 };
-var _hoisted_5$4 = { key: 0 };
+var _hoisted_3$6 = ["src"];
+var _hoisted_4$5 = { key: 1 };
+var _hoisted_5$5 = { key: 0 };
 var _hoisted_6$4 = { key: 1 };
-var _hoisted_7$3 = { key: 2 };
+var _hoisted_7$2 = { key: 2 };
 var _hoisted_8$1 = { key: 3 };
 var _hoisted_9$1 = { key: 4 };
 var _hoisted_10$1 = { class: "progress-container" };
@@ -9939,12 +9945,12 @@ var BillFile_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */ defin
 			executeUpload(props.filex.uploadTask);
 		});
 		return (_ctx, _cache) => {
-			return openBlock(), createElementBlock("div", _hoisted_1$5, [
-				props.filex.rcd.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_2$5, [createBaseVNode("img", { src: "/thumbnail/" + props.filex.rcd.id }, null, 8, _hoisted_3$5)])) : createCommentVNode("", true),
-				props.filex.rcd.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_4$4, [
-					unref(s).billx.cato ? (openBlock(), createElementBlock("div", _hoisted_5$4, "Cat: " + toDisplayString(unref(s).billx.cato?.p.Caption), 1)) : createCommentVNode("", true),
+			return openBlock(), createElementBlock("div", _hoisted_1$6, [
+				props.filex.rcd.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_2$6, [createBaseVNode("img", { src: "/thumbnail/" + props.filex.rcd.id }, null, 8, _hoisted_3$6)])) : createCommentVNode("", true),
+				props.filex.rcd.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_4$5, [
+					unref(s).billx.cato ? (openBlock(), createElementBlock("div", _hoisted_5$5, "Cat: " + toDisplayString(unref(s).billx.cato?.p.Caption), 1)) : createCommentVNode("", true),
 					unref(s).billx.providero ? (openBlock(), createElementBlock("div", _hoisted_6$4, "Provider: " + toDisplayString(unref(s).billx.providero?.p.Caption), 1)) : createCommentVNode("", true),
-					unref(s).billx.unito ? (openBlock(), createElementBlock("div", _hoisted_7$3, "Unit: " + toDisplayString(unref(s).billx.unito?.p.Caption), 1)) : createCommentVNode("", true),
+					unref(s).billx.unito ? (openBlock(), createElementBlock("div", _hoisted_7$2, "Unit: " + toDisplayString(unref(s).billx.unito?.p.Caption), 1)) : createCommentVNode("", true),
 					unref(s).billx.accto ? (openBlock(), createElementBlock("div", _hoisted_8$1, "Acct Number: " + toDisplayString(unref(s).billx.accto?.p.AcctNum), 1)) : createCommentVNode("", true),
 					unref(s).billx.bill.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_9$1, "Amount: " + toDisplayString(unref(s).billx.bill.p.Amout), 1)) : createCommentVNode("", true),
 					createBaseVNode("div", null, "File Name: " + toDisplayString(props.filex.file.name), 1),
@@ -9971,14 +9977,13 @@ var _plugin_vue_export_helper_default = (sfc, props) => {
 var BillFile_default = /* @__PURE__ */ _plugin_vue_export_helper_default(BillFile_vue_vue_type_script_setup_true_lang_default, [["__scopeId", "data-v-6ada0c57"]]);
 //#endregion
 //#region src/pages/UploadBills.vue?vue&type=script&setup=true&lang.ts
-var _withScopeId = (n) => (pushScopeId("data-v-100b7084"), n = n(), popScopeId(), n);
-var _hoisted_1$4 = { class: "upload-page" };
-var _hoisted_2$4 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", { class: "header" }, [/* @__PURE__ */ createBaseVNode("h2", null, "Upload Bills")], -1));
-var _hoisted_3$4 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", null, [/* @__PURE__ */ createBaseVNode("p", null, [/* @__PURE__ */ createTextVNode("Drop your files here or "), /* @__PURE__ */ createBaseVNode("span", null, "Select")]), /* @__PURE__ */ createBaseVNode("small", null, "Max. 10GB")], -1));
-var _hoisted_4$3 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", { class: "icon" }, "📄", -1));
-var _hoisted_5$3 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", null, "File list", -1));
+var _withScopeId = (n) => (pushScopeId("data-v-3f95fb36"), n = n(), popScopeId(), n);
+var _hoisted_1$5 = { class: "upload-page" };
+var _hoisted_2$5 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", { class: "header" }, [/* @__PURE__ */ createBaseVNode("h2", null, "Upload Bills")], -1));
+var _hoisted_3$5 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", null, [/* @__PURE__ */ createBaseVNode("p", null, [/* @__PURE__ */ createTextVNode("Drop your files here or "), /* @__PURE__ */ createBaseVNode("span", null, "Select")]), /* @__PURE__ */ createBaseVNode("small", null, "Max. 10GB")], -1));
+var _hoisted_4$4 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", { class: "icon" }, "📄", -1));
+var _hoisted_5$4 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", null, "File list", -1));
 var _hoisted_6$3 = { class: "flex flex-wrap gap-4 p-4" };
-var _hoisted_7$2 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", null, [/* @__PURE__ */ createBaseVNode("button", null, "Submit Your Bills for a Review")], -1));
 //#endregion
 //#region src/pages/UploadBills.vue
 var UploadBills_default = /* @__PURE__ */ _plugin_vue_export_helper_default(/* @__PURE__ */ defineComponent({
@@ -10017,10 +10022,15 @@ var UploadBills_default = /* @__PURE__ */ _plugin_vue_export_helper_default(/* @
 				s.filexs.push(filex);
 			});
 		};
+		const review = async () => {
+			let fids = s.filexs.map((filex) => filex.rcd.id);
+			sessionStorage.setItem("fids", JSON.stringify(fids));
+			await router.push("/ReviewBills");
+		};
 		return (_ctx, _cache) => {
-			return openBlock(), createElementBlock("div", _hoisted_1$4, [
-				_hoisted_2$4,
-				_hoisted_3$4,
+			return openBlock(), createElementBlock("div", _hoisted_1$5, [
+				_hoisted_2$5,
+				_hoisted_3$5,
 				createBaseVNode("div", {
 					class: normalizeClass(["drop-zone", { "is-dragging": isDragging.value }]),
 					onDragover: _cache[0] || (_cache[0] = withModifiers(($event) => isDragging.value = true, ["prevent"])),
@@ -10034,19 +10044,19 @@ var UploadBills_default = /* @__PURE__ */ _plugin_vue_export_helper_default(/* @
 					ref: fileInput,
 					onChange: onFileSelect,
 					hidden: ""
-				}, null, 544), _hoisted_4$3], 34),
-				_hoisted_5$3,
+				}, null, 544), _hoisted_4$4], 34),
+				_hoisted_5$4,
 				createBaseVNode("div", _hoisted_6$3, [(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).filexs, (filex) => {
 					return openBlock(), createBlock(BillFile_default, {
 						class: "w-48 h-32 bg-slate-100 border-2 border-dashed border-slate-300 rounded-lg flex",
 						filex
 					}, null, 8, ["filex"]);
 				}), 256))]),
-				_hoisted_7$2
+				createBaseVNode("div", null, [createBaseVNode("button", { onClick: review }, "Submit Your Bills for a Review")])
 			]);
 		};
 	}
-}), [["__scopeId", "data-v-100b7084"]]);
+}), [["__scopeId", "data-v-3f95fb36"]]);
 //#endregion
 //#region src/lib/store/common.ts
 var loader = async (url, post, h) => {
@@ -10054,6 +10064,68 @@ var loader = async (url, post, h) => {
 	let rep = await glib.post(url, post);
 	if (rep?.Er == "OK") h(rep);
 };
+//#endregion
+//#region src/pages/ReviewBills.vue?vue&type=script&setup=true&lang.ts
+var _hoisted_1$4 = /* @__PURE__ */ createBaseVNode("h2", null, "Review Bills", -1);
+var _hoisted_2$4 = { class: "w-[300px]" };
+var _hoisted_3$4 = ["src"];
+var _hoisted_4$3 = { key: 0 };
+var _hoisted_5$3 = { key: 1 };
+//#endregion
+//#region src/pages/ReviewBills.vue
+var ReviewBills_default = /* @__PURE__ */ defineComponent({
+	__name: "ReviewBills",
+	setup(__props) {
+		const s = glib.vue.reactive({
+			fids: [],
+			rep: {
+				ok: false,
+				data: {
+					AcctNum: "",
+					AcctName: "",
+					Addr: "",
+					Town: "",
+					State: "",
+					ZIP: "",
+					BillDate: "",
+					Amt: 0
+				}
+			},
+			rt: runtime
+		});
+		glib.vue.onMounted(async () => {
+			try {
+				let json = "" + sessionStorage.getItem("fids");
+				s.fids = JSON.parse(json);
+			} catch (e) {}
+			sessionStorage.setItem("fids", JSON.stringify([]));
+			loader("/api/public/review-bills", { fids: s.fids }, (rep) => {
+				if (rep.Error == "OK") {
+					s.rep.ok = true;
+					s.rep.data = rep.data;
+				}
+			});
+		});
+		return (_ctx, _cache) => {
+			return openBlock(), createElementBlock(Fragment, null, [
+				_hoisted_1$4,
+				(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).fids, (fid) => {
+					return openBlock(), createElementBlock("div", null, [createBaseVNode("div", _hoisted_2$4, [createBaseVNode("img", { src: "/thumbnail/" + fid }, null, 8, _hoisted_3$4)])]);
+				}), 256)),
+				unref(s).rep.ok ? (openBlock(), createElementBlock("div", _hoisted_4$3, [
+					createBaseVNode("div", null, "Account Number: " + toDisplayString(unref(s).rep.data.AcctNum), 1),
+					createBaseVNode("div", null, "Account Name: " + toDisplayString(unref(s).rep.data.AcctName), 1),
+					createBaseVNode("div", null, "Address: " + toDisplayString(unref(s).rep.data.Addr), 1),
+					createBaseVNode("div", null, "Town: " + toDisplayString(unref(s).rep.data.Town), 1),
+					createBaseVNode("div", null, "State: " + toDisplayString(unref(s).rep.data.State), 1),
+					createBaseVNode("div", null, "ZIP: " + toDisplayString(unref(s).rep.data.ZIP), 1),
+					createBaseVNode("div", null, "Bill Data: " + toDisplayString(unref(s).rep.data.BillDate), 1),
+					createBaseVNode("div", null, "Amount: " + toDisplayString(unref(s).rep.data.Amt), 1)
+				])) : (openBlock(), createElementBlock("div", _hoisted_5$3, "Waiting for AI processing ... "))
+			], 64);
+		};
+	}
+});
 //#endregion
 //#region src/pages/HomeCustomer.vue?vue&type=script&setup=true&lang.ts
 var _hoisted_1$3 = /* @__PURE__ */ createBaseVNode("div", null, "Welcome", -1);
@@ -10169,6 +10241,10 @@ var routes = [
 	{
 		path: "/UploadBills",
 		component: UploadBills_default
+	},
+	{
+		path: "/ReviewBills",
+		component: ReviewBills_default
 	},
 	{
 		path: "/admin",

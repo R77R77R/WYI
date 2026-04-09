@@ -243,51 +243,15 @@ let FILE_id = ref 35461231L
 let FILE_count = ref 0
 let FILE_table = "Ca_File"
 
-// [Kernel_Client] (CLIENT)
-
-type pCLIENT = {
-mutable Caption: Text}
-
-
-type CLIENT = Rcd<pCLIENT>
-
-let CLIENT_fieldorders() =
-    match rdbms with
-    | Rdbms.SqlServer ->
-        "[ID],[Createdat],[Updatedat],[Sort],[Caption]"
-    | Rdbms.PostgreSql ->
-        $""" "id","createdat","updatedat","sort", "caption" """
-
-let pCLIENT_fieldordersArray = [|
-    "Caption" |]
-
-let CLIENT_sql_update() =
-    match rdbms with
-    | Rdbms.SqlServer -> "[Caption]=@Caption"
-    | Rdbms.PostgreSql -> "caption=@caption"
-
-let pCLIENT_fields() =
-    match rdbms with
-    | Rdbms.SqlServer ->
-        [|
-            Text("Caption") |]
-    | Rdbms.PostgreSql ->
-        [|
-            Text("caption") |]
-
-let pCLIENT_empty(): pCLIENT = {
-    Caption = "" }
-
-let CLIENT_id = ref 9554261L
-let CLIENT_count = ref 0
-let CLIENT_table = "Kernel_Client"
-
 // [Kernel_Unit] (UNIT)
 
 type pUNIT = {
 mutable Caption: Text
+mutable Owner: FK
 mutable UnitNum: Chars
+mutable AcctNum: Text
 mutable Address: Text
+mutable Town: Text
 mutable State: Chars
 mutable Zip: Chars}
 
@@ -297,43 +261,55 @@ type UNIT = Rcd<pUNIT>
 let UNIT_fieldorders() =
     match rdbms with
     | Rdbms.SqlServer ->
-        "[ID],[Createdat],[Updatedat],[Sort],[Caption],[UnitNum],[Address],[State],[Zip]"
+        "[ID],[Createdat],[Updatedat],[Sort],[Caption],[Owner],[UnitNum],[AcctNum],[Address],[Town],[State],[Zip]"
     | Rdbms.PostgreSql ->
-        $""" "id","createdat","updatedat","sort", "caption","unitnum","address","state","zip" """
+        $""" "id","createdat","updatedat","sort", "caption","owner","unitnum","acctnum","address","town","state","zip" """
 
 let pUNIT_fieldordersArray = [|
     "Caption"
+    "Owner"
     "UnitNum"
+    "AcctNum"
     "Address"
+    "Town"
     "State"
     "Zip" |]
 
 let UNIT_sql_update() =
     match rdbms with
-    | Rdbms.SqlServer -> "[Caption]=@Caption,[UnitNum]=@UnitNum,[Address]=@Address,[State]=@State,[Zip]=@Zip"
-    | Rdbms.PostgreSql -> "caption=@caption,unitnum=@unitnum,address=@address,state=@state,zip=@zip"
+    | Rdbms.SqlServer -> "[Caption]=@Caption,[Owner]=@Owner,[UnitNum]=@UnitNum,[AcctNum]=@AcctNum,[Address]=@Address,[Town]=@Town,[State]=@State,[Zip]=@Zip"
+    | Rdbms.PostgreSql -> "caption=@caption,owner=@owner,unitnum=@unitnum,acctnum=@acctnum,address=@address,town=@town,state=@state,zip=@zip"
 
 let pUNIT_fields() =
     match rdbms with
     | Rdbms.SqlServer ->
         [|
             Text("Caption")
+            FK("Owner")
             Chars("UnitNum", 5)
+            Text("AcctNum")
             Text("Address")
+            Text("Town")
             Chars("State", 2)
-            Chars("Zip", 5) |]
+            Chars("Zip", 10) |]
     | Rdbms.PostgreSql ->
         [|
             Text("caption")
+            FK("owner")
             Chars("unitnum", 5)
+            Text("acctnum")
             Text("address")
+            Text("town")
             Chars("state", 2)
-            Chars("zip", 5) |]
+            Chars("zip", 10) |]
 
 let pUNIT_empty(): pUNIT = {
     Caption = ""
+    Owner = 0L
     UnitNum = ""
+    AcctNum = ""
     Address = ""
+    Town = ""
     State = ""
     Zip = "" }
 
@@ -405,10 +381,12 @@ let UACCT_table = "Kernel_UtilAcct"
 type pUBILL = {
 mutable Cat: FK
 mutable Provider: FK
-mutable client: FK
+mutable ProviderText: Text
+mutable Owner: FK
 mutable Unit: FK
+mutable UnitText: Text
 mutable UAcct: FK
-mutable Amout: Float}
+mutable Amt: Float}
 
 
 type UBILL = Rcd<pUBILL>
@@ -416,22 +394,24 @@ type UBILL = Rcd<pUBILL>
 let UBILL_fieldorders() =
     match rdbms with
     | Rdbms.SqlServer ->
-        "[ID],[Createdat],[Updatedat],[Sort],[Cat],[Provider],[client],[Unit],[UAcct],[Amout]"
+        "[ID],[Createdat],[Updatedat],[Sort],[Cat],[Provider],[ProviderText],[Owner],[Unit],[UnitText],[UAcct],[Amt]"
     | Rdbms.PostgreSql ->
-        $""" "id","createdat","updatedat","sort", "cat","provider","client","unit","uacct","amout" """
+        $""" "id","createdat","updatedat","sort", "cat","provider","providertext","owner","unit","unittext","uacct","amt" """
 
 let pUBILL_fieldordersArray = [|
     "Cat"
     "Provider"
-    "client"
+    "ProviderText"
+    "Owner"
     "Unit"
+    "UnitText"
     "UAcct"
-    "Amout" |]
+    "Amt" |]
 
 let UBILL_sql_update() =
     match rdbms with
-    | Rdbms.SqlServer -> "[Cat]=@Cat,[Provider]=@Provider,[client]=@client,[Unit]=@Unit,[UAcct]=@UAcct,[Amout]=@Amout"
-    | Rdbms.PostgreSql -> "cat=@cat,provider=@provider,client=@client,unit=@unit,uacct=@uacct,amout=@amout"
+    | Rdbms.SqlServer -> "[Cat]=@Cat,[Provider]=@Provider,[ProviderText]=@ProviderText,[Owner]=@Owner,[Unit]=@Unit,[UnitText]=@UnitText,[UAcct]=@UAcct,[Amt]=@Amt"
+    | Rdbms.PostgreSql -> "cat=@cat,provider=@provider,providertext=@providertext,owner=@owner,unit=@unit,unittext=@unittext,uacct=@uacct,amt=@amt"
 
 let pUBILL_fields() =
     match rdbms with
@@ -439,26 +419,32 @@ let pUBILL_fields() =
         [|
             FK("Cat")
             FK("Provider")
-            FK("client")
+            Text("ProviderText")
+            FK("Owner")
             FK("Unit")
+            Text("UnitText")
             FK("UAcct")
-            Float("Amout") |]
+            Float("Amt") |]
     | Rdbms.PostgreSql ->
         [|
             FK("cat")
             FK("provider")
-            FK("client")
+            Text("providertext")
+            FK("owner")
             FK("unit")
+            Text("unittext")
             FK("uacct")
-            Float("amout") |]
+            Float("amt") |]
 
 let pUBILL_empty(): pUBILL = {
     Cat = 0L
     Provider = 0L
-    client = 0L
+    ProviderText = ""
+    Owner = 0L
     Unit = 0L
+    UnitText = ""
     UAcct = 0L
-    Amout = 0.0 }
+    Amt = 0.0 }
 
 let UBILL_id = ref 4426561L
 let UBILL_count = ref 0
