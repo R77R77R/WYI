@@ -52,6 +52,8 @@ let init (runtime:Runtime) =
     runtime.host.fsDir <- rootPath + "/FsRoot/WYI"
     runtime.host.req__vueDeployDir <- runtime.host.VsDirSolution + "/vscode/dist"
 
+    runtime.host.ToString() |> runtime.output
+
     conn <- runtime.host.conn
     rdbms <- runtime.host.rdbms
 
