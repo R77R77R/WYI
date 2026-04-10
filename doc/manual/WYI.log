@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.22.0 (TeX Live 2025)  (format=lualatex 2025.10.8)  10 APR 2026 21:55
+This is LuaHBTeX, Version 1.22.0 (TeX Live 2025)  (format=lualatex 2025.10.8)  10 APR 2026 22:03
  restricted system commands enabled.
  file:line:error style messages enabled.
 **c:/Dev/WYI/doc/manual/WYI
@@ -336,10 +336,9 @@ Package hyperref Info: Option `colorlinks' set `true' on input line 31.
  (c:/texlive/2025/texmf-dist/tex/latex/l3backend/l3backend-luatex.def
 File: l3backend-luatex.def 2025-06-09 L3 backend support: PDF output (LuaTeX)
 \l__color_backend_stack_int=\count317
-Inserting `l3color' in `luaotfload.parse_color'.)
-No file WYI.aux.
-
+Inserting `l3color' in `luaotfload.parse_color'.) (./WYI.aux)
 \openout1 = WYI.aux
+
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 45.
 LaTeX Font Info:    ... okay on input line 45.
 LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 45.
@@ -360,6 +359,7 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 45.
 LaTeX Font Info:    ... okay on input line 45.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 45.
 LaTeX Font Info:    ... okay on input line 45.
+
 *geometry* driver: auto-detecting
 *geometry* detected driver: luatex
 *geometry* verbose mode - [ preamble ] result:
@@ -395,10 +395,11 @@ LaTeX Font Info:    ... okay on input line 45.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 Package hyperref Info: Link coloring ON on input line 45.
+(./WYI.out) (./WYI.out)
 \@outlinefile=\write3
 
 \openout3 = WYI.out
-(c:/texlive/2025/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+ (c:/texlive/2025/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count318
 \scratchdimen=\dimen180
@@ -441,54 +442,21 @@ warning  (pdf backend): ignoring duplicate destination with the name 'page.1'
 
 ]
 Chapter 2.
-
-LaTeX Warning: File `/screenshots/signin-1.png' not found on input line 76.
-
-
-c:/Dev/WYI/doc/manual/WYI.tex:76: Package luatex.def Error: File `/screenshots/signin-1.png' not found: using draft setting.
-
-See the luatex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.76 ...=0.7\textwidth]{/screenshots/signin-1.png}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `/screenshots/signin-2.png' not found on input line 82.
-
-
-c:/Dev/WYI/doc/manual/WYI.tex:82: Package luatex.def Error: File `/screenshots/signin-2.png' not found: using draft setting.
-
-See the luatex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.82 ...=0.7\textwidth]{/screenshots/signin-2.png}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-LaTeX Warning: File `/screenshots/signin-3.png' not found on input line 88.
-
-
-c:/Dev/WYI/doc/manual/WYI.tex:88: Package luatex.def Error: File `/screenshots/signin-3.png' not found: using draft setting.
-
-See the luatex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.88 ...=0.7\textwidth]{/screenshots/signin-3.png}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
+<screenshots/signin-1.png, id=76, 167.4255pt x 37.94176pt>
+File: screenshots/signin-1.png Graphic file (type png)
+<use screenshots/signin-1.png>
+Package luatex.def Info: screenshots/signin-1.png  used on input line 76.
+(luatex.def)             Requested size: 317.07614pt x 71.86311pt.
+<screenshots/signin-2.png, id=77, 462.528pt x 366.168pt>
+File: screenshots/signin-2.png Graphic file (type png)
+<use screenshots/signin-2.png>
+Package luatex.def Info: screenshots/signin-2.png  used on input line 82.
+(luatex.def)             Requested size: 317.07614pt x 251.03029pt.
+<screenshots/signin-3.png, id=78, 297.5115pt x 227.6505pt>
+File: screenshots/signin-3.png Graphic file (type png)
+<use screenshots/signin-3.png>
+Package luatex.def Info: screenshots/signin-3.png  used on input line 88.
+(luatex.def)             Requested size: 317.07614pt x 242.62836pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
@@ -496,99 +464,49 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 [2
 
-]
+<./screenshots/signin-1.png><./screenshots/signin-2.png>]
 
-[3]
+[3<./screenshots/signin-3.png>]
 Chapter 3.
-
-LaTeX Warning: File `/screenshots/upload-files.png' not found on input line 99.
-
-
-c:/Dev/WYI/doc/manual/WYI.tex:99: Package luatex.def Error: File `/screenshots/upload-files.png' not found: using draft setting.
-
-See the luatex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.99 ...\textwidth]{/screenshots/upload-files.png}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
-
-LaTeX Warning: File `/screenshots/ai-review-1.png' not found on input line 105.
-
-
-c:/Dev/WYI/doc/manual/WYI.tex:105: Package luatex.def Error: File `/screenshots/ai-review-1.png' not found: using draft setting.
-
-See the luatex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.105 ...\textwidth]{/screenshots/ai-review-1.png}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
+<screenshots/upload-files.png, id=93, 502.2765pt x 531.78674pt>
+File: screenshots/upload-files.png Graphic file (type png)
+<use screenshots/upload-files.png>
+Package luatex.def Info: screenshots/upload-files.png  used on input line 99.
+(luatex.def)             Requested size: 362.37569pt x 383.68138pt.
+<screenshots/ai-review-1.png, id=94, 342.078pt x 464.937pt>
+File: screenshots/ai-review-1.png Graphic file (type png)
+<use screenshots/ai-review-1.png>
+Package luatex.def Info: screenshots/ai-review-1.png  used on input line 105.
+(luatex.def)             Requested size: 362.37569pt x 492.54pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-
-LaTeX Warning: File `/screenshots/ai-review-2.png' not found on input line 111.
-
-
-c:/Dev/WYI/doc/manual/WYI.tex:111: Package luatex.def Error: File `/screenshots/ai-review-2.png' not found: using draft setting.
-
-See the luatex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.111 ...\textwidth]{/screenshots/ai-review-2.png}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
+<screenshots/ai-review-2.png, id=95, 1776.6375pt x 2972.10374pt>
+File: screenshots/ai-review-2.png Graphic file (type png)
+<use screenshots/ai-review-2.png>
+Package luatex.def Info: screenshots/ai-review-2.png  used on input line 111.
+(luatex.def)             Requested size: 362.37569pt x 606.20139pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-
-LaTeX Warning: File `/screenshots/cat-provider.png' not found on input line 120.
-
-
-c:/Dev/WYI/doc/manual/WYI.tex:120: Package luatex.def Error: File `/screenshots/cat-provider.png' not found: using draft setting.
-
-See the luatex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.120 ...textwidth]{/screenshots/cat-provider.png}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
+<screenshots/cat-provider.png, id=96, 686.565pt x 545.6385pt>
+File: screenshots/cat-provider.png Graphic file (type png)
+<use screenshots/cat-provider.png>
+Package luatex.def Info: screenshots/cat-provider.png  used on input line 120.
+(luatex.def)             Requested size: 317.07614pt x 251.98752pt.
 
 
 [4
 
-]
+<./screenshots/upload-files.png>]
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-
-LaTeX Warning: File `/screenshots/manage-my-unit.png' not found on input line 126.
-
-
-c:/Dev/WYI/doc/manual/WYI.tex:126: Package luatex.def Error: File `/screenshots/manage-my-unit.png' not found: using draft setting.
-
-See the luatex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.126 ...xtwidth]{/screenshots/manage-my-unit.png}
-                                                  
-Try typing  <return>  to proceed.
-If that doesn't work, type  X <return>  to quit.
-
+<screenshots/manage-my-unit.png, id=103, 442.0515pt x 488.42474pt>
+File: screenshots/manage-my-unit.png Graphic file (type png)
+<use screenshots/manage-my-unit.png>
+Package luatex.def Info: screenshots/manage-my-unit.png  used on input line 126.
+(luatex.def)             Requested size: 317.07614pt x 350.35385pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
@@ -596,9 +514,11 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 [5]
 
-[6]
+[6<./screenshots/ai-review-1.png>]
 
-[7]
+[7<./screenshots/ai-review-2.png>]
+
+[8<./screenshots/cat-provider.png><./screenshots/manage-my-unit.png>]
 Chapter 4.
 (c:/texlive/2025/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2024/09/23 1.10c listings language file
@@ -610,13 +530,13 @@ LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
 (Font)              Font shape `T1/lmtt/b/n' tried instead on input line 136.
 
 
-[8
+[9
 
 ]
 Chapter 5.
 
 
-[9
+[10
 
 ] (./WYI.aux)
  ***********
@@ -630,24 +550,26 @@ Package rerunfilecheck Warning: File `WYI.out' has changed.
 (rerunfilecheck)                or use package `bookmark'.
 
 Package rerunfilecheck Info: Checksums for `WYI.out':
-(rerunfilecheck)             Before: <no file>
-(rerunfilecheck)             After:  501F24118772660029D965AA0706AD3F;1935.
+(rerunfilecheck)             Before: 501F24118772660029D965AA0706AD3F;1935
+(rerunfilecheck)             After:  85E6CD25EC29EFA0F4D6E8F87ADB8EDA;1753.
 )
 
 Here is how much of LuaTeX's memory you used:
- 12986 strings out of 476290
+ 12834 strings out of 476290
  100000,794899 words of node,token memory allocated
  509 words of node memory still in use:
    6 hlist, 2 vlist, 2 rule, 2 glue, 4 kern, 1 glyph, 6 attribute, 57 glue_spec, 6 attribute_list, 1 write nodes
-   avail lists: 2:875,3:169,4:1512,5:1565,6:25,7:3142,8:35,9:3850,10:22,11:226
- 34958 multiletter control sequences out of 65536+600000
+   avail lists: 2:845,3:169,4:1508,5:1537,6:25,7:2672,8:35,9:3834,10:22,11:192
+ 34790 multiletter control sequences out of 65536+600000
  46 fonts using 2932719 bytes
  72i,6n,75p,293b,681s stack positions out of 10000i,1000n,20000p,200000b,200000s
-{c:/texlive/2025/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{c:/texlive/2025/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}<c:/texlive/2025/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/lm/lmtk10.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
-Output written on WYI.pdf (10 pages, 177978 bytes).
 
-PDF statistics: 110 PDF objects out of 1000 (max. 8388607)
- 91 compressed objects within 1 object stream
- 36 named destinations out of 1000 (max. 131072)
- 1 words of extra memory for PDF output out of 10000 (max. 100000000)
+warning  (pdf backend): unreferenced destination with name 'section.4.2'
+{c:/texlive/2025/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{c:/texlive/2025/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}<c:/texlive/2025/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/lm/lmtk10.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
+Output written on WYI.pdf (11 pages, 810698 bytes).
+
+PDF statistics: 173 PDF objects out of 1000 (max. 8388607)
+ 136 compressed objects within 2 object streams
+ 37 named destinations out of 1000 (max. 131072)
+ 105 words of extra memory for PDF output out of 10000 (max. 100000000)
 

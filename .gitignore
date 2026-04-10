@@ -7,3 +7,7 @@
 /WYI.Shared/obj
 *.cache
 /vscode/node_modules
+doc/manual/WYI.aux
+doc/manual/WYI.log
+doc/manual/WYI.out
+doc/manual/WYI.synctex.gz
