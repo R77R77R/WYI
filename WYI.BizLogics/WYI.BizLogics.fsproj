@@ -15,6 +15,7 @@
     <Compile Include="Ai.fs" />
     <Compile Include="ApiPublic.fs" />
     <Compile Include="ApiEu.fs" />
+    <Compile Include="ApiAdmin.fs" />
     <Compile Include="Branch.fs" />
     <Compile Include="File.fs" />
     <Compile Include="SSR.fs" />

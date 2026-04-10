@@ -31,6 +31,7 @@ open WYI.BizLogics.Common
 open WYI.BizLogics.Auth
 open WYI.BizLogics.ApiPublic
 open WYI.BizLogics.ApiEu
+open WYI.BizLogics.ApiAdmin
 
 let output = runtime.output
 
@@ -62,6 +63,7 @@ let branching (euxo:EuComplex option) (x:X) =
         | _ -> Fail(Er.ApiNotExists,x)
     | "admin" -> 
         match x.Struct.api with
+        | "users" -> bindx users
         | "plogs" -> (fun x -> 
             let metadata = PLOG_metadata
             match "ORDER BY ID DESC" |> loadall conn (metadata.table,metadata.fieldorders(),metadata.db__rcd) with

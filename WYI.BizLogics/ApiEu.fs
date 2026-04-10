@@ -37,7 +37,7 @@ open WYI.BizLogics.Ai
 
 let output = runtime.output
 
-let myUnit eux (x:X) = 
+let myUnits eux (x:X) = 
     match
         x.Json
         |> tryFindStrByAtt "act" with
