@@ -11,6 +11,13 @@
 
   <div v-if="s.rep.Er == 'OK'">
 
+    <div class="my-2 p-2 bg-[#eeeeff]"
+      v-if="s.rep.Ex != ''">
+      <p>We experienced an issue from the AI.
+      You can keyin the fields instead.</p>
+      <p>{{ s.rep.Ex }}</p>
+    </div>
+
     <h2>Unit</h2>
     <div class="my-2 p-2 bg-[#eeeeff]">
 
@@ -21,102 +28,51 @@
       <div><input v-model="s.rep.data.bill.p.ShownTown" /></div>
       
       <div>State: </div>
-      <div>
-        <select v-model="s.rep.data.bill.p.ShownState">
-          <option key="AL">AL Alabama</option>
-          <option key="AK">AK Alaska</option>
-          <option key="AZ">AZ Arizona</option>
-          <option key="AR">AR Arkansas</option>
-          <option key="CA">CA California</option>
-          <option key="CO">CO Colorado</option>
-          <option key="CT">CT Connecticut</option>
-          <option key="DE">DE Delaware</option>
-          <option key="FL">FL Florida</option>
-          <option key="GA">GA Georgia</option>
-          <option key="HI">HI Hawaii</option>
-          <option key="ID">ID Idaho</option>
-          <option key="IL">IL Illinois</option>
-          <option key="IN">IN Indiana</option>
-          <option key="IA">IA Iowa</option>
-          <option key="KS">KS Kansas</option>
-          <option key="KY">KY Kentucky</option>
-          <option key="LA">LA Louisiana</option>
-          <option key="ME">ME Maine</option>
-          <option key="MD">MD Maryland</option>
-          <option key="MA">MA Massachusetts</option>
-          <option key="MI">MI Michigan</option>
-          <option key="MN">MN Minnesota</option>
-          <option key="MS">MS Mississippi</option>
-          <option key="MO">MO Missouri</option>
-          <option key="MT">MT Montana</option>
-          <option key="NE">NE Nebraska</option>
-          <option key="NV">NV Nevada</option>
-          <option key="NH">NH New Hampshire</option>
-          <option key="NJ">NJ New Jersey</option>
-          <option key="NM">NM New Mexico</option>
-          <option key="NY">NY New York</option>
-          <option key="NC">NC North Carolina</option>
-          <option key="ND">ND North Dakota</option>
-          <option key="OH">OH Ohio</option>
-          <option key="OK">OK Oklahoma</option>
-          <option key="OR">OR Oregon</option>
-          <option key="PA">PA Pennsylvania</option>
-          <option key="RI">RI Rhode Island</option>
-          <option key="SC">SC South Carolina</option>
-          <option key="SD">SD South Dakota</option>
-          <option key="TN">TN Tennessee</option>
-          <option key="TX">TX Texas</option>
-          <option key="UT">UT Utah</option>
-          <option key="VT">VT Vermont</option>
-          <option key="VA">VA Virginia</option>
-          <option key="WA">WA Washington</option>
-          <option key="WV">WV West Virginia</option>
-          <option key="WI">WI Wisconsin</option>
-          <option key="WY">WY Wyoming</option>
-        </select>
-      </div>
-      
+      <StateLocator v-model="s.rep.data.bill.p.ShownState" />
+
       <div>ZIP: </div>
       <div><input v-model="s.rep.data.bill.p.ShownZip" /></div>
     
       <div>Match existing unit</div>
       <div>
-        <SearchField />
+        <SearchField
+          api="/api/eu/my-units"
+          :item__key="unit__key"
+          :item__text="unit__text"
+          @select="onSelectUnit" />
       </div>
 
-      <div><button>Add as a New Unit</button></div>
+      <div class="flex">
+        <button @click="onClickNewUnit">Add as a New Unit</button>
+        <div v-if="s.showUnitAdded">New Unit Added</div>
+      </div>
 
     </div>
     
     <h2>Provider</h2>
     <div class="my-2 p-2 bg-[#eeeeff]">
       <div>Category</div>
-      <!--div>
-        <select v-model="s.rep.data.cato">
-          <option v-for="item in s.ucatproviders" :key="(item.ucat as wyi.UCAT).id">
+      <div>
+        <select @change="onChangeCat"
+          v-model="s.rep.data.bill.p.Cat">
+          <option 
+            v-for="item in s.ucatproviders" 
+            :value="(item.ucat as wyi.UCAT).id">
             {{ (item.ucat as wyi.UCAT).p.Caption }}
           </option>
         </select>
       </div>
       
-      <div>Provider: {{ s.rep.data.Provider }}</div>
+      <div>Provider: {{ s.rep.data.bill.p.ShownProvider }}</div>
       <div>
-        <select>
+        <select
+          v-model="s.rep.data.bill.p.Provider">
           <option
-            v-for="item in s.ucatproviders.find((e: any) => e.ucat.id == s.rep.data.CategoryID).uproviders as wyi.UPROVIDER[]"
-            :key="(item as wyi.UPROVIDER).id">
+            v-for="item in s.uproviders"
+            :value="(item as wyi.UPROVIDER).id">
             {{ item.p.Caption }}
           </option>
         </select>
-      </div-->
-      
-      <div>
-        <input v-model="s.rep.data.bill.p.ShownProvider" />
-        <div>
-          <select>
-          </select>
-        </div>
-        <div>Matched. Within our scope of service.</div>
       </div>
     </div>
 
@@ -150,13 +106,8 @@
     </div>
 
   </div>
-  <div v-else-if="s.rep.Er == 'API3rdParty'">
-    We experienced an issue from the AI.
-    You can try later: {{ s.rep.msg }}
-  </div>
   <div v-else>AI processing ... 20 seconds expected</div>
 
-  <div>{{ s.rep }}</div>
 </template>
 
 
@@ -168,12 +119,15 @@ import * as Common from '~/lib/store/common'
 import BillFile from '~/comps/BillFile.vue'
 import { FileComplex } from '~/comps/BillFile.vue'
 import SearchField from '~/comps/SearchField.vue'
+import StateLocator from '~/comps/StateLocator.vue'
 import { router } from '~/lib/mod/route'
 
 const s = glib.vue.reactive({
   fids: [],
   rep: {} as any,
+  showUnitAdded: false,
   ucatproviders: [] as any,
+  uproviders: [] as wyi.UPROVIDER[],
   rt: runtime
 })
 
@@ -202,18 +156,60 @@ glib.vue.onMounted(async () => {
     fids: s.fids
   }, (rep: any) => {
     s.rep = rep
-    console.log(s.rep)
+    onChangeCat()
   })
 
 })
+
+const onClickNewUnit = () => {
+  Common.loader('/api/eu/my-units', {
+    data: {
+      addr: s.rep.data.bill.p.ShownAddr,
+      town: s.rep.data.bill.p.ShownTown,
+      state: s.rep.data.bill.p.ShownState,
+      zip: s.rep.data.bill.p.ShownZip
+    },
+    act: 'create'
+  }, (rep: any) => {
+    s.showUnitAdded = true
+  })
+}
+
+const unit__key = (unit:wyi.UNIT) => {
+  return unit.id
+}
+
+const unit__text = (unit:wyi.UNIT) => {
+  return unit.p.Address 
+    + ", " + unit.p.Town
+    + ", " + unit.p.State
+    + "" + unit.p.Zip
+}
+
+const onSelectUnit = (unit:wyi.UNIT) => {
+  s.rep.data.bill.id = unit.id
+  s.rep.data.bill.p.ShownAddr = unit.p.Address
+  s.rep.data.bill.p.ShownTown = unit.p.Town
+  s.rep.data.bill.p.ShownState = unit.p.State
+  s.rep.data.bill.p.ShownZip = unit.p.Zip
+}
+
+const onChangeCat = () => {
+
+  let found = s.ucatproviders.find((e: any) =>
+    e.ucat.id == s.rep.data.bill.p.Cat)
+
+  if(found)
+    s.uproviders = found.uproviders
+  else
+    s.uproviders = []
+}
 
 const confirm = () => {
     Common.loader('/api/eu/submit-bill', { 
       data: s.rep.data
     },(rep:any) => {
-      if(rep.Er == "OK"){
         router.push("/")
-      }
     })
 }
 

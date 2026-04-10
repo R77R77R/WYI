@@ -524,6 +524,50 @@ let UCAT_id = ref 6461L
 let UCAT_count = ref 0
 let UCAT_table = "Kernel_UtilCat"
 
+// [Kernel_UtilCatProvider] (KUCP)
+
+type pKUCP = {
+mutable Cat: FK
+mutable Provider: FK}
+
+
+type KUCP = Rcd<pKUCP>
+
+let KUCP_fieldorders() =
+    match rdbms with
+    | Rdbms.SqlServer ->
+        "[ID],[Createdat],[Updatedat],[Sort],[Cat],[Provider]"
+    | Rdbms.PostgreSql ->
+        $""" "id","createdat","updatedat","sort", "cat","provider" """
+
+let pKUCP_fieldordersArray = [|
+    "Cat"
+    "Provider" |]
+
+let KUCP_sql_update() =
+    match rdbms with
+    | Rdbms.SqlServer -> "[Cat]=@Cat,[Provider]=@Provider"
+    | Rdbms.PostgreSql -> "cat=@cat,provider=@provider"
+
+let pKUCP_fields() =
+    match rdbms with
+    | Rdbms.SqlServer ->
+        [|
+            FK("Cat")
+            FK("Provider") |]
+    | Rdbms.PostgreSql ->
+        [|
+            FK("cat")
+            FK("provider") |]
+
+let pKUCP_empty(): pKUCP = {
+    Cat = 0L
+    Provider = 0L }
+
+let KUCP_id = ref 254261L
+let KUCP_count = ref 0
+let KUCP_table = "Kernel_UtilCatProvider"
+
 // [Kernel_UtilProvider] (UPROVIDER)
 
 type pUPROVIDER = {

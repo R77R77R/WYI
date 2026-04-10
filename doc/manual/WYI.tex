@@ -26,9 +26,8 @@
 \hypersetup{
     colorlinks=true,
     linkcolor=brandblue,
-    filecolor=magenta,      
     urlcolor=cyan,
-    pdftitle={WYI Project Documentation},
+    pdftitle={WYI Project System Manual},
 }
 
 % --- Code Listing Config ---
@@ -36,26 +35,16 @@
     backgroundcolor=\color{codebg},   
     commentstyle=\color{commentgreen},
     keywordstyle=\color{blue}\bfseries,
-    numberstyle=\tiny\color{gray},
-    stringstyle=\color{purple},
     basicstyle=\ttfamily\small,
-    breaklines=true,                 
+    breaklines=true,        
     frame=single,
-    rulecolor=\color{lightgray},
     captionpos=b,                    
     tabsize=2
 }
 
-% --- Header & Footer ---
-\pagestyle{fancy}
-\fancyhf{}
-\rhead{\textit{WYI System Manual}}
-\lhead{\leftmark}
-\cfoot{\thepage}
+\begin{document}
 
-% --- Document Info ---
 \title{
-    \vspace{2cm}
     \Huge \textbf{WYI System Manual} \\
     \vspace{1cm}
     \Large Intelligent Bill Management and Review Platform \\
@@ -64,80 +53,103 @@
 \author{SIDUO CHEN (Lao Chen)}
 \date{April 2026}
 
-\begin{document}
-
 \maketitle
 
-\begin{abstract}
-The WYI project is a multi-modal AI-driven platform [cite: 3] designed to automate the recognition, classification, and validation of financial documents[cite: 3]. This manual serves as a comprehensive guide to the system architecture, component management, and AI integration protocols[cite: 4].
-\end{abstract}
-
-\tableofcontents
-\newpage
-
-\chapter{Project Introduction}
+\chapter{Project Overview}
 \section{Objective}
-The primary goal of WYI is to minimize manual data entry in bill management[cite: 6]. By utilizing the Google Gemini 1.5 Flash model, the system achieves high-accuracy parsing of complex document layouts[cite: 6].
+The WYI platform automates financial document recognition and validation using the Google Gemini 1.5 Flash model. It aims to eliminate manual data entry in bill negotiation workflows by extracting structured information from raw images and PDFs.
 
-\section{System Requirements}
+\section{Resource Links}
 \begin{itemize}
-    \item \textbf{Runtime:} .NET 9.0 Core with F\# [cite: 7]
-    \item \textbf{Database:} SQL Server / PostgreSQL [cite: 8]
-    \item \textbf{Authentication:} Clerk.js Integration [cite: 12]
-    \item \textbf{AI Engine:} Google Gemini Multimodal API [cite: 6, 10]
+    \item \textbf{Production URL:} \url{https://whatsyourideal.com/}
+    \item \textbf{Demo URL:} \url{https://5.78.201.21/}
+    \item \textbf{Main Repository:} \url{https://github.com/R77R77R/WYI/}
+    \item \textbf{JCS Code Generator:} \url{https://github.com/lchenmay/JCS/}
+    \item \textbf{Common Library:} \url{https://github.com/lchenmay/Common/}
 \end{itemize}
+
+\chapter{Authentication and User Onboarding}
+The system utilizes Clerk.js for identity management. This ensures secure, industry-standard authentication while allowing users to leverage existing social accounts like Google.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{/screenshots/signin-1.png}
+    \caption{Initial Sign-in Interface supporting Google and other OAuth providers.}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{/screenshots/signin-2.png}
+    \caption{Official Google Sign-in Page integration.}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{/screenshots/signin-3.png}
+    \caption{Authenticated User Session Dashboard showing registered user status.}
+\end{figure}
 
 \chapter{System Features}
 
-\section{Provider Management}
-The system maintains a comprehensive database of service providers. Users can manage metadata, account numbers, and historical billing patterns for each provider to improve future recognition accuracy.
+\section{AI-Driven Bill Review}
+The backend orchestrates file processing via the \texttt{reviewBillFiles} module. It extracts fields such as Amount (\texttt{Amt}), Bill Date, and Account Number using the multimodal capabilities of Gemini AI.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8\textwidth]{providers}
-    \caption{Provider Management Interface: Managing service entities and account details.}
-    \label{fig:providers}
+    \includegraphics[width=0.8\textwidth]{/screenshots/upload-files.png}
+    \caption{File Upload Interface: Users can upload bill images or PDFs for analysis.}
 \end{figure}
-
-\section{AI-Powered Auto-Filling}
-The core innovation of WYI is the automated extraction of fields such as Amount, Bill Date, and Category from uploaded images or PDFs.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8\textwidth]{ai-filling}
-    \caption{AI Analysis View: Automatic field extraction and form pre-filling using Gemini 1.5 Flash.}
-    \label{fig:ai-filling}
+    \includegraphics[width=0.8\textwidth]{/screenshots/ai-review-1.png}
+    \caption{Gemini 1.5 Flash performing multimodal extraction on uploaded bills.}
 \end{figure}
 
-\chapter{System Architecture}
-\section{Backend: UtilKestrel}
-The backend handles critical logic including file orchestration, secure data persistence, and AI prompt engineering[cite: 7, 8]. It leverages F\# for robust asynchronous processing[cite: 7, 10].
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{/screenshots/ai-review-2.png}
+    \caption{Manual verification interface in Vue.js for AI-extracted data.}
+\end{figure}
 
-\section{Frontend: Vue 3 Ecosystem}
-The frontend manages user interactions and multi-file uploads via the \texttt{UploadBills} module[cite: 9]. State is managed through a reactive store to ensure consistency between the AI analysis and the UI[cite: 9].
+\section{Data Management}
+The system allows users to maintain property units (home, restaurant, office) and service providers, which helps link incoming bills to existing historical data.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{/screenshots/cat-provider.png}
+    \caption{Maintenance of Categories and Providers within the database.}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{/screenshots/manage-my-unit.png}
+    \caption{Property Unit Management Interface (Residential/Commercial).}
+\end{figure}
 
 \chapter{Technical Implementation}
-\section{Gemini Multimodal Analysis}
-The following implementation demonstrates the asynchronous task for processing document images through the Gemini API[cite: 10, 11].
+\section{Backend Logic (F\#)}
+The system uses F\# to handle the coordination between the user context and the AI engine. The \texttt{reviewBillFiles} function manages file paths and invokes the Gemini service.
 
-\begin{lstlisting}[language=ml, caption=F\# Gemini Integration Task]
-// GeminiMultimodal Task Implementation
-let GeminiMultimodal output apiKey model prompt files = task {
-    use client = new HttpClient()
-    // Extended timeout to handle multi-image processing
-    client.Timeout <- TimeSpan.FromMinutes(5.0) 
-    
-    // API endpoint construction and POST execution
-    let! response = client.PostAsync(url, content)
-    return! response.Content.ReadAsStringAsync()
-}
+\begin{lstlisting}[language=ml, caption=F\# Gemini Integration Logic]
+// Asynchronous multimodal extraction logic from ApiEu.fs
+let reviewBillFiles eux (x:X) =
+    // Orchestrates GeminiMultimodal task with a 300s timeout
+    let! (ex, msg) = GeminiMultimodal runtime.output apiKey model prompt pathes
 \end{lstlisting}
 
-\chapter{Troubleshooting}
-\section{Network and Authentication}
-If a \texttt{NetworkError} occurs during Clerk.js authentication, ensure \texttt{clerk.accounts.dev} is accessible[cite: 12]. In restricted regions, using a VPN with the Lightway protocol (UDP/TCP) is recommended to maintain a stable session[cite: 13].
+\section{Frontend Logic (Vue.js)}
+The frontend uses reactive states to manage user reviews of extracted data. Components ensure data integrity during the review process through standard Vue 3 \texttt{v-model} bindings.
 
-\section{Timeout Issues}
-A \texttt{TaskCanceledException} typically indicates that the AI analysis exceeded the default 100-second window[cite: 14]. The system is configured to use a 300-second timeout to accommodate high-resolution uploads[cite: 14].
+\chapter{Troubleshooting}
+\section{AI Usage and Prepayment}
+The system operates under a Paid Tier 1 model to ensure reliability.
+\begin{itemize}
+    \item \textbf{Error 429:} This status occurs when prepayment credits are depleted. All API requests are rejected until funds are added via Google AI Studio.
+    \item \textbf{Quota Management:} The system is designed for a capacity of 1,000 RPM and 1M TPM for Gemini 1.5 Flash.
+\end{itemize}
+
+\section{Timeout Handling}
+The system is configured with a 300-second timeout to accommodate high-resolution multi-file uploads.
 
 \end{document}

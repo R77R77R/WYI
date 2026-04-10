@@ -35,7 +35,8 @@ type RuntimeData = {
 mutable apiKeyGemini: string
 aiModel: string
 cats: ModDictInt64<UCAT>
-providers: ModDictInt64<UPROVIDER> }
+providers: ModDictInt64<UPROVIDER>
+mutable catproviders: KUCP[] }
 
 type ClientRuntime = {
 mutable version: int }

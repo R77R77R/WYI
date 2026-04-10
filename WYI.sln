@@ -26,7 +26,9 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "UtilKestrel", "..\Common\Ut
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{F7AAC36D-7480-46EC-937B-C3A1A5A81E0F}"
 	ProjectSection(SolutionItems) = preProject
+		doc\network.md = doc\network.md
 		doc\Prototype.pdf = doc\Prototype.pdf
+		doc\manual\WYI.pdf = doc\manual\WYI.pdf
 	EndProjectSection
 EndProject
 Global

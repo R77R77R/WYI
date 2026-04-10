@@ -38,13 +38,14 @@ open WYI.BizLogics.Ai
 let output = runtime.output
 
 let providers x = 
-    let providers = runtime.data.providers.Values
     runtime.data.cats.Values
     |> Array.map(fun ucat -> 
         let ary = 
-            providers 
+            runtime.data.catproviders 
             |> Array.filter(fun i -> i.p.Cat = ucat.ID)
-            |> Array.map UPROVIDER__json
+            |> Array.map(fun i-> 
+                runtime.data.providers[i.p.Provider]
+                |> UPROVIDER__json)
             |> Json.Ary
 
         [|  ("ucat", ucat |> UCAT__json) 

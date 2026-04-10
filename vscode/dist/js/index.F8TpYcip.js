@@ -8921,6 +8921,8 @@ var OrmMor_exports = /* @__PURE__ */ __exportAll({
 	FBIND_empty: () => FBIND_empty,
 	FILE__bin: () => FILE__bin,
 	FILE_empty: () => FILE_empty,
+	KUCP__bin: () => KUCP__bin,
+	KUCP_empty: () => KUCP_empty,
 	LOG__bin: () => LOG__bin,
 	LOG_empty: () => LOG_empty,
 	MOMENT__bin: () => MOMENT__bin,
@@ -8941,6 +8943,7 @@ var OrmMor_exports = /* @__PURE__ */ __exportAll({
 	bin__EU: () => bin__EU,
 	bin__FBIND: () => bin__FBIND,
 	bin__FILE: () => bin__FILE,
+	bin__KUCP: () => bin__KUCP,
 	bin__LOG: () => bin__LOG,
 	bin__MOMENT: () => bin__MOMENT,
 	bin__PLOG: () => bin__PLOG,
@@ -8953,6 +8956,7 @@ var OrmMor_exports = /* @__PURE__ */ __exportAll({
 	bin__pEU: () => bin__pEU,
 	bin__pFBIND: () => bin__pFBIND,
 	bin__pFILE: () => bin__pFILE,
+	bin__pKUCP: () => bin__pKUCP,
 	bin__pLOG: () => bin__pLOG,
 	bin__pMOMENT: () => bin__pMOMENT,
 	bin__pPLOG: () => bin__pPLOG,
@@ -8992,6 +8996,8 @@ var OrmMor_exports = /* @__PURE__ */ __exportAll({
 	pFBIND_empty: () => pFBIND_empty,
 	pFILE__bin: () => pFILE__bin,
 	pFILE_empty: () => pFILE_empty,
+	pKUCP__bin: () => pKUCP__bin,
+	pKUCP_empty: () => pKUCP_empty,
 	pLOG__bin: () => pLOG__bin,
 	pLOG_empty: () => pLOG_empty,
 	pMOMENT__bin: () => pMOMENT__bin,
@@ -9239,6 +9245,32 @@ var bin__UCAT = (bi) => {
 		createdat: marshall$1.bin__DateTime(bi),
 		updatedat: marshall$1.bin__DateTime(bi),
 		p: bin__pUCAT(bi)
+	};
+};
+var pKUCP__bin = (bb) => (p) => {
+	marshall$1.int64__bin(bb)(p.Cat);
+	marshall$1.int64__bin(bb)(p.Provider);
+};
+var KUCP__bin = (bb) => (v) => {
+	marshall$1.int64__bin(bb)(v.id);
+	marshall$1.int64__bin(bb)(v.sort);
+	marshall$1.DateTime__bin(bb)(v.createdat);
+	marshall$1.DateTime__bin(bb)(v.updatedat);
+	pKUCP__bin(bb)(v.p);
+};
+var bin__pKUCP = (bi) => {
+	let p = pKUCP_empty();
+	p.Cat = marshall$1.bin__int64(bi);
+	p.Provider = marshall$1.bin__int64(bi);
+	return p;
+};
+var bin__KUCP = (bi) => {
+	return {
+		id: marshall$1.bin__int64(bi),
+		sort: marshall$1.bin__int64(bi),
+		createdat: marshall$1.bin__DateTime(bi),
+		updatedat: marshall$1.bin__DateTime(bi),
+		p: bin__pKUCP(bi)
 	};
 };
 var pUPROVIDER__bin = (bb) => (p) => {
@@ -9537,6 +9569,21 @@ var UCAT_empty = () => {
 		p: pUCAT_empty()
 	};
 };
+var pKUCP_empty = () => {
+	return {
+		Cat: 0,
+		Provider: 0
+	};
+};
+var KUCP_empty = () => {
+	return {
+		id: 0,
+		createdat: /* @__PURE__ */ new Date(),
+		updatedat: /* @__PURE__ */ new Date(),
+		sort: 0,
+		p: pKUCP_empty()
+	};
+};
 var pUPROVIDER_empty = () => {
 	return {
 		Caption: "",
@@ -9769,7 +9816,8 @@ var RuntimeData_empty = () => {
 		apiKeyGemini: "",
 		aiModel: "",
 		cats: {},
-		providers: {}
+		providers: {},
+		catproviders: []
 	};
 };
 var RuntimeData__bin = (bb) => (v) => {
@@ -9777,13 +9825,15 @@ var RuntimeData__bin = (bb) => (v) => {
 	marshall.str__bin(bb)(v.aiModel);
 	marshall.dict__bin(marshall.int64__bin)(marshall.UCAT__bin)(bb)(v.cats);
 	marshall.dict__bin(marshall.int64__bin)(marshall.UPROVIDER__bin)(bb)(v.providers);
+	marshall.array__bin(marshall.KUCP__bin)(bb)(v.catproviders);
 };
 var bin__RuntimeData = (bi) => {
 	return {
 		apiKeyGemini: marshall.bin__str(bi),
 		aiModel: marshall.bin__str(bi),
 		cats: marshall.bin__dict(marshall.bin__int64)(marshall.bin__UCAT)(bi),
-		providers: marshall.bin__dict(marshall.bin__int64)(marshall.bin__UPROVIDER)(bi)
+		providers: marshall.bin__dict(marshall.bin__int64)(marshall.bin__UPROVIDER)(bi),
+		catproviders: marshall.bin__array(marshall.bin__KUCP)(bi)
 	};
 };
 var ClientRuntime_empty = () => {
@@ -9877,9 +9927,9 @@ var _hoisted_6$5 = { key: 1 };
 var _hoisted_7$2 = { key: 2 };
 var _hoisted_8$2 = { key: 3 };
 var _hoisted_9$2 = { key: 4 };
-var _hoisted_10$1 = { class: "progress-container" };
-var _hoisted_11$1 = { class: "status-row" };
-var _hoisted_12$1 = {
+var _hoisted_10$2 = { class: "progress-container" };
+var _hoisted_11$2 = { class: "status-row" };
+var _hoisted_12$2 = {
 	key: 0,
 	class: "error-detail"
 };
@@ -9963,11 +10013,11 @@ var BillFile_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */ defin
 					createBaseVNode("div", null, "File Name: " + toDisplayString(props.filex.file.name), 1),
 					createBaseVNode("div", null, "File Size: " + toDisplayString((props.filex.file.size / 1024 / 1024).toFixed(2)) + " MB", 1)
 				])) : createCommentVNode("", true),
-				createBaseVNode("div", _hoisted_10$1, [createBaseVNode("div", {
+				createBaseVNode("div", _hoisted_10$2, [createBaseVNode("div", {
 					class: normalizeClass(["progress-fill", __props.filex.uploadTask.status]),
 					style: normalizeStyle({ width: props.filex.uploadTask.progress + "%" })
 				}, null, 6)]),
-				createBaseVNode("div", _hoisted_11$1, [createBaseVNode("span", { class: normalizeClass(["status-label", props.filex.uploadTask.status]) }, toDisplayString(getStatusText(props.filex.uploadTask)), 3), props.filex.uploadTask.message ? (openBlock(), createElementBlock("span", _hoisted_12$1, " - " + toDisplayString(props.filex.uploadTask.message), 1)) : createCommentVNode("", true)])
+				createBaseVNode("div", _hoisted_11$2, [createBaseVNode("span", { class: normalizeClass(["status-label", props.filex.uploadTask.status]) }, toDisplayString(getStatusText(props.filex.uploadTask)), 3), props.filex.uploadTask.message ? (openBlock(), createElementBlock("span", _hoisted_12$2, " - " + toDisplayString(props.filex.uploadTask.message), 1)) : createCommentVNode("", true)])
 			]);
 		};
 	}
@@ -10066,51 +10116,53 @@ var UploadBills_default = /* @__PURE__ */ _plugin_vue_export_helper_default(/* @
 }), [["__scopeId", "data-v-2c6e445f"]]);
 //#endregion
 //#region src/lib/store/common.ts
-var loader = async (url, post, h) => {
+var loader = async (url, post, h, ex = () => {}) => {
 	post.session = runtime.session;
 	let rep = await glib.post(url, post);
-	if (rep?.Er == "OK") h(rep);
+	if (rep.Er == "OK") h(rep);
+	else ex(rep);
 };
 //#endregion
 //#region src/comps/SearchField.vue?vue&type=script&setup=true&lang.ts
-var _hoisted_1$5 = { class: "relative w-64" };
+var _hoisted_1$5 = { class: "relative w-[200px]" };
 var _hoisted_2$5 = {
 	key: 0,
 	class: "absolute z-10 w-full bg-white border rounded shadow-lg mt-1 max-h-48 overflow-y-auto"
 };
-var _hoisted_3$5 = ["onClick"];
+var _hoisted_3$5 = ["onClick", "value"];
 //#endregion
 //#region src/comps/SearchField.vue
 var SearchField_default = /* @__PURE__ */ defineComponent({
 	__name: "SearchField",
-	setup(__props) {
-		const providers = ref([
-			{
-				id: 1,
-				name: "T-Mobile"
-			},
-			{
-				id: 2,
-				name: "Spectrum"
-			},
-			{
-				id: 3,
-				name: "Insurance Co"
-			},
-			{
-				id: 4,
-				name: "Water Board"
-			}
-		]);
+	props: [
+		"api",
+		"item__key",
+		"item__text"
+	],
+	emits: ["select"],
+	setup(__props, { emit: __emit }) {
+		const props = __props;
+		props.api;
+		props.item__key;
+		props.item__text;
+		const s = glib.vue.reactive({ opts: [] });
+		const emits = __emit;
 		const searchText = ref("");
 		const isDropdownVisible = ref(false);
-		const filteredOptions = computed(() => {
-			if (!searchText.value) return [];
-			return providers.value.filter((p) => p.name.toLowerCase().includes(searchText.value.toLowerCase()));
-		});
-		const selectOption = (name) => {
-			searchText.value = name;
+		const onInput = () => {
+			if (!searchText.value) return;
+			loader(props.api, {
+				term: searchText.value,
+				act: "search"
+			}, (rep) => {
+				s.opts = rep.data;
+				console.log(s.opts);
+			}, () => {});
+		};
+		const selectOption = (opt) => {
+			searchText.value = props.item__key(opt);
 			isDropdownVisible.value = false;
+			emits("select", opt);
 		};
 		const onBlur = () => {
 			setTimeout(() => isDropdownVisible.value = false, 200);
@@ -10121,15 +10173,38 @@ var SearchField_default = /* @__PURE__ */ defineComponent({
 				"onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => searchText.value = $event),
 				onFocus: _cache[1] || (_cache[1] = ($event) => isDropdownVisible.value = true),
 				onBlur,
+				onInput,
 				placeholder: "Start typing...",
 				class: "w-full border rounded px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
-			}, null, 544), [[vModelText, searchText.value]]), isDropdownVisible.value && filteredOptions.value.length > 0 ? (openBlock(), createElementBlock("ul", _hoisted_2$5, [(openBlock(true), createElementBlock(Fragment, null, renderList(filteredOptions.value, (opt) => {
+			}, null, 544), [[vModelText, searchText.value]]), isDropdownVisible.value && unref(s).opts.length > 0 ? (openBlock(), createElementBlock("ul", _hoisted_2$5, [(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).opts, (opt) => {
 				return openBlock(), createElementBlock("li", {
-					key: opt.id,
-					onClick: ($event) => selectOption(opt.name),
+					onClick: ($event) => selectOption(opt),
+					value: props.item__key(opt),
 					class: "px-3 py-2 hover:bg-blue-50 cursor-pointer text-sm"
-				}, toDisplayString(opt.name), 9, _hoisted_3$5);
-			}), 128))])) : createCommentVNode("", true)]);
+				}, toDisplayString(props.item__text(opt)), 9, _hoisted_3$5);
+			}), 256))])) : createCommentVNode("", true)]);
+		};
+	}
+});
+//#endregion
+//#region src/comps/StateLocator.vue?vue&type=script&setup=true&lang.ts
+var _hoisted_51 = [/* @__PURE__ */ createStaticVNode("<option value=\"AL\">AL Alabama</option><option value=\"AK\">AK Alaska</option><option value=\"AZ\">AZ Arizona</option><option value=\"AR\">AR Arkansas</option><option value=\"CA\">CA California</option><option value=\"CO\">CO Colorado</option><option value=\"CT\">CT Connecticut</option><option value=\"DE\">DE Delaware</option><option value=\"FL\">FL Florida</option><option value=\"GA\">GA Georgia</option><option value=\"HI\">HI Hawaii</option><option value=\"ID\">ID Idaho</option><option value=\"IL\">IL Illinois</option><option value=\"IN\">IN Indiana</option><option value=\"IA\">IA Iowa</option><option value=\"KS\">KS Kansas</option><option value=\"KY\">KY Kentucky</option><option value=\"LA\">LA Louisiana</option><option value=\"ME\">ME Maine</option><option value=\"MD\">MD Maryland</option><option value=\"MA\">MA Massachusetts</option><option value=\"MI\">MI Michigan</option><option value=\"MN\">MN Minnesota</option><option value=\"MS\">MS Mississippi</option><option value=\"MO\">MO Missouri</option><option value=\"MT\">MT Montana</option><option value=\"NE\">NE Nebraska</option><option value=\"NV\">NV Nevada</option><option value=\"NH\">NH New Hampshire</option><option value=\"NJ\">NJ New Jersey</option><option value=\"NM\">NM New Mexico</option><option value=\"NY\">NY New York</option><option value=\"NC\">NC North Carolina</option><option value=\"ND\">ND North Dakota</option><option value=\"OH\">OH Ohio</option><option value=\"OK\">OK Oklahoma</option><option value=\"OR\">OR Oregon</option><option value=\"PA\">PA Pennsylvania</option><option value=\"RI\">RI Rhode Island</option><option value=\"SC\">SC South Carolina</option><option value=\"SD\">SD South Dakota</option><option value=\"TN\">TN Tennessee</option><option value=\"TX\">TX Texas</option><option value=\"UT\">UT Utah</option><option value=\"VT\">VT Vermont</option><option value=\"VA\">VA Virginia</option><option value=\"WA\">WA Washington</option><option value=\"WV\">WV West Virginia</option><option value=\"WI\">WI Wisconsin</option><option value=\"WY\">WY Wyoming</option>", 50)];
+//#endregion
+//#region src/comps/StateLocator.vue
+var StateLocator_default = /* @__PURE__ */ defineComponent({
+	__name: "StateLocator",
+	props: {
+		"modelValue": {},
+		"modelModifiers": {}
+	},
+	emits: ["update:modelValue"],
+	setup(__props) {
+		const state = useModel(__props, "modelValue");
+		glib.vue.onMounted(async () => {
+			console.log(state.value);
+		});
+		return (_ctx, _cache) => {
+			return openBlock(), createElementBlock("div", null, [withDirectives(createBaseVNode("select", { "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => state.value = $event) }, _hoisted_51, 512), [[vModelSelect, state.value]])]);
 		};
 	}
 });
@@ -10139,81 +10214,34 @@ var _hoisted_1$4 = /* @__PURE__ */ createBaseVNode("h2", null, "Review Bills", -
 var _hoisted_2$4 = { class: "w-[300px]" };
 var _hoisted_3$4 = ["src"];
 var _hoisted_4$3 = { key: 0 };
-var _hoisted_5$3 = /* @__PURE__ */ createBaseVNode("h2", null, "Unit", -1);
-var _hoisted_6$3 = { class: "my-2 p-2 bg-[#eeeeff]" };
-var _hoisted_7$1 = /* @__PURE__ */ createBaseVNode("div", null, "Address: ", -1);
-var _hoisted_8$1 = /* @__PURE__ */ createBaseVNode("div", null, "Town: ", -1);
-var _hoisted_9$1 = /* @__PURE__ */ createBaseVNode("div", null, "State: ", -1);
-var _hoisted_60 = [
-	/* @__PURE__ */ createBaseVNode("option", { key: "AL" }, "AL Alabama", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "AK" }, "AK Alaska", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "AZ" }, "AZ Arizona", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "AR" }, "AR Arkansas", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "CA" }, "CA California", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "CO" }, "CO Colorado", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "CT" }, "CT Connecticut", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "DE" }, "DE Delaware", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "FL" }, "FL Florida", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "GA" }, "GA Georgia", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "HI" }, "HI Hawaii", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "ID" }, "ID Idaho", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "IL" }, "IL Illinois", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "IN" }, "IN Indiana", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "IA" }, "IA Iowa", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "KS" }, "KS Kansas", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "KY" }, "KY Kentucky", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "LA" }, "LA Louisiana", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "ME" }, "ME Maine", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "MD" }, "MD Maryland", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "MA" }, "MA Massachusetts", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "MI" }, "MI Michigan", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "MN" }, "MN Minnesota", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "MS" }, "MS Mississippi", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "MO" }, "MO Missouri", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "MT" }, "MT Montana", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "NE" }, "NE Nebraska", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "NV" }, "NV Nevada", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "NH" }, "NH New Hampshire", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "NJ" }, "NJ New Jersey", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "NM" }, "NM New Mexico", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "NY" }, "NY New York", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "NC" }, "NC North Carolina", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "ND" }, "ND North Dakota", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "OH" }, "OH Ohio", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "OK" }, "OK Oklahoma", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "OR" }, "OR Oregon", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "PA" }, "PA Pennsylvania", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "RI" }, "RI Rhode Island", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "SC" }, "SC South Carolina", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "SD" }, "SD South Dakota", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "TN" }, "TN Tennessee", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "TX" }, "TX Texas", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "UT" }, "UT Utah", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "VT" }, "VT Vermont", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "VA" }, "VA Virginia", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "WA" }, "WA Washington", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "WV" }, "WV West Virginia", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "WI" }, "WI Wisconsin", -1),
-	/* @__PURE__ */ createBaseVNode("option", { key: "WY" }, "WY Wyoming", -1)
-];
-var _hoisted_61 = /* @__PURE__ */ createBaseVNode("div", null, "ZIP: ", -1);
-var _hoisted_62 = /* @__PURE__ */ createBaseVNode("div", null, "Match existing unit", -1);
-var _hoisted_63 = /* @__PURE__ */ createBaseVNode("div", null, [/* @__PURE__ */ createBaseVNode("button", null, "Add as a New Unit")], -1);
-var _hoisted_64 = /* @__PURE__ */ createBaseVNode("h2", null, "Provider", -1);
-var _hoisted_65 = { class: "my-2 p-2 bg-[#eeeeff]" };
-var _hoisted_66 = /* @__PURE__ */ createBaseVNode("div", null, "Category", -1);
-var _hoisted_67 = /* @__PURE__ */ createBaseVNode("div", null, [/* @__PURE__ */ createBaseVNode("select")], -1);
-var _hoisted_68 = /* @__PURE__ */ createBaseVNode("div", null, "Matched. Within our scope of service.", -1);
-var _hoisted_69 = /* @__PURE__ */ createBaseVNode("h2", null, "Account", -1);
-var _hoisted_70 = { class: "my-2 p-2 bg-[#eeeeff]" };
-var _hoisted_71 = /* @__PURE__ */ createBaseVNode("div", null, "Account Number: ", -1);
-var _hoisted_72 = /* @__PURE__ */ createBaseVNode("div", null, "Account Name: ", -1);
-var _hoisted_73 = /* @__PURE__ */ createBaseVNode("div", null, "Match existing account", -1);
-var _hoisted_74 = /* @__PURE__ */ createBaseVNode("div", null, [/* @__PURE__ */ createBaseVNode("button", null, "Add New Account")], -1);
-var _hoisted_75 = /* @__PURE__ */ createBaseVNode("div", null, "Bill Data: ", -1);
-var _hoisted_76 = /* @__PURE__ */ createBaseVNode("div", null, "Amount: ", -1);
-var _hoisted_77 = { key: 1 };
-var _hoisted_78 = { key: 2 };
+var _hoisted_5$3 = {
+	key: 0,
+	class: "my-2 p-2 bg-[#eeeeff]"
+};
+var _hoisted_6$3 = /* @__PURE__ */ createBaseVNode("p", null, "We experienced an issue from the AI. You can keyin the fields instead.", -1);
+var _hoisted_7$1 = /* @__PURE__ */ createBaseVNode("h2", null, "Unit", -1);
+var _hoisted_8$1 = { class: "my-2 p-2 bg-[#eeeeff]" };
+var _hoisted_9$1 = /* @__PURE__ */ createBaseVNode("div", null, "Address: ", -1);
+var _hoisted_10$1 = /* @__PURE__ */ createBaseVNode("div", null, "Town: ", -1);
+var _hoisted_11$1 = /* @__PURE__ */ createBaseVNode("div", null, "State: ", -1);
+var _hoisted_12$1 = /* @__PURE__ */ createBaseVNode("div", null, "ZIP: ", -1);
+var _hoisted_13 = /* @__PURE__ */ createBaseVNode("div", null, "Match existing unit", -1);
+var _hoisted_14 = { class: "flex" };
+var _hoisted_15 = { key: 0 };
+var _hoisted_16 = /* @__PURE__ */ createBaseVNode("h2", null, "Provider", -1);
+var _hoisted_17 = { class: "my-2 p-2 bg-[#eeeeff]" };
+var _hoisted_18 = /* @__PURE__ */ createBaseVNode("div", null, "Category", -1);
+var _hoisted_19 = ["value"];
+var _hoisted_20 = ["value"];
+var _hoisted_21 = /* @__PURE__ */ createBaseVNode("h2", null, "Account", -1);
+var _hoisted_22 = { class: "my-2 p-2 bg-[#eeeeff]" };
+var _hoisted_23 = /* @__PURE__ */ createBaseVNode("div", null, "Account Number: ", -1);
+var _hoisted_24 = /* @__PURE__ */ createBaseVNode("div", null, "Account Name: ", -1);
+var _hoisted_25 = /* @__PURE__ */ createBaseVNode("div", null, "Match existing account", -1);
+var _hoisted_26 = /* @__PURE__ */ createBaseVNode("div", null, [/* @__PURE__ */ createBaseVNode("button", null, "Add New Account")], -1);
+var _hoisted_27 = /* @__PURE__ */ createBaseVNode("div", null, "Bill Data: ", -1);
+var _hoisted_28 = /* @__PURE__ */ createBaseVNode("div", null, "Amount: ", -1);
+var _hoisted_29 = { key: 1 };
 //#endregion
 //#region src/pages/ReviewBills.vue
 var ReviewBills_default = /* @__PURE__ */ defineComponent({
@@ -10222,7 +10250,9 @@ var ReviewBills_default = /* @__PURE__ */ defineComponent({
 		const s = glib.vue.reactive({
 			fids: [],
 			rep: {},
+			showUnitAdded: false,
 			ucatproviders: [],
+			uproviders: [],
 			rt: runtime
 		});
 		glib.vue.onMounted(async () => {
@@ -10242,12 +10272,43 @@ var ReviewBills_default = /* @__PURE__ */ defineComponent({
 			sessionStorage.setItem("fids", JSON.stringify([]));
 			loader("/api/eu/review-bill-files", { fids: s.fids }, (rep) => {
 				s.rep = rep;
-				console.log(s.rep);
+				onChangeCat();
 			});
 		});
+		const onClickNewUnit = () => {
+			loader("/api/eu/my-units", {
+				data: {
+					addr: s.rep.data.bill.p.ShownAddr,
+					town: s.rep.data.bill.p.ShownTown,
+					state: s.rep.data.bill.p.ShownState,
+					zip: s.rep.data.bill.p.ShownZip
+				},
+				act: "create"
+			}, (rep) => {
+				s.showUnitAdded = true;
+			});
+		};
+		const unit__key = (unit) => {
+			return unit.id;
+		};
+		const unit__text = (unit) => {
+			return unit.p.Address + ", " + unit.p.Town + ", " + unit.p.State + unit.p.Zip;
+		};
+		const onSelectUnit = (unit) => {
+			s.rep.data.bill.id = unit.id;
+			s.rep.data.bill.p.ShownAddr = unit.p.Address;
+			s.rep.data.bill.p.ShownTown = unit.p.Town;
+			s.rep.data.bill.p.ShownState = unit.p.State;
+			s.rep.data.bill.p.ShownZip = unit.p.Zip;
+		};
+		const onChangeCat = () => {
+			let found = s.ucatproviders.find((e) => e.ucat.id == s.rep.data.bill.p.Cat);
+			if (found) s.uproviders = found.uproviders;
+			else s.uproviders = [];
+		};
 		const confirm = () => {
 			loader("/api/eu/submit-bill", { data: s.rep.data }, (rep) => {
-				if (rep.Er == "OK") router.push("/");
+				router.push("/");
 			});
 		};
 		return (_ctx, _cache) => {
@@ -10257,43 +10318,59 @@ var ReviewBills_default = /* @__PURE__ */ defineComponent({
 					return openBlock(), createElementBlock("div", null, [createBaseVNode("div", _hoisted_2$4, [createBaseVNode("img", { src: "/thumbnail/" + fid }, null, 8, _hoisted_3$4)])]);
 				}), 256)),
 				unref(s).rep.Er == "OK" ? (openBlock(), createElementBlock("div", _hoisted_4$3, [
-					_hoisted_5$3,
-					createBaseVNode("div", _hoisted_6$3, [
-						_hoisted_7$1,
-						createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => unref(s).rep.data.bill.p.ShownAddr = $event) }, null, 512), [[vModelText, unref(s).rep.data.bill.p.ShownAddr]])]),
-						_hoisted_8$1,
-						createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => unref(s).rep.data.bill.p.ShownTown = $event) }, null, 512), [[vModelText, unref(s).rep.data.bill.p.ShownTown]])]),
+					unref(s).rep.Ex != "" ? (openBlock(), createElementBlock("div", _hoisted_5$3, [_hoisted_6$3, createBaseVNode("p", null, toDisplayString(unref(s).rep.Ex), 1)])) : createCommentVNode("", true),
+					_hoisted_7$1,
+					createBaseVNode("div", _hoisted_8$1, [
 						_hoisted_9$1,
-						createBaseVNode("div", null, [withDirectives(createBaseVNode("select", { "onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => unref(s).rep.data.bill.p.ShownState = $event) }, _hoisted_60, 512), [[vModelSelect, unref(s).rep.data.bill.p.ShownState]])]),
-						_hoisted_61,
+						createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => unref(s).rep.data.bill.p.ShownAddr = $event) }, null, 512), [[vModelText, unref(s).rep.data.bill.p.ShownAddr]])]),
+						_hoisted_10$1,
+						createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => unref(s).rep.data.bill.p.ShownTown = $event) }, null, 512), [[vModelText, unref(s).rep.data.bill.p.ShownTown]])]),
+						_hoisted_11$1,
+						createVNode(StateLocator_default, {
+							modelValue: unref(s).rep.data.bill.p.ShownState,
+							"onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => unref(s).rep.data.bill.p.ShownState = $event)
+						}, null, 8, ["modelValue"]),
+						_hoisted_12$1,
 						createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[3] || (_cache[3] = ($event) => unref(s).rep.data.bill.p.ShownZip = $event) }, null, 512), [[vModelText, unref(s).rep.data.bill.p.ShownZip]])]),
-						_hoisted_62,
-						createBaseVNode("div", null, [createVNode(SearchField_default)]),
-						_hoisted_63
+						_hoisted_13,
+						createBaseVNode("div", null, [createVNode(SearchField_default, {
+							api: "/api/eu/my-units",
+							item__key: unit__key,
+							item__text: unit__text,
+							onSelect: onSelectUnit
+						})]),
+						createBaseVNode("div", _hoisted_14, [createBaseVNode("button", { onClick: onClickNewUnit }, "Add as a New Unit"), unref(s).showUnitAdded ? (openBlock(), createElementBlock("div", _hoisted_15, "New Unit Added")) : createCommentVNode("", true)])
 					]),
-					_hoisted_64,
-					createBaseVNode("div", _hoisted_65, [_hoisted_66, createBaseVNode("div", null, [
-						withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[4] || (_cache[4] = ($event) => unref(s).rep.data.bill.p.ShownProvider = $event) }, null, 512), [[vModelText, unref(s).rep.data.bill.p.ShownProvider]]),
-						_hoisted_67,
-						_hoisted_68
-					])]),
-					_hoisted_69,
-					createBaseVNode("div", _hoisted_70, [
-						_hoisted_71,
-						createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[5] || (_cache[5] = ($event) => unref(s).rep.data.bill.p.ShownAcctNum = $event) }, null, 512), [[vModelText, unref(s).rep.data.bill.p.ShownAcctNum]])]),
-						_hoisted_72,
-						createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[6] || (_cache[6] = ($event) => unref(s).rep.data.bill.p.ShownAcctName = $event) }, null, 512), [[vModelText, unref(s).rep.data.bill.p.ShownAcctName]])]),
-						_hoisted_73,
-						createBaseVNode("div", null, [createVNode(SearchField_default)]),
-						_hoisted_74
+					_hoisted_16,
+					createBaseVNode("div", _hoisted_17, [
+						_hoisted_18,
+						createBaseVNode("div", null, [withDirectives(createBaseVNode("select", {
+							onChange: onChangeCat,
+							"onUpdate:modelValue": _cache[4] || (_cache[4] = ($event) => unref(s).rep.data.bill.p.Cat = $event)
+						}, [(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).ucatproviders, (item) => {
+							return openBlock(), createElementBlock("option", { value: item.ucat.id }, toDisplayString(item.ucat.p.Caption), 9, _hoisted_19);
+						}), 256))], 544), [[vModelSelect, unref(s).rep.data.bill.p.Cat]])]),
+						createBaseVNode("div", null, "Provider: " + toDisplayString(unref(s).rep.data.bill.p.ShownProvider), 1),
+						createBaseVNode("div", null, [withDirectives(createBaseVNode("select", { "onUpdate:modelValue": _cache[5] || (_cache[5] = ($event) => unref(s).rep.data.bill.p.Provider = $event) }, [(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).uproviders, (item) => {
+							return openBlock(), createElementBlock("option", { value: item.id }, toDisplayString(item.p.Caption), 9, _hoisted_20);
+						}), 256))], 512), [[vModelSelect, unref(s).rep.data.bill.p.Provider]])])
 					]),
-					_hoisted_75,
-					createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[7] || (_cache[7] = ($event) => unref(s).rep.data.bill.p.BillDate = $event) }, null, 512), [[vModelText, unref(s).rep.data.bill.p.BillDate]])]),
-					_hoisted_76,
-					createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[8] || (_cache[8] = ($event) => unref(s).rep.data.bill.p.Amt = $event) }, null, 512), [[vModelText, unref(s).rep.data.bill.p.Amt]])]),
+					_hoisted_21,
+					createBaseVNode("div", _hoisted_22, [
+						_hoisted_23,
+						createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[6] || (_cache[6] = ($event) => unref(s).rep.data.bill.p.ShownAcctNum = $event) }, null, 512), [[vModelText, unref(s).rep.data.bill.p.ShownAcctNum]])]),
+						_hoisted_24,
+						createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[7] || (_cache[7] = ($event) => unref(s).rep.data.bill.p.ShownAcctName = $event) }, null, 512), [[vModelText, unref(s).rep.data.bill.p.ShownAcctName]])]),
+						_hoisted_25,
+						createBaseVNode("div", null, [createVNode(SearchField_default)]),
+						_hoisted_26
+					]),
+					_hoisted_27,
+					createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[8] || (_cache[8] = ($event) => unref(s).rep.data.bill.p.BillDate = $event) }, null, 512), [[vModelText, unref(s).rep.data.bill.p.BillDate]])]),
+					_hoisted_28,
+					createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[9] || (_cache[9] = ($event) => unref(s).rep.data.bill.p.Amt = $event) }, null, 512), [[vModelText, unref(s).rep.data.bill.p.Amt]])]),
 					createBaseVNode("div", { class: "flex" }, [createBaseVNode("button", { onClick: confirm }, "Confirm"), createTextVNode(" the details and submit to our professional team. ")])
-				])) : unref(s).rep.Er == "API3rdParty" ? (openBlock(), createElementBlock("div", _hoisted_77, " We experienced an issue from the AI. You can try later: " + toDisplayString(unref(s).rep.msg), 1)) : (openBlock(), createElementBlock("div", _hoisted_78, "AI processing ... 20 seconds expected")),
-				createBaseVNode("div", null, toDisplayString(unref(s).rep), 1)
+				])) : (openBlock(), createElementBlock("div", _hoisted_29, "AI processing ... 20 seconds expected"))
 			], 64);
 		};
 	}
@@ -10302,7 +10379,7 @@ var ReviewBills_default = /* @__PURE__ */ defineComponent({
 //#region src/pages/HomeCustomer.vue?vue&type=script&setup=true&lang.ts
 var _hoisted_1$3 = /* @__PURE__ */ createBaseVNode("div", null, "Welcome", -1);
 var _hoisted_2$3 = /* @__PURE__ */ createBaseVNode("div", null, "https://whatsyourideal.com/", -1);
-var _hoisted_3$3 = /* @__PURE__ */ createBaseVNode("div", null, "Lower Your Bills On CruiseControl!", -1);
+var _hoisted_3$3 = { class: "mt-[20px]" };
 //#endregion
 //#region src/pages/HomeCustomer.vue
 var HomeCustomer_default = /* @__PURE__ */ defineComponent({
@@ -10332,8 +10409,7 @@ var HomeCustomer_default = /* @__PURE__ */ defineComponent({
 			return openBlock(), createElementBlock(Fragment, null, [
 				_hoisted_1$3,
 				_hoisted_2$3,
-				_hoisted_3$3,
-				createBaseVNode("div", null, [(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).providers, (item, index) => {
+				createBaseVNode("div", _hoisted_3$3, [(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).providers, (item, index) => {
 					return openBlock(), createElementBlock("div", null, [createBaseVNode("div", null, [createBaseVNode("b", null, toDisplayString(item.ucat), 1), (openBlock(true), createElementBlock(Fragment, null, renderList(item.uproviders, (ii) => {
 						return openBlock(), createElementBlock("span", null, " | " + toDisplayString(ii), 1);
 					}), 256))])]);

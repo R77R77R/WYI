@@ -31,6 +31,23 @@
 
 
   {
+    "name": "Kernel_UtilCatProvider",
+    "id": 254261,
+    "fields": [
+      {
+        "enum": "FK",
+        "ref": "Kernel_UtilCat",
+        "name": "Cat"
+      },
+      {
+        "enum": "FK",
+        "ref": "Kernel_UtilProvider",
+        "name": "Provider"
+      }
+    ]
+  },
+
+  {
     "name": "Kernel_Unit",
     "shorthand": "unit",
     "id": 29554261,

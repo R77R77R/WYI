@@ -1,27 +1,28 @@
 <template>
 
-<div class="relative w-64">
+<div class="relative w-[200px]">
     
     <input 
       type="text" 
       v-model="searchText"
       @focus="isDropdownVisible = true"
       @blur="onBlur"
+      @input="onInput"
       placeholder="Start typing..."
       class="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
     />
 
     <ul 
-      v-if="isDropdownVisible && filteredOptions.length > 0"
+      v-if="isDropdownVisible && s.opts.length > 0"
       class="absolute z-10 w-full bg-white border rounded shadow-lg mt-1 max-h-48 overflow-y-auto"
     >
       <li 
-        v-for="opt in filteredOptions" 
-        :key="opt.id"
-        @click="selectOption(opt.name)"
+        v-for="opt in s.opts" 
+        @click="selectOption(opt)"
+        :value="props.item__key(opt)"
         class="px-3 py-2 hover:bg-blue-50 cursor-pointer text-sm"
       >
-        {{ opt.name }}
+        {{ props.item__text(opt) }}
       </li>
     </ul>
   </div>
@@ -31,29 +32,41 @@
 <script setup lang="ts">
 
 import { ref, computed } from 'vue'
+import { glib } from '~/lib/glib'
+import * as Common from '~/lib/store/common'
 
-// 模拟从数据库或本地获取的 Provider 列表
-const providers = ref([
-  { id: 1, name: 'T-Mobile' },
-  { id: 2, name: 'Spectrum' },
-  { id: 3, name: 'Insurance Co' },
-  { id: 4, name: 'Water Board' }
-])
+const props = defineProps(['api','item__key','item__text'])
+props.api as string
+props.item__key as Function
+props.item__text as Function
+
+const s = glib.vue.reactive({
+  opts: []
+})
+
+const emits = defineEmits(['select']) 
 
 const searchText = ref('')
 const isDropdownVisible = ref(false)
 
-// 关键逻辑：Text Changed 触发的模糊匹配
-const filteredOptions = computed(() => {
-  if (!searchText.value) return []
-  return providers.value.filter(p => 
-    p.name.toLowerCase().includes(searchText.value.toLowerCase())
-  )
-})
+const onInput = () => {
+  if (!searchText.value) return
 
-const selectOption = (name: string) => {
-  searchText.value = name
+  Common.loader(props.api, {
+    term: searchText.value,
+    act: "search"
+  }, (rep: any) => {
+    s.opts = rep.data
+    console.log(s.opts)
+  },() => {
+  })
+}
+
+const selectOption = (opt: any) => {
+  searchText.value = props.item__key(opt)
   isDropdownVisible.value = false
+
+  emits('select',opt)
 }
 
 const onBlur = () => {

@@ -583,6 +583,9 @@ video {
 .mt-5 {
   margin-top: 1.25rem;
 }
+.mt-\[20px\] {
+  margin-top: 20px;
+}
 .flex {
   display: flex;
 }
@@ -619,11 +622,11 @@ video {
 .w-48 {
   width: 12rem;
 }
-.w-64 {
-  width: 16rem;
-}
 .w-\[1000px\] {
   width: 1000px;
+}
+.w-\[200px\] {
+  width: 200px;
 }
 .w-\[300px\] {
   width: 300px;

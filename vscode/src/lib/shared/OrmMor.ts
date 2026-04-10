@@ -393,6 +393,52 @@ export const bin__UCAT = (bi:BinIndexed):wyi.UCAT => {
     }
 }
 
+// [KUCP] Structure
+
+
+export const pKUCP__bin = (bb:BytesBuilder) => (p:wyi.pKUCP) => {
+
+    
+    marshall.int64__bin (bb) (p.Cat)
+    
+    marshall.int64__bin (bb) (p.Provider)
+}
+
+export const KUCP__bin = (bb:BytesBuilder) => (v:wyi.KUCP) => {
+    marshall.int64__bin (bb) (v.id)
+    marshall.int64__bin (bb) (v.sort)
+    marshall.DateTime__bin (bb) (v.createdat)
+    marshall.DateTime__bin (bb) (v.updatedat)
+
+    pKUCP__bin (bb) (v.p)
+}
+
+export const bin__pKUCP = (bi:BinIndexed):wyi.pKUCP => {
+
+    let p = pKUCP_empty()
+    p.Cat = marshall.bin__int64 (bi)
+    p.Provider = marshall.bin__int64 (bi)
+
+    return p
+}
+
+
+export const bin__KUCP = (bi:BinIndexed):wyi.KUCP => {
+
+    let ID = marshall.bin__int64 (bi)
+    let Sort = marshall.bin__int64 (bi)
+    let Createdat = marshall.bin__DateTime (bi)
+    let Updatedat = marshall.bin__DateTime (bi)
+    
+    return {
+        id: ID,
+        sort: Sort,
+        createdat: Createdat,
+        updatedat: Updatedat,
+        p:  bin__pKUCP (bi)
+    }
+}
+
 // [UPROVIDER] Structure
 
 
@@ -823,6 +869,21 @@ export const UCAT_empty = (): wyi.UCAT => {
         updatedat: new Date(),
         sort: 0,
         p: pUCAT_empty() }
+}
+
+export const pKUCP_empty = (): wyi.pKUCP => {
+    return {
+        Cat: 0,
+        Provider: 0 }
+}
+
+export const KUCP_empty = (): wyi.KUCP => {
+    return {
+        id: 0,
+        createdat: new Date(),
+        updatedat: new Date(),
+        sort: 0,
+        p: pKUCP_empty() }
 }
 
 export const pUPROVIDER_empty = (): wyi.pUPROVIDER => {

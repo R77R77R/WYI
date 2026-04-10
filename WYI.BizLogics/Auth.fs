@@ -89,10 +89,14 @@ let auth (x:X) =
         match euxo with
         | Some eux -> 
             let s = UtilKestrel.Session.user__session runtime.sessions eux
+            let euxSimplified = {
+                units = ModDict_empty()
+                billxs = ModDict_empty()
+                eu = eux.eu }
+
             [|  ok
                 "session", s.session |> str__json
-                //"eux", eux |> EuComplex__json 
-                    |]
+                "eux", euxSimplified |> EuComplex__json |]
         | None -> er Er.Internal
 
     else

@@ -1565,6 +1565,99 @@ IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_utilcat
     BEGIN
     ALTER TABLE kernel_utilcat DROP  CONSTRAINT [UniqueNonclustered_kernel_utilcatCaption]
     END
+-- [kernel_utilcatprovider] ----------------------
+
+IF NOT EXISTS(SELECT * FROM sysobjects WHERE [name]='kernel_utilcatprovider' AND xtype='U')
+
+BEGIN
+
+    CREATE TABLE kernel_utilcatprovider ([ID] BIGINT NOT NULL
+        ,[Createdat] BIGINT NOT NULL
+        ,[Updatedat] BIGINT NOT NULL
+        ,[Sort] BIGINT NOT NULL,
+        [Cat] BIGINT
+        ,[Provider] BIGINT
+, CONSTRAINT [PK_kernel_utilcatprovider] PRIMARY KEY CLUSTERED ([ID] ASC)) ON [PRIMARY]
+END
+
+
+-- Dropping obsolete fields -----------
+DECLARE @name_kernel_utilcatprovider NVARCHAR(64)
+DECLARE cursor_kernel_utilcatprovider CURSOR FOR 
+    SELECT name FROM SYSCOLUMNS WHERE id=object_id('kernel_utilcatprovider') AND (name NOT IN ('ID','Createdat','Updatedat','Sort','Cat','Provider'))
+
+OPEN cursor_kernel_utilcatprovider
+FETCH NEXT FROM cursor_kernel_utilcatprovider INTO @name_kernel_utilcatprovider
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    PRINT 'Dropping kernel_utilcatprovider.' + @name_kernel_utilcatprovider;
+    
+    DECLARE @sql_kernel_utilcatprovider NVARCHAR(MAX);
+    SET @sql_kernel_utilcatprovider = 'ALTER TABLE kernel_utilcatprovider DROP COLUMN ' + QUOTENAME(@name_kernel_utilcatprovider)
+    EXEC sp_executesql @sql_kernel_utilcatprovider
+    
+    
+    FETCH NEXT FROM cursor_kernel_utilcatprovider INTO @name_kernel_utilcatprovider
+END
+
+CLOSE cursor_kernel_utilcatprovider;
+DEALLOCATE cursor_kernel_utilcatprovider;
+
+
+-- [kernel_utilcatprovider.Cat] -------------
+
+
+-- [kernel_utilcatprovider.Cat] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('kernel_utilcatprovider') AND name='Cat')
+    BEGIN
+     ALTER TABLE kernel_utilcatprovider ALTER COLUMN [Cat] BIGINT
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_kernel_utilcatprovider_Cat NVARCHAR(MAX);
+    SET @sql_add_kernel_utilcatprovider_Cat = 'ALTER TABLE kernel_utilcatprovider ADD [Cat] BIGINT'
+    EXEC sp_executesql @sql_add_kernel_utilcatprovider_Cat
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_utilcatproviderCat')
+    BEGIN
+    ALTER TABLE kernel_utilcatprovider DROP  CONSTRAINT [Constraint_kernel_utilcatproviderCat]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_utilcatproviderCat')
+    BEGIN
+    ALTER TABLE kernel_utilcatprovider DROP  CONSTRAINT [UniqueNonclustered_kernel_utilcatproviderCat]
+    END
+
+-- [kernel_utilcatprovider.Provider] -------------
+
+
+-- [kernel_utilcatprovider.Provider] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('kernel_utilcatprovider') AND name='Provider')
+    BEGIN
+     ALTER TABLE kernel_utilcatprovider ALTER COLUMN [Provider] BIGINT
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_kernel_utilcatprovider_Provider NVARCHAR(MAX);
+    SET @sql_add_kernel_utilcatprovider_Provider = 'ALTER TABLE kernel_utilcatprovider ADD [Provider] BIGINT'
+    EXEC sp_executesql @sql_add_kernel_utilcatprovider_Provider
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_utilcatproviderProvider')
+    BEGIN
+    ALTER TABLE kernel_utilcatprovider DROP  CONSTRAINT [Constraint_kernel_utilcatproviderProvider]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_utilcatproviderProvider')
+    BEGIN
+    ALTER TABLE kernel_utilcatprovider DROP  CONSTRAINT [UniqueNonclustered_kernel_utilcatproviderProvider]
+    END
 -- [kernel_utilprovider] ----------------------
 
 IF NOT EXISTS(SELECT * FROM sysobjects WHERE [name]='kernel_utilprovider' AND xtype='U')

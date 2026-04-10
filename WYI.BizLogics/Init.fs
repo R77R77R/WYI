@@ -83,8 +83,66 @@ let init (runtime:Runtime) =
     (fun (i:UPROVIDER) -> runtime.data.providers[i.ID] <- i)
     |> loadAll runtime.output conn UPROVIDER_metadata
 
+    (fun (i:KUCP) -> 
+        runtime.data.catproviders <- 
+            [|  runtime.data.catproviders
+                [|  i  |] |]
+            |> Array.concat)
+    |> loadAll runtime.output conn KUCP_metadata
+
     let importUtilProviders () = 
-        let txt = """
+
+        let checkBind cat provider = 
+            match
+                runtime.data.catproviders
+                |> Array.tryFind(fun i -> i.p.Cat = cat.ID && i.p.Provider = provider.ID) with
+            | Some v -> ()
+            | None ->
+                match
+                    (fun (p:pKUCP) -> 
+                        p.Cat <- cat.ID
+                        p.Provider <- provider.ID)
+                    |> creator KUCP_metadata with
+                | Some rcd -> 
+                    runtime.data.catproviders <-
+                        [|  runtime.data.catproviders
+                            [| rcd |] |]
+                        |> Array.concat
+                | None -> halt runtime.output "" ""
+
+        let getOrAddCat cat = 
+            match
+                runtime.data.cats.Values
+                |> Array.tryFind(fun i -> i.p.Caption = cat) with
+            | Some ucat -> Some ucat
+            | None ->
+                match
+                    (fun (p:pUCAT) -> 
+                        p.Caption <- cat) 
+                    |> creator UCAT_metadata with
+                | Some v -> 
+                    runtime.data.cats[v.ID] <- v
+                    Some v
+                | None -> None
+
+        let getOrAddProvider ucat provider = 
+            match
+                runtime.data.providers.Values
+                |> Array.tryFind(fun i -> i.p.Caption = provider) with
+            | Some uprovider -> 
+                checkBind ucat uprovider
+            | None ->
+                match
+                    (fun (p:pUPROVIDER) ->
+                        p.Cat <- ucat.ID
+                        p.Caption <- provider) 
+                    |> creator UPROVIDER_metadata with
+                | Some v -> 
+                    runtime.data.providers[v.ID] <- v
+                    checkBind ucat v
+                | None -> ()            
+
+        let txt1 = """
     Internet | Spectrum
     Internet | Comcast
     Internet | Windstream
@@ -128,7 +186,7 @@ let init (runtime:Runtime) =
     CO2 (for Restaurants) | (Not specified)
     Monthly Recurring Bills | (Miscellaneous)    """
 
-        txt.Split Util.Text.crlf
+        txt1.Split Util.Text.crlf
         |> Array.map(fun s -> s.Trim())
         |> Array.filter(fun s -> s.Contains "|")
         |> Array.map(fun s -> 
@@ -138,43 +196,55 @@ let init (runtime:Runtime) =
             cat,provider)
         |> Array.filter(fun (cat,provider) -> 
             provider.StartsWith "(" = false && provider.EndsWith ")" = false)
-        |> Array.map(fun (cat,provider) -> 
-            match
-                (match
-                    runtime.data.cats.Values
-                    |> Array.tryFind(fun i -> i.p.Caption = cat) with
-                | Some ucat -> Some ucat
-                | None ->
-                    match
-                        (fun (p:pUCAT) -> 
-                            p.Caption <- cat) 
-                        |> creator UCAT_metadata with
-                    | Some v -> 
-                        runtime.data.cats[v.ID] <- v
-                        Some v
-                    | None -> None) with
-            | Some ucat -> 
-                match
-                    runtime.data.providers.Values
-                    |> Array.tryFind(fun i -> i.p.Caption = provider) with
-                | Some uprovider -> ()
-                | None ->
-                    match
-                        (fun (p:pUPROVIDER) ->
-                            p.Cat <- ucat.ID
-                            p.Caption <- provider) 
-                        |> creator UPROVIDER_metadata with
-                    | Some v -> 
-                        runtime.data.providers[v.ID] <- v
-                    | None -> ()            
+        |> Array.iter(fun (cat,provider) -> 
+            match getOrAddCat cat with
+            | Some ucat -> getOrAddProvider ucat provider
             | None -> ())
-    //importUtilProviders()
+    
+        let txt2 = 
+            """
+Internet | Spectrum | Comcast | Windstream/ Frontier/Century Link/Verizon Fios/Optimum/Cox/RCN
+Cellphone | Verizon | AT&T | T-Mobile
+Landlines
+Cable TV | Spectrum | Comcast | Windstream/ Frontier/Century Link/Verizon Fios/Optimum/Cox/RCN
+Satellite TV | Direct TV | Dish
+Satellite Radio | Sirius XM
+Security Monitoring | ADT | Vivint | Brinks/Slomin's
+Payroll | ADP | Paychex
+Credit Card Processing | Global | World Pay
+Trash | Waste Mgmt. | Republic | GFL | Local companies
+Pest Control | Terminix | Orkin/Plunkett's
+Lawn Care | TruGreen
+Subscriptions/Memberships | Adobe | Salesforce | HubSpot
+Advertising | Billboards | Newspapers | Magazines | Yellow Pages
+Water Delivery | Ready Refresh | Primo | Crystal Rock
+Elevator Maintenance Contracts | Otis        """
+        txt2.Split Util.Text.crlf
+        |> Array.map(fun s -> s.Trim().Replace("/","|"))
+        |> Array.filter(fun s -> s.Contains "|")
+        |> Array.iter(fun s -> 
+            let ss = s.Split "|"
+            match getOrAddCat (ss[0].Trim()) with
+            | Some cat ->
+
+                [| 1 .. ss.Length - 1|]
+                |> Array.iter(fun i ->
+                    let provider = ss[i].Trim()
+                    getOrAddProvider cat provider)
+            | None -> ())
+    
+    importUtilProviders()
 
     (fun (i:EU) -> runtime.users[i.ID] <- { 
         units = createModDictInt64 2
         billxs = createModDictInt64 2
         eu = i })
     |> loadAll runtime.output conn EU_metadata
+
+    (fun (i:UNIT) ->
+        let eux = runtime.users[i.p.Owner]
+        eux.units[i.ID] <- i)
+    |> loadAll runtime.output conn UNIT_metadata
 
     let users = runtime.users.Values |> Seq.toArray
 

@@ -115,6 +115,7 @@ export const RuntimeData_empty = (): wyi.RuntimeData => {
         aiModel: "",
         cats: {},
         providers: {},
+        catproviders: [],
     } as wyi.RuntimeData
 }
 
@@ -126,6 +127,8 @@ export const RuntimeData__bin = (bb:BytesBuilder) => (v:any) => {
     marshall.dict__bin (marshall.int64__bin)(marshall.UCAT__bin) (bb) (v.cats)
     
     marshall.dict__bin (marshall.int64__bin)(marshall.UPROVIDER__bin) (bb) (v.providers)
+    
+    marshall.array__bin (marshall.KUCP__bin) (bb) (v.catproviders)
 }
 
 export const bin__RuntimeData = (bi:BinIndexed):wyi.RuntimeData => {
@@ -135,6 +138,7 @@ export const bin__RuntimeData = (bi:BinIndexed):wyi.RuntimeData => {
         aiModel: marshall.bin__str (bi),
         cats: marshall.bin__dict(marshall.bin__int64)(marshall.bin__UCAT) (bi),
         providers: marshall.bin__dict(marshall.bin__int64)(marshall.bin__UPROVIDER) (bi),
+        catproviders: marshall.bin__array (marshall.bin__KUCP) (bi),
     }
 }
 

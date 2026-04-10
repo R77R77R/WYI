@@ -3,9 +3,8 @@
 <div>Welcome</div>
 
 <div>https://whatsyourideal.com/</div>
-<div>Lower Your Bills On CruiseControl!</div>
 
-<div>
+<div class="mt-[20px]">
   <div v-for="(item,index) in s.providers">
     <div><b>{{ item.ucat }}</b>
       <span v-for="ii in item.uproviders">
@@ -33,14 +32,14 @@ glib.vue.onMounted(async () => {
   Common.loader('/api/public/providers', {},(rep:any) => {
     s.providers = []
     rep.data.forEach((e:any) => {
-      let ucat = e.ucat as wyi.UCAT
-      let providers = [] as any
-      e.providers.forEach((p:wyi.UPROVIDER) => {
-        providers.push(p.p.Caption)  
-      })
-      s.providers.push({ 
-        ucat:ucat.p.Caption,
-        uproviders:providers })
+        let ucat = e.ucat as wyi.UCAT
+        let providers = [] as any
+        e.providers.forEach((p:wyi.UPROVIDER) => {
+          providers.push(p.p.Caption)  
+        })
+        s.providers.push({ 
+          ucat:ucat.p.Caption,
+          uproviders:providers })
     });
   })
 })

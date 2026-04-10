@@ -42,7 +42,9 @@ aiModel:string,
 
 cats:{[key:number]: UCAT},
 
-providers:{[key:number]: UPROVIDER}
+providers:{[key:number]: UPROVIDER},
+
+catproviders:KUCP[]
 }
 
 // [ClientRuntime]

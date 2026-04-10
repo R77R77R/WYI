@@ -378,6 +378,7 @@ let RuntimeData_empty(): RuntimeData =
         aiModel = ""
         cats = ModDict_empty()
         providers = ModDict_empty()
+        catproviders = [| |]
     }
 
 let RuntimeData__bin (bb:BytesBuilder) (v:RuntimeData) =
@@ -388,6 +389,8 @@ let RuntimeData__bin (bb:BytesBuilder) (v:RuntimeData) =
     ModDictInt64__bin (UCAT__bin) bb v.cats
     
     ModDictInt64__bin (UPROVIDER__bin) bb v.providers
+    
+    array__bin (KUCP__bin) bb v.catproviders
     ()
 
 let bin__RuntimeData (bi:BinIndexed):RuntimeData =
@@ -406,6 +409,9 @@ let bin__RuntimeData (bi:BinIndexed):RuntimeData =
         providers = 
             bi
             |> bin__ModDictInt64(bin__UPROVIDER)
+        catproviders = 
+            bi
+            |> bin__array (bin__KUCP)
     }
 
 let RuntimeData__json (v:RuntimeData) =
@@ -414,6 +420,7 @@ let RuntimeData__json (v:RuntimeData) =
         ("aiModel",str__json v.aiModel)
         ("cats",ModDictInt64__json (UCAT__json) v.cats)
         ("providers",ModDictInt64__json (UPROVIDER__json) v.providers)
+        ("catproviders",array__json (KUCP__json) v.catproviders)
          |]
     |> Json.Braket
 
@@ -477,12 +484,25 @@ let json__RuntimeDatao (json:Json):RuntimeData option =
                 passOptions <- false
                 None
 
+    let catproviderso =
+        match json__tryFindByName json "catproviders" with
+        | None ->
+            passOptions <- false
+            None
+        | Some v -> 
+            match v |> json__arrayo (json__KUCPo) with
+            | Some res -> Some res
+            | None ->
+                passOptions <- false
+                None
+
     if passOptions then
         ({
             apiKeyGemini = apiKeyGeminio.Value
             aiModel = aiModelo.Value
             cats = catso.Value
-            providers = providerso.Value }:RuntimeData) |> Some
+            providers = providerso.Value
+            catproviders = catproviderso.Value }:RuntimeData) |> Some
     else
         None
 

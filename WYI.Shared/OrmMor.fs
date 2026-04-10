@@ -1157,6 +1157,127 @@ let UCAT_clone src =
     UCAT__bin bb src
     bin__UCAT (bb.bytes(),ref 0)
 
+// [KUCP] Structure
+
+
+let pKUCP__bin (bb:BytesBuilder) (p:pKUCP) =
+
+    
+    p.Cat |> BitConverter.GetBytes |> bb.append
+    
+    p.Provider |> BitConverter.GetBytes |> bb.append
+
+let KUCP__bin (bb:BytesBuilder) (v:KUCP) =
+    v.ID |> BitConverter.GetBytes |> bb.append
+    v.Sort |> BitConverter.GetBytes |> bb.append
+    DateTime__bin bb v.Createdat
+    DateTime__bin bb v.Updatedat
+    
+    pKUCP__bin bb v.p
+    ()
+
+let bin__pKUCP (bi:BinIndexed):pKUCP =
+    let bin,index = bi
+
+    let p = pKUCP_empty()
+    
+    p.Cat <- BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    p.Provider <- BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    p
+
+let bin__KUCP (bi:BinIndexed):KUCP =
+    let bin,index = bi
+
+    let ID = BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    let Sort = BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    let Createdat = bin__DateTime bi
+    
+    let Updatedat = bin__DateTime bi
+    
+    {
+        ID = ID
+        Sort = Sort
+        Createdat = Createdat
+        Updatedat = Updatedat
+        p = bin__pKUCP bi }
+
+let pKUCP__json (p:pKUCP) =
+
+    [|
+        ("Cat",p.Cat.ToString() |> Json.Num)
+        ("Provider",p.Provider.ToString() |> Json.Num) |]
+    |> Json.Braket
+
+let KUCP__json (v:KUCP) =
+
+    let p = v.p
+    
+    [|  ("id",v.ID.ToString() |> Json.Num)
+        ("sort",v.Sort.ToString() |> Json.Num)
+        ("createdat",(v.Createdat |> Util.Time.wintime__unixtime).ToString() |> Json.Num)
+        ("updatedat",(v.Updatedat |> Util.Time.wintime__unixtime).ToString() |> Json.Num)
+        ("p",pKUCP__json v.p) |]
+    |> Json.Braket
+
+let KUCP__jsonTbw (w:TextBlockWriter) (v:KUCP) =
+    json__str w (KUCP__json v)
+
+let KUCP__jsonStr (v:KUCP) =
+    (KUCP__json v) |> json__strFinal
+
+
+let json__pKUCPo (json:Json):pKUCP option =
+    let fields = json |> json__items
+
+    let p = pKUCP_empty()
+    
+    p.Cat <- checkfield fields "Cat" |> parse_int64
+    
+    p.Provider <- checkfield fields "Provider" |> parse_int64
+    
+    p |> Some
+    
+
+let json__KUCPo (json:Json):KUCP option =
+    let fields = json |> json__items
+
+    let ID = checkfield fields "id" |> parse_int64
+    let Sort = checkfield fields "sort" |> parse_int64
+    let Createdat = checkfield fields "createdat" |> parse_int64 |> DateTime.FromBinary
+    let Updatedat = checkfield fields "updatedat" |> parse_int64 |> DateTime.FromBinary
+    
+    let o  =
+        match
+            json
+            |> tryFindByAtt "p" with
+        | Some (s,v) -> json__pKUCPo v
+        | None -> None
+    
+    match o with
+    | Some p ->
+        
+        {
+            ID = ID
+            Sort = Sort
+            Createdat = Createdat
+            Updatedat = Updatedat
+            p = p } |> Some
+        
+    | None -> None
+
+let KUCP_clone src =
+    let bb = new BytesBuilder()
+    KUCP__bin bb src
+    bin__KUCP (bb.bytes(),ref 0)
+
 // [UPROVIDER] Structure
 
 
@@ -2767,6 +2888,103 @@ let UCATTxSqlServer =
     """
 
 
+let db__pKUCP(line:Object[]): pKUCP =
+    let p = pKUCP_empty()
+
+    p.Cat <- if Convert.IsDBNull(line[4]) then 0L else line[4] :?> int64
+    p.Provider <- if Convert.IsDBNull(line[5]) then 0L else line[5] :?> int64
+
+    p
+
+let pKUCP__sps (p:pKUCP) =
+    match rdbms with
+    | Rdbms.SqlServer ->
+        [|
+            ("Cat", p.Cat) |> kvp__sqlparam
+            ("Provider", p.Provider) |> kvp__sqlparam |]
+    | Rdbms.PostgreSql ->
+        [|
+            ("cat", p.Cat) |> kvp__sqlparam
+            ("provider", p.Provider) |> kvp__sqlparam |]
+
+let db__KUCP = db__Rcd db__pKUCP
+
+let KUCP_wrapper item: KUCP =
+    let (i,c,u,s),p = item
+    { ID = i; Createdat = c; Updatedat = u; Sort = s; p = p }
+
+let pKUCP_clone (p:pKUCP): pKUCP = {
+    Cat = p.Cat
+    Provider = p.Provider }
+
+let KUCP_update_transaction output (updater,suc,fail) (rcd:KUCP) =
+    let rollback_p = rcd.p |> pKUCP_clone
+    let rollback_updatedat = rcd.Updatedat
+    updater rcd.p
+    let ctime,res =
+        (rcd.ID,rcd.p,rollback_p,rollback_updatedat)
+        |> update (conn,output,KUCP_table,KUCP_sql_update(),pKUCP__sps,suc,fail)
+    match res with
+    | Suc ctx ->
+        rcd.Updatedat <- ctime
+        suc(ctime,ctx)
+    | Fail(eso,ctx) ->
+        rcd.p <- rollback_p
+        rcd.Updatedat <- rollback_updatedat
+        fail eso
+
+let KUCP_update output (rcd:KUCP) =
+    rcd
+    |> KUCP_update_transaction output ((fun p -> ()),(fun (ctime,ctx) -> ()),(fun dte -> ()))
+
+let KUCP_create_incremental_transaction output (suc,fail) p =
+    let cid = Interlocked.Increment KUCP_id
+    let ctime = DateTime.UtcNow
+    match create (conn,output,KUCP_table,pKUCP__sps) (cid,ctime,p) with
+    | Suc ctx -> ((cid,ctime,ctime,cid),p) |> KUCP_wrapper |> suc
+    | Fail(eso,ctx) -> fail(eso,ctx)
+
+let KUCP_create output p =
+    KUCP_create_incremental_transaction output ((fun rcd -> ()),(fun (eso,ctx) -> ())) p
+    
+
+let id__KUCPo id: KUCP option = id__rcd(conn,KUCP_fieldorders(),KUCP_table,db__KUCP) id
+
+let KUCP_metadata = {
+    fieldorders = KUCP_fieldorders
+    db__rcd = db__KUCP 
+    wrapper = KUCP_wrapper
+    sps = pKUCP__sps
+    id = KUCP_id
+    id__rcdo = id__KUCPo
+    clone = pKUCP_clone
+    empty__p = pKUCP_empty
+    rcd__bin = KUCP__bin
+    bin__rcd = bin__KUCP
+    p__json = pKUCP__json
+    json__po = json__pKUCPo
+    rcd__json = KUCP__json
+    json__rcdo = json__KUCPo
+    sql_update = KUCP_sql_update
+    rcd_update = KUCP_update
+    table = KUCP_table
+    shorthand = "kucp" }
+
+let KUCPTxSqlServer =
+    """
+    IF NOT EXISTS(SELECT * FROM sysobjects WHERE [name]='Kernel_UtilCatProvider' AND xtype='U')
+    BEGIN
+
+        CREATE TABLE Kernel_UtilCatProvider ([ID] BIGINT NOT NULL
+    ,[Createdat] BIGINT NOT NULL
+    ,[Updatedat] BIGINT NOT NULL
+    ,[Sort] BIGINT NOT NULL,
+    ,[Cat]
+    ,[Provider])
+    END
+    """
+
+
 let db__pUPROVIDER(line:Object[]): pUPROVIDER =
     let p = pUPROVIDER_empty()
 
@@ -3396,12 +3614,13 @@ type MetadataEnum =
 | UACCT = 3
 | UBILL = 4
 | UCAT = 5
-| UPROVIDER = 6
-| FBIND = 7
-| MOMENT = 8
-| CONFIG = 9
-| LOG = 10
-| PLOG = 11
+| KUCP = 6
+| UPROVIDER = 7
+| FBIND = 8
+| MOMENT = 9
+| CONFIG = 10
+| LOG = 11
+| PLOG = 12
 
 let tablenames = [|
     EU_metadata.table
@@ -3410,6 +3629,7 @@ let tablenames = [|
     UACCT_metadata.table
     UBILL_metadata.table
     UCAT_metadata.table
+    KUCP_metadata.table
     UPROVIDER_metadata.table
     FBIND_metadata.table
     MOMENT_metadata.table
@@ -3528,6 +3748,25 @@ let init() =
     match singlevalue_query conn (str__sql sqlCountKernel_UtilCat) with
     | Some v ->
         UCAT_count.Value <-
+            match rdbms with
+            | Rdbms.SqlServer -> v :?> int32
+            | Rdbms.PostgreSql -> v :?> int64 |> int32
+    | None -> ()
+
+    let sqlMaxKernel_UtilCatProvider, sqlCountKernel_UtilCatProvider =
+        match rdbms with
+        | Rdbms.SqlServer -> "SELECT MAX(ID) FROM [Kernel_UtilCatProvider]", "SELECT COUNT(ID) FROM [Kernel_UtilCatProvider]"
+        | Rdbms.PostgreSql -> "SELECT MAX(id) FROM kernel_utilcatprovider", "SELECT COUNT(id) FROM kernel_utilcatprovider"
+    match singlevalue_query conn (str__sql sqlMaxKernel_UtilCatProvider) with
+    | Some v ->
+        let max = v :?> int64
+        if max > KUCP_id.Value then
+            KUCP_id.Value <- max
+    | None -> ()
+
+    match singlevalue_query conn (str__sql sqlCountKernel_UtilCatProvider) with
+    | Some v ->
+        KUCP_count.Value <-
             match rdbms with
             | Rdbms.SqlServer -> v :?> int32
             | Rdbms.PostgreSql -> v :?> int64 |> int32

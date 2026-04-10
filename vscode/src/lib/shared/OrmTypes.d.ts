@@ -136,6 +136,22 @@ sort:number
 p:pUCAT
 }
 
+// [Kernel_UtilCatProvider] (KUCP)
+
+export type pKUCP = {
+[key:string]: any
+    Cat: number
+    Provider: number
+}
+
+export type KUCP = {
+id:number
+createdat:Date
+updatedat:Date
+sort:number
+p:pKUCP
+}
+
 // [Kernel_UtilProvider] (UPROVIDER)
 
 export type pUPROVIDER = {

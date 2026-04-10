@@ -19,8 +19,8 @@ declare global {
 
         domainname: string
         lang: string
-        user: studio.EuComplex
-        data: studio.ClientRuntime
+        user: wyi.EuComplex
+        data: wyi.ClientRuntime
     }
 
     export type WsCtx = {
