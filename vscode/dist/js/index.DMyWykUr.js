@@ -9865,21 +9865,21 @@ var bin__Er = (bi) => {
 };
 //#endregion
 //#region src/comps/BillFile.vue?vue&type=script&setup=true&lang.ts
-var _hoisted_1$6 = { class: "h-full w-full flex flex-col p-3" };
-var _hoisted_2$6 = {
+var _hoisted_1$7 = { class: "h-full w-full flex flex-col p-3" };
+var _hoisted_2$7 = {
 	key: 0,
 	class: "w-[300px]"
 };
-var _hoisted_3$6 = ["src"];
+var _hoisted_3$7 = ["src"];
 var _hoisted_4$5 = { key: 1 };
 var _hoisted_5$5 = { key: 0 };
 var _hoisted_6$5 = { key: 1 };
 var _hoisted_7$2 = { key: 2 };
 var _hoisted_8$2 = { key: 3 };
 var _hoisted_9$2 = { key: 4 };
-var _hoisted_10$2 = { class: "progress-container" };
-var _hoisted_11$2 = { class: "status-row" };
-var _hoisted_12$2 = {
+var _hoisted_10$1 = { class: "progress-container" };
+var _hoisted_11$1 = { class: "status-row" };
+var _hoisted_12$1 = {
 	key: 0,
 	class: "error-detail"
 };
@@ -9952,8 +9952,8 @@ var BillFile_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */ defin
 			executeUpload(props.filex.uploadTask);
 		});
 		return (_ctx, _cache) => {
-			return openBlock(), createElementBlock("div", _hoisted_1$6, [
-				props.filex.rcd.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_2$6, [createBaseVNode("img", { src: "/thumbnail/" + props.filex.rcd.id }, null, 8, _hoisted_3$6)])) : createCommentVNode("", true),
+			return openBlock(), createElementBlock("div", _hoisted_1$7, [
+				props.filex.rcd.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_2$7, [createBaseVNode("img", { src: "/thumbnail/" + props.filex.rcd.id }, null, 8, _hoisted_3$7)])) : createCommentVNode("", true),
 				props.filex.rcd.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_4$5, [
 					unref(s).billx.cato ? (openBlock(), createElementBlock("div", _hoisted_5$5, "Cat: " + toDisplayString(unref(s).billx.cato?.p.Caption), 1)) : createCommentVNode("", true),
 					unref(s).billx.providero ? (openBlock(), createElementBlock("div", _hoisted_6$5, "Provider: " + toDisplayString(unref(s).billx.providero?.p.Caption), 1)) : createCommentVNode("", true),
@@ -9963,11 +9963,11 @@ var BillFile_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */ defin
 					createBaseVNode("div", null, "File Name: " + toDisplayString(props.filex.file.name), 1),
 					createBaseVNode("div", null, "File Size: " + toDisplayString((props.filex.file.size / 1024 / 1024).toFixed(2)) + " MB", 1)
 				])) : createCommentVNode("", true),
-				createBaseVNode("div", _hoisted_10$2, [createBaseVNode("div", {
+				createBaseVNode("div", _hoisted_10$1, [createBaseVNode("div", {
 					class: normalizeClass(["progress-fill", __props.filex.uploadTask.status]),
 					style: normalizeStyle({ width: props.filex.uploadTask.progress + "%" })
 				}, null, 6)]),
-				createBaseVNode("div", _hoisted_11$2, [createBaseVNode("span", { class: normalizeClass(["status-label", props.filex.uploadTask.status]) }, toDisplayString(getStatusText(props.filex.uploadTask)), 3), props.filex.uploadTask.message ? (openBlock(), createElementBlock("span", _hoisted_12$2, " - " + toDisplayString(props.filex.uploadTask.message), 1)) : createCommentVNode("", true)])
+				createBaseVNode("div", _hoisted_11$1, [createBaseVNode("span", { class: normalizeClass(["status-label", props.filex.uploadTask.status]) }, toDisplayString(getStatusText(props.filex.uploadTask)), 3), props.filex.uploadTask.message ? (openBlock(), createElementBlock("span", _hoisted_12$1, " - " + toDisplayString(props.filex.uploadTask.message), 1)) : createCommentVNode("", true)])
 			]);
 		};
 	}
@@ -9985,9 +9985,9 @@ var BillFile_default = /* @__PURE__ */ _plugin_vue_export_helper_default(BillFil
 //#endregion
 //#region src/pages/UploadBills.vue?vue&type=script&setup=true&lang.ts
 var _withScopeId = (n) => (pushScopeId("data-v-2c6e445f"), n = n(), popScopeId(), n);
-var _hoisted_1$5 = { class: "upload-page" };
-var _hoisted_2$5 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", { class: "header" }, [/* @__PURE__ */ createBaseVNode("h2", null, "Upload Bills")], -1));
-var _hoisted_3$5 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", null, [/* @__PURE__ */ createBaseVNode("p", null, [/* @__PURE__ */ createTextVNode("Drop your files here or "), /* @__PURE__ */ createBaseVNode("span", null, "Select")]), /* @__PURE__ */ createBaseVNode("small", null, "Max. 10GB")], -1));
+var _hoisted_1$6 = { class: "upload-page" };
+var _hoisted_2$6 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", { class: "header" }, [/* @__PURE__ */ createBaseVNode("h2", null, "Upload Bills")], -1));
+var _hoisted_3$6 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", null, [/* @__PURE__ */ createBaseVNode("p", null, [/* @__PURE__ */ createTextVNode("Drop your files here or "), /* @__PURE__ */ createBaseVNode("span", null, "Select")]), /* @__PURE__ */ createBaseVNode("small", null, "Max. 10GB")], -1));
 var _hoisted_4$4 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", { class: "icon" }, "📄", -1));
 var _hoisted_5$4 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", null, "File list", -1));
 var _hoisted_6$4 = { class: "flex flex-wrap gap-4 p-4" };
@@ -10035,9 +10035,9 @@ var UploadBills_default = /* @__PURE__ */ _plugin_vue_export_helper_default(/* @
 			await router.push("/ReviewBills");
 		};
 		return (_ctx, _cache) => {
-			return openBlock(), createElementBlock("div", _hoisted_1$5, [
-				_hoisted_2$5,
-				_hoisted_3$5,
+			return openBlock(), createElementBlock("div", _hoisted_1$6, [
+				_hoisted_2$6,
+				_hoisted_3$6,
 				createBaseVNode("div", {
 					class: normalizeClass(["drop-zone", { "is-dragging": isDragging.value }]),
 					onDragover: _cache[0] || (_cache[0] = withModifiers(($event) => isDragging.value = true, ["prevent"])),
@@ -10072,22 +10072,148 @@ var loader = async (url, post, h) => {
 	if (rep?.Er == "OK") h(rep);
 };
 //#endregion
+//#region src/comps/SearchField.vue?vue&type=script&setup=true&lang.ts
+var _hoisted_1$5 = { class: "relative w-64" };
+var _hoisted_2$5 = {
+	key: 0,
+	class: "absolute z-10 w-full bg-white border rounded shadow-lg mt-1 max-h-48 overflow-y-auto"
+};
+var _hoisted_3$5 = ["onClick"];
+//#endregion
+//#region src/comps/SearchField.vue
+var SearchField_default = /* @__PURE__ */ defineComponent({
+	__name: "SearchField",
+	setup(__props) {
+		const providers = ref([
+			{
+				id: 1,
+				name: "T-Mobile"
+			},
+			{
+				id: 2,
+				name: "Spectrum"
+			},
+			{
+				id: 3,
+				name: "Insurance Co"
+			},
+			{
+				id: 4,
+				name: "Water Board"
+			}
+		]);
+		const searchText = ref("");
+		const isDropdownVisible = ref(false);
+		const filteredOptions = computed(() => {
+			if (!searchText.value) return [];
+			return providers.value.filter((p) => p.name.toLowerCase().includes(searchText.value.toLowerCase()));
+		});
+		const selectOption = (name) => {
+			searchText.value = name;
+			isDropdownVisible.value = false;
+		};
+		const onBlur = () => {
+			setTimeout(() => isDropdownVisible.value = false, 200);
+		};
+		return (_ctx, _cache) => {
+			return openBlock(), createElementBlock("div", _hoisted_1$5, [withDirectives(createBaseVNode("input", {
+				type: "text",
+				"onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => searchText.value = $event),
+				onFocus: _cache[1] || (_cache[1] = ($event) => isDropdownVisible.value = true),
+				onBlur,
+				placeholder: "Start typing...",
+				class: "w-full border rounded px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
+			}, null, 544), [[vModelText, searchText.value]]), isDropdownVisible.value && filteredOptions.value.length > 0 ? (openBlock(), createElementBlock("ul", _hoisted_2$5, [(openBlock(true), createElementBlock(Fragment, null, renderList(filteredOptions.value, (opt) => {
+				return openBlock(), createElementBlock("li", {
+					key: opt.id,
+					onClick: ($event) => selectOption(opt.name),
+					class: "px-3 py-2 hover:bg-blue-50 cursor-pointer text-sm"
+				}, toDisplayString(opt.name), 9, _hoisted_3$5);
+			}), 128))])) : createCommentVNode("", true)]);
+		};
+	}
+});
+//#endregion
 //#region src/pages/ReviewBills.vue?vue&type=script&setup=true&lang.ts
 var _hoisted_1$4 = /* @__PURE__ */ createBaseVNode("h2", null, "Review Bills", -1);
 var _hoisted_2$4 = { class: "w-[300px]" };
 var _hoisted_3$4 = ["src"];
 var _hoisted_4$3 = { key: 0 };
-var _hoisted_5$3 = /* @__PURE__ */ createBaseVNode("div", null, "Provider: ", -1);
-var _hoisted_6$3 = /* @__PURE__ */ createBaseVNode("div", null, "Account Number: ", -1);
-var _hoisted_7$1 = /* @__PURE__ */ createBaseVNode("div", null, "Account Name: ", -1);
-var _hoisted_8$1 = /* @__PURE__ */ createBaseVNode("div", null, "Address: ", -1);
-var _hoisted_9$1 = /* @__PURE__ */ createBaseVNode("div", null, "Town: ", -1);
-var _hoisted_10$1 = /* @__PURE__ */ createBaseVNode("div", null, "State: ", -1);
-var _hoisted_11$1 = /* @__PURE__ */ createBaseVNode("div", null, "ZIP: ", -1);
-var _hoisted_12$1 = /* @__PURE__ */ createBaseVNode("div", null, "Bill Data: ", -1);
-var _hoisted_13 = /* @__PURE__ */ createBaseVNode("div", null, "Amount: ", -1);
-var _hoisted_14 = { key: 1 };
-var _hoisted_15 = { key: 2 };
+var _hoisted_5$3 = /* @__PURE__ */ createBaseVNode("h2", null, "Unit", -1);
+var _hoisted_6$3 = { class: "my-2 p-2 bg-[#eeeeff]" };
+var _hoisted_7$1 = /* @__PURE__ */ createBaseVNode("div", null, "Address: ", -1);
+var _hoisted_8$1 = /* @__PURE__ */ createBaseVNode("div", null, "Town: ", -1);
+var _hoisted_9$1 = /* @__PURE__ */ createBaseVNode("div", null, "State: ", -1);
+var _hoisted_60 = [
+	/* @__PURE__ */ createBaseVNode("option", { key: "AL" }, "AL Alabama", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "AK" }, "AK Alaska", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "AZ" }, "AZ Arizona", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "AR" }, "AR Arkansas", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "CA" }, "CA California", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "CO" }, "CO Colorado", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "CT" }, "CT Connecticut", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "DE" }, "DE Delaware", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "FL" }, "FL Florida", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "GA" }, "GA Georgia", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "HI" }, "HI Hawaii", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "ID" }, "ID Idaho", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "IL" }, "IL Illinois", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "IN" }, "IN Indiana", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "IA" }, "IA Iowa", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "KS" }, "KS Kansas", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "KY" }, "KY Kentucky", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "LA" }, "LA Louisiana", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "ME" }, "ME Maine", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "MD" }, "MD Maryland", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "MA" }, "MA Massachusetts", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "MI" }, "MI Michigan", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "MN" }, "MN Minnesota", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "MS" }, "MS Mississippi", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "MO" }, "MO Missouri", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "MT" }, "MT Montana", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "NE" }, "NE Nebraska", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "NV" }, "NV Nevada", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "NH" }, "NH New Hampshire", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "NJ" }, "NJ New Jersey", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "NM" }, "NM New Mexico", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "NY" }, "NY New York", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "NC" }, "NC North Carolina", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "ND" }, "ND North Dakota", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "OH" }, "OH Ohio", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "OK" }, "OK Oklahoma", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "OR" }, "OR Oregon", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "PA" }, "PA Pennsylvania", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "RI" }, "RI Rhode Island", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "SC" }, "SC South Carolina", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "SD" }, "SD South Dakota", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "TN" }, "TN Tennessee", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "TX" }, "TX Texas", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "UT" }, "UT Utah", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "VT" }, "VT Vermont", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "VA" }, "VA Virginia", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "WA" }, "WA Washington", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "WV" }, "WV West Virginia", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "WI" }, "WI Wisconsin", -1),
+	/* @__PURE__ */ createBaseVNode("option", { key: "WY" }, "WY Wyoming", -1)
+];
+var _hoisted_61 = /* @__PURE__ */ createBaseVNode("div", null, "ZIP: ", -1);
+var _hoisted_62 = /* @__PURE__ */ createBaseVNode("div", null, "Match existing unit", -1);
+var _hoisted_63 = /* @__PURE__ */ createBaseVNode("div", null, [/* @__PURE__ */ createBaseVNode("button", null, "Add as a New Unit")], -1);
+var _hoisted_64 = /* @__PURE__ */ createBaseVNode("h2", null, "Provider", -1);
+var _hoisted_65 = { class: "my-2 p-2 bg-[#eeeeff]" };
+var _hoisted_66 = /* @__PURE__ */ createBaseVNode("div", null, "Category", -1);
+var _hoisted_67 = /* @__PURE__ */ createBaseVNode("div", null, [/* @__PURE__ */ createBaseVNode("select")], -1);
+var _hoisted_68 = /* @__PURE__ */ createBaseVNode("div", null, "Matched. Within our scope of service.", -1);
+var _hoisted_69 = /* @__PURE__ */ createBaseVNode("h2", null, "Account", -1);
+var _hoisted_70 = { class: "my-2 p-2 bg-[#eeeeff]" };
+var _hoisted_71 = /* @__PURE__ */ createBaseVNode("div", null, "Account Number: ", -1);
+var _hoisted_72 = /* @__PURE__ */ createBaseVNode("div", null, "Account Name: ", -1);
+var _hoisted_73 = /* @__PURE__ */ createBaseVNode("div", null, "Match existing account", -1);
+var _hoisted_74 = /* @__PURE__ */ createBaseVNode("div", null, [/* @__PURE__ */ createBaseVNode("button", null, "Add New Account")], -1);
+var _hoisted_75 = /* @__PURE__ */ createBaseVNode("div", null, "Bill Data: ", -1);
+var _hoisted_76 = /* @__PURE__ */ createBaseVNode("div", null, "Amount: ", -1);
+var _hoisted_77 = { key: 1 };
+var _hoisted_78 = { key: 2 };
 //#endregion
 //#region src/pages/ReviewBills.vue
 var ReviewBills_default = /* @__PURE__ */ defineComponent({
@@ -10116,8 +10242,7 @@ var ReviewBills_default = /* @__PURE__ */ defineComponent({
 			sessionStorage.setItem("fids", JSON.stringify([]));
 			loader("/api/eu/review-bill-files", { fids: s.fids }, (rep) => {
 				s.rep = rep;
-				if (s.rep.Er == "API3rdParty") s.rep.msg = rep.Msg;
-				if (s.rep.Er == "OK") s.rep.data = rep.data;
+				console.log(s.rep);
 			});
 		});
 		const confirm = () => {
@@ -10132,34 +10257,43 @@ var ReviewBills_default = /* @__PURE__ */ defineComponent({
 					return openBlock(), createElementBlock("div", null, [createBaseVNode("div", _hoisted_2$4, [createBaseVNode("img", { src: "/thumbnail/" + fid }, null, 8, _hoisted_3$4)])]);
 				}), 256)),
 				unref(s).rep.Er == "OK" ? (openBlock(), createElementBlock("div", _hoisted_4$3, [
-					createBaseVNode("div", null, "Category: " + toDisplayString(unref(s).rep.data.Category), 1),
-					createBaseVNode("div", null, [withDirectives(createBaseVNode("select", { "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => unref(s).rep.data.CategoryID = $event) }, [(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).ucatproviders, (item) => {
-						return openBlock(), createElementBlock("option", { key: item.ucat.id }, toDisplayString(item.ucat.p.Caption), 1);
-					}), 128))], 512), [[vModelSelect, unref(s).rep.data.CategoryID]])]),
-					createBaseVNode("div", null, "Provider: " + toDisplayString(unref(s).rep.data.Provider), 1),
-					createBaseVNode("div", null, [createBaseVNode("select", null, [(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).ucatproviders.find((e) => e.ucat.id == unref(s).rep.data.CategoryID).uproviders, (item) => {
-						return openBlock(), createElementBlock("option", { key: item.id }, toDisplayString(item.p.Caption), 1);
-					}), 128))])]),
 					_hoisted_5$3,
-					createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => unref(s).rep.data.ShownProvider = $event) }, null, 512), [[vModelText, unref(s).rep.data.ShownProvider]])]),
-					_hoisted_6$3,
-					createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => unref(s).rep.data.ShownAcctNum = $event) }, null, 512), [[vModelText, unref(s).rep.data.ShownAcctNum]])]),
-					_hoisted_7$1,
-					createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[3] || (_cache[3] = ($event) => unref(s).rep.data.ShownAcctName = $event) }, null, 512), [[vModelText, unref(s).rep.data.ShownAcctName]])]),
-					_hoisted_8$1,
-					createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[4] || (_cache[4] = ($event) => unref(s).rep.data.ShownAddr = $event) }, null, 512), [[vModelText, unref(s).rep.data.ShownAddr]])]),
-					_hoisted_9$1,
-					createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[5] || (_cache[5] = ($event) => unref(s).rep.data.ShownTown = $event) }, null, 512), [[vModelText, unref(s).rep.data.ShownTown]])]),
-					_hoisted_10$1,
-					createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[6] || (_cache[6] = ($event) => unref(s).rep.data.ShownState = $event) }, null, 512), [[vModelText, unref(s).rep.data.ShownState]])]),
-					_hoisted_11$1,
-					createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[7] || (_cache[7] = ($event) => unref(s).rep.data.ShownZip = $event) }, null, 512), [[vModelText, unref(s).rep.data.ShownZip]])]),
-					_hoisted_12$1,
-					createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[8] || (_cache[8] = ($event) => unref(s).rep.data.BillDate = $event) }, null, 512), [[vModelText, unref(s).rep.data.BillDate]])]),
-					_hoisted_13,
-					createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[9] || (_cache[9] = ($event) => unref(s).rep.data.Amt = $event) }, null, 512), [[vModelText, unref(s).rep.data.Amt]])]),
+					createBaseVNode("div", _hoisted_6$3, [
+						_hoisted_7$1,
+						createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => unref(s).rep.data.bill.p.ShownAddr = $event) }, null, 512), [[vModelText, unref(s).rep.data.bill.p.ShownAddr]])]),
+						_hoisted_8$1,
+						createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => unref(s).rep.data.bill.p.ShownTown = $event) }, null, 512), [[vModelText, unref(s).rep.data.bill.p.ShownTown]])]),
+						_hoisted_9$1,
+						createBaseVNode("div", null, [withDirectives(createBaseVNode("select", { "onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => unref(s).rep.data.bill.p.ShownState = $event) }, _hoisted_60, 512), [[vModelSelect, unref(s).rep.data.bill.p.ShownState]])]),
+						_hoisted_61,
+						createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[3] || (_cache[3] = ($event) => unref(s).rep.data.bill.p.ShownZip = $event) }, null, 512), [[vModelText, unref(s).rep.data.bill.p.ShownZip]])]),
+						_hoisted_62,
+						createBaseVNode("div", null, [createVNode(SearchField_default)]),
+						_hoisted_63
+					]),
+					_hoisted_64,
+					createBaseVNode("div", _hoisted_65, [_hoisted_66, createBaseVNode("div", null, [
+						withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[4] || (_cache[4] = ($event) => unref(s).rep.data.bill.p.ShownProvider = $event) }, null, 512), [[vModelText, unref(s).rep.data.bill.p.ShownProvider]]),
+						_hoisted_67,
+						_hoisted_68
+					])]),
+					_hoisted_69,
+					createBaseVNode("div", _hoisted_70, [
+						_hoisted_71,
+						createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[5] || (_cache[5] = ($event) => unref(s).rep.data.bill.p.ShownAcctNum = $event) }, null, 512), [[vModelText, unref(s).rep.data.bill.p.ShownAcctNum]])]),
+						_hoisted_72,
+						createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[6] || (_cache[6] = ($event) => unref(s).rep.data.bill.p.ShownAcctName = $event) }, null, 512), [[vModelText, unref(s).rep.data.bill.p.ShownAcctName]])]),
+						_hoisted_73,
+						createBaseVNode("div", null, [createVNode(SearchField_default)]),
+						_hoisted_74
+					]),
+					_hoisted_75,
+					createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[7] || (_cache[7] = ($event) => unref(s).rep.data.bill.p.BillDate = $event) }, null, 512), [[vModelText, unref(s).rep.data.bill.p.BillDate]])]),
+					_hoisted_76,
+					createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[8] || (_cache[8] = ($event) => unref(s).rep.data.bill.p.Amt = $event) }, null, 512), [[vModelText, unref(s).rep.data.bill.p.Amt]])]),
 					createBaseVNode("div", { class: "flex" }, [createBaseVNode("button", { onClick: confirm }, "Confirm"), createTextVNode(" the details and submit to our professional team. ")])
-				])) : unref(s).rep.Er == "API3rdParty" ? (openBlock(), createElementBlock("div", _hoisted_14, toDisplayString(unref(s).rep.msg), 1)) : (openBlock(), createElementBlock("div", _hoisted_15, "Waiting for AI processing ... 20 seconds "))
+				])) : unref(s).rep.Er == "API3rdParty" ? (openBlock(), createElementBlock("div", _hoisted_77, " We experienced an issue from the AI. You can try later: " + toDisplayString(unref(s).rep.msg), 1)) : (openBlock(), createElementBlock("div", _hoisted_78, "AI processing ... 20 seconds expected")),
+				createBaseVNode("div", null, toDisplayString(unref(s).rep), 1)
 			], 64);
 		};
 	}
