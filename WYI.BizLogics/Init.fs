@@ -38,7 +38,6 @@ let init (runtime:Runtime) =
     match Environment.MachineName with
     | "ubuntu-2gb-hil-1" -> 
         runtime.host.conn <- @"Host=5.78.201.21;Port=5432;Database=wyi;Username=wyi;Password=e2TpqcaTEYLfkvFMkc"
-        runtime.host.updateDatabase <- false
         runtime.host.cert <- "/root/aspnetapp.pfx"
         rootPath <- "/root"
     | _ -> 

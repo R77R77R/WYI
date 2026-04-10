@@ -154,10 +154,6 @@
               "version": "[10.0.5, )",
               "generatePathProperty": true
             },
-            "System.Diagnostics.Process": {
-              "target": "Package",
-              "version": "[4.3.0, )"
-            },
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
               "version": "[8.17.0, )",
