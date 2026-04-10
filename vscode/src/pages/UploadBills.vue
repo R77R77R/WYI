@@ -35,7 +35,7 @@
     </div>
 
     <div>
-      <button @click="review">Submit Your Bills for a Review</button>
+      <button @click="upload">Upload</button>
     </div>
 
   </div>
@@ -92,7 +92,7 @@ const handleFiles = (fileList: FileList | null) => {
   })
 }
 
-const review = async() => {
+const upload = async() => {
 
   let fids: number[] =
     s.filexs.map<number>((filex:FileComplex) =>

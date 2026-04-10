@@ -2,7 +2,8 @@
 
 <div class="flex">
 
-<UserAuth @changed="onAuthChanged" />
+<UserAuth
+  @changed="onAuthChanged" />
 
 </div>
 

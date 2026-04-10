@@ -46,7 +46,7 @@ let branching (euxo:EuComplex option) (x:X) =
         match x.Struct.api with
         | "ping" -> bindx apiPing
         | "auth" -> bindx auth
-        | "providers" -> bindx providers
+        | "providers" -> bindx ApiPublic.providers
         | "msg" -> (fun (x:X) -> 
             let json = x.Json
             let name = (tryFindStrByAtt "name" json).Trim()

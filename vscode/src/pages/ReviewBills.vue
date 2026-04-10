@@ -32,25 +32,25 @@
     </div>
     
     <div>Provider: </div>
-    <div><input v-model="s.rep.data.Provider" /></div>
+    <div><input v-model="s.rep.data.ShownProvider" /></div>
     
     <div>Account Number: </div>
-    <div><input v-model="s.rep.data.AcctNum" /></div>
+    <div><input v-model="s.rep.data.ShownAcctNum" /></div>
     
     <div>Account Name: </div>
-    <div><input v-model="s.rep.data.AcctName" /></div>
+    <div><input v-model="s.rep.data.ShownAcctName" /></div>
     
     <div>Address: </div>
-    <div><input v-model="s.rep.data.Addr" /></div>
+    <div><input v-model="s.rep.data.ShownAddr" /></div>
     
     <div>Town: </div>
-    <div><input v-model="s.rep.data.Town" /></div>
+    <div><input v-model="s.rep.data.ShownTown" /></div>
     
     <div>State: </div>
-    <div><input v-model="s.rep.data.State" /></div>
+    <div><input v-model="s.rep.data.ShownState" /></div>
     
     <div>ZIP: </div>
-    <div><input v-model="s.rep.data.ZIP" /></div>
+    <div><input v-model="s.rep.data.ShownZip" /></div>
     
     <div>Bill Data: </div>
     <div><input v-model="s.rep.data.BillDate" /></div>

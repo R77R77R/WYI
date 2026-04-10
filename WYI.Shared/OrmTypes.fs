@@ -379,9 +379,16 @@ let UACCT_table = "Kernel_UtilAcct"
 // [Kernel_UtilBill] (UBILL)
 
 type pUBILL = {
+mutable ShownProvider: Text
+mutable ShownUnitNum: Chars
+mutable ShownAcctNum: Text
+mutable ShownAcctName: Text
+mutable ShownAddr: Text
+mutable ShownTown: Text
+mutable ShownState: Chars
+mutable ShownZip: Chars
 mutable Cat: FK
 mutable Provider: FK
-mutable ProviderText: Text
 mutable Owner: FK
 mutable Unit: FK
 mutable UnitText: Text
@@ -394,14 +401,21 @@ type UBILL = Rcd<pUBILL>
 let UBILL_fieldorders() =
     match rdbms with
     | Rdbms.SqlServer ->
-        "[ID],[Createdat],[Updatedat],[Sort],[Cat],[Provider],[ProviderText],[Owner],[Unit],[UnitText],[UAcct],[Amt]"
+        "[ID],[Createdat],[Updatedat],[Sort],[ShownProvider],[ShownUnitNum],[ShownAcctNum],[ShownAcctName],[ShownAddr],[ShownTown],[ShownState],[ShownZip],[Cat],[Provider],[Owner],[Unit],[UnitText],[UAcct],[Amt]"
     | Rdbms.PostgreSql ->
-        $""" "id","createdat","updatedat","sort", "cat","provider","providertext","owner","unit","unittext","uacct","amt" """
+        $""" "id","createdat","updatedat","sort", "shownprovider","shownunitnum","shownacctnum","shownacctname","shownaddr","showntown","shownstate","shownzip","cat","provider","owner","unit","unittext","uacct","amt" """
 
 let pUBILL_fieldordersArray = [|
+    "ShownProvider"
+    "ShownUnitNum"
+    "ShownAcctNum"
+    "ShownAcctName"
+    "ShownAddr"
+    "ShownTown"
+    "ShownState"
+    "ShownZip"
     "Cat"
     "Provider"
-    "ProviderText"
     "Owner"
     "Unit"
     "UnitText"
@@ -410,16 +424,23 @@ let pUBILL_fieldordersArray = [|
 
 let UBILL_sql_update() =
     match rdbms with
-    | Rdbms.SqlServer -> "[Cat]=@Cat,[Provider]=@Provider,[ProviderText]=@ProviderText,[Owner]=@Owner,[Unit]=@Unit,[UnitText]=@UnitText,[UAcct]=@UAcct,[Amt]=@Amt"
-    | Rdbms.PostgreSql -> "cat=@cat,provider=@provider,providertext=@providertext,owner=@owner,unit=@unit,unittext=@unittext,uacct=@uacct,amt=@amt"
+    | Rdbms.SqlServer -> "[ShownProvider]=@ShownProvider,[ShownUnitNum]=@ShownUnitNum,[ShownAcctNum]=@ShownAcctNum,[ShownAcctName]=@ShownAcctName,[ShownAddr]=@ShownAddr,[ShownTown]=@ShownTown,[ShownState]=@ShownState,[ShownZip]=@ShownZip,[Cat]=@Cat,[Provider]=@Provider,[Owner]=@Owner,[Unit]=@Unit,[UnitText]=@UnitText,[UAcct]=@UAcct,[Amt]=@Amt"
+    | Rdbms.PostgreSql -> "shownprovider=@shownprovider,shownunitnum=@shownunitnum,shownacctnum=@shownacctnum,shownacctname=@shownacctname,shownaddr=@shownaddr,showntown=@showntown,shownstate=@shownstate,shownzip=@shownzip,cat=@cat,provider=@provider,owner=@owner,unit=@unit,unittext=@unittext,uacct=@uacct,amt=@amt"
 
 let pUBILL_fields() =
     match rdbms with
     | Rdbms.SqlServer ->
         [|
+            Text("ShownProvider")
+            Chars("ShownUnitNum", 5)
+            Text("ShownAcctNum")
+            Text("ShownAcctName")
+            Text("ShownAddr")
+            Text("ShownTown")
+            Chars("ShownState", 2)
+            Chars("ShownZip", 10)
             FK("Cat")
             FK("Provider")
-            Text("ProviderText")
             FK("Owner")
             FK("Unit")
             Text("UnitText")
@@ -427,9 +448,16 @@ let pUBILL_fields() =
             Float("Amt") |]
     | Rdbms.PostgreSql ->
         [|
+            Text("shownprovider")
+            Chars("shownunitnum", 5)
+            Text("shownacctnum")
+            Text("shownacctname")
+            Text("shownaddr")
+            Text("showntown")
+            Chars("shownstate", 2)
+            Chars("shownzip", 10)
             FK("cat")
             FK("provider")
-            Text("providertext")
             FK("owner")
             FK("unit")
             Text("unittext")
@@ -437,9 +465,16 @@ let pUBILL_fields() =
             Float("amt") |]
 
 let pUBILL_empty(): pUBILL = {
+    ShownProvider = ""
+    ShownUnitNum = ""
+    ShownAcctNum = ""
+    ShownAcctName = ""
+    ShownAddr = ""
+    ShownTown = ""
+    ShownState = ""
+    ShownZip = ""
     Cat = 0L
     Provider = 0L
-    ProviderText = ""
     Owner = 0L
     Unit = 0L
     UnitText = ""

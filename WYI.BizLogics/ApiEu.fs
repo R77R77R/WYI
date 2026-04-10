@@ -108,6 +108,23 @@ let reviewBillFiles eux (x:X) =
                 let p = pUBILL_empty()
 
                 let json =
+
+                (*
+
+CategoryID: [6462],
+Category: [Internet],
+ProviderID: [0],
+Provider: [CenturyLink],
+AcctNum: [6514645851088],
+AcctName: [BREW FITNESS],
+Addr: [808 LAKE ST S],
+Town: [FOREST LAKE],
+State: [MN],
+ZIP: [55025],
+BillDate: [05/01/2021],
+Amt: [$69.99]                
+                *)
+
                     let parse (line:string) = 
                         let k = line.Substring(0,line.IndexOf ":")
                         let v = Util.Text.regex_match
@@ -119,9 +136,20 @@ let reviewBillFiles eux (x:X) =
                     |> Array.map parse
                     |> Json.Braket
 
-                
-                p.ProviderText <- tryFindStrByAtt "Provider" json
-                p.UnitText <- tryFindStrByAtt "Unit" json
+
+                p.ShownProvider <- tryFindStrByAtt "Provider" json
+                p.ShownUnitNum <- tryFindStrByAtt "Unit" json
+                p.ShownAcctNum <- tryFindStrByAtt "AcctNum" json
+                p.ShownAcctName <- tryFindStrByAtt "AcctName" json
+                p.ShownAddr <- tryFindStrByAtt "Addr" json
+                p.ShownTown <- tryFindStrByAtt "Town" json
+                p.ShownState <- tryFindStrByAtt "State" json
+                p.ShownZip <- tryFindStrByAtt "ZIP" json
+
+                p.Cat <- tryFindStrByAtt "CategoryID" json |> parse_int64
+                p.Provider <- tryFindStrByAtt "ProviderID" json |> parse_int64
+
+                p.Owner <- eux.eu.ID
 
                 p
 

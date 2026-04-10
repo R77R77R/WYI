@@ -271,11 +271,25 @@ export const bin__UACCT = (bi:BinIndexed):wyi.UACCT => {
 export const pUBILL__bin = (bb:BytesBuilder) => (p:wyi.pUBILL) => {
 
     
+    marshall.str__bin (bb) (p.ShownProvider)
+    
+    marshall.str__bin (bb) (p.ShownUnitNum)
+    
+    marshall.str__bin (bb) (p.ShownAcctNum)
+    
+    marshall.str__bin (bb) (p.ShownAcctName)
+    
+    marshall.str__bin (bb) (p.ShownAddr)
+    
+    marshall.str__bin (bb) (p.ShownTown)
+    
+    marshall.str__bin (bb) (p.ShownState)
+    
+    marshall.str__bin (bb) (p.ShownZip)
+    
     marshall.int64__bin (bb) (p.Cat)
     
     marshall.int64__bin (bb) (p.Provider)
-    
-    marshall.str__bin (bb) (p.ProviderText)
     
     marshall.int64__bin (bb) (p.Owner)
     
@@ -300,9 +314,16 @@ export const UBILL__bin = (bb:BytesBuilder) => (v:wyi.UBILL) => {
 export const bin__pUBILL = (bi:BinIndexed):wyi.pUBILL => {
 
     let p = pUBILL_empty()
+    p.ShownProvider = marshall.bin__str (bi)
+    p.ShownUnitNum = marshall.bin__str (bi)
+    p.ShownAcctNum = marshall.bin__str (bi)
+    p.ShownAcctName = marshall.bin__str (bi)
+    p.ShownAddr = marshall.bin__str (bi)
+    p.ShownTown = marshall.bin__str (bi)
+    p.ShownState = marshall.bin__str (bi)
+    p.ShownZip = marshall.bin__str (bi)
     p.Cat = marshall.bin__int64 (bi)
     p.Provider = marshall.bin__int64 (bi)
-    p.ProviderText = marshall.bin__str (bi)
     p.Owner = marshall.bin__int64 (bi)
     p.Unit = marshall.bin__int64 (bi)
     p.UnitText = marshall.bin__str (bi)
@@ -764,9 +785,16 @@ export const UACCT_empty = (): wyi.UACCT => {
 
 export const pUBILL_empty = (): wyi.pUBILL => {
     return {
+        ShownProvider: "",
+        ShownUnitNum: "",
+        ShownAcctNum: "",
+        ShownAcctName: "",
+        ShownAddr: "",
+        ShownTown: "",
+        ShownState: "",
+        ShownZip: "",
         Cat: 0,
         Provider: 0,
-        ProviderText: "",
         Owner: 0,
         Unit: 0,
         UnitText: "",

@@ -96,9 +96,16 @@ p:pUACCT
 
 export type pUBILL = {
 [key:string]: any
+    ShownProvider: string
+    ShownUnitNum: string
+    ShownAcctNum: string
+    ShownAcctName: string
+    ShownAddr: string
+    ShownTown: string
+    ShownState: string
+    ShownZip: string
     Cat: number
     Provider: number
-    ProviderText: string
     Owner: number
     Unit: number
     UnitText: string

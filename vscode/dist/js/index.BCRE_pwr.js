@@ -8913,8 +8913,6 @@ function extractChangingRecords(to, from) {
 //#endregion
 //#region src/lib/shared/OrmMor.ts
 var OrmMor_exports = /* @__PURE__ */ __exportAll({
-	CLIENT__bin: () => CLIENT__bin,
-	CLIENT_empty: () => CLIENT_empty,
 	CONFIG__bin: () => CONFIG__bin,
 	CONFIG_empty: () => CONFIG_empty,
 	EU__bin: () => EU__bin,
@@ -8939,7 +8937,6 @@ var OrmMor_exports = /* @__PURE__ */ __exportAll({
 	UNIT_empty: () => UNIT_empty,
 	UPROVIDER__bin: () => UPROVIDER__bin,
 	UPROVIDER_empty: () => UPROVIDER_empty,
-	bin__CLIENT: () => bin__CLIENT,
 	bin__CONFIG: () => bin__CONFIG,
 	bin__EU: () => bin__EU,
 	bin__FBIND: () => bin__FBIND,
@@ -8952,7 +8949,6 @@ var OrmMor_exports = /* @__PURE__ */ __exportAll({
 	bin__UCAT: () => bin__UCAT,
 	bin__UNIT: () => bin__UNIT,
 	bin__UPROVIDER: () => bin__UPROVIDER,
-	bin__pCLIENT: () => bin__pCLIENT,
 	bin__pCONFIG: () => bin__pCONFIG,
 	bin__pEU: () => bin__pEU,
 	bin__pFBIND: () => bin__pFBIND,
@@ -8988,8 +8984,6 @@ var OrmMor_exports = /* @__PURE__ */ __exportAll({
 	momentTypeEnum_Repost: () => 1,
 	momentTypeEnum_Thread: () => 2,
 	momentTypeEnum_WebPage: () => 10,
-	pCLIENT__bin: () => pCLIENT__bin,
-	pCLIENT_empty: () => pCLIENT_empty,
 	pCONFIG__bin: () => pCONFIG__bin,
 	pCONFIG_empty: () => pCONFIG_empty,
 	pEU__bin: () => pEU__bin,
@@ -9101,32 +9095,9 @@ var bin__FILE = (bi) => {
 		p: bin__pFILE(bi)
 	};
 };
-var pCLIENT__bin = (bb) => (p) => {
-	marshall$1.str__bin(bb)(p.Caption);
-};
-var CLIENT__bin = (bb) => (v) => {
-	marshall$1.int64__bin(bb)(v.id);
-	marshall$1.int64__bin(bb)(v.sort);
-	marshall$1.DateTime__bin(bb)(v.createdat);
-	marshall$1.DateTime__bin(bb)(v.updatedat);
-	pCLIENT__bin(bb)(v.p);
-};
-var bin__pCLIENT = (bi) => {
-	let p = pCLIENT_empty();
-	p.Caption = marshall$1.bin__str(bi);
-	return p;
-};
-var bin__CLIENT = (bi) => {
-	return {
-		id: marshall$1.bin__int64(bi),
-		sort: marshall$1.bin__int64(bi),
-		createdat: marshall$1.bin__DateTime(bi),
-		updatedat: marshall$1.bin__DateTime(bi),
-		p: bin__pCLIENT(bi)
-	};
-};
 var pUNIT__bin = (bb) => (p) => {
 	marshall$1.str__bin(bb)(p.Caption);
+	marshall$1.int64__bin(bb)(p.Owner);
 	marshall$1.str__bin(bb)(p.UnitNum);
 	marshall$1.str__bin(bb)(p.AcctNum);
 	marshall$1.str__bin(bb)(p.Address);
@@ -9144,6 +9115,7 @@ var UNIT__bin = (bb) => (v) => {
 var bin__pUNIT = (bi) => {
 	let p = pUNIT_empty();
 	p.Caption = marshall$1.bin__str(bi);
+	p.Owner = marshall$1.bin__int64(bi);
 	p.UnitNum = marshall$1.bin__str(bi);
 	p.AcctNum = marshall$1.bin__str(bi);
 	p.Address = marshall$1.bin__str(bi);
@@ -9194,12 +9166,21 @@ var bin__UACCT = (bi) => {
 	};
 };
 var pUBILL__bin = (bb) => (p) => {
+	marshall$1.str__bin(bb)(p.ShownProvider);
+	marshall$1.str__bin(bb)(p.ShownUnitNum);
+	marshall$1.str__bin(bb)(p.ShownAcctNum);
+	marshall$1.str__bin(bb)(p.ShownAcctName);
+	marshall$1.str__bin(bb)(p.ShownAddr);
+	marshall$1.str__bin(bb)(p.ShownTown);
+	marshall$1.str__bin(bb)(p.ShownState);
+	marshall$1.str__bin(bb)(p.ShownZip);
 	marshall$1.int64__bin(bb)(p.Cat);
 	marshall$1.int64__bin(bb)(p.Provider);
-	marshall$1.int64__bin(bb)(p.client);
+	marshall$1.int64__bin(bb)(p.Owner);
 	marshall$1.int64__bin(bb)(p.Unit);
+	marshall$1.str__bin(bb)(p.UnitText);
 	marshall$1.int64__bin(bb)(p.UAcct);
-	marshall$1.float__bin(bb)(p.Amout);
+	marshall$1.float__bin(bb)(p.Amt);
 };
 var UBILL__bin = (bb) => (v) => {
 	marshall$1.int64__bin(bb)(v.id);
@@ -9210,12 +9191,21 @@ var UBILL__bin = (bb) => (v) => {
 };
 var bin__pUBILL = (bi) => {
 	let p = pUBILL_empty();
+	p.ShownProvider = marshall$1.bin__str(bi);
+	p.ShownUnitNum = marshall$1.bin__str(bi);
+	p.ShownAcctNum = marshall$1.bin__str(bi);
+	p.ShownAcctName = marshall$1.bin__str(bi);
+	p.ShownAddr = marshall$1.bin__str(bi);
+	p.ShownTown = marshall$1.bin__str(bi);
+	p.ShownState = marshall$1.bin__str(bi);
+	p.ShownZip = marshall$1.bin__str(bi);
 	p.Cat = marshall$1.bin__int64(bi);
 	p.Provider = marshall$1.bin__int64(bi);
-	p.client = marshall$1.bin__int64(bi);
+	p.Owner = marshall$1.bin__int64(bi);
 	p.Unit = marshall$1.bin__int64(bi);
+	p.UnitText = marshall$1.bin__str(bi);
 	p.UAcct = marshall$1.bin__int64(bi);
-	p.Amout = marshall$1.bin__float(bi);
+	p.Amt = marshall$1.bin__float(bi);
 	return p;
 };
 var bin__UBILL = (bi) => {
@@ -9468,21 +9458,10 @@ var FILE_empty = () => {
 		p: pFILE_empty()
 	};
 };
-var pCLIENT_empty = () => {
-	return { Caption: "" };
-};
-var CLIENT_empty = () => {
-	return {
-		id: 0,
-		createdat: /* @__PURE__ */ new Date(),
-		updatedat: /* @__PURE__ */ new Date(),
-		sort: 0,
-		p: pCLIENT_empty()
-	};
-};
 var pUNIT_empty = () => {
 	return {
 		Caption: "",
+		Owner: 0,
 		UnitNum: "",
 		AcctNum: "",
 		Address: "",
@@ -9520,12 +9499,21 @@ var UACCT_empty = () => {
 };
 var pUBILL_empty = () => {
 	return {
+		ShownProvider: "",
+		ShownUnitNum: "",
+		ShownAcctNum: "",
+		ShownAcctName: "",
+		ShownAddr: "",
+		ShownTown: "",
+		ShownState: "",
+		ShownZip: "",
 		Cat: 0,
 		Provider: 0,
-		client: 0,
+		Owner: 0,
 		Unit: 0,
+		UnitText: "",
 		UAcct: 0,
-		Amout: 0
+		Amt: 0
 	};
 };
 var UBILL_empty = () => {
@@ -9690,22 +9678,76 @@ var ErEnum = /* @__PURE__ */ function(ErEnum) {
 	ErEnum[ErEnum["Unauthorized"] = 2] = "Unauthorized";
 	ErEnum[ErEnum["NotAvailable"] = 3] = "NotAvailable";
 	ErEnum[ErEnum["Internal"] = 4] = "Internal";
+	ErEnum[ErEnum["API3rdParty"] = 5] = "API3rdParty";
 	return ErEnum;
 }({});
+var BillComplex_empty = () => {
+	return {
+		cato: null,
+		providero: null,
+		owner: {
+			id: 0,
+			sort: 0,
+			createdat: /* @__PURE__ */ new Date(),
+			updatedat: /* @__PURE__ */ new Date(),
+			p: marshall.pEU_empty()
+		},
+		unito: null,
+		accto: null,
+		files: [],
+		bill: {
+			id: 0,
+			sort: 0,
+			createdat: /* @__PURE__ */ new Date(),
+			updatedat: /* @__PURE__ */ new Date(),
+			p: marshall.pUBILL_empty()
+		}
+	};
+};
+var BillComplex__bin = (bb) => (v) => {
+	marshall.option__bin(marshall.UCAT__bin)(bb)(v.cato);
+	marshall.option__bin(marshall.UPROVIDER__bin)(bb)(v.providero);
+	marshall.EU__bin(bb)(v.owner);
+	marshall.option__bin(marshall.UNIT__bin)(bb)(v.unito);
+	marshall.option__bin(marshall.UACCT__bin)(bb)(v.accto);
+	marshall.array__bin(marshall.FILE__bin)(bb)(v.files);
+	marshall.UBILL__bin(bb)(v.bill);
+};
+var bin__BillComplex = (bi) => {
+	return {
+		cato: marshall.bin__option(marshall.bin__UCAT)(bi),
+		providero: marshall.bin__option(marshall.bin__UPROVIDER)(bi),
+		owner: marshall.bin__EU(bi),
+		unito: marshall.bin__option(marshall.bin__UNIT)(bi),
+		accto: marshall.bin__option(marshall.bin__UACCT)(bi),
+		files: marshall.bin__array(marshall.bin__FILE)(bi),
+		bill: marshall.bin__UBILL(bi)
+	};
+};
 var EuComplex_empty = () => {
-	return { eu: {
-		id: 0,
-		sort: 0,
-		createdat: /* @__PURE__ */ new Date(),
-		updatedat: /* @__PURE__ */ new Date(),
-		p: marshall.pEU_empty()
-	} };
+	return {
+		units: {},
+		billxs: {},
+		eu: {
+			id: 0,
+			sort: 0,
+			createdat: /* @__PURE__ */ new Date(),
+			updatedat: /* @__PURE__ */ new Date(),
+			p: marshall.pEU_empty()
+		}
+	};
 };
 var EuComplex__bin = (bb) => (v) => {
+	marshall.dict__bin(marshall.int64__bin)(marshall.UNIT__bin)(bb)(v.units);
+	marshall.dict__bin(marshall.int64__bin)(BillComplex__bin)(bb)(v.billxs);
 	marshall.EU__bin(bb)(v.eu);
 };
 var bin__EuComplex = (bi) => {
-	return { eu: marshall.bin__EU(bi) };
+	return {
+		units: marshall.bin__dict(marshall.bin__int64)(marshall.bin__UNIT)(bi),
+		billxs: marshall.bin__dict(marshall.bin__int64)(bin__BillComplex)(bi),
+		eu: marshall.bin__EU(bi)
+	};
 };
 var MomentComplex_empty = () => {
 	return { m: {
@@ -9722,46 +9764,11 @@ var MomentComplex__bin = (bb) => (v) => {
 var bin__MomentComplex = (bi) => {
 	return { m: marshall.bin__MOMENT(bi) };
 };
-var BillComplex_empty = () => {
-	return {
-		cato: null,
-		providero: null,
-		cliento: null,
-		unito: null,
-		accto: null,
-		bill: {
-			id: 0,
-			sort: 0,
-			createdat: /* @__PURE__ */ new Date(),
-			updatedat: /* @__PURE__ */ new Date(),
-			p: marshall.pUBILL_empty()
-		}
-	};
-};
-var BillComplex__bin = (bb) => (v) => {
-	marshall.option__bin(marshall.UCAT__bin)(bb)(v.cato);
-	marshall.option__bin(marshall.UPROVIDER__bin)(bb)(v.providero);
-	marshall.option__bin(marshall.CLIENT__bin)(bb)(v.cliento);
-	marshall.option__bin(marshall.UNIT__bin)(bb)(v.unito);
-	marshall.option__bin(marshall.UACCT__bin)(bb)(v.accto);
-	marshall.UBILL__bin(bb)(v.bill);
-};
-var bin__BillComplex = (bi) => {
-	return {
-		cato: marshall.bin__option(marshall.bin__UCAT)(bi),
-		providero: marshall.bin__option(marshall.bin__UPROVIDER)(bi),
-		cliento: marshall.bin__option(marshall.bin__CLIENT)(bi),
-		unito: marshall.bin__option(marshall.bin__UNIT)(bi),
-		accto: marshall.bin__option(marshall.bin__UACCT)(bi),
-		bill: marshall.bin__UBILL(bi)
-	};
-};
 var RuntimeData_empty = () => {
 	return {
 		apiKeyGemini: "",
 		aiModel: "",
 		cats: {},
-		bills: {},
 		providers: {}
 	};
 };
@@ -9769,7 +9776,6 @@ var RuntimeData__bin = (bb) => (v) => {
 	marshall.str__bin(bb)(v.apiKeyGemini);
 	marshall.str__bin(bb)(v.aiModel);
 	marshall.dict__bin(marshall.int64__bin)(marshall.UCAT__bin)(bb)(v.cats);
-	marshall.dict__bin(marshall.int64__bin)(BillComplex__bin)(bb)(v.bills);
 	marshall.dict__bin(marshall.int64__bin)(marshall.UPROVIDER__bin)(bb)(v.providers);
 };
 var bin__RuntimeData = (bi) => {
@@ -9777,7 +9783,6 @@ var bin__RuntimeData = (bi) => {
 		apiKeyGemini: marshall.bin__str(bi),
 		aiModel: marshall.bin__str(bi),
 		cats: marshall.bin__dict(marshall.bin__int64)(marshall.bin__UCAT)(bi),
-		bills: marshall.bin__dict(marshall.bin__int64)(bin__BillComplex)(bi),
 		providers: marshall.bin__dict(marshall.bin__int64)(marshall.bin__UPROVIDER)(bi)
 	};
 };
@@ -9839,6 +9844,7 @@ var Er__bin = (bb) => (v) => {
 		case 2: break;
 		case 3: break;
 		case 4: break;
+		case 5: break;
 	}
 };
 var bin__Er = (bi) => {
@@ -9848,6 +9854,7 @@ var bin__Er = (bi) => {
 	};
 	v.e = marshall.bin__int32(bi);
 	switch (v.e) {
+		case 5: break;
 		case 4: break;
 		case 3: break;
 		case 2: break;
@@ -9866,13 +9873,13 @@ var _hoisted_2$6 = {
 var _hoisted_3$6 = ["src"];
 var _hoisted_4$5 = { key: 1 };
 var _hoisted_5$5 = { key: 0 };
-var _hoisted_6$4 = { key: 1 };
+var _hoisted_6$5 = { key: 1 };
 var _hoisted_7$2 = { key: 2 };
-var _hoisted_8$1 = { key: 3 };
-var _hoisted_9$1 = { key: 4 };
-var _hoisted_10$1 = { class: "progress-container" };
-var _hoisted_11$1 = { class: "status-row" };
-var _hoisted_12$1 = {
+var _hoisted_8$2 = { key: 3 };
+var _hoisted_9$2 = { key: 4 };
+var _hoisted_10$2 = { class: "progress-container" };
+var _hoisted_11$2 = { class: "status-row" };
+var _hoisted_12$2 = {
 	key: 0,
 	class: "error-detail"
 };
@@ -9949,18 +9956,18 @@ var BillFile_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */ defin
 				props.filex.rcd.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_2$6, [createBaseVNode("img", { src: "/thumbnail/" + props.filex.rcd.id }, null, 8, _hoisted_3$6)])) : createCommentVNode("", true),
 				props.filex.rcd.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_4$5, [
 					unref(s).billx.cato ? (openBlock(), createElementBlock("div", _hoisted_5$5, "Cat: " + toDisplayString(unref(s).billx.cato?.p.Caption), 1)) : createCommentVNode("", true),
-					unref(s).billx.providero ? (openBlock(), createElementBlock("div", _hoisted_6$4, "Provider: " + toDisplayString(unref(s).billx.providero?.p.Caption), 1)) : createCommentVNode("", true),
+					unref(s).billx.providero ? (openBlock(), createElementBlock("div", _hoisted_6$5, "Provider: " + toDisplayString(unref(s).billx.providero?.p.Caption), 1)) : createCommentVNode("", true),
 					unref(s).billx.unito ? (openBlock(), createElementBlock("div", _hoisted_7$2, "Unit: " + toDisplayString(unref(s).billx.unito?.p.Caption), 1)) : createCommentVNode("", true),
-					unref(s).billx.accto ? (openBlock(), createElementBlock("div", _hoisted_8$1, "Acct Number: " + toDisplayString(unref(s).billx.accto?.p.AcctNum), 1)) : createCommentVNode("", true),
-					unref(s).billx.bill.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_9$1, "Amount: " + toDisplayString(unref(s).billx.bill.p.Amout), 1)) : createCommentVNode("", true),
+					unref(s).billx.accto ? (openBlock(), createElementBlock("div", _hoisted_8$2, "Acct Number: " + toDisplayString(unref(s).billx.accto?.p.AcctNum), 1)) : createCommentVNode("", true),
+					unref(s).billx.bill.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_9$2, "Amount: " + toDisplayString(unref(s).billx.bill.p.Amout), 1)) : createCommentVNode("", true),
 					createBaseVNode("div", null, "File Name: " + toDisplayString(props.filex.file.name), 1),
 					createBaseVNode("div", null, "File Size: " + toDisplayString((props.filex.file.size / 1024 / 1024).toFixed(2)) + " MB", 1)
 				])) : createCommentVNode("", true),
-				createBaseVNode("div", _hoisted_10$1, [createBaseVNode("div", {
+				createBaseVNode("div", _hoisted_10$2, [createBaseVNode("div", {
 					class: normalizeClass(["progress-fill", __props.filex.uploadTask.status]),
 					style: normalizeStyle({ width: props.filex.uploadTask.progress + "%" })
 				}, null, 6)]),
-				createBaseVNode("div", _hoisted_11$1, [createBaseVNode("span", { class: normalizeClass(["status-label", props.filex.uploadTask.status]) }, toDisplayString(getStatusText(props.filex.uploadTask)), 3), props.filex.uploadTask.message ? (openBlock(), createElementBlock("span", _hoisted_12$1, " - " + toDisplayString(props.filex.uploadTask.message), 1)) : createCommentVNode("", true)])
+				createBaseVNode("div", _hoisted_11$2, [createBaseVNode("span", { class: normalizeClass(["status-label", props.filex.uploadTask.status]) }, toDisplayString(getStatusText(props.filex.uploadTask)), 3), props.filex.uploadTask.message ? (openBlock(), createElementBlock("span", _hoisted_12$2, " - " + toDisplayString(props.filex.uploadTask.message), 1)) : createCommentVNode("", true)])
 			]);
 		};
 	}
@@ -9977,13 +9984,13 @@ var _plugin_vue_export_helper_default = (sfc, props) => {
 var BillFile_default = /* @__PURE__ */ _plugin_vue_export_helper_default(BillFile_vue_vue_type_script_setup_true_lang_default, [["__scopeId", "data-v-6ada0c57"]]);
 //#endregion
 //#region src/pages/UploadBills.vue?vue&type=script&setup=true&lang.ts
-var _withScopeId = (n) => (pushScopeId("data-v-3f95fb36"), n = n(), popScopeId(), n);
+var _withScopeId = (n) => (pushScopeId("data-v-2c6e445f"), n = n(), popScopeId(), n);
 var _hoisted_1$5 = { class: "upload-page" };
 var _hoisted_2$5 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", { class: "header" }, [/* @__PURE__ */ createBaseVNode("h2", null, "Upload Bills")], -1));
 var _hoisted_3$5 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", null, [/* @__PURE__ */ createBaseVNode("p", null, [/* @__PURE__ */ createTextVNode("Drop your files here or "), /* @__PURE__ */ createBaseVNode("span", null, "Select")]), /* @__PURE__ */ createBaseVNode("small", null, "Max. 10GB")], -1));
 var _hoisted_4$4 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", { class: "icon" }, "📄", -1));
 var _hoisted_5$4 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", null, "File list", -1));
-var _hoisted_6$3 = { class: "flex flex-wrap gap-4 p-4" };
+var _hoisted_6$4 = { class: "flex flex-wrap gap-4 p-4" };
 //#endregion
 //#region src/pages/UploadBills.vue
 var UploadBills_default = /* @__PURE__ */ _plugin_vue_export_helper_default(/* @__PURE__ */ defineComponent({
@@ -10022,7 +10029,7 @@ var UploadBills_default = /* @__PURE__ */ _plugin_vue_export_helper_default(/* @
 				s.filexs.push(filex);
 			});
 		};
-		const review = async () => {
+		const upload = async () => {
 			let fids = s.filexs.map((filex) => filex.rcd.id);
 			sessionStorage.setItem("fids", JSON.stringify(fids));
 			await router.push("/ReviewBills");
@@ -10046,17 +10053,17 @@ var UploadBills_default = /* @__PURE__ */ _plugin_vue_export_helper_default(/* @
 					hidden: ""
 				}, null, 544), _hoisted_4$4], 34),
 				_hoisted_5$4,
-				createBaseVNode("div", _hoisted_6$3, [(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).filexs, (filex) => {
+				createBaseVNode("div", _hoisted_6$4, [(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).filexs, (filex) => {
 					return openBlock(), createBlock(BillFile_default, {
 						class: "w-48 h-32 bg-slate-100 border-2 border-dashed border-slate-300 rounded-lg flex",
 						filex
 					}, null, 8, ["filex"]);
 				}), 256))]),
-				createBaseVNode("div", null, [createBaseVNode("button", { onClick: review }, "Submit Your Bills for a Review")])
+				createBaseVNode("div", null, [createBaseVNode("button", { onClick: upload }, "Upload")])
 			]);
 		};
 	}
-}), [["__scopeId", "data-v-3f95fb36"]]);
+}), [["__scopeId", "data-v-2c6e445f"]]);
 //#endregion
 //#region src/lib/store/common.ts
 var loader = async (url, post, h) => {
@@ -10070,7 +10077,17 @@ var _hoisted_1$4 = /* @__PURE__ */ createBaseVNode("h2", null, "Review Bills", -
 var _hoisted_2$4 = { class: "w-[300px]" };
 var _hoisted_3$4 = ["src"];
 var _hoisted_4$3 = { key: 0 };
-var _hoisted_5$3 = { key: 1 };
+var _hoisted_5$3 = /* @__PURE__ */ createBaseVNode("div", null, "Provider: ", -1);
+var _hoisted_6$3 = /* @__PURE__ */ createBaseVNode("div", null, "Account Number: ", -1);
+var _hoisted_7$1 = /* @__PURE__ */ createBaseVNode("div", null, "Account Name: ", -1);
+var _hoisted_8$1 = /* @__PURE__ */ createBaseVNode("div", null, "Address: ", -1);
+var _hoisted_9$1 = /* @__PURE__ */ createBaseVNode("div", null, "Town: ", -1);
+var _hoisted_10$1 = /* @__PURE__ */ createBaseVNode("div", null, "State: ", -1);
+var _hoisted_11$1 = /* @__PURE__ */ createBaseVNode("div", null, "ZIP: ", -1);
+var _hoisted_12$1 = /* @__PURE__ */ createBaseVNode("div", null, "Bill Data: ", -1);
+var _hoisted_13 = /* @__PURE__ */ createBaseVNode("div", null, "Amount: ", -1);
+var _hoisted_14 = { key: 1 };
+var _hoisted_15 = { key: 2 };
 //#endregion
 //#region src/pages/ReviewBills.vue
 var ReviewBills_default = /* @__PURE__ */ defineComponent({
@@ -10078,50 +10095,71 @@ var ReviewBills_default = /* @__PURE__ */ defineComponent({
 	setup(__props) {
 		const s = glib.vue.reactive({
 			fids: [],
-			rep: {
-				ok: false,
-				data: {
-					AcctNum: "",
-					AcctName: "",
-					Addr: "",
-					Town: "",
-					State: "",
-					ZIP: "",
-					BillDate: "",
-					Amt: 0
-				}
-			},
+			rep: {},
+			ucatproviders: [],
 			rt: runtime
 		});
 		glib.vue.onMounted(async () => {
+			loader("/api/public/providers", {}, (rep) => {
+				s.ucatproviders = [];
+				rep.data.forEach((e) => {
+					s.ucatproviders.push({
+						ucat: e.ucat,
+						uproviders: e.providers
+					});
+				});
+			});
 			try {
 				let json = "" + sessionStorage.getItem("fids");
 				s.fids = JSON.parse(json);
 			} catch (e) {}
 			sessionStorage.setItem("fids", JSON.stringify([]));
-			loader("/api/public/review-bills", { fids: s.fids }, (rep) => {
-				if (rep.Error == "OK") {
-					s.rep.ok = true;
-					s.rep.data = rep.data;
-				}
+			loader("/api/eu/review-bill-files", { fids: s.fids }, (rep) => {
+				s.rep = rep;
+				if (s.rep.Er == "API3rdParty") s.rep.msg = rep.Msg;
+				if (s.rep.Er == "OK") s.rep.data = rep.data;
 			});
 		});
+		const confirm = () => {
+			loader("/api/eu/submit-bill", { data: s.rep.data }, (rep) => {
+				if (rep.Er == "OK") router.push("/");
+			});
+		};
 		return (_ctx, _cache) => {
 			return openBlock(), createElementBlock(Fragment, null, [
 				_hoisted_1$4,
 				(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).fids, (fid) => {
 					return openBlock(), createElementBlock("div", null, [createBaseVNode("div", _hoisted_2$4, [createBaseVNode("img", { src: "/thumbnail/" + fid }, null, 8, _hoisted_3$4)])]);
 				}), 256)),
-				unref(s).rep.ok ? (openBlock(), createElementBlock("div", _hoisted_4$3, [
-					createBaseVNode("div", null, "Account Number: " + toDisplayString(unref(s).rep.data.AcctNum), 1),
-					createBaseVNode("div", null, "Account Name: " + toDisplayString(unref(s).rep.data.AcctName), 1),
-					createBaseVNode("div", null, "Address: " + toDisplayString(unref(s).rep.data.Addr), 1),
-					createBaseVNode("div", null, "Town: " + toDisplayString(unref(s).rep.data.Town), 1),
-					createBaseVNode("div", null, "State: " + toDisplayString(unref(s).rep.data.State), 1),
-					createBaseVNode("div", null, "ZIP: " + toDisplayString(unref(s).rep.data.ZIP), 1),
-					createBaseVNode("div", null, "Bill Data: " + toDisplayString(unref(s).rep.data.BillDate), 1),
-					createBaseVNode("div", null, "Amount: " + toDisplayString(unref(s).rep.data.Amt), 1)
-				])) : (openBlock(), createElementBlock("div", _hoisted_5$3, "Waiting for AI processing ... "))
+				unref(s).rep.Er == "OK" ? (openBlock(), createElementBlock("div", _hoisted_4$3, [
+					createBaseVNode("div", null, "Category: " + toDisplayString(unref(s).rep.data.Category), 1),
+					createBaseVNode("div", null, [withDirectives(createBaseVNode("select", { "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => unref(s).rep.data.CategoryID = $event) }, [(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).ucatproviders, (item) => {
+						return openBlock(), createElementBlock("option", { key: item.ucat.id }, toDisplayString(item.ucat.p.Caption), 1);
+					}), 128))], 512), [[vModelSelect, unref(s).rep.data.CategoryID]])]),
+					createBaseVNode("div", null, "Provider: " + toDisplayString(unref(s).rep.data.Provider), 1),
+					createBaseVNode("div", null, [createBaseVNode("select", null, [(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).ucatproviders.find((e) => e.ucat.id == unref(s).rep.data.CategoryID).uproviders, (item) => {
+						return openBlock(), createElementBlock("option", { key: item.id }, toDisplayString(item.p.Caption), 1);
+					}), 128))])]),
+					_hoisted_5$3,
+					createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => unref(s).rep.data.ShownProvider = $event) }, null, 512), [[vModelText, unref(s).rep.data.ShownProvider]])]),
+					_hoisted_6$3,
+					createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => unref(s).rep.data.ShownAcctNum = $event) }, null, 512), [[vModelText, unref(s).rep.data.ShownAcctNum]])]),
+					_hoisted_7$1,
+					createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[3] || (_cache[3] = ($event) => unref(s).rep.data.ShownAcctName = $event) }, null, 512), [[vModelText, unref(s).rep.data.ShownAcctName]])]),
+					_hoisted_8$1,
+					createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[4] || (_cache[4] = ($event) => unref(s).rep.data.ShownAddr = $event) }, null, 512), [[vModelText, unref(s).rep.data.ShownAddr]])]),
+					_hoisted_9$1,
+					createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[5] || (_cache[5] = ($event) => unref(s).rep.data.ShownTown = $event) }, null, 512), [[vModelText, unref(s).rep.data.ShownTown]])]),
+					_hoisted_10$1,
+					createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[6] || (_cache[6] = ($event) => unref(s).rep.data.ShownState = $event) }, null, 512), [[vModelText, unref(s).rep.data.ShownState]])]),
+					_hoisted_11$1,
+					createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[7] || (_cache[7] = ($event) => unref(s).rep.data.ShownZip = $event) }, null, 512), [[vModelText, unref(s).rep.data.ShownZip]])]),
+					_hoisted_12$1,
+					createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[8] || (_cache[8] = ($event) => unref(s).rep.data.BillDate = $event) }, null, 512), [[vModelText, unref(s).rep.data.BillDate]])]),
+					_hoisted_13,
+					createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[9] || (_cache[9] = ($event) => unref(s).rep.data.Amt = $event) }, null, 512), [[vModelText, unref(s).rep.data.Amt]])]),
+					createBaseVNode("div", { class: "flex" }, [createBaseVNode("button", { onClick: confirm }, "Confirm"), createTextVNode(" the details and submit to our professional team. ")])
+				])) : unref(s).rep.Er == "API3rdParty" ? (openBlock(), createElementBlock("div", _hoisted_14, toDisplayString(unref(s).rep.msg), 1)) : (openBlock(), createElementBlock("div", _hoisted_15, "Waiting for AI processing ... 20 seconds "))
 			], 64);
 		};
 	}
@@ -10178,7 +10216,7 @@ var _hoisted_3$2 = /* @__PURE__ */ createBaseVNode("div", { class: "card" }, [/*
 var _hoisted_4$2 = { class: "card" };
 var _hoisted_5$2 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Log", -1);
 var _hoisted_6$2 = ["innerHTML"];
-var _hoisted_7$1 = ["innerHTML"];
+var _hoisted_7 = ["innerHTML"];
 var _hoisted_8 = /* @__PURE__ */ createBaseVNode("hr", { class: "mt-3" }, null, -1);
 var _hoisted_9 = { class: "card" };
 var _hoisted_10 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Page Log", -1);
@@ -10209,7 +10247,7 @@ var Admin_default = /* @__PURE__ */ defineComponent({
 						createBaseVNode("div", null, toDisplayString(log.createdat), 1),
 						createBaseVNode("div", null, toDisplayString(log.p.Location), 1),
 						createBaseVNode("div", { innerHTML: log.p.Sql }, null, 8, _hoisted_6$2),
-						createBaseVNode("div", { innerHTML: log.p.Content }, null, 8, _hoisted_7$1),
+						createBaseVNode("div", { innerHTML: log.p.Content }, null, 8, _hoisted_7),
 						_hoisted_8
 					]);
 				}), 256))]),
@@ -12654,10 +12692,9 @@ var _hoisted_3$1 = {
 	key: 1,
 	class: "flex items-center"
 };
-var _hoisted_4$1 = /* @__PURE__ */ createBaseVNode("div", null, "Upload your bills by ", -1);
-var _hoisted_5$1 = /* @__PURE__ */ createBaseVNode("button", { class: "px-2 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-sm shadow-md transition-all flex items-center gap-1" }, [/* @__PURE__ */ createBaseVNode("i", { class: "ri-login-box-line" }), /* @__PURE__ */ createBaseVNode("span", null, "Sign In")], -1);
-var _hoisted_6$1 = /* @__PURE__ */ createBaseVNode("div", { class: "px-2" }, "with", -1);
-var _hoisted_7 = /* @__PURE__ */ createBaseVNode("img", { src: "https://img.clerk.com/static/google.svg?width=160" }, null, -1);
+var _hoisted_4$1 = /* @__PURE__ */ createBaseVNode("button", { class: "px-2 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-sm shadow-md transition-all flex items-center gap-1" }, [/* @__PURE__ */ createBaseVNode("i", { class: "ri-login-box-line" }), /* @__PURE__ */ createBaseVNode("span", null, "Sign In")], -1);
+var _hoisted_5$1 = /* @__PURE__ */ createBaseVNode("div", { class: "px-2" }, "with", -1);
+var _hoisted_6$1 = /* @__PURE__ */ createBaseVNode("img", { src: "https://img.clerk.com/static/google.svg?width=160" }, null, -1);
 //#endregion
 //#region src/comps/UserAuth.vue
 var UserAuth_default = /* @__PURE__ */ defineComponent({
@@ -12688,7 +12725,7 @@ var UserAuth_default = /* @__PURE__ */ defineComponent({
 		});
 		return (_ctx, _cache) => {
 			const _component_router_link = resolveComponent("router-link");
-			return unref(s).rt.user.eu.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_1$1, [
+			return unref(s).rt.user && unref(s).rt.user.eu.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_1$1, [
 				createVNode(unref(UserButton)),
 				createBaseVNode("div", null, toDisplayString(unref(s).rt.user.eu.p.Email), 1),
 				unref(s).rt.user.eu.p.AuthType == 2 ? (openBlock(), createElementBlock("div", _hoisted_2$1, [createVNode(_component_router_link, { to: "/Admin" }, {
@@ -12696,13 +12733,12 @@ var UserAuth_default = /* @__PURE__ */ defineComponent({
 					_: 1
 				})])) : createCommentVNode("", true)
 			])) : (openBlock(), createElementBlock("div", _hoisted_3$1, [
-				_hoisted_4$1,
 				createVNode(unref(SignInButton_default), { asChild: "" }, {
-					default: withCtx(() => [_hoisted_5$1]),
+					default: withCtx(() => [_hoisted_4$1]),
 					_: 1
 				}),
-				_hoisted_6$1,
-				_hoisted_7
+				_hoisted_5$1,
+				_hoisted_6$1
 			]));
 		};
 	}
@@ -12710,7 +12746,7 @@ var UserAuth_default = /* @__PURE__ */ defineComponent({
 //#endregion
 //#region src/App.vue
 var _hoisted_1 = { class: "flex" };
-var _hoisted_2 = { class: "lg:w-[1200px] mr-[10px]" };
+var _hoisted_2 = { class: "lg:w-[1200px] m-[10px]" };
 var _hoisted_3 = { class: "main-color w-screen" };
 var _hoisted_4 = { class: "w-full flex bg-[#9999ff] px-3 py-1 gap-5" };
 var _hoisted_5 = /* @__PURE__ */ createBaseVNode("div", { class: "hor" }, null, -1);

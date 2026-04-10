@@ -27,11 +27,11 @@
 .error-detail[data-v-6ada0c57] { color: #999;
 }
 
-.upload-page[data-v-3f95fb36] { max-width: 800px; margin: 0 auto; padding: 2rem;
+.upload-page[data-v-2c6e445f] { max-width: 800px; margin: 0 auto; padding: 2rem;
 }
-.user-status[data-v-3f95fb36] { font-size: 0.9rem; color: #666; margin-bottom: 1.5rem;
+.user-status[data-v-2c6e445f] { font-size: 0.9rem; color: #666; margin-bottom: 1.5rem;
 }
-.drop-zone[data-v-3f95fb36] {
+.drop-zone[data-v-2c6e445f] {
   border: 2px dashed #ccd0d7;
   border-radius: 8px;
   padding: 4rem 1rem;
@@ -40,11 +40,11 @@
   cursor: pointer;
   transition: all 0.2s;
 }
-.drop-zone.is-dragging[data-v-3f95fb36] { border-color: #409eff; background: #ecf5ff;
+.drop-zone.is-dragging[data-v-2c6e445f] { border-color: #409eff; background: #ecf5ff;
 }
-.icon[data-v-3f95fb36] { font-size: 3rem; margin-bottom: 1rem;
+.icon[data-v-2c6e445f] { font-size: 3rem; margin-bottom: 1rem;
 }
-.task-list[data-v-3f95fb36] { margin-top: 2rem;
+.task-list[data-v-2c6e445f] { margin-top: 2rem;
 }
 /*
 ! tailwindcss v3.4.4 | MIT License | https://tailwindcss.com
@@ -558,8 +558,8 @@ video {
 .m-3 {
   margin: 0.75rem;
 }
-.mr-\[10px\] {
-  margin-right: 10px;
+.m-\[10px\] {
+  margin: 10px;
 }
 .mt-3 {
   margin-top: 0.75rem;

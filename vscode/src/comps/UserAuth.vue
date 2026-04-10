@@ -1,6 +1,7 @@
 <template>
 
-<div v-if="s.rt.user.eu.id > 0" class="flex items-center">
+<div v-if="s.rt.user && s.rt.user.eu.id > 0" 
+  class="flex items-center">
     <UserButton />
     <div>{{ s.rt.user.eu.p.Email }}</div>
     <div v-if="s.rt.user.eu.p.AuthType == 2" class="p-[15px]">
@@ -8,7 +9,6 @@
     </div>
 </div>
 <div v-else class="flex items-center">
-      <div>Upload your bills by </div>
       <SignInButton asChild>
         <button class="px-2 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-sm shadow-md transition-all flex items-center gap-1">
           <i class="ri-login-box-line"></i>
