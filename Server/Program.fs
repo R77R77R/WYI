@@ -60,8 +60,8 @@ let main argv =
     "Cert: " + cert |> output
     "CertPwd: " + certpwd |> output
 
-    if false then
-    //if devOrDeploy then
+    //if false then
+    if devOrDeploy then
         async {
             Server.Deploy.Bash
                 output 
