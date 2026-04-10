@@ -51,7 +51,7 @@
           "dependencies": {
             "BCrypt.Net-Next": {
               "target": "Package",
-              "version": "[4.0.3, )",
+              "version": "[4.1.0, )",
               "generatePathProperty": true
             },
             "CHTCHSConv": {
@@ -66,13 +66,13 @@
             },
             "FSharp.Control.AsyncSeq": {
               "target": "Package",
-              "version": "[3.2.1, )",
+              "version": "[4.12.0, )",
               "generatePathProperty": true
             },
             "FSharp.Core": {
               "include": "Runtime, Compile, Build, Native, Analyzers, BuildTransitive",
               "target": "Package",
-              "version": "[9.0.201, )",
+              "version": "[10.1.201, )",
               "generatePathProperty": true
             },
             "FSharp.Stats": {
@@ -85,24 +85,29 @@
               "version": "[1.14.1, )",
               "generatePathProperty": true
             },
+            "Microsoft.Data.SqlClient": {
+              "target": "Package",
+              "version": "[7.0.0, )",
+              "generatePathProperty": true
+            },
             "NetMQ": {
               "target": "Package",
-              "version": "[4.0.1.13, )",
+              "version": "[4.0.2.2, )",
               "generatePathProperty": true
             },
             "Npgsql": {
               "target": "Package",
-              "version": "[9.0.3, )",
+              "version": "[10.0.2, )",
               "generatePathProperty": true
             },
             "Npgsql.EntityFrameworkCore.PostgreSQL": {
               "target": "Package",
-              "version": "[9.0.4, )",
+              "version": "[10.0.1, )",
               "generatePathProperty": true
             },
             "RavenDB.Client": {
               "target": "Package",
-              "version": "[7.0.1, )",
+              "version": "[7.2.1, )",
               "generatePathProperty": true
             },
             "SHA3": {
@@ -136,17 +141,17 @@
             },
             "SixLabors.ImageSharp": {
               "target": "Package",
-              "version": "[3.1.7, )",
+              "version": "[3.1.12, )",
               "generatePathProperty": true
             },
             "System.Data.SqlClient": {
               "target": "Package",
-              "version": "[4.9.0, )",
+              "version": "[4.9.1, )",
               "generatePathProperty": true
             },
             "System.Diagnostics.PerformanceCounter": {
               "target": "Package",
-              "version": "[9.0.3, )",
+              "version": "[10.0.5, )",
               "generatePathProperty": true
             },
             "System.Diagnostics.Process": {
@@ -155,17 +160,17 @@
             },
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
-              "version": "[8.7.0, )",
+              "version": "[8.17.0, )",
               "generatePathProperty": true
             },
             "System.Management": {
               "target": "Package",
-              "version": "[9.0.3, )",
+              "version": "[10.0.5, )",
               "generatePathProperty": true
             },
             "System.ServiceProcess.ServiceController": {
               "target": "Package",
-              "version": "[9.0.3, )",
+              "version": "[10.0.5, )",
               "generatePathProperty": true
             }
           },
