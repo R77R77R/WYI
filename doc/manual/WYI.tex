@@ -1,0 +1,143 @@
+\documentclass[11pt, a4paper, oneside]{report}
+
+% --- Core Packages ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{helvet} 
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{amsmath}
+
+% --- Path for Screenshots ---
+\graphicspath{{./screenshots/}}
+
+% --- Styling Colors ---
+\definecolor{brandblue}{rgb}{0.12, 0.29, 0.49}
+\definecolor{codebg}{rgb}{0.96, 0.96, 0.98}
+\definecolor{commentgreen}{rgb}{0.0, 0.5, 0.0}
+
+% --- Hyperref Setup ---
+\hypersetup{
+    colorlinks=true,
+    linkcolor=brandblue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={WYI Project Documentation},
+}
+
+% --- Code Listing Config ---
+\lstset{
+    backgroundcolor=\color{codebg},   
+    commentstyle=\color{commentgreen},
+    keywordstyle=\color{blue}\bfseries,
+    numberstyle=\tiny\color{gray},
+    stringstyle=\color{purple},
+    basicstyle=\ttfamily\small,
+    breaklines=true,                 
+    frame=single,
+    rulecolor=\color{lightgray},
+    captionpos=b,                    
+    tabsize=2
+}
+
+% --- Header & Footer ---
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\textit{WYI System Manual}}
+\lhead{\leftmark}
+\cfoot{\thepage}
+
+% --- Document Info ---
+\title{
+    \vspace{2cm}
+    \Huge \textbf{WYI System Manual} \\
+    \vspace{1cm}
+    \Large Intelligent Bill Management and Review Platform \\
+    \large F\# Backend + Vue.js Frontend + Gemini AI
+}
+\author{SIDUO CHEN (Lao Chen)}
+\date{April 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+The WYI project is a multi-modal AI-driven platform [cite: 3] designed to automate the recognition, classification, and validation of financial documents[cite: 3]. This manual serves as a comprehensive guide to the system architecture, component management, and AI integration protocols[cite: 4].
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+\chapter{Project Introduction}
+\section{Objective}
+The primary goal of WYI is to minimize manual data entry in bill management[cite: 6]. By utilizing the Google Gemini 1.5 Flash model, the system achieves high-accuracy parsing of complex document layouts[cite: 6].
+
+\section{System Requirements}
+\begin{itemize}
+    \item \textbf{Runtime:} .NET 9.0 Core with F\# [cite: 7]
+    \item \textbf{Database:} SQL Server / PostgreSQL [cite: 8]
+    \item \textbf{Authentication:} Clerk.js Integration [cite: 12]
+    \item \textbf{AI Engine:} Google Gemini Multimodal API [cite: 6, 10]
+\end{itemize}
+
+\chapter{System Features}
+
+\section{Provider Management}
+The system maintains a comprehensive database of service providers. Users can manage metadata, account numbers, and historical billing patterns for each provider to improve future recognition accuracy.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{providers}
+    \caption{Provider Management Interface: Managing service entities and account details.}
+    \label{fig:providers}
+\end{figure}
+
+\section{AI-Powered Auto-Filling}
+The core innovation of WYI is the automated extraction of fields such as Amount, Bill Date, and Category from uploaded images or PDFs.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{ai-filling}
+    \caption{AI Analysis View: Automatic field extraction and form pre-filling using Gemini 1.5 Flash.}
+    \label{fig:ai-filling}
+\end{figure}
+
+\chapter{System Architecture}
+\section{Backend: UtilKestrel}
+The backend handles critical logic including file orchestration, secure data persistence, and AI prompt engineering[cite: 7, 8]. It leverages F\# for robust asynchronous processing[cite: 7, 10].
+
+\section{Frontend: Vue 3 Ecosystem}
+The frontend manages user interactions and multi-file uploads via the \texttt{UploadBills} module[cite: 9]. State is managed through a reactive store to ensure consistency between the AI analysis and the UI[cite: 9].
+
+\chapter{Technical Implementation}
+\section{Gemini Multimodal Analysis}
+The following implementation demonstrates the asynchronous task for processing document images through the Gemini API[cite: 10, 11].
+
+\begin{lstlisting}[language=ml, caption=F\# Gemini Integration Task]
+// GeminiMultimodal Task Implementation
+let GeminiMultimodal output apiKey model prompt files = task {
+    use client = new HttpClient()
+    // Extended timeout to handle multi-image processing
+    client.Timeout <- TimeSpan.FromMinutes(5.0) 
+    
+    // API endpoint construction and POST execution
+    let! response = client.PostAsync(url, content)
+    return! response.Content.ReadAsStringAsync()
+}
+\end{lstlisting}
+
+\chapter{Troubleshooting}
+\section{Network and Authentication}
+If a \texttt{NetworkError} occurs during Clerk.js authentication, ensure \texttt{clerk.accounts.dev} is accessible[cite: 12]. In restricted regions, using a VPN with the Lightway protocol (UDP/TCP) is recommended to maintain a stable session[cite: 13].
+
+\section{Timeout Issues}
+A \texttt{TaskCanceledException} typically indicates that the AI analysis exceeded the default 100-second window[cite: 14]. The system is configured to use a 300-second timeout to accommodate high-resolution uploads[cite: 14].
+
+\end{document}

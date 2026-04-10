@@ -183,7 +183,7 @@ Amt: [$69.99]
             er Er.Internal
     else
         [|  "Er",(Er.API3rdParty.ToString() |> Json.Str)
-            "Msg",(msg |> Json.Str) |]
+            "Msg",(ex |> Json.Str) |]
 
 let submitBill (x:X) =
 

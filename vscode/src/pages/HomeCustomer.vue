@@ -18,9 +18,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import { glib } from '~/lib/glib'
 import * as Common from '~/lib/store/common'
+
+import { ref } from 'vue'
 
 const s = glib.vue.reactive({
   providers: [] as any,
