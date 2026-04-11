@@ -93,10 +93,10 @@ let init (runtime:Runtime) =
 
     let importUtilProviders () = 
 
-        let checkBind cat provider = 
+        let checkBind (cat:UCAT) (provider:UPROVIDER) = 
 
-            cat.ToString() |> runtime.output
-            provider.ToString() |> runtime.output
+            cat.p.Caption + " / " + provider.p.Caption
+            |> runtime.output
 
             match
                 runtime.data.catproviders
