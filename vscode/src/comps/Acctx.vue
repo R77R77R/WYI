@@ -11,14 +11,10 @@
 </div>
 
 <div v-if="props.mode == 1"> 
-  <div class="flex" 
-    v-if="props.acctx.cato && props.acctx.providero">
-    Service Provider: 
-    <img class="m-2"
-     :src="props.acctx.providero.p.Icon" />
-    {{ props.acctx.providero.p.Caption }}
-    ({{ props.acctx.cato.p.Caption }})
-  </div>
+  <Provider
+    v-if="props.acctx.cato && props.acctx.providero"
+    :ucat="props.acctx.cato"
+    :uprovider="props.acctx.providero" />
 
   <Unit v-if="props.acctx.unito"
     :unit="props.acctx.unito" :mode="1" />
@@ -41,6 +37,7 @@ import { ref } from 'vue'
 import { glib } from '~/lib/glib'
 import * as Common from '~/lib/store/common'
 import Unit from '~/comps/Unit.vue'
+import Provider from '~/comps/Provider.vue'
 
 const props = defineProps(['acctx','mode'])
 props.acctx as wyi.AcctComplex

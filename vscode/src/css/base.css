@@ -22,6 +22,11 @@ button {
   @apply m-0 p-0
 }
 
+.image-inline{
+  @apply inline-block h-[1em] w-auto align-middle;
+  @apply m-2
+}
+
 input,textarea,option,select {
   @apply border border-gray-500 px-2 m-2;
   @apply bg-white dark:bg-gray-950 text-black dark:text-white;

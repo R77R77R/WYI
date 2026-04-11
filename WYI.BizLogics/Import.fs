@@ -198,41 +198,64 @@ Elevator Maintenance Contracts | Otis        """.Split Util.Text.lf
     )
 
     [|
-        // --- Internet & Cellphone ---
-        ( "Verizon", "https://logo.clearbit.com/verizon.com", "https://www.google.com/s2/favicons?domain=verizon.com&sz=32" )
-        ( "AT&T", "https://logo.clearbit.com/att.com", "https://www.google.com/s2/favicons?domain=att.com&sz=32" )
-        ( "T-Mobile", "https://logo.clearbit.com/t-mobile.com", "https://www.google.com/s2/favicons?domain=t-mobile.com&sz=32" )
-        ( "Spectrum", "https://logo.clearbit.com/spectrum.com", "https://www.google.com/s2/favicons?domain=spectrum.com&sz=32" )
-        ( "Comcast", "https://logo.clearbit.com/xfinity.com", "https://www.google.com/s2/favicons?domain=xfinity.com&sz=32" )
-        ( "Frontier", "https://logo.clearbit.com/frontier.com", "https://www.google.com/s2/favicons?domain=frontier.com&sz=32" )
-        ( "Cox", "https://logo.clearbit.com/cox.com", "https://www.google.com/s2/favicons?domain=cox.com&sz=32" )
-        ( "Optimum", "https://logo.clearbit.com/optimum.com", "https://www.google.com/s2/favicons?domain=optimum.com&sz=32" )
-    
-        // --- SaaS & Payroll ---
-        ( "Adobe", "https://logo.clearbit.com/adobe.com", "https://www.google.com/s2/favicons?domain=adobe.com&sz=32" )
-        ( "Salesforce", "https://logo.clearbit.com/salesforce.com", "https://www.google.com/s2/favicons?domain=salesforce.com&sz=32" )
-        ( "HubSpot", "https://logo.clearbit.com/hubspot.com", "https://www.google.com/s2/favicons?domain=hubspot.com&sz=32" )
-        ( "ADP", "https://logo.clearbit.com/adp.com", "https://www.google.com/s2/favicons?domain=adp.com&sz=32" )
-        ( "Paychex", "https://logo.clearbit.com/paychex.com", "https://www.google.com/s2/favicons?domain=paychex.com&sz=32" )
+        // --- Internet | Cellphone | Landlines ---
+        ( "Verizon", "https://icon.horse/icon/verizon.com", "https://www.google.com/s2/favicons?domain=verizon.com&sz=32" )
+        ( "Verizon Fios", "https://icon.horse/icon/verizon.com", "https://www.google.com/s2/favicons?domain=verizon.com&sz=32" )
+        ( "AT&T", "https://icon.horse/icon/att.com", "https://www.google.com/s2/favicons?domain=att.com&sz=32" )
+        ( "T-Mobile", "https://icon.horse/icon/t-mobile.com", "https://www.google.com/s2/favicons?domain=t-mobile.com&sz=32" )
+        ( "Spectrum", "https://icon.horse/icon/spectrum.com", "https://www.google.com/s2/favicons?domain=spectrum.com&sz=32" )
+        ( "Comcast", "https://icon.horse/icon/xfinity.com", "https://www.google.com/s2/favicons?domain=comcast.com&sz=32" )
+        ( "Windstream", "https://icon.horse/icon/windstream.com", "https://www.google.com/s2/favicons?domain=windstream.com&sz=32" )
+        ( "Frontier", "https://icon.horse/icon/frontier.com", "https://www.google.com/s2/favicons?domain=frontier.com&sz=32" )
+        ( "Century Link", "https://icon.horse/icon/centurylink.com", "https://www.google.com/s2/favicons?domain=centurylink.com&sz=32" )
+        ( "Optimum", "https://icon.horse/icon/optimum.com", "https://www.google.com/s2/favicons?domain=optimum.com&sz=32" )
+        ( "Cox", "https://icon.horse/icon/cox.com", "https://www.google.com/s2/favicons?domain=cox.com&sz=32" )
+        ( "RCN", "https://icon.horse/icon/rcn.com", "https://www.google.com/s2/favicons?domain=rcn.com&sz=32" )
 
-        // --- Security & Maintenance ---
-        ( "ADT", "https://logo.clearbit.com/adt.com", "https://www.google.com/s2/favicons?domain=adt.com&sz=32" )
-        ( "Vivint", "https://logo.clearbit.com/vivint.com", "https://www.google.com/s2/favicons?domain=vivint.com&sz=32" )
-        ( "Otis", "https://logo.clearbit.com/otis.com", "https://www.google.com/s2/favicons?domain=otis.com&sz=32" )
-    
-        // --- Facilities ---
-        ( "Waste Mgmt.", "https://logo.clearbit.com/wm.com", "https://www.google.com/s2/favicons?domain=wm.com&sz=32" )
-        ( "Republic", "https://logo.clearbit.com/republicservices.com", "https://www.google.com/s2/favicons?domain=republicservices.com&sz=32" )
-        ( "Terminix", "https://logo.clearbit.com/terminix.com", "https://www.google.com/s2/favicons?domain=terminix.com&sz=32" )
-        ( "Orkin", "https://logo.clearbit.com/orkin.com", "https://www.google.com/s2/favicons?domain=orkin.com&sz=32" )
-        ( "TruGreen", "https://logo.clearbit.com/trugreen.com", "https://www.google.com/s2/favicons?domain=trugreen.com&sz=32" )
-    
-        // --- Others ---
-        ( "Sirius XM", "https://logo.clearbit.com/siriusxm.com", "https://www.google.com/s2/favicons?domain=siriusxm.com&sz=32" )
-        ( "Direct TV", "https://logo.clearbit.com/directv.com", "https://www.google.com/s2/favicons?domain=directv.com&sz=32" )
-        ( "Dish", "https://logo.clearbit.com/dish.com", "https://www.google.com/s2/favicons?domain=dish.com&sz=32" )
-        ( "Ready Refresh", "https://logo.clearbit.com/readyrefresh.com", "https://www.google.com/s2/favicons?domain=readyrefresh.com&sz=32" )
-    |]
+        // --- Satellite TV & Radio ---
+        ( "Direct TV", "https://icon.horse/icon/directv.com", "https://www.google.com/s2/favicons?domain=directv.com&sz=32" )
+        ( "Dish", "https://icon.horse/icon/dish.com", "https://www.google.com/s2/favicons?domain=dish.com&sz=32" )
+        ( "Sirius XM", "https://icon.horse/icon/siriusxm.com", "https://www.google.com/s2/favicons?domain=siriusxm.com&sz=32" )
+
+        // --- Security Monitoring ---
+        ( "ADT", "https://icon.horse/icon/adt.com", "https://www.google.com/s2/favicons?domain=adt.com&sz=32" )
+        ( "Vivint", "https://icon.horse/icon/vivint.com", "https://www.google.com/s2/favicons?domain=vivint.com&sz=32" )
+        ( "Brinks", "https://icon.horse/icon/brinks.com", "https://www.google.com/s2/favicons?domain=brinks.com&sz=32" )
+        ( "Slomin's", "https://icon.horse/icon/slomins.com", "https://www.google.com/s2/favicons?domain=slomins.com&sz=32" )
+
+        // --- Payroll & Finance ---
+        ( "ADP", "https://icon.horse/icon/adp.com", "https://www.google.com/s2/favicons?domain=adp.com&sz=32" )
+        ( "Paychex", "https://icon.horse/icon/paychex.com", "https://www.google.com/s2/favicons?domain=paychex.com&sz=32" )
+        ( "Global", "https://icon.horse/icon/globalpaymentsinc.com", "https://www.google.com/s2/favicons?domain=globalpaymentsinc.com&sz=32" )
+        ( "World Pay", "https://icon.horse/icon/worldpay.com", "https://www.google.com/s2/favicons?domain=worldpay.com&sz=32" )
+
+        // --- Trash & Facilities ---
+        ( "Waste Mgmt.", "https://icon.horse/icon/wm.com", "https://www.google.com/s2/favicons?domain=wm.com&sz=32" )
+        ( "Republic", "https://icon.horse/icon/republicservices.com", "https://www.google.com/s2/favicons?domain=republicservices.com&sz=32" )
+        ( "GFL", "https://icon.horse/icon/gflenv.com", "https://www.google.com/s2/favicons?domain=gflenv.com&sz=32" )
+        ( "Local companies", "https://img.icons8.com/color/96/truck.png", "https://img.icons8.com/color/32/truck.png" )
+        ( "Otis", "https://icon.horse/icon/otis.com", "https://www.google.com/s2/favicons?domain=otis.com&sz=32" )
+
+        // --- Pest Control & Lawn Care ---
+        ( "Terminix", "https://icon.horse/icon/terminix.com", "https://www.google.com/s2/favicons?domain=terminix.com&sz=32" )
+        ( "Orkin", "https://icon.horse/icon/orkin.com", "https://www.google.com/s2/favicons?domain=orkin.com&sz=32" )
+        ( "Plunkett's", "https://icon.horse/icon/plunketts.net", "https://www.google.com/s2/favicons?domain=plunketts.net&sz=32" )
+        ( "TruGreen", "https://icon.horse/icon/trugreen.com", "https://www.google.com/s2/favicons?domain=trugreen.com&sz=32" )
+
+        // --- Subscriptions & SaaS ---
+        ( "Adobe", "https://icon.horse/icon/adobe.com", "https://www.google.com/s2/favicons?domain=adobe.com&sz=32" )
+        ( "Salesforce", "https://icon.horse/icon/salesforce.com", "https://www.google.com/s2/favicons?domain=salesforce.com&sz=32" )
+        ( "HubSpot", "https://icon.horse/icon/hubspot.com", "https://www.google.com/s2/favicons?domain=hubspot.com&sz=32" )
+
+        // --- Advertising & Water ---
+        ( "Billboards", "https://img.icons8.com/color/96/billboard.png", "https://img.icons8.com/color/32/billboard.png" )
+        ( "Newspapers", "https://img.icons8.com/color/96/news.png", "https://img.icons8.com/color/32/news.png" )
+        ( "Magazines", "https://img.icons8.com/color/96/magazine.png", "https://img.icons8.com/color/32/magazine.png" )
+        ( "Yellow Pages", "https://icon.horse/icon/yellowpages.com", "https://www.google.com/s2/favicons?domain=yellowpages.com&sz=32" )
+        ( "Ready Refresh", "https://icon.horse/icon/readyrefresh.com", "https://www.google.com/s2/favicons?domain=readyrefresh.com&sz=32" )
+        ( "Primo", "https://icon.horse/icon/primowater.com", "https://www.google.com/s2/favicons?domain=primowater.com&sz=32" )
+        ( "Crystal Rock", "https://icon.horse/icon/crystalrock.com", "https://www.google.com/s2/favicons?domain=crystalrock.com&sz=32" )
+        |]     
     |> Array.iter(fun (caption,logo,icon) -> 
         match
             runtime.data.providers.Values
