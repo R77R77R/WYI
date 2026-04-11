@@ -221,33 +221,33 @@ let init (runtime:Runtime) =
             provider.StartsWith "(" = false && provider.EndsWith ")" = false)
         |> Array.iter lines.Add
     
-        """
-Internet | Spectrum | Comcast | Windstream/ Frontier/Century Link/Verizon Fios/Optimum/Cox/RCN
-Cellphone | Verizon | AT&T | T-Mobile
-Landlines
-Cable TV | Spectrum | Comcast | Windstream/ Frontier/Century Link/Verizon Fios/Optimum/Cox/RCN
-Satellite TV | Direct TV | Dish
-Satellite Radio | Sirius XM
-Security Monitoring | ADT | Vivint | Brinks/Slomin's
-Payroll | ADP | Paychex
-Credit Card Processing | Global | World Pay
-Trash | Waste Mgmt. | Republic | GFL | Local companies
-Pest Control | Terminix | Orkin/Plunkett's
-Lawn Care | TruGreen
-Subscriptions/Memberships | Adobe | Salesforce | HubSpot
-Advertising | Billboards | Newspapers | Magazines | Yellow Pages
-Water Delivery | Ready Refresh | Primo | Crystal Rock
-Elevator Maintenance Contracts | Otis        """.Split Util.Text.crlf
-        |> Array.map(fun s -> s.Trim().Replace("/","|"))
-        |> Array.filter(fun s -> s.Contains "|")
-        |> Array.iter(fun s -> 
-            s |> runtime.output
-            let ss = s.Split "|"
-            let cat = ss[0].Trim()
-            [| 1 .. ss.Length - 1|]
-            |> Array.iter(fun i ->
-                let provider = ss[i].Trim()
-                (cat,provider) |> lines.Add))
+//        """
+//Internet | Spectrum | Comcast | Windstream/ Frontier/Century Link/Verizon Fios/Optimum/Cox/RCN
+//Cellphone | Verizon | AT&T | T-Mobile
+//Landlines
+//Cable TV | Spectrum | Comcast | Windstream/ Frontier/Century Link/Verizon Fios/Optimum/Cox/RCN
+//Satellite TV | Direct TV | Dish
+//Satellite Radio | Sirius XM
+//Security Monitoring | ADT | Vivint | Brinks/Slomin's
+//Payroll | ADP | Paychex
+//Credit Card Processing | Global | World Pay
+//Trash | Waste Mgmt. | Republic | GFL | Local companies
+//Pest Control | Terminix | Orkin/Plunkett's
+//Lawn Care | TruGreen
+//Subscriptions/Memberships | Adobe | Salesforce | HubSpot
+//Advertising | Billboards | Newspapers | Magazines | Yellow Pages
+//Water Delivery | Ready Refresh | Primo | Crystal Rock
+//Elevator Maintenance Contracts | Otis        """.Split Util.Text.crlf
+//        |> Array.map(fun s -> s.Trim().Replace("/","|"))
+//        |> Array.filter(fun s -> s.Contains "|")
+//        |> Array.iter(fun s -> 
+//            s |> runtime.output
+//            let ss = s.Split "|"
+//            let cat = ss[0].Trim()
+//            [| 1 .. ss.Length - 1|]
+//            |> Array.iter(fun i ->
+//                let provider = ss[i].Trim()
+//                (cat,provider) |> lines.Add))
 
         lines.ToArray()
         |> Array.iter(fun (cat,provider) -> 
