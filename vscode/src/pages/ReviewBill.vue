@@ -49,7 +49,8 @@
     <div class="card">
       <div class="card-caption">Service Provider</div>
       <div>
-        <select @change="onChangeCat" v-model="s.rep.data.bill.p.Cat">
+        <select @change="onChangeCat" 
+          v-model="s.rep.data.bill.p.Cat">
           <option v-for="item in s.ucatproviders" :value="(item.ucat as wyi.UCAT).id">
             {{ (item.ucat as wyi.UCAT).p.Caption }}
           </option>
@@ -126,6 +127,7 @@ import Acctx from '~/comps/Acctx.vue'
 import SearchField from '~/comps/SearchField.vue'
 import StateLocator from '~/comps/StateLocator.vue'
 import { router } from '~/lib/mod/route'
+import { UNIT_empty } from '~/lib/shared/OrmMor'
 
 const s = glib.vue.reactive({
   fids: [],
@@ -133,6 +135,7 @@ const s = glib.vue.reactive({
   showUnitAdded: false,
   showAcctxAdded: false,
   units: [] as wyi.UNIT[],
+  selectedUnit: UNIT_empty(),
   acctxs: [] as wyi.AcctComplex[],
   ucatproviders: [] as any,
   uproviders: [] as wyi.UPROVIDER[],
@@ -192,7 +195,9 @@ const onClickNewUnit = () => {
     },
     act: 'create'
   }, (rep: any) => {
-    s.units.push(rep.data as wyi.UNIT)
+    let unit = rep.data as wyi.UNIT
+    s.units.push(unit)
+    s.selectedUnit = unit
     s.showUnitAdded = true
   })
 }
@@ -228,6 +233,9 @@ const onChangeCat = () => {
 const onClickNewAcctx = () => {
   Common.loader('/api/eu/my-acctxs', {
     data: {
+      unit: s.selectedUnit.id,
+      cat: s.rep.data.bill.p.Cat,
+      provider: s.rep.data.bill.p.Provider,
       acctname: s.rep.data.bill.p.ShownAcctName,
       acctnum: s.rep.data.bill.p.ShownAcctNum
     },

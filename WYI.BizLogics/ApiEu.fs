@@ -94,27 +94,56 @@ let myAcctxs eux (x:X) =
             json
             |> tryFindByAtt "data" with
         | Some (s,data) -> 
+            let kucpo = 
+                runtime.data.catproviders
+                |> Array.tryFind(fun kucp ->
+                    kucp.p.Cat = parse_int64(tryFindStrByAtt "cat" data)
+                    && kucp.p.Provider = parse_int64(tryFindStrByAtt "provider" data)) 
+
+            let unito = 
+                match
+                    tryFindStrByAtt "unit" data
+                    |> parse_int64
+                    |> eux.units.TryGet with
+                | Some unit -> 
+                    if unit.p.Owner = eux.eu.ID then
+                        Some unit
+                    else
+                        None
+                | None -> None
+
             match 
                 (fun (p:pUACCT) ->
-                    match
-                        runtime.data.catproviders
-                        |> Array.tryFind(fun kucp ->
-                            kucp.p.Cat = parse_int64(tryFindStrByAtt "cat" data)
-                            && kucp.p.Provider = parse_int64(tryFindStrByAtt "provider" data)) with
+                    match kucpo with
                     | Some kucp -> 
                         p.Cat <- kucp.p.Cat
                         p.Provider <- kucp.p.Provider
                     | None -> ()
                     
+                    match unito with
+                    | Some unit -> p.Unit <- unit.ID
+                    | None -> ()
+
                     p.AcctNum <- tryFindStrByAtt "acctnum" data
                     p.AcctName <- tryFindStrByAtt "acctname" data
                     p.Owner <- eux.eu.ID) 
                 |> creator UACCT_metadata with
             | Some rcd -> 
-                //eux.acctxs[rcd.ID] <- {
-                //    acct = rcd}
-                rcd
-                |> UACCT__json
+                let acctx = {
+                    cato = 
+                        match kucpo with
+                        | Some kucp -> runtime.data.cats[kucp.p.Cat] |> Some
+                        | None -> None
+                    providero = 
+                        match kucpo with
+                        | Some kucp -> runtime.data.providers[kucp.p.Provider] |> Some
+                        | None -> None
+                    owner = eux.eu
+                    unito = None
+                    acct = rcd }
+                eux.acctxs[rcd.ID] <- acctx
+                acctx
+                |> AcctComplex__json
                 |> wrapOk "data"
             | None -> er Er.Internal
         | None -> er Er.InvalideParameter
