@@ -65,7 +65,7 @@ let Bash output server (devDir, deployDir) (gitName, gitEmail) =
     // 注意：远程执行 dotnet run 时建议加上 nohup 或确保你希望持续观察输出
     let remoteCommands = 
 
-        if false then
+        if true then
             [|
                 $"cd {deployDir}"
                 "git fetch --all"
