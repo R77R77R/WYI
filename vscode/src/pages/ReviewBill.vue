@@ -1,8 +1,7 @@
 <template>
 
-  <h2>Review Bills</h2>
-
   <div class="card">
+    <div class="card-caption">Review Your Bill</div>
     <div v-for="fid in s.fids">
       <div class="w-[300px]">
         <img :src='"/thumbnail/" + fid' />
@@ -19,7 +18,7 @@
     </div>
 
     <div class="card">
-      <div class="card-caption">Unit</div>
+      <div class="card-caption">Your Business/Residential Unit</div>
 
       <div>Address: </div>
       <div><input v-model="s.rep.data.bill.p.ShownAddr" /></div>
@@ -38,9 +37,7 @@
         <SearchField api="/api/eu/my-units" :item__key="(unit: wyi.UNIT) => unit.id" :item__text="unit__text"
           @select="onSelectUnit" />
       </div>
-      <div class="border-blue-600 p-2" v-for="i in s.units">
-        {{ unit__text(i) }}
-      </div>
+      <Unit v-for="i in s.units" :unit="i" mode="0" />
 
       <div class="flex">
         <button @click="onClickNewUnit">Add as a New Unit</button>
@@ -50,7 +47,7 @@
     </div>
 
     <div class="card">
-      <div class="card-caption">Category</div>
+      <div class="card-caption">Service Provider</div>
       <div>
         <select @change="onChangeCat" v-model="s.rep.data.bill.p.Cat">
           <option v-for="item in s.ucatproviders" :value="(item.ucat as wyi.UCAT).id">
@@ -68,10 +65,9 @@
         </select>
       </div>
     </div>
-    <h2>Provider</h2>
 
     <div class="card">
-      <div class="card-caption">Account</div>
+      <div class="card-caption">Service Account</div>
 
       <div>Account Number: </div>
       <div><input v-model="s.rep.data.bill.p.ShownAcctNum" /></div>
@@ -84,22 +80,34 @@
         <SearchField />
       </div>
 
-      <div><button>Add New Account</button></div>
+      <Acctx v-for="i in s.acctxs" :acctx="i" mode="0" />
+
+
+      <div class="flex">
+        <button @click="onClickNewAcctx">Add as a New Account</button>
+        <div v-if="s.showAcctxAdded">New Account Added</div>
+      </div>
 
     </div>
 
-    <div>Bill Data: </div>
-    <div><input v-model="s.rep.data.bill.p.BillDate" /></div>
+    <div class="card">
+      <div class="card-caption">Billing</div>
+      <div>Bill Date: </div>
+      <div><input v-model="s.rep.data.bill.p.BillDate" /></div>
 
-    <div>Amount: </div>
-    <div><input v-model="s.rep.data.bill.p.Amt" /></div>
+      <div>Amount: </div>
+      <div><input v-model="s.rep.data.bill.p.Amt" /></div>
+    </div>
 
-    <div class="flex">
-      <button @click="confirm">Confirm</button>
-      the details and submit to our professional team.
+    <div class="card">
+      <div class="flex">
+        <button @click="confirm">Confirm</button>
+        the details and submit to our professional team.
+      </div>
     </div>
 
   </div>
+
   <div class="card" v-else>
     <img src="https://media.tenor.com/P6OWWkfES0YAAAAm/loading-gif-loading.webp">
     AI processing ... 20 seconds expected
@@ -113,8 +121,8 @@ import { ref } from 'vue'
 import { glib } from '~/lib/glib'
 import * as Common from '~/lib/store/common'
 
-import BillFile from '~/comps/BillFile.vue'
-import { FileComplex } from '~/comps/BillFile.vue'
+import Unit from '~/comps/Unit.vue'
+import Acctx from '~/comps/Acctx.vue'
 import SearchField from '~/comps/SearchField.vue'
 import StateLocator from '~/comps/StateLocator.vue'
 import { router } from '~/lib/mod/route'
@@ -123,7 +131,9 @@ const s = glib.vue.reactive({
   fids: [],
   rep: {} as any,
   showUnitAdded: false,
+  showAcctxAdded: false,
   units: [] as wyi.UNIT[],
+  acctxs: [] as wyi.AcctComplex[],
   ucatproviders: [] as any,
   uproviders: [] as wyi.UPROVIDER[],
   rt: runtime
@@ -155,11 +165,18 @@ glib.vue.onMounted(async () => {
   }, (rep: any) => {
     s.units = rep.data as wyi.UNIT[]
   })
-
+  
+  Common.loader('my-acctxs', {
+    act: "ls"
+  }, (rep: any) => {
+    s.acctxs = rep.data as wyi.AcctComplex[]
+  })
+  
   Common.loader('/api/eu/review-bill-files', {
     fids: s.fids
   }, (rep: any) => {
     s.rep = rep
+    console.log(s.rep)
     onChangeCat()
   })
 
@@ -206,6 +223,21 @@ const onChangeCat = () => {
   else
     s.uproviders = []
 }
+
+
+const onClickNewAcctx = () => {
+  Common.loader('/api/eu/my-acctxs', {
+    data: {
+      acctname: s.rep.data.bill.p.ShownAcctName,
+      acctnum: s.rep.data.bill.p.ShownAcctNum
+    },
+    act: 'create'
+  }, (rep: any) => {
+    s.acctxs.push(rep.data as wyi.AcctComplex)
+    s.showAcctxAdded = true
+  })
+}
+
 
 const confirm = () => {
   Common.loader('/api/eu/submit-bill', {

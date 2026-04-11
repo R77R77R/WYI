@@ -3,26 +3,14 @@
 <div class="card">
 
 <div v-if="props.mode == 0">
-  {{ props.acct.p..p.Address }}
-  {{ props.unit.p.Town }}
-  {{ props.unit.p.State }}
-  {{ props.unit.p.Zip }}
+  {{ props.acctx.acct.p.AcctNum }}
 </div>
 
 <div v-if="props.mode == 1">
   <div>
-    {{ props.unit.p.Address }}
+    {{ props.acctx.acct.p.AcctNum }}
   </div>
-  
-  <div>
-    {{ props.unit.p.Town }}
-  </div>
-
-  <div>
-    {{ props.unit.p.State }}
-    {{ props.unit.p.Zip }}
-  </div>
-  
+ 
 </div>
 
 </div>

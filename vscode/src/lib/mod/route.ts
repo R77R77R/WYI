@@ -2,7 +2,7 @@ import { createMemoryHistory, createRouter, createWebHistory, RouteRecordRaw } f
 
 import MyBills from '~/pages/MyBills.vue'
 import MyUnits from '~/pages/MyUnits.vue'
-import MyAcctx from '~/pages/MyAcctx.vue'
+import MyAcctxs from '~/pages/MyAcctxs.vue'
 import Bills from '~/pages/Bills.vue'
 import UploadBill from '~/pages/UploadBill.vue'
 import ReviewBill from '~/pages/ReviewBill.vue'
@@ -14,7 +14,7 @@ const routes = [
   { path: '/', component: HomeCustomer },
   { path: '/MyBills', component: MyBills },
   { path: '/MyUnits', component: MyUnits },
-  { path: '/MyAcctx', component: MyAcctx },
+  { path: '/MyAcctxs', component: MyAcctxs },
   { path: '/Bills', component: Bills },
   { path: '/UploadBill', component: UploadBill },
   { path: '/ReviewBill', component: ReviewBill },

@@ -201,6 +201,11 @@
         "name": "UAcct"
       },
       {
+        "enum": "Char",
+        "length": 8,
+        "name": "YYYYMMDD"
+      },
+      {
         "enum": "Float",
         "name": "Amt"
       }

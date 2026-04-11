@@ -2,14 +2,14 @@
 
   <div class="card">
     <div class="card-caption">
-      My Units
+      My Accounts
     </div>
   </div>
 
   <div class="card">
     <div class="card-caption">
       <button class="button-small" @click="s.toggleCreate = true">
-        Add New Unit
+        Add New Account
       </button>
     </div>
 
@@ -36,7 +36,7 @@
 
   </div>
 
-  <Unit v-for="i in s.acctxs" :unit="i" :mode="1" />
+  <Acctx v-for="i in s.acctxs" :unit="i" :mode="1" />
 
 </template>
 

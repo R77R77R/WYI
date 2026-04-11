@@ -185,16 +185,16 @@ let reviewBillFiles eux (x:X) =
 
 CategoryID: [6462],
 Category: [Internet],
-ProviderID: [0],
-Provider: [CenturyLink],
-AcctNum: [6514645851088],
-AcctName: [BREW FITNESS],
-Addr: [808 LAKE ST S],
-Town: [FOREST LAKE],
-State: [MN],
-ZIP: [55025],
-BillDate: [05/01/2021],
-Amt: [$69.99]                
+ProviderID: [254300],
+Provider: [Cox],
+AcctNum: [0017410044200801],
+AcctName: [SEA Academy],
+Addr: [10080 Morrison Rd],
+Town: [New Orleans],
+State: [LA],
+ZIP: [70127-1821],
+BillDate: [01/29/2026],
+Amt: [$527.11]               
         *)
 
             let parse (line:string) = 
@@ -216,6 +216,9 @@ Amt: [$69.99]
         p.ShownTown <- tryFindStrByAtt "Town" json
         p.ShownState <- tryFindStrByAtt "State" json
         p.ShownZip <- tryFindStrByAtt "ZIP" json
+
+        // <- tryFindStrByAtt "Amt" json |> parse_float
+        p.Amt <- tryFindStrByAtt "Amt" json |> parse_float
 
         p.Cat <- tryFindStrByAtt "CategoryID" json |> parse_int64
         p.Provider <- tryFindStrByAtt "ProviderID" json |> parse_int64
