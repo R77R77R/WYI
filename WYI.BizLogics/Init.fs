@@ -7,7 +7,7 @@ open System.Collections.Concurrent
 open System.Threading
 
 open Util.Runtime
-open Util.Bin
+open Util.Cat
 open Util.Concurrent
 open Util.Json
 open Util.CollectionModDict
@@ -93,6 +93,24 @@ let init (runtime:Runtime) =
 
     let importUtilProviders () = 
 
+        let tx sql = 
+
+            sql |> runtime.output
+
+            let pretx = None |> opctx__pretx
+
+            sql
+            |> str__sql
+            |> pretx.sqls.Add
+
+            match 
+                pretx
+                |> pipeline conn with
+            | Suc ctx -> ()
+            | Fail(dte,ctx) -> 
+                halt runtime.output "" ""
+
+
         let checkBind (cat:UCAT) (provider:UPROVIDER) = 
             match
                 runtime.data.catproviders
@@ -143,7 +161,13 @@ let init (runtime:Runtime) =
                     checkBind ucat v
                 | None -> ()            
 
-        let txt1 = """
+        "DELETE FROM public.kernel_utilcat" |> tx
+        "DELETE FROM public.kernel_utilprovider" |> tx
+        "DELETE FROM public.kernel_utilcatprovider" |> tx
+
+        let lines = new List<string * string>()
+
+        """
     Internet | Spectrum
     Internet | Comcast
     Internet | Windstream
@@ -185,9 +209,7 @@ let init (runtime:Runtime) =
     Heating Oil | (Not specified)
     Elevator Maintenance Contracts | Otis
     CO2 (for Restaurants) | (Not specified)
-    Monthly Recurring Bills | (Miscellaneous)    """
-
-        txt1.Split Util.Text.crlf
+    Monthly Recurring Bills | (Miscellaneous)    """.Split Util.Text.crlf
         |> Array.map(fun s -> s.Trim())
         |> Array.filter(fun s -> s.Contains "|")
         |> Array.map(fun s -> 
@@ -196,15 +218,10 @@ let init (runtime:Runtime) =
             let provider = ss[1].Trim()
             cat,provider)
         |> Array.filter(fun (cat,provider) ->
-            cat + " / " + provider |> runtime.output
             provider.StartsWith "(" = false && provider.EndsWith ")" = false)
-        |> Array.iter(fun (cat,provider) -> 
-            match getOrAddCat cat with
-            | Some ucat -> getOrAddProvider ucat provider
-            | None -> ())
+        |> Array.iter lines.Add
     
-        let txt2 = 
-            """
+        """
 Internet | Spectrum | Comcast | Windstream/ Frontier/Century Link/Verizon Fios/Optimum/Cox/RCN
 Cellphone | Verizon | AT&T | T-Mobile
 Landlines
@@ -220,21 +237,22 @@ Lawn Care | TruGreen
 Subscriptions/Memberships | Adobe | Salesforce | HubSpot
 Advertising | Billboards | Newspapers | Magazines | Yellow Pages
 Water Delivery | Ready Refresh | Primo | Crystal Rock
-Elevator Maintenance Contracts | Otis        """
-        txt2.Split Util.Text.crlf
+Elevator Maintenance Contracts | Otis        """.Split Util.Text.crlf
         |> Array.map(fun s -> s.Trim().Replace("/","|"))
         |> Array.filter(fun s -> s.Contains "|")
         |> Array.iter(fun s -> 
             s |> runtime.output
             let ss = s.Split "|"
-            match getOrAddCat (ss[0].Trim()) with
-            | Some cat ->
+            let cat = ss[0].Trim()
+            [| 1 .. ss.Length - 1|]
+            |> Array.iter(fun i ->
+                let provider = ss[i].Trim()
+                (cat,provider) |> lines.Add))
 
-                [| 1 .. ss.Length - 1|]
-                |> Array.iter(fun i ->
-                    let provider = ss[i].Trim()
-                    getOrAddProvider cat provider)
-            | None -> ())
+        lines.ToArray()
+        |> Array.iter(fun (cat,provider) -> 
+            cat + " / " + provider |> runtime.output
+        )
     
     importUtilProviders()
 
