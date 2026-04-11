@@ -194,3 +194,13 @@ Elevator Maintenance Contracts | Otis        """.Split Util.Text.lf
             getOrAddProvider ucat provider
         | None -> halt runtime.output "" ""
     )
+
+    [|  "Verizon","","data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABlElEQVR4AWXSg46eQRhA4Wdm/9pYG9dQu+FuUN9g3aBcBLXdoLbtrjGd+kv3JGfseWPv1Nab2VRwW7YsCyCX/W7bnk0Fb0R0KsJC1BtP/e++Ip0R+/AOAM1YVtgZYDmaAPAW+yKu4TIAytAhKGUBSuj43QdwGdcivqEbQMAkS83WYhaAVixRhB70RsARvBYxDZXq1KZV5iWAVagDwCscgQiSO4LzJmN+oiYFTand+jTRoEloRwDAedyBKGCWPEynWZJy8gK0WKgytUnasBAACV0YFIjTeu8zFTMdMys9MwdVaExVmqxVylIJgGc4BnmuCGYkBjwwy2kzE3NRjXlpi9m2SIqcxgOACKZj2dhIzrtMNmpaYk72U1gkFo+f++jEiABEmHb6AWWYmE4qeSSghFOh5HMxHnIfp/4cHyKAMtwKTyQnDAReZ49kxxQ5LniiQARII4FlacyQTl8NuRy4nY0AhtApGRPHL2D6ngd8Q6+z3rnnbKAPAcBdnINp3+6PXwD0Yq6XnoeT7gYY+S2cFHLff3wHuO+UkmFYpsMAAAAASUVORK5CYII=" |]
+    |> Array.iter(fun (caption,logo,icon) -> 
+        match
+            runtime.data.providers.Values
+            |> Array.tryFind(fun i -> i.p.Caption = caption) with
+        | Some provider ->
+            
+            ()
+        | None -> ())

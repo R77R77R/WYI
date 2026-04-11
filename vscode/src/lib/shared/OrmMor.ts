@@ -458,6 +458,8 @@ export const pUPROVIDER__bin = (bb:BytesBuilder) => (p:wyi.pUPROVIDER) => {
     
     marshall.str__bin (bb) (p.Logo)
     
+    marshall.str__bin (bb) (p.Icon)
+    
     marshall.int64__bin (bb) (p.Cat)
 }
 
@@ -475,6 +477,7 @@ export const bin__pUPROVIDER = (bi:BinIndexed):wyi.pUPROVIDER => {
     let p = pUPROVIDER_empty()
     p.Caption = marshall.bin__str (bi)
     p.Logo = marshall.bin__str (bi)
+    p.Icon = marshall.bin__str (bi)
     p.Cat = marshall.bin__int64 (bi)
 
     return p
@@ -909,6 +912,7 @@ export const pUPROVIDER_empty = (): wyi.pUPROVIDER => {
     return {
         Caption: "",
         Logo: "",
+        Icon: "",
         Cat: 0 }
 }
 

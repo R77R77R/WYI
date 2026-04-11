@@ -162,6 +162,7 @@ export type pUPROVIDER = {
 [key:string]: any
     Caption: string
     Logo: string
+    Icon: string
     Cat: number
 }
 

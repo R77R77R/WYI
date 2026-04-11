@@ -26,6 +26,10 @@
         "name": "Logo"
       },
       {
+        "enum": "Text",
+        "name": "Icon"
+      },
+      {
         "enum": "FK",
         "ref": "Kernel_UtilCat",
         "name": "Cat"

@@ -1130,6 +1130,7 @@ BEGIN
             ,sort BIGINT NOT NULL
             ,"caption" TEXT
             ,"logo" TEXT
+            ,"icon" TEXT
             ,"cat" BIGINT
             ,CONSTRAINT "pk_kernel_utilprovider" PRIMARY KEY (id)
         );
@@ -1147,7 +1148,7 @@ BEGIN
         FROM information_schema.columns 
         WHERE table_name = 'kernel_utilprovider' 
           AND table_schema = 'public' 
-          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'caption', 'logo', 'cat'])
+          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'caption', 'logo', 'icon', 'cat'])
     LOOP
         -- 对应 PRINT 'Dropping ' + @tname + '.' + @fn
         
@@ -1182,6 +1183,20 @@ BEGIN
 
     IF not condition THEN
         ALTER TABLE kernel_utilprovider ADD "logo" text;
+    END IF;
+END $$;
+
+-- [kernel_utilprovider.Icon] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_utilprovider' AND column_name='icon'));
+
+    IF not condition THEN
+        ALTER TABLE kernel_utilprovider ADD "icon" text;
     END IF;
 END $$;
 

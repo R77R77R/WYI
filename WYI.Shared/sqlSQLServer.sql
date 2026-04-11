@@ -1754,6 +1754,7 @@ BEGIN
         ,[Sort] BIGINT NOT NULL,
         [Caption] NVARCHAR(MAX)
         ,[Logo] NVARCHAR(MAX)
+        ,[Icon] NVARCHAR(MAX)
         ,[Cat] BIGINT
 , CONSTRAINT [PK_kernel_utilprovider] PRIMARY KEY CLUSTERED ([ID] ASC)) ON [PRIMARY]
 END
@@ -1762,7 +1763,7 @@ END
 -- Dropping obsolete fields -----------
 DECLARE @name_kernel_utilprovider NVARCHAR(64)
 DECLARE cursor_kernel_utilprovider CURSOR FOR 
-    SELECT name FROM SYSCOLUMNS WHERE id=object_id('kernel_utilprovider') AND (name NOT IN ('ID','Createdat','Updatedat','Sort','Caption','Logo','Cat'))
+    SELECT name FROM SYSCOLUMNS WHERE id=object_id('kernel_utilprovider') AND (name NOT IN ('ID','Createdat','Updatedat','Sort','Caption','Logo','Icon','Cat'))
 
 OPEN cursor_kernel_utilprovider
 FETCH NEXT FROM cursor_kernel_utilprovider INTO @name_kernel_utilprovider
@@ -1835,6 +1836,33 @@ IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_ut
 IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_utilproviderLogo')
     BEGIN
     ALTER TABLE kernel_utilprovider DROP  CONSTRAINT [UniqueNonclustered_kernel_utilproviderLogo]
+    END
+
+-- [kernel_utilprovider.Icon] -------------
+
+
+-- [kernel_utilprovider.Icon] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('kernel_utilprovider') AND name='Icon')
+    BEGIN
+     ALTER TABLE kernel_utilprovider ALTER COLUMN [Icon] NVARCHAR(MAX)
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_kernel_utilprovider_Icon NVARCHAR(MAX);
+    SET @sql_add_kernel_utilprovider_Icon = 'ALTER TABLE kernel_utilprovider ADD [Icon] NVARCHAR(MAX)'
+    EXEC sp_executesql @sql_add_kernel_utilprovider_Icon
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_utilproviderIcon')
+    BEGIN
+    ALTER TABLE kernel_utilprovider DROP  CONSTRAINT [Constraint_kernel_utilproviderIcon]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_utilproviderIcon')
+    BEGIN
+    ALTER TABLE kernel_utilprovider DROP  CONSTRAINT [UniqueNonclustered_kernel_utilproviderIcon]
     END
 
 -- [kernel_utilprovider.Cat] -------------

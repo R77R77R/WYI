@@ -618,6 +618,7 @@ let KUCP_table = "Kernel_UtilCatProvider"
 type pUPROVIDER = {
 mutable Caption: Text
 mutable Logo: Text
+mutable Icon: Text
 mutable Cat: FK}
 
 
@@ -626,19 +627,20 @@ type UPROVIDER = Rcd<pUPROVIDER>
 let UPROVIDER_fieldorders() =
     match rdbms with
     | Rdbms.SqlServer ->
-        "[ID],[Createdat],[Updatedat],[Sort],[Caption],[Logo],[Cat]"
+        "[ID],[Createdat],[Updatedat],[Sort],[Caption],[Logo],[Icon],[Cat]"
     | Rdbms.PostgreSql ->
-        $""" "id","createdat","updatedat","sort", "caption","logo","cat" """
+        $""" "id","createdat","updatedat","sort", "caption","logo","icon","cat" """
 
 let pUPROVIDER_fieldordersArray = [|
     "Caption"
     "Logo"
+    "Icon"
     "Cat" |]
 
 let UPROVIDER_sql_update() =
     match rdbms with
-    | Rdbms.SqlServer -> "[Caption]=@Caption,[Logo]=@Logo,[Cat]=@Cat"
-    | Rdbms.PostgreSql -> "caption=@caption,logo=@logo,cat=@cat"
+    | Rdbms.SqlServer -> "[Caption]=@Caption,[Logo]=@Logo,[Icon]=@Icon,[Cat]=@Cat"
+    | Rdbms.PostgreSql -> "caption=@caption,logo=@logo,icon=@icon,cat=@cat"
 
 let pUPROVIDER_fields() =
     match rdbms with
@@ -646,16 +648,19 @@ let pUPROVIDER_fields() =
         [|
             Text("Caption")
             Text("Logo")
+            Text("Icon")
             FK("Cat") |]
     | Rdbms.PostgreSql ->
         [|
             Text("caption")
             Text("logo")
+            Text("icon")
             FK("cat") |]
 
 let pUPROVIDER_empty(): pUPROVIDER = {
     Caption = ""
     Logo = ""
+    Icon = ""
     Cat = 0L }
 
 let UPROVIDER_id = ref 254261L
