@@ -42,8 +42,8 @@ let billxs() =
     |> Array.map(fun i -> i.billxs.Values)
     |> Array.concat
 
-let searchBillx (term:string) =
-    billxs()
+let searchBillx billxs (term:string) =
+    billxs
     |> Array.filter(fun i ->
         let mutable hit = false
         if i.unito.IsSome then

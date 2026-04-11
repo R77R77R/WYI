@@ -74,7 +74,7 @@ let billxs (x:X) =
         |> wrapOk "data"
     | "search" ->
         (x.Json |> tryFindStrByAtt "term").ToLower()
-        |> searchBillx
+        |> searchBillx (billxs())
         |> Array.map BillComplex__json
         |> Json.Ary
         |> wrapOk "data"

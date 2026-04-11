@@ -5,12 +5,18 @@
 
 <div v-if="props.mode == 0">
   <div v-if="props.billx.cato && props.billx.providero">
+    <div class="text-block">
+      {{ props.billx.bill.p.State }}
+    </div>
     {{ props.billx.providero.p.Caption }}
     ({{ props.billx.cato.p.Caption }})
     ${{ props.billx.bill.p.Amt }}
   </div>
 </div>
 <div v-if="props.mode == 1">
+    <div class="text-block">
+      {{ props.billx.bill.p.State }}
+    </div>
   <div v-if="props.billx.cato && props.billx.providero">
     {{ props.billx.providero.p.Caption }}
     ({{ props.billx.cato.p.Caption }})

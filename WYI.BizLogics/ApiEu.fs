@@ -89,13 +89,13 @@ let myBillxs eux (x:X) =
         x.Json
         |> tryFindStrByAtt "act" with
     | "ls" -> 
-        billxs()
+        eux.billxs.Values
         |> Array.map BillComplex__json
         |> Json.Ary
         |> wrapOk "data"
     | "search" ->
         (x.Json |> tryFindStrByAtt "term").ToLower()
-        |> searchBillx
+        |> searchBillx eux.billxs.Values
         |> Array.map BillComplex__json
         |> Json.Ary
         |> wrapOk "data"
