@@ -77,9 +77,8 @@ let Bash output server (devDir, deployDir) (gitName, gitEmail) =
                 "bun bd"
                 "cd .."
                 "cd Server"
-                "sudo dotnet run" // 如果这里不加 &，ssh 会一直保持连接并即时回传日志
-            |]
-            |> String.concat " && "
+                "sudo dotnet run"
+                |]
         else
             [|  "cd ~Dev"
                 "rm -rf WYI"
@@ -97,8 +96,10 @@ let Bash output server (devDir, deployDir) (gitName, gitEmail) =
                 "dotnet build"
                 "dotnet run"
                 |]
-            |> String.concat " && "
 
-    $"root@{server} \"{remoteCommands}\"" 
+    $"root@{server}"
     |> exec "" "ssh" 
     |> ignore
+    
+    remoteCommands 
+    |> Array.iter(fun cmd -> exec "" "ssh" cmd |> ignore) 
