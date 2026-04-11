@@ -15,6 +15,18 @@ import { RouteRecordRaw } from 'vue-router';
       }]
     },
     {
+      path: '//Bills',
+      component: ()=>import ( "/src/layouts/blank.vue" ),
+      meta: {"layout":"blank"},
+      children: [{
+        path: "",
+        name: '-Bills',
+        component:()=> import("~/pages//Bills.vue"),
+        meta: {"layout":"blank"},
+        props: true
+      }]
+    },
+    {
       path: '//HomeCustomer',
       component: ()=>import ( "/src/layouts/blank.vue" ),
       meta: {"layout":"blank"},
@@ -27,25 +39,61 @@ import { RouteRecordRaw } from 'vue-router';
       }]
     },
     {
-      path: '//ReviewBills',
+      path: '//MyAcctxs',
       component: ()=>import ( "/src/layouts/blank.vue" ),
       meta: {"layout":"blank"},
       children: [{
         path: "",
-        name: '-ReviewBills',
-        component:()=> import("~/pages//ReviewBills.vue"),
+        name: '-MyAcctxs',
+        component:()=> import("~/pages//MyAcctxs.vue"),
         meta: {"layout":"blank"},
         props: true
       }]
     },
     {
-      path: '//UploadBills',
+      path: '//MyBills',
       component: ()=>import ( "/src/layouts/blank.vue" ),
       meta: {"layout":"blank"},
       children: [{
         path: "",
-        name: '-UploadBills',
-        component:()=> import("~/pages//UploadBills.vue"),
+        name: '-MyBills',
+        component:()=> import("~/pages//MyBills.vue"),
+        meta: {"layout":"blank"},
+        props: true
+      }]
+    },
+    {
+      path: '//MyUnits',
+      component: ()=>import ( "/src/layouts/blank.vue" ),
+      meta: {"layout":"blank"},
+      children: [{
+        path: "",
+        name: '-MyUnits',
+        component:()=> import("~/pages//MyUnits.vue"),
+        meta: {"layout":"blank"},
+        props: true
+      }]
+    },
+    {
+      path: '//ReviewBill',
+      component: ()=>import ( "/src/layouts/blank.vue" ),
+      meta: {"layout":"blank"},
+      children: [{
+        path: "",
+        name: '-ReviewBill',
+        component:()=> import("~/pages//ReviewBill.vue"),
+        meta: {"layout":"blank"},
+        props: true
+      }]
+    },
+    {
+      path: '//UploadBill',
+      component: ()=>import ( "/src/layouts/blank.vue" ),
+      meta: {"layout":"blank"},
+      children: [{
+        path: "",
+        name: '-UploadBill',
+        component:()=> import("~/pages//UploadBill.vue"),
         meta: {"layout":"blank"},
         props: true
       }]
