@@ -64,32 +64,34 @@ let Bash output server (devDir, deployDir) (gitName, gitEmail) =
     // 2. 远程 SSH 操作
     // 注意：远程执行 dotnet run 时建议加上 nohup 或确保你希望持续观察输出
     let remoteCommands = 
-        [|
-            $"cd {deployDir}"
-            "git fetch --all"
-            "git reset --hard origin/main"
-            "sudo killall -9 dotnet || true"
-            "sudo fuser -k 80/tcp || true"
-            "sudo fuser -k 443/tcp || true"
-            "cd Server"
-            "sudo dotnet run" // 如果这里不加 &，ssh 会一直保持连接并即时回传日志
-        |]
-        |> String.concat " && "
 
-    let remoteCommandsFull = 
-        [|  "cd Dev"
-            "rm -rf WYI"
-            "rm -rf JCS"
-            "rm -rf Common"
-            "dotnet nuget locals all --clear"
-            "git clone https://github.com/lchenmay/Common/ Common"
-            "git clone https://github.com/lchenmay/JCS/ JCS"
-            "git clone https://github.com/R77R77R/WYI/ WYI"
-            "cd Server"
-            "dotnet restore"
-            "dotnet build"
-            "dotnet run"
+        if false then
+            [|
+                $"cd {deployDir}"
+                "git fetch --all"
+                "git reset --hard origin/main"
+                "sudo killall -9 dotnet || true"
+                "sudo fuser -k 80/tcp || true"
+                "sudo fuser -k 443/tcp || true"
+                "cd Server"
+                "sudo dotnet run" // 如果这里不加 &，ssh 会一直保持连接并即时回传日志
             |]
+            |> String.concat " && "
+        else
+            [|  "cd Dev"
+                "rm -rf WYI"
+                "rm -rf JCS"
+                "rm -rf Common"
+                "dotnet nuget locals all --clear"
+                "git clone https://github.com/lchenmay/Common/ Common"
+                "git clone https://github.com/lchenmay/JCS/ JCS"
+                "git clone https://github.com/R77R77R/WYI/ WYI"
+                "cd Server"
+                "dotnet restore --no-cache"
+                "dotnet build"
+                "dotnet run"
+                |]
+            |> String.concat " && "
 
     $"root@{server} \"{remoteCommands}\"" 
     |> exec "" "ssh" 
