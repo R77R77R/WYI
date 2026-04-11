@@ -97,6 +97,7 @@ let init (runtime:Runtime) =
 
     (fun (i:EU) -> runtime.users[i.ID] <- { 
         units = createModDictInt64 2
+        acctxs = createModDictInt64 2
         billxs = createModDictInt64 2
         eu = i })
     |> loadAll runtime.output conn EU_metadata
@@ -153,6 +154,7 @@ let init (runtime:Runtime) =
             "System Administrator" euAuthTypeEnum.Admin with
         | Some rcd -> runtime.users[rcd.ID] <- { 
             units = createModDictInt64 2
+            acctxs = createModDictInt64 2
             billxs = createModDictInt64 2
             eu = rcd }
         | None -> halt runtime.output ("BizLogics.Init.createEU") ""

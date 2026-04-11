@@ -19,6 +19,11 @@
       <div class="card">
         <div class="card-caption">Bills</div>
         <div>
+          <button @click="s.rt.router.push('/Bills')">
+            Mange bills
+          </button>
+        </div>
+        <div>
           <SearchField api="/api/admin/billxs" 
             :item__key="(billx: wyi.BillComplex) => billx.bill.id" 
             :item__text="billx__text" 

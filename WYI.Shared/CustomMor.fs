@@ -29,6 +29,125 @@ open WYI.Shared.OrmTypes
 open WYI.Shared.Types
 open WYI.Shared.OrmMor
 
+// [AcctComplex] Structure
+
+let AcctComplex_empty(): AcctComplex =
+    {
+        cato = None
+        providero = None
+        owner = { ID = 0L; Sort = 0L; Createdat = DateTime.MinValue; Updatedat = DateTime.MinValue; p = pEU_empty() }
+        unito = None
+    }
+
+let AcctComplex__bin (bb:BytesBuilder) (v:AcctComplex) =
+
+    Option__bin (UCAT__bin) bb v.cato
+    Option__bin (UPROVIDER__bin) bb v.providero
+    EU__bin bb v.owner
+    Option__bin (UNIT__bin) bb v.unito
+    ()
+
+let bin__AcctComplex (bi:BinIndexed):AcctComplex =
+    let bin,index = bi
+
+    {
+        cato = 
+            bi
+            |> bin__Option (bin__UCAT)
+        providero = 
+            bi
+            |> bin__Option (bin__UPROVIDER)
+        owner = 
+            bi
+            |> bin__EU
+        unito = 
+            bi
+            |> bin__Option (bin__UNIT)
+    }
+
+let AcctComplex__json (v:AcctComplex) =
+
+    [|  ("cato",Option__json (UCAT__json) v.cato)
+        ("providero",Option__json (UPROVIDER__json) v.providero)
+        ("owner",EU__json v.owner)
+        ("unito",Option__json (UNIT__json) v.unito)
+         |]
+    |> Json.Braket
+
+let AcctComplex__jsonTbw (w:TextBlockWriter) (v:AcctComplex) =
+    json__str w (AcctComplex__json v)
+
+let AcctComplex__jsonStr (v:AcctComplex) =
+    (AcctComplex__json v) |> json__strFinal
+
+
+let json__AcctComplexo (json:Json):AcctComplex option =
+    let fields = json |> json__items
+
+    let mutable passOptions = true
+
+    let catoo =
+        match json__tryFindByName json "cato" with
+        | None ->
+            passOptions <- false
+            None
+        | Some v -> 
+            match v |> json__Optiono (json__UCATo) with
+            | Some res -> Some res
+            | None ->
+                passOptions <- false
+                None
+
+    let provideroo =
+        match json__tryFindByName json "providero" with
+        | None ->
+            passOptions <- false
+            None
+        | Some v -> 
+            match v |> json__Optiono (json__UPROVIDERo) with
+            | Some res -> Some res
+            | None ->
+                passOptions <- false
+                None
+
+    let ownero =
+        match json__tryFindByName json "owner" with
+        | None ->
+            passOptions <- false
+            None
+        | Some v -> 
+            match v |> json__EUo with
+            | Some res -> Some res
+            | None ->
+                passOptions <- false
+                None
+
+    let unitoo =
+        match json__tryFindByName json "unito" with
+        | None ->
+            passOptions <- false
+            None
+        | Some v -> 
+            match v |> json__Optiono (json__UNITo) with
+            | Some res -> Some res
+            | None ->
+                passOptions <- false
+                None
+
+    if passOptions then
+        ({
+            cato = catoo.Value
+            providero = provideroo.Value
+            owner = ownero.Value
+            unito = unitoo.Value }:AcctComplex) |> Some
+    else
+        None
+
+let AcctComplex_clone src =
+    let bb = new BytesBuilder()
+    AcctComplex__bin bb src
+    bin__AcctComplex (bb.bytes(),ref 0)
+
 // [BillComplex] Structure
 
 let BillComplex_empty(): BillComplex =
@@ -211,6 +330,7 @@ let BillComplex_clone src =
 let EuComplex_empty(): EuComplex =
     {
         units = ModDict_empty()
+        acctxs = ModDict_empty()
         billxs = ModDict_empty()
         eu = { ID = 0L; Sort = 0L; Createdat = DateTime.MinValue; Updatedat = DateTime.MinValue; p = pEU_empty() }
     }
@@ -219,6 +339,8 @@ let EuComplex__bin (bb:BytesBuilder) (v:EuComplex) =
 
     
     ModDictInt64__bin (UNIT__bin) bb v.units
+    
+    ModDictInt64__bin (AcctComplex__bin) bb v.acctxs
     
     ModDictInt64__bin (BillComplex__bin) bb v.billxs
     EU__bin bb v.eu
@@ -231,6 +353,9 @@ let bin__EuComplex (bi:BinIndexed):EuComplex =
         units = 
             bi
             |> bin__ModDictInt64(bin__UNIT)
+        acctxs = 
+            bi
+            |> bin__ModDictInt64(bin__AcctComplex)
         billxs = 
             bi
             |> bin__ModDictInt64(bin__BillComplex)
@@ -242,6 +367,7 @@ let bin__EuComplex (bi:BinIndexed):EuComplex =
 let EuComplex__json (v:EuComplex) =
 
     [|  ("units",ModDictInt64__json (UNIT__json) v.units)
+        ("acctxs",ModDictInt64__json (AcctComplex__json) v.acctxs)
         ("billxs",ModDictInt64__json (BillComplex__json) v.billxs)
         ("eu",EU__json v.eu)
          |]
@@ -266,6 +392,18 @@ let json__EuComplexo (json:Json):EuComplex option =
             None
         | Some v -> 
             match v |> (fun json ->json__ModDictInt64o (json__UNITo) (new Dictionary<int64,UNIT>()) json) with
+            | Some res -> Some res
+            | None ->
+                passOptions <- false
+                None
+
+    let acctxso =
+        match json__tryFindByName json "acctxs" with
+        | None ->
+            passOptions <- false
+            None
+        | Some v -> 
+            match v |> (fun json ->json__ModDictInt64o (json__AcctComplexo) (new Dictionary<int64,AcctComplex>()) json) with
             | Some res -> Some res
             | None ->
                 passOptions <- false
@@ -298,6 +436,7 @@ let json__EuComplexo (json:Json):EuComplex option =
     if passOptions then
         ({
             units = unitso.Value
+            acctxs = acctxso.Value
             billxs = billxso.Value
             eu = euo.Value }:EuComplex) |> Some
     else

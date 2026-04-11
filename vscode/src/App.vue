@@ -19,6 +19,9 @@
     <router-link 
       v-if="s.rt.user.eu.id > 0"
       to="/MyBills" class="text-white hover:text-gray-400">My Bills</router-link>
+    <router-link 
+      v-if="s.rt.user.eu.id > 0"
+      to="/MyUnits" class="text-white hover:text-gray-400">My Units</router-link>
   </div>
 
   <router-view class="min-h-[600px]" />

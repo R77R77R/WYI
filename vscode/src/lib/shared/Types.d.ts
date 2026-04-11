@@ -3,6 +3,17 @@ declare global {
 namespace wyi {
 
 
+// [AcctComplex]
+export type AcctComplex = {
+cato:UCAT | null,
+
+providero:UPROVIDER | null,
+
+owner:EU,
+
+unito:UNIT | null
+}
+
 // [BillComplex]
 export type BillComplex = {
 cato:UCAT | null,
@@ -23,6 +34,8 @@ bill:UBILL
 // [EuComplex]
 export type EuComplex = {
 units:{[key:number]: UNIT},
+
+acctxs:{[key:number]: AcctComplex},
 
 billxs:{[key:number]: BillComplex},
 

@@ -5,9 +5,9 @@
 
 <div v-if="props.mode == 0">
   <div v-if="props.billx.cato && props.billx.providero">
-    <div class="text-block">
+    <span class="text-block">
       {{ props.billx.bill.p.State }}
-    </div>
+    </span>
     {{ props.billx.providero.p.Caption }}
     ({{ props.billx.cato.p.Caption }})
     ${{ props.billx.bill.p.Amt }}
@@ -27,6 +27,13 @@
   <div>
     <b>${{ props.billx.bill.p.Amt }}</b>
   </div>
+  <div class="flex">
+    <a target="_blank"
+      v-for="i in props.billx.files"
+      :href="'/file/'+ i.id">
+      <img :src="'/thumbnail/'+ i.id" />
+    </a>
+  </div>
 </div>
 
 </div>
@@ -43,25 +50,11 @@ props.billx as wyi.BillComplex
 props.mode as number
 
 const s = glib.vue.reactive({
-  providers: [] as any,
   rt: runtime
 })
 
 glib.vue.onMounted(async () => {
 
-  Common.loader('/api/public/providers', {},(rep:any) => {
-    s.providers = []
-    rep.data.forEach((e:any) => {
-      let ucat = e.ucat as wyi.UCAT
-      let providers = [] as any
-      e.providers.forEach((p:wyi.UPROVIDER) => {
-        providers.push(p.p.Caption)  
-      })
-      s.providers.push({ 
-        ucat:ucat.p.Caption,
-        uproviders:providers })
-    });
-  })
 })
 
 </script>

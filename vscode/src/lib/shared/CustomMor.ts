@@ -20,6 +20,35 @@ export const enum ErEnum {
 }
 
 
+// [AcctComplex] Structure
+
+export const AcctComplex_empty = (): wyi.AcctComplex => { 
+    return {
+        cato: null,
+        providero: null,
+        owner: { id: 0, sort: 0, createdat: new Date(), updatedat: new Date(), p: marshall.pEU_empty() },
+        unito: null,
+    } as wyi.AcctComplex
+}
+
+export const AcctComplex__bin = (bb:BytesBuilder) => (v:any) => {
+
+    marshall.option__bin (marshall.UCAT__bin) (bb) (v.cato)
+    marshall.option__bin (marshall.UPROVIDER__bin) (bb) (v.providero)
+    marshall.EU__bin (bb) (v.owner)
+    marshall.option__bin (marshall.UNIT__bin) (bb) (v.unito)
+}
+
+export const bin__AcctComplex = (bi:BinIndexed):wyi.AcctComplex => {
+
+    return {
+        cato: marshall.bin__option (marshall.bin__UCAT) (bi),
+        providero: marshall.bin__option (marshall.bin__UPROVIDER) (bi),
+        owner: marshall.bin__EU (bi),
+        unito: marshall.bin__option (marshall.bin__UNIT) (bi),
+    }
+}
+
 // [BillComplex] Structure
 
 export const BillComplex_empty = (): wyi.BillComplex => { 
@@ -64,6 +93,7 @@ export const bin__BillComplex = (bi:BinIndexed):wyi.BillComplex => {
 export const EuComplex_empty = (): wyi.EuComplex => { 
     return {
         units: {},
+        acctxs: {},
         billxs: {},
         eu: { id: 0, sort: 0, createdat: new Date(), updatedat: new Date(), p: marshall.pEU_empty() },
     } as wyi.EuComplex
@@ -74,6 +104,8 @@ export const EuComplex__bin = (bb:BytesBuilder) => (v:any) => {
     
     marshall.dict__bin (marshall.int64__bin)(marshall.UNIT__bin) (bb) (v.units)
     
+    marshall.dict__bin (marshall.int64__bin)(AcctComplex__bin) (bb) (v.acctxs)
+    
     marshall.dict__bin (marshall.int64__bin)(BillComplex__bin) (bb) (v.billxs)
     marshall.EU__bin (bb) (v.eu)
 }
@@ -82,6 +114,7 @@ export const bin__EuComplex = (bi:BinIndexed):wyi.EuComplex => {
 
     return {
         units: marshall.bin__dict(marshall.bin__int64)(marshall.bin__UNIT) (bi),
+        acctxs: marshall.bin__dict(marshall.bin__int64)(bin__AcctComplex) (bi),
         billxs: marshall.bin__dict(marshall.bin__int64)(bin__BillComplex) (bi),
         eu: marshall.bin__EU (bi),
     }

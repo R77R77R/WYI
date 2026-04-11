@@ -13,6 +13,12 @@ open WYI.Shared.OrmTypes
 
 //[TypeManaged]{
 
+type AcctComplex = {
+mutable cato: UCAT option
+mutable providero: UPROVIDER option
+mutable owner: EU
+mutable unito: UNIT option }
+
 type BillComplex = {
 mutable cato: UCAT option
 mutable providero: UPROVIDER option
@@ -24,6 +30,7 @@ bill: UBILL }
 
 type EuComplex = {
 units: ModDictInt64<UNIT>
+acctxs: ModDictInt64<AcctComplex>
 billxs: ModDictInt64<BillComplex>
 eu: EU }
 

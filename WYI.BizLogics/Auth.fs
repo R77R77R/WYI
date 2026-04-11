@@ -79,6 +79,7 @@ let auth (x:X) =
             EU_create_incremental_transaction output ((fun rcd -> 
                 let eux = { 
                     units = createModDictInt64 2
+                    acctxs = createModDictInt64 2
                     billxs = createModDictInt64 2
                     eu = rcd }
                 runtime.users[eux.eu.ID] <- eux
@@ -90,13 +91,15 @@ let auth (x:X) =
         | Some eux -> 
             let s = UtilKestrel.Session.user__session runtime.sessions eux
             let euxSimplified = {
-                units = ModDict_empty()
-                billxs = ModDict_empty()
+                units = createModDictInt64 2
+                acctxs = createModDictInt64 2
+                billxs = createModDictInt64 2
                 eu = eux.eu }
 
             [|  ok
                 "session", s.session |> str__json
-                "eux", euxSimplified |> EuComplex__json |]
+                //"eux", euxSimplified |> EuComplex__json 
+                |]
         | None -> er Er.Internal
 
     else
