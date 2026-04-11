@@ -1,43 +1,36 @@
 <template>
   <div class="upload-page">
-    <div class="header">
-      <h2>Upload Bills</h2>
+
+    <div class="card">
+
+      <div class="header">
+        <h2>Upload Bills</h2>
+      </div>
+
+      <div>
+        <p>Drop your files here or <span>Select</span></p>
+        <small>Max. 10GB</small>
+      </div>
+
+      <div class="drop-zone" :class="{ 'is-dragging': isDragging }" @dragover.prevent="isDragging = true"
+        @dragleave.prevent="isDragging = false" @drop.prevent="onDrop" @click="triggerSelect">
+        <input type="file" multiple ref="fileInput" @change="onFileSelect" hidden />
+        <div class="icon">📄</div>
+      </div>
     </div>
 
-    <div>
-      <p>Drop your files here or <span>Select</span></p>
-      <small>Max. 10GB</small>
-    </div>
+    <div class="card">
 
-    <div 
-      class="drop-zone"
-      :class="{ 'is-dragging': isDragging }"
-      @dragover.prevent="isDragging = true"
-      @dragleave.prevent="isDragging = false"
-      @drop.prevent="onDrop"
-      @click="triggerSelect"
-    >
-      <input 
-        type="file" 
-        multiple 
-        ref="fileInput" 
-        @change="onFileSelect" 
-        hidden 
-      />
-      <div class="icon">📄</div>
-    </div>
+      <div>File list</div>
+      <div class="flex flex-wrap gap-4 p-4">
+        <BillFile class="w-48 h-32 bg-slate-100 border-2 border-dashed border-slate-300 rounded-lg flex"
+          v-for="filex in s.filexs" :filex="filex"></BillFile>
+      </div>
 
-    <div>File list</div>
-    <div class="flex flex-wrap gap-4 p-4">
-        <BillFile class="w-48 h-32 bg-slate-100 border-2 border-dashed border-slate-300 rounded-lg flex" 
-            v-for="filex in s.filexs"
-            :filex="filex"></BillFile>
+      <div>
+        <button @click="upload">Upload</button>
+      </div>
     </div>
-
-    <div>
-      <button @click="upload">Upload</button>
-    </div>
-
   </div>
 </template>
 
@@ -73,13 +66,14 @@ const onDrop = (e: DragEvent) => {
 
 const handleFiles = (fileList: FileList | null) => {
   if (!fileList) return
-  
+
   Array.from(fileList).forEach(file => {
 
-    let filex = { 
-      uploadTask: {}, 
+    let filex = {
+      uploadTask: {},
       rcd: FILE_empty(),
-      file: file} as FileComplex
+      file: file
+    } as FileComplex
 
     filex.uploadTask = {
       id: Math.random().toString(36).slice(2),
@@ -87,16 +81,16 @@ const handleFiles = (fileList: FileList | null) => {
       progress: 0,
       status: 'pending'
     }
-    
+
     s.filexs.push(filex)
   })
 }
 
-const upload = async() => {
+const upload = async () => {
 
   let fids: number[] =
-    s.filexs.map<number>((filex:FileComplex) =>
-      filex.rcd.id )
+    s.filexs.map<number>((filex: FileComplex) =>
+      filex.rcd.id)
 
   sessionStorage.setItem('fids', JSON.stringify(fids))
 
@@ -106,8 +100,18 @@ const upload = async() => {
 </script>
 
 <style scoped>
-.upload-page { max-width: 800px; margin: 0 auto; padding: 2rem; }
-.user-status { font-size: 0.9rem; color: #666; margin-bottom: 1.5rem; }
+.upload-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.user-status {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
 .drop-zone {
   border: 2px dashed #ccd0d7;
   border-radius: 8px;
@@ -117,7 +121,18 @@ const upload = async() => {
   cursor: pointer;
   transition: all 0.2s;
 }
-.drop-zone.is-dragging { border-color: #409eff; background: #ecf5ff; }
-.icon { font-size: 3rem; margin-bottom: 1rem; }
-.task-list { margin-top: 2rem; }
+
+.drop-zone.is-dragging {
+  border-color: #409eff;
+  background: #ecf5ff;
+}
+
+.icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.task-list {
+  margin-top: 2rem;
+}
 </style>

@@ -49,7 +49,12 @@ let users (x:X) =
     | "search" ->
         let term = (x.Json |> tryFindStrByAtt "term").ToLower()
         runtime.users.Values
-        |> Array.filter(fun i -> i.eu.p.Caption.ToLower().Contains term)
+        |> Array.filter(fun i ->
+            let mutable hit = false
+            if i.eu.p.Email.ToLower().Contains term then hit <- true
+            if i.eu.p.Caption.ToLower().Contains term then hit <- true
+            if i.eu.p.Username.ToLower().Contains term then hit <- true
+            hit)
         |> Array.map(fun i -> i.eu |> EU__json)
         |> Json.Ary
         |> wrapOk "data"

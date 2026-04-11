@@ -1,65 +1,75 @@
 <template>
 
-  <div class="flex justify-center"><div class="hor-range">
-      
-        <div class="card">
-          <div class="card-caption">Admin Console</div>
-        </div>
+  <div class="flex justify-center">
+    <div class="hor-range">
 
-        <div class="card">
-          <div class="card-caption">Log</div>
-          <div v-for="log in s.logs">
-      <div>{{ log.createdat }}</div>
-      <div>{{ log.p.Location }}</div>
-      <div v-html="log.p.Sql" />
-      <div v-html="log.p.Content" />
-      <hr class="mt-3">
-    </div>
-        </div>
-
-
-        <div class="card">
-      <div class="card-caption">Page Log</div>
-      <div v-for="plog in s.plogs">
-        <div>{{ plog.time }}</div>
-        <div>{{ plog.ip }}</div>
-        <div>{{ plog.pathline }}</div>
-        <div>{{ plog.from }}</div>
-        <hr class="mt-3">
+      <div class="card">
+        <div class="card-caption">Users</div>
+ 
+              <div>
+        <SearchField
+          api="/api/admin/users"
+          :item__key="user__key"
+          :item__text="user__text"
+          @select="onSelectUser" />
       </div>
+
+ 
+        <div v-for="i in s.users">
+          {{ i.p.Email }}
+        </div>
+      </div>
+
+
     </div>
+  </div>
+
+  <div class="flex justify-center">
+    <div class="hor-range">
 
 
-  </div></div>
-    
-  <div class="flex justify-center"><div class="hor-range">
-  
-    
-    
-    
-  </div></div>
-    
-  </template>
-      
-  <script setup lang="ts">
-    
-  import { glib } from '~/lib/glib'
-  import * as Common from '~/lib/store/common'
-    
-  const s = glib.vue.reactive({
-  logs: [] as wyi.LOG[],
-  plogs: [] as any[]
+
+
+    </div>
+  </div>
+
+</template>
+
+<script setup lang="ts">
+
+import { glib } from '~/lib/glib'
+import * as Common from '~/lib/store/common'
+import SearchField from '~/comps/SearchField.vue'
+
+const s = glib.vue.reactive({
+  users: [] as wyi.EU[],
+  rt: runtime
+})
+
+
+const user__key = (eu:wyi.EU) => {
+  return eu.id
+}
+
+const user__text = (eu:wyi.EU) => {
+  return eu.p.Address 
+    + ", " + eu.p.Town
+    + ", " + eu.p.State
+    + "" + eu.p.Zip
+}
+
+const onSelectUser = (eu:wyi.EU) => {
+}
+
+
+glib.vue.onMounted(async () => {
+
+  Common.loader('/api/admin/users', {
+    act: "ls"
+  }, (rep: any) => {
+    s.users = rep.data as wyi.EU[]
   })
-    
-  glib.vue.onMounted(async () => {
-    
-    Common.loader('/api/admin/logs', {},(rep:any) => {
-      s.logs = rep.list as wyi.LOG[]
-    })  
-    Common.loader('/api/admin/plogs', {},(rep:any) => {
-      s.plogs = rep.list
-    })  
-  })
-    
-  </script>
-    
+
+})
+
+</script>

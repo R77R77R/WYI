@@ -16,7 +16,7 @@
     <router-link to="/UploadBills" class="text-white hover:text-gray-400">Upload Bills</router-link>
   </div>
 
-  <router-view class="m-h-[600px]" />
+  <router-view class="min-h-[600px]" />
 
   <div class="hor" />
 

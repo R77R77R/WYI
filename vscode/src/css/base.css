@@ -74,7 +74,7 @@ h1{
 }
 
 .hor{
-  @apply bg-[#aaaa77] w-full h-[3px] my-5
+  @apply bg-[#9999aa] w-full h-[3px] my-5
 }
 
 .hor-range{

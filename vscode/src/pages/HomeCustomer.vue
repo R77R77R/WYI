@@ -1,10 +1,11 @@
 <template>
 
-<div>Welcome</div>
+<div class="card">
+  <div>Welcome</div>
+  <div>https://whatsyourideal.com/</div>
+</div>
 
-<div>https://whatsyourideal.com/</div>
-
-<div class="mt-[20px]">
+<div class="mt-[20px] card">
   <div v-for="(item,index) in s.providers">
     <div><b>{{ item.ucat }}</b>
       <span v-for="ii in item.uproviders">
