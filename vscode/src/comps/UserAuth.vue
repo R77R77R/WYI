@@ -5,7 +5,7 @@
     <UserButton />
     <div>{{ s.rt.user.eu.p.Email }}</div>
     <div v-if="s.rt.user.eu.p.AuthType == 2" class="p-[15px]">
-      <router-link to="/Admin">Admin</router-link>
+      <button @click="router.push('/Admin')">Admin Console</button>
     </div>
 </div>
 <div v-else class="flex items-center">
@@ -32,6 +32,7 @@ import { glib } from '~/lib/glib'
 import { post } from '~/lib/util/fetch'
 import { watch } from 'vue'
 import * as Common from '~/lib/store/common'
+import { router } from '~/lib/mod/route'
 
 const { isSignedIn, user } = useUser()
 
