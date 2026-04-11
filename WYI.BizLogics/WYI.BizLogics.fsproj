@@ -12,6 +12,7 @@
 	  <None Include="OrmTypes.sql" />
     <Compile Include="Common.fs" />
     <Compile Include="Db.fs" />
+    <Compile Include="Import.fs" />
     <Compile Include="Init.fs" />
     <Compile Include="Auth.fs" />
     <Compile Include="Ai.fs" />
