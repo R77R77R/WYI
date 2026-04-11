@@ -209,7 +209,7 @@ let init (runtime:Runtime) =
     Heating Oil | (Not specified)
     Elevator Maintenance Contracts | Otis
     CO2 (for Restaurants) | (Not specified)
-    Monthly Recurring Bills | (Miscellaneous)    """.Split Util.Text.crlf
+    Monthly Recurring Bills | (Miscellaneous)    """.Split Util.Text.lf
         |> Array.map(fun s -> 
             "Line214: " + s |> runtime.output
             s.Trim())
@@ -242,7 +242,7 @@ let init (runtime:Runtime) =
 //Subscriptions/Memberships | Adobe | Salesforce | HubSpot
 //Advertising | Billboards | Newspapers | Magazines | Yellow Pages
 //Water Delivery | Ready Refresh | Primo | Crystal Rock
-//Elevator Maintenance Contracts | Otis        """.Split Util.Text.crlf
+//Elevator Maintenance Contracts | Otis        """.Split Util.Text.lf
 //        |> Array.map(fun s -> s.Trim().Replace("/","|"))
 //        |> Array.filter(fun s -> s.Contains "|")
 //        |> Array.iter(fun s -> 
