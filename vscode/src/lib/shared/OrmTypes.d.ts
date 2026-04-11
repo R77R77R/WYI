@@ -81,6 +81,7 @@ export type pUACCT = {
     Provider: number
     Owner: number
     Unit: number
+    AcctName: string
     AcctNum: string
 }
 

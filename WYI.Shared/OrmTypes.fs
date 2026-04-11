@@ -324,6 +324,7 @@ mutable Cat: FK
 mutable Provider: FK
 mutable Owner: FK
 mutable Unit: FK
+mutable AcctName: Text
 mutable AcctNum: Text}
 
 
@@ -332,21 +333,22 @@ type UACCT = Rcd<pUACCT>
 let UACCT_fieldorders() =
     match rdbms with
     | Rdbms.SqlServer ->
-        "[ID],[Createdat],[Updatedat],[Sort],[Cat],[Provider],[Owner],[Unit],[AcctNum]"
+        "[ID],[Createdat],[Updatedat],[Sort],[Cat],[Provider],[Owner],[Unit],[AcctName],[AcctNum]"
     | Rdbms.PostgreSql ->
-        $""" "id","createdat","updatedat","sort", "cat","provider","owner","unit","acctnum" """
+        $""" "id","createdat","updatedat","sort", "cat","provider","owner","unit","acctname","acctnum" """
 
 let pUACCT_fieldordersArray = [|
     "Cat"
     "Provider"
     "Owner"
     "Unit"
+    "AcctName"
     "AcctNum" |]
 
 let UACCT_sql_update() =
     match rdbms with
-    | Rdbms.SqlServer -> "[Cat]=@Cat,[Provider]=@Provider,[Owner]=@Owner,[Unit]=@Unit,[AcctNum]=@AcctNum"
-    | Rdbms.PostgreSql -> "cat=@cat,provider=@provider,owner=@owner,unit=@unit,acctnum=@acctnum"
+    | Rdbms.SqlServer -> "[Cat]=@Cat,[Provider]=@Provider,[Owner]=@Owner,[Unit]=@Unit,[AcctName]=@AcctName,[AcctNum]=@AcctNum"
+    | Rdbms.PostgreSql -> "cat=@cat,provider=@provider,owner=@owner,unit=@unit,acctname=@acctname,acctnum=@acctnum"
 
 let pUACCT_fields() =
     match rdbms with
@@ -356,6 +358,7 @@ let pUACCT_fields() =
             FK("Provider")
             FK("Owner")
             FK("Unit")
+            Text("AcctName")
             Text("AcctNum") |]
     | Rdbms.PostgreSql ->
         [|
@@ -363,6 +366,7 @@ let pUACCT_fields() =
             FK("provider")
             FK("owner")
             FK("unit")
+            Text("acctname")
             Text("acctnum") |]
 
 let pUACCT_empty(): pUACCT = {
@@ -370,6 +374,7 @@ let pUACCT_empty(): pUACCT = {
     Provider = 0L
     Owner = 0L
     Unit = 0L
+    AcctName = ""
     AcctNum = "" }
 
 let UACCT_id = ref 54229561L

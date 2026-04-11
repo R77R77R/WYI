@@ -95,9 +95,20 @@ let myAcctxs eux (x:X) =
             |> tryFindByAtt "data" with
         | Some (s,data) -> 
             match 
-                (fun (p:pUACCT) -> 
-                    p.AcctNum <- tryFindStrByAtt "acctnum" data)
-                    //p.client <- eux.eu.ID) 
+                (fun (p:pUACCT) ->
+                    match
+                        runtime.data.catproviders
+                        |> Array.tryFind(fun kucp ->
+                            kucp.p.Cat = parse_int64(tryFindStrByAtt "cat" data)
+                            && kucp.p.Provider = parse_int64(tryFindStrByAtt "provider" data)) with
+                    | Some kucp -> 
+                        p.Cat <- kucp.p.Cat
+                        p.Provider <- kucp.p.Provider
+                    | None -> ()
+                    
+                    p.AcctNum <- tryFindStrByAtt "acctnum" data
+                    //p.AcctName <- tryFindStrByAtt "acctnum" data
+                    p.Owner <- eux.eu.ID) 
                 |> creator UACCT_metadata with
             | Some rcd -> 
                 //eux.acctxs[rcd.ID] <- {

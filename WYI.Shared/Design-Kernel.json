@@ -118,6 +118,10 @@
       },
       {
         "enum": "Text",
+        "name": "AcctName"
+      },
+      {
+        "enum": "Text",
         "name": "AcctNum"
       }
     ]

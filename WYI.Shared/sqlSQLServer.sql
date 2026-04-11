@@ -880,6 +880,7 @@ BEGIN
         ,[Provider] BIGINT
         ,[Owner] BIGINT
         ,[Unit] BIGINT
+        ,[AcctName] NVARCHAR(MAX)
         ,[AcctNum] NVARCHAR(MAX)
 , CONSTRAINT [PK_kernel_utilacct] PRIMARY KEY CLUSTERED ([ID] ASC)) ON [PRIMARY]
 END
@@ -888,7 +889,7 @@ END
 -- Dropping obsolete fields -----------
 DECLARE @name_kernel_utilacct NVARCHAR(64)
 DECLARE cursor_kernel_utilacct CURSOR FOR 
-    SELECT name FROM SYSCOLUMNS WHERE id=object_id('kernel_utilacct') AND (name NOT IN ('ID','Createdat','Updatedat','Sort','Cat','Provider','Owner','Unit','AcctNum'))
+    SELECT name FROM SYSCOLUMNS WHERE id=object_id('kernel_utilacct') AND (name NOT IN ('ID','Createdat','Updatedat','Sort','Cat','Provider','Owner','Unit','AcctName','AcctNum'))
 
 OPEN cursor_kernel_utilacct
 FETCH NEXT FROM cursor_kernel_utilacct INTO @name_kernel_utilacct
@@ -1015,6 +1016,33 @@ IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_ut
 IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_utilacctUnit')
     BEGIN
     ALTER TABLE kernel_utilacct DROP  CONSTRAINT [UniqueNonclustered_kernel_utilacctUnit]
+    END
+
+-- [kernel_utilacct.AcctName] -------------
+
+
+-- [kernel_utilacct.AcctName] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('kernel_utilacct') AND name='AcctName')
+    BEGIN
+     ALTER TABLE kernel_utilacct ALTER COLUMN [AcctName] NVARCHAR(MAX)
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_kernel_utilacct_AcctName NVARCHAR(MAX);
+    SET @sql_add_kernel_utilacct_AcctName = 'ALTER TABLE kernel_utilacct ADD [AcctName] NVARCHAR(MAX)'
+    EXEC sp_executesql @sql_add_kernel_utilacct_AcctName
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_utilacctAcctName')
+    BEGIN
+    ALTER TABLE kernel_utilacct DROP  CONSTRAINT [Constraint_kernel_utilacctAcctName]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_utilacctAcctName')
+    BEGIN
+    ALTER TABLE kernel_utilacct DROP  CONSTRAINT [UniqueNonclustered_kernel_utilacctAcctName]
     END
 
 -- [kernel_utilacct.AcctNum] -------------

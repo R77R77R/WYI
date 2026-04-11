@@ -224,6 +224,8 @@ export const pUACCT__bin = (bb:BytesBuilder) => (p:wyi.pUACCT) => {
     
     marshall.int64__bin (bb) (p.Unit)
     
+    marshall.str__bin (bb) (p.AcctName)
+    
     marshall.str__bin (bb) (p.AcctNum)
 }
 
@@ -243,6 +245,7 @@ export const bin__pUACCT = (bi:BinIndexed):wyi.pUACCT => {
     p.Provider = marshall.bin__int64 (bi)
     p.Owner = marshall.bin__int64 (bi)
     p.Unit = marshall.bin__int64 (bi)
+    p.AcctName = marshall.bin__str (bi)
     p.AcctNum = marshall.bin__str (bi)
 
     return p
@@ -823,6 +826,7 @@ export const pUACCT_empty = (): wyi.pUACCT => {
         Provider: 0,
         Owner: 0,
         Unit: 0,
+        AcctName: "",
         AcctNum: "" }
 }
 

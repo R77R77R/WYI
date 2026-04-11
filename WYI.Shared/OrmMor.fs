@@ -644,6 +644,10 @@ let pUACCT__bin (bb:BytesBuilder) (p:pUACCT) =
     
     p.Unit |> BitConverter.GetBytes |> bb.append
     
+    let binAcctName = p.AcctName |> Encoding.UTF8.GetBytes
+    binAcctName.Length |> BitConverter.GetBytes |> bb.append
+    binAcctName |> bb.append
+    
     let binAcctNum = p.AcctNum |> Encoding.UTF8.GetBytes
     binAcctNum.Length |> BitConverter.GetBytes |> bb.append
     binAcctNum |> bb.append
@@ -673,6 +677,11 @@ let bin__pUACCT (bi:BinIndexed):pUACCT =
     
     p.Unit <- BitConverter.ToInt64(bin,index.Value)
     index.Value <- index.Value + 8
+    
+    let count_AcctName = BitConverter.ToInt32(bin,index.Value)
+    index.Value <- index.Value + 4
+    p.AcctName <- Encoding.UTF8.GetString(bin,index.Value,count_AcctName)
+    index.Value <- index.Value + count_AcctName
     
     let count_AcctNum = BitConverter.ToInt32(bin,index.Value)
     index.Value <- index.Value + 4
@@ -708,6 +717,7 @@ let pUACCT__json (p:pUACCT) =
         ("Provider",p.Provider.ToString() |> Json.Num)
         ("Owner",p.Owner.ToString() |> Json.Num)
         ("Unit",p.Unit.ToString() |> Json.Num)
+        ("AcctName",p.AcctName |> Json.Str)
         ("AcctNum",p.AcctNum |> Json.Str) |]
     |> Json.Braket
 
@@ -741,6 +751,8 @@ let json__pUACCTo (json:Json):pUACCT option =
     p.Owner <- checkfield fields "Owner" |> parse_int64
     
     p.Unit <- checkfield fields "Unit" |> parse_int64
+    
+    p.AcctName <- checkfield fields "AcctName"
     
     p.AcctNum <- checkfield fields "AcctNum"
     
@@ -2549,7 +2561,8 @@ let db__pUACCT(line:Object[]): pUACCT =
     p.Provider <- if Convert.IsDBNull(line[5]) then 0L else line[5] :?> int64
     p.Owner <- if Convert.IsDBNull(line[6]) then 0L else line[6] :?> int64
     p.Unit <- if Convert.IsDBNull(line[7]) then 0L else line[7] :?> int64
-    p.AcctNum <- string(line[8]).TrimEnd()
+    p.AcctName <- string(line[8]).TrimEnd()
+    p.AcctNum <- string(line[9]).TrimEnd()
 
     p
 
@@ -2561,6 +2574,7 @@ let pUACCT__sps (p:pUACCT) =
             ("Provider", p.Provider) |> kvp__sqlparam
             ("Owner", p.Owner) |> kvp__sqlparam
             ("Unit", p.Unit) |> kvp__sqlparam
+            ("AcctName", p.AcctName) |> kvp__sqlparam
             ("AcctNum", p.AcctNum) |> kvp__sqlparam |]
     | Rdbms.PostgreSql ->
         [|
@@ -2568,6 +2582,7 @@ let pUACCT__sps (p:pUACCT) =
             ("provider", p.Provider) |> kvp__sqlparam
             ("owner", p.Owner) |> kvp__sqlparam
             ("unit", p.Unit) |> kvp__sqlparam
+            ("acctname", p.AcctName) |> kvp__sqlparam
             ("acctnum", p.AcctNum) |> kvp__sqlparam |]
 
 let db__UACCT = db__Rcd db__pUACCT
@@ -2581,6 +2596,7 @@ let pUACCT_clone (p:pUACCT): pUACCT = {
     Provider = p.Provider
     Owner = p.Owner
     Unit = p.Unit
+    AcctName = p.AcctName
     AcctNum = p.AcctNum }
 
 let UACCT_update_transaction output (updater,suc,fail) (rcd:UACCT) =
@@ -2649,6 +2665,7 @@ let UACCTTxSqlServer =
     ,[Provider]
     ,[Owner]
     ,[Unit]
+    ,[AcctName]
     ,[AcctNum])
     END
     """
