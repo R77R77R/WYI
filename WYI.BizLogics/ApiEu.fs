@@ -107,7 +107,7 @@ let myAcctxs eux (x:X) =
                     | None -> ()
                     
                     p.AcctNum <- tryFindStrByAtt "acctnum" data
-                    //p.AcctName <- tryFindStrByAtt "acctnum" data
+                    p.AcctName <- tryFindStrByAtt "acctname" data
                     p.Owner <- eux.eu.ID) 
                 |> creator UACCT_metadata with
             | Some rcd -> 
