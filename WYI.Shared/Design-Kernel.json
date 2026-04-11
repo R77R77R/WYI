@@ -189,6 +189,11 @@
         "name": "UnitText"
       },
 
+      {
+        "enum": "SelectLines",
+        "lines": "Draft//Draft///Uploaded//Uploaded///Submitted//Submitted",
+        "name": "State"
+      },
 
       {
         "enum": "FK",

@@ -94,6 +94,7 @@ p:pUACCT
 
 // [Kernel_UtilBill] (UBILL)
 
+
 export type pUBILL = {
 [key:string]: any
     ShownProvider: string
@@ -109,6 +110,7 @@ export type pUBILL = {
     Owner: number
     Unit: number
     UnitText: string
+    State: number
     UAcct: number
     Amt: number
 }

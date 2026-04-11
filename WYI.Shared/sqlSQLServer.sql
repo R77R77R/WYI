@@ -1066,6 +1066,7 @@ BEGIN
         ,[Owner] BIGINT
         ,[Unit] BIGINT
         ,[UnitText] NVARCHAR(MAX)
+        ,[State] INT
         ,[UAcct] BIGINT
         ,[Amt] FLOAT
 , CONSTRAINT [PK_kernel_utilbill] PRIMARY KEY CLUSTERED ([ID] ASC)) ON [PRIMARY]
@@ -1075,7 +1076,7 @@ END
 -- Dropping obsolete fields -----------
 DECLARE @name_kernel_utilbill NVARCHAR(64)
 DECLARE cursor_kernel_utilbill CURSOR FOR 
-    SELECT name FROM SYSCOLUMNS WHERE id=object_id('kernel_utilbill') AND (name NOT IN ('ID','Createdat','Updatedat','Sort','ShownProvider','ShownUnitNum','ShownAcctNum','ShownAcctName','ShownAddr','ShownTown','ShownState','ShownZip','Cat','Provider','Owner','Unit','UnitText','UAcct','Amt'))
+    SELECT name FROM SYSCOLUMNS WHERE id=object_id('kernel_utilbill') AND (name NOT IN ('ID','Createdat','Updatedat','Sort','ShownProvider','ShownUnitNum','ShownAcctNum','ShownAcctName','ShownAddr','ShownTown','ShownState','ShownZip','Cat','Provider','Owner','Unit','UnitText','State','UAcct','Amt'))
 
 OPEN cursor_kernel_utilbill
 FETCH NEXT FROM cursor_kernel_utilbill INTO @name_kernel_utilbill
@@ -1445,6 +1446,33 @@ IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_ut
 IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_utilbillUnitText')
     BEGIN
     ALTER TABLE kernel_utilbill DROP  CONSTRAINT [UniqueNonclustered_kernel_utilbillUnitText]
+    END
+
+-- [kernel_utilbill.State] -------------
+
+
+-- [kernel_utilbill.State] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('kernel_utilbill') AND name='State')
+    BEGIN
+     ALTER TABLE kernel_utilbill ALTER COLUMN [State] INT
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_kernel_utilbill_State NVARCHAR(MAX);
+    SET @sql_add_kernel_utilbill_State = 'ALTER TABLE kernel_utilbill ADD [State] INT'
+    EXEC sp_executesql @sql_add_kernel_utilbill_State
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_utilbillState')
+    BEGIN
+    ALTER TABLE kernel_utilbill DROP  CONSTRAINT [Constraint_kernel_utilbillState]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_utilbillState')
+    BEGIN
+    ALTER TABLE kernel_utilbill DROP  CONSTRAINT [UniqueNonclustered_kernel_utilbillState]
     END
 
 -- [kernel_utilbill.UAcct] -------------

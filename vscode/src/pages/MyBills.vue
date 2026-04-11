@@ -6,12 +6,8 @@
     </div>
 </div>
 
-<div class="card">
-
-    <Billx v-for="i in s.billxs"
-        :billx="i" :mode="0" />
-
-</div>
+<Billx v-for="i in s.billxs"
+  :billx="i" :mode="1" />
 
 </template>
 

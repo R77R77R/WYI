@@ -2,13 +2,25 @@
 
 <div class="card">
 
-<div v-if="props.billx.cato && props.billx.providero">
-  {{ props.billx.providero.p.Caption }}
-  ({{ props.billx.cato.p.Caption }})
+
+<div v-if="props.mode == 0">
+  <div v-if="props.billx.cato && props.billx.providero">
+    {{ props.billx.providero.p.Caption }}
+    ({{ props.billx.cato.p.Caption }})
+    ${{ props.billx.bill.p.Amt }}
+  </div>
 </div>
-
-<div v-if="props.mode > 0">
-
+<div v-if="props.mode == 1">
+  <div v-if="props.billx.cato && props.billx.providero">
+    {{ props.billx.providero.p.Caption }}
+    ({{ props.billx.cato.p.Caption }})
+  </div>
+  <div v-if="props.billx.unito">
+    {{ props.billx.unito.p.Address }}
+  </div>
+  <div>
+    <b>${{ props.billx.bill.p.Amt }}</b>
+  </div>
 </div>
 
 </div>

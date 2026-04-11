@@ -297,6 +297,8 @@ export const pUBILL__bin = (bb:BytesBuilder) => (p:wyi.pUBILL) => {
     
     marshall.str__bin (bb) (p.UnitText)
     
+    marshall.int32__bin (bb) (p.State)
+    
     marshall.int64__bin (bb) (p.UAcct)
     
     marshall.float__bin (bb) (p.Amt)
@@ -327,6 +329,7 @@ export const bin__pUBILL = (bi:BinIndexed):wyi.pUBILL => {
     p.Owner = marshall.bin__int64 (bi)
     p.Unit = marshall.bin__int64 (bi)
     p.UnitText = marshall.bin__str (bi)
+    p.State = marshall.bin__int32 (bi)
     p.UAcct = marshall.bin__int64 (bi)
     p.Amt = marshall.bin__float (bi)
 
@@ -829,6 +832,10 @@ export const UACCT_empty = (): wyi.UACCT => {
         p: pUACCT_empty() }
 }
 
+export const ubillStateEnum_Draft = 0 // Draft
+export const ubillStateEnum_Uploaded = 1 // Uploaded
+export const ubillStateEnum_Submitted = 2 // Submitted
+
 export const pUBILL_empty = (): wyi.pUBILL => {
     return {
         ShownProvider: "",
@@ -844,6 +851,7 @@ export const pUBILL_empty = (): wyi.pUBILL => {
         Owner: 0,
         Unit: 0,
         UnitText: "",
+        State: 0,
         UAcct: 0,
         Amt: 0.0 }
 }

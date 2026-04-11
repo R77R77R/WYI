@@ -829,6 +829,8 @@ let pUBILL__bin (bb:BytesBuilder) (p:pUBILL) =
     binUnitText.Length |> BitConverter.GetBytes |> bb.append
     binUnitText |> bb.append
     
+    p.State |> EnumToValue |> BitConverter.GetBytes |> bb.append
+    
     p.UAcct |> BitConverter.GetBytes |> bb.append
     
     p.Amt |> BitConverter.GetBytes |> bb.append
@@ -904,6 +906,9 @@ let bin__pUBILL (bi:BinIndexed):pUBILL =
     p.UnitText <- Encoding.UTF8.GetString(bin,index.Value,count_UnitText)
     index.Value <- index.Value + count_UnitText
     
+    p.State <- BitConverter.ToInt32(bin,index.Value) |> EnumOfValue
+    index.Value <- index.Value + 4
+    
     p.UAcct <- BitConverter.ToInt64(bin,index.Value)
     index.Value <- index.Value + 8
     
@@ -948,6 +953,7 @@ let pUBILL__json (p:pUBILL) =
         ("Owner",p.Owner.ToString() |> Json.Num)
         ("Unit",p.Unit.ToString() |> Json.Num)
         ("UnitText",p.UnitText |> Json.Str)
+        ("State",(p.State |> EnumToValue).ToString() |> Json.Num)
         ("UAcct",p.UAcct.ToString() |> Json.Num)
         ("Amt",p.Amt.ToString() |> Json.Num) |]
     |> Json.Braket
@@ -1000,6 +1006,8 @@ let json__pUBILLo (json:Json):pUBILL option =
     p.Unit <- checkfield fields "Unit" |> parse_int64
     
     p.UnitText <- checkfield fields "UnitText"
+    
+    p.State <- checkfield fields "State" |> parse_int32 |> EnumOfValue
     
     p.UAcct <- checkfield fields "UAcct" |> parse_int64
     
@@ -2650,8 +2658,9 @@ let db__pUBILL(line:Object[]): pUBILL =
     p.Owner <- if Convert.IsDBNull(line[14]) then 0L else line[14] :?> int64
     p.Unit <- if Convert.IsDBNull(line[15]) then 0L else line[15] :?> int64
     p.UnitText <- string(line[16]).TrimEnd()
-    p.UAcct <- if Convert.IsDBNull(line[17]) then 0L else line[17] :?> int64
-    p.Amt <- if Convert.IsDBNull(line[18]) then 0.0 else line[18] :?> float
+    p.State <- EnumOfValue(if Convert.IsDBNull(line[17]) then 0 else line[17] :?> int)
+    p.UAcct <- if Convert.IsDBNull(line[18]) then 0L else line[18] :?> int64
+    p.Amt <- if Convert.IsDBNull(line[19]) then 0.0 else line[19] :?> float
 
     p
 
@@ -2672,6 +2681,7 @@ let pUBILL__sps (p:pUBILL) =
             ("Owner", p.Owner) |> kvp__sqlparam
             ("Unit", p.Unit) |> kvp__sqlparam
             ("UnitText", p.UnitText) |> kvp__sqlparam
+            ("State", EnumToValue p.State) |> kvp__sqlparam
             ("UAcct", p.UAcct) |> kvp__sqlparam
             ("Amt", p.Amt) |> kvp__sqlparam |]
     | Rdbms.PostgreSql ->
@@ -2689,6 +2699,7 @@ let pUBILL__sps (p:pUBILL) =
             ("owner", p.Owner) |> kvp__sqlparam
             ("unit", p.Unit) |> kvp__sqlparam
             ("unittext", p.UnitText) |> kvp__sqlparam
+            ("state", EnumToValue p.State) |> kvp__sqlparam
             ("uacct", p.UAcct) |> kvp__sqlparam
             ("amt", p.Amt) |> kvp__sqlparam |]
 
@@ -2712,6 +2723,7 @@ let pUBILL_clone (p:pUBILL): pUBILL = {
     Owner = p.Owner
     Unit = p.Unit
     UnitText = p.UnitText
+    State = p.State
     UAcct = p.UAcct
     Amt = p.Amt }
 
@@ -2790,6 +2802,7 @@ let UBILLTxSqlServer =
     ,[Owner]
     ,[Unit]
     ,[UnitText]
+    ,[State]
     ,[UAcct]
     ,[Amt])
     END

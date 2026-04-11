@@ -378,6 +378,36 @@ let UACCT_table = "Kernel_UtilAcct"
 
 // [Kernel_UtilBill] (UBILL)
 
+type ubillStateEnum = 
+| Draft = 0 // Draft
+| Uploaded = 1 // Uploaded
+| Submitted = 2 // Submitted
+
+let ubillStateEnums = [| ubillStateEnum.Draft; ubillStateEnum.Uploaded; ubillStateEnum.Submitted |]
+let ubillStateEnumstrs = [| "ubillStateEnum"; "ubillStateEnum"; "ubillStateEnum" |]
+let ubillStateNum = 3
+
+let int__ubillStateEnum v =
+    match v with
+    | 0 -> Some ubillStateEnum.Draft
+    | 1 -> Some ubillStateEnum.Uploaded
+    | 2 -> Some ubillStateEnum.Submitted
+    | _ -> None
+
+let str__ubillStateEnum s =
+    match s with
+    | "Draft" -> Some ubillStateEnum.Draft
+    | "Uploaded" -> Some ubillStateEnum.Uploaded
+    | "Submitted" -> Some ubillStateEnum.Submitted
+    | _ -> None
+
+let ubillStateEnum__caption e =
+    match e with
+    | ubillStateEnum.Draft -> "Draft"
+    | ubillStateEnum.Uploaded -> "Uploaded"
+    | ubillStateEnum.Submitted -> "Submitted"
+    | _ -> ""
+
 type pUBILL = {
 mutable ShownProvider: Text
 mutable ShownUnitNum: Chars
@@ -392,6 +422,7 @@ mutable Provider: FK
 mutable Owner: FK
 mutable Unit: FK
 mutable UnitText: Text
+mutable State: ubillStateEnum
 mutable UAcct: FK
 mutable Amt: Float}
 
@@ -401,9 +432,9 @@ type UBILL = Rcd<pUBILL>
 let UBILL_fieldorders() =
     match rdbms with
     | Rdbms.SqlServer ->
-        "[ID],[Createdat],[Updatedat],[Sort],[ShownProvider],[ShownUnitNum],[ShownAcctNum],[ShownAcctName],[ShownAddr],[ShownTown],[ShownState],[ShownZip],[Cat],[Provider],[Owner],[Unit],[UnitText],[UAcct],[Amt]"
+        "[ID],[Createdat],[Updatedat],[Sort],[ShownProvider],[ShownUnitNum],[ShownAcctNum],[ShownAcctName],[ShownAddr],[ShownTown],[ShownState],[ShownZip],[Cat],[Provider],[Owner],[Unit],[UnitText],[State],[UAcct],[Amt]"
     | Rdbms.PostgreSql ->
-        $""" "id","createdat","updatedat","sort", "shownprovider","shownunitnum","shownacctnum","shownacctname","shownaddr","showntown","shownstate","shownzip","cat","provider","owner","unit","unittext","uacct","amt" """
+        $""" "id","createdat","updatedat","sort", "shownprovider","shownunitnum","shownacctnum","shownacctname","shownaddr","showntown","shownstate","shownzip","cat","provider","owner","unit","unittext","state","uacct","amt" """
 
 let pUBILL_fieldordersArray = [|
     "ShownProvider"
@@ -419,13 +450,14 @@ let pUBILL_fieldordersArray = [|
     "Owner"
     "Unit"
     "UnitText"
+    "State"
     "UAcct"
     "Amt" |]
 
 let UBILL_sql_update() =
     match rdbms with
-    | Rdbms.SqlServer -> "[ShownProvider]=@ShownProvider,[ShownUnitNum]=@ShownUnitNum,[ShownAcctNum]=@ShownAcctNum,[ShownAcctName]=@ShownAcctName,[ShownAddr]=@ShownAddr,[ShownTown]=@ShownTown,[ShownState]=@ShownState,[ShownZip]=@ShownZip,[Cat]=@Cat,[Provider]=@Provider,[Owner]=@Owner,[Unit]=@Unit,[UnitText]=@UnitText,[UAcct]=@UAcct,[Amt]=@Amt"
-    | Rdbms.PostgreSql -> "shownprovider=@shownprovider,shownunitnum=@shownunitnum,shownacctnum=@shownacctnum,shownacctname=@shownacctname,shownaddr=@shownaddr,showntown=@showntown,shownstate=@shownstate,shownzip=@shownzip,cat=@cat,provider=@provider,owner=@owner,unit=@unit,unittext=@unittext,uacct=@uacct,amt=@amt"
+    | Rdbms.SqlServer -> "[ShownProvider]=@ShownProvider,[ShownUnitNum]=@ShownUnitNum,[ShownAcctNum]=@ShownAcctNum,[ShownAcctName]=@ShownAcctName,[ShownAddr]=@ShownAddr,[ShownTown]=@ShownTown,[ShownState]=@ShownState,[ShownZip]=@ShownZip,[Cat]=@Cat,[Provider]=@Provider,[Owner]=@Owner,[Unit]=@Unit,[UnitText]=@UnitText,[State]=@State,[UAcct]=@UAcct,[Amt]=@Amt"
+    | Rdbms.PostgreSql -> "shownprovider=@shownprovider,shownunitnum=@shownunitnum,shownacctnum=@shownacctnum,shownacctname=@shownacctname,shownaddr=@shownaddr,showntown=@showntown,shownstate=@shownstate,shownzip=@shownzip,cat=@cat,provider=@provider,owner=@owner,unit=@unit,unittext=@unittext,state=@state,uacct=@uacct,amt=@amt"
 
 let pUBILL_fields() =
     match rdbms with
@@ -444,6 +476,7 @@ let pUBILL_fields() =
             FK("Owner")
             FK("Unit")
             Text("UnitText")
+            SelectLines("State", [| ("Draft","Draft");("Uploaded","Uploaded");("Submitted","Submitted") |])
             FK("UAcct")
             Float("Amt") |]
     | Rdbms.PostgreSql ->
@@ -461,6 +494,7 @@ let pUBILL_fields() =
             FK("owner")
             FK("unit")
             Text("unittext")
+            SelectLines("state", [| ("Draft","Draft");("Uploaded","Uploaded");("Submitted","Submitted") |])
             FK("uacct")
             Float("amt") |]
 
@@ -478,6 +512,7 @@ let pUBILL_empty(): pUBILL = {
     Owner = 0L
     Unit = 0L
     UnitText = ""
+    State = EnumOfValue 0
     UAcct = 0L
     Amt = 0.0 }
 
