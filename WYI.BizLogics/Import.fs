@@ -198,58 +198,40 @@ Elevator Maintenance Contracts | Otis        """.Split Util.Text.lf
     )
 
     [|
-        // --- Internet & Cable TV (Telcos) ---
-        ( "Verizon", "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNTAwIDExMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBmaWxsPSIjRTMwMDE2IiBkPSJNMTEwLjYgNzkuNEw4Ni40IDUwaDI0LjJWMjQuMkg3OS40djU1LjJoMzEuMnpNNTQuOCAxMi45Yy0zMSAwLTUxLjcgMjIuMi01MS43IDUxLjUgMCAyOS4xIDIwLjcgNTEuNSA1MS43IDUxLjVzNTEuNy0yMi40IDUxLjctNTEuNWMwLTI5LjEtMjAuNy01MS41LTUxLjctNTEuNXoiLz48L3N2Zz4=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMklEQVR4AWP4//8/AyUYGfABD8Ax6vBDWjD6IBp9EI0+iEYfRKMPotEH0eiDaPRBNPoAAL0S6967U1mGAAAAAElFTkSuQmCC" )
-        ( "Verizon Fios", "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNTAwIDExMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBmaWxsPSIjRTMwMDE2IiBkPSJNMTEwLjYgNzkuNEw4Ni40IDUwaDI0LjJWMjQuMkg3OS40djU1LjJoMzEuMnpNNTQuOCAxMi45Yy0zMSAwLTUxLjcgMjIuMi01MS43IDUxLjUgMCAyOS4xIDIwLjcgNTEuNSA1MS43IDUxLjVzNTEuNy0yMi40IDUxLjctNTEuNWMwLTI5LjEtMjAuNy01MS41LTUxLjctNTEuNXoiLz48L3N2Zz4=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMklEQVR4AWP4//8/AyUYGfABD8Ax6vBDWjD6IBp9EI0+iEYfRKMPotEH0eiDaPRBNPoAAL0S6967U1mGAAAAAElFTkSuQmCC" )
-        ( "Spectrum", "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDMwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGZpbGw9IiMwMDYyQTkiIGQ9Ik0wIDEwaDcuM2wyLjYgNS40TDEyLjUgMTBIMjB2MTBoLTUuNnYtMy4xbC0yLjMgMi44aC0yLjRsLTIuMy0yLjhWMTBIMHoiLz48L3N2Zz4=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAFklEQVR4AWP4z8BARYwM+DAbfRCNPggAAL8pA9H87v8AAAAAAElFTkSuQmCC" )
-        ( "Comcast", "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDMwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGZpbGw9IiNFMjExMTciIGQ9Ik0xMCAxMEM1IDExIDAgMTUgMCAyMHMwIDUgNSAxMCAxMCAwIDEwLTVWMTB6Ii8+PC9zdmc+", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAFElEQVR4AWP4z8BARYwM+DAbfRCNBwBvVQDvH5A98AAAAABJRU5ErkJggg==" )
-        ( "Optimum", "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDMwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGZpbGw9IiMwMDcxQjgiIGQ9Ik01IDVIMTB2MjBINTV6Ii8+PC9zdmc+", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAFklEQVR4AWP4z8BARYwM+DAbfRCNPggAAL8pA9H87v8AAAAAAElFTkSuQmCC" )
-        ( "Cox", "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDMwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGZpbGw9IiMwMDY3QjIiIGQ9Ik01MCAwQzMwIDAgMTAgMTUgMTAgMzVzMjAgMzUgNDAgMzVzNDAtMTUgNDAtMzVTNzAgMCA1MCAweiIvPjwvc3ZnPg==", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAFklEQVR4AWP4z8BARYwM+DAbfRCNPggAAL8pA9H87v8AAAAAAElFTkSuQmCC" )
-        ( "Frontier", "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDMwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGZpbGw9IiNGRjAwMDAiIGQ9Ik0wIDEwaDQwdjEwSDB6Ii8+PC9zdmc+", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAFklEQVR4AWP4z8BARYwM+DAbfRCNPggAAL8pA9H87v8AAAAAAElFTkSuQmCC" )
-        ( "Windstream", "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDMwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGZpbGw9IiM0QTkxM0QiIGQ9Ik0wIDEwaDMwdjIwSDB6Ii8+PC9zdmc+", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAFklEQVR4AWP4z8BARYwM+DAbfRCNPggAAL8pA9H87v8AAAAAAElFTkSuQmCC" )
-        ( "Century Link", "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDMwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGZpbGw9IiMwMDgwMDAiIGQ9Ik0xMCAxMGgyMHYyMEgxMHoiLz48L3N2Zz4=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAFklEQVR4AWP4z8BARYwM+DAbfRCNPggAAL8pA9H87v8AAAAAAElFTkSuQmCC" )
-        ( "RCN", "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDMwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGZpbGw9IiNEMjExMUEiIGQ9Ik0wIDEwaDUwdjIwSDB6Ii8+PC9zdmc+", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAFklEQVR4AWP4z8BARYwM+DAbfRCNPggAAL8pA9H87v8AAAAAAElFTkSuQmCC" )
+        // --- Internet & Cellphone ---
+        ( "Verizon", "https://logo.clearbit.com/verizon.com", "https://www.google.com/s2/favicons?domain=verizon.com&sz=32" )
+        ( "AT&T", "https://logo.clearbit.com/att.com", "https://www.google.com/s2/favicons?domain=att.com&sz=32" )
+        ( "T-Mobile", "https://logo.clearbit.com/t-mobile.com", "https://www.google.com/s2/favicons?domain=t-mobile.com&sz=32" )
+        ( "Spectrum", "https://logo.clearbit.com/spectrum.com", "https://www.google.com/s2/favicons?domain=spectrum.com&sz=32" )
+        ( "Comcast", "https://logo.clearbit.com/xfinity.com", "https://www.google.com/s2/favicons?domain=xfinity.com&sz=32" )
+        ( "Frontier", "https://logo.clearbit.com/frontier.com", "https://www.google.com/s2/favicons?domain=frontier.com&sz=32" )
+        ( "Cox", "https://logo.clearbit.com/cox.com", "https://www.google.com/s2/favicons?domain=cox.com&sz=32" )
+        ( "Optimum", "https://logo.clearbit.com/optimum.com", "https://www.google.com/s2/favicons?domain=optimum.com&sz=32" )
+    
+        // --- SaaS & Payroll ---
+        ( "Adobe", "https://logo.clearbit.com/adobe.com", "https://www.google.com/s2/favicons?domain=adobe.com&sz=32" )
+        ( "Salesforce", "https://logo.clearbit.com/salesforce.com", "https://www.google.com/s2/favicons?domain=salesforce.com&sz=32" )
+        ( "HubSpot", "https://logo.clearbit.com/hubspot.com", "https://www.google.com/s2/favicons?domain=hubspot.com&sz=32" )
+        ( "ADP", "https://logo.clearbit.com/adp.com", "https://www.google.com/s2/favicons?domain=adp.com&sz=32" )
+        ( "Paychex", "https://logo.clearbit.com/paychex.com", "https://www.google.com/s2/favicons?domain=paychex.com&sz=32" )
 
-        // --- Cellphone ---
-        ( "AT&T", "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMzggMzgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZmlsbD0iIzAwQTFFRiIgZD0iTTE5IDBDOC41IDAgMCA4LjUgMCAxOXM4LjUgMTkgMTkgMTkgMTkgMTktOC41IDE5LTE5UzI5LjUgMCAxOSAwem0wIDM2Yy05LjQgMC0xNy03LjYtMTctMTdTOS42IDIgMTkgMiAxNyA5LjYgMTcgMTljMCA5LjQtNy42IDExIDExIDEzeiIvPjwvc3ZnPg==", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAEUlEQVR4AWP4z8BARYwM+AADAIsAFv6z6BMAAAAASUVORK5CYII=" )
-        ( "T-Mobile", "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDQwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGZpbGw9IiNFMTAwN0YiIGQ9Ik0wIDBoMTR2MjRIMFYwek00MyAwaDE0djI0SDQzVjB6TTg2IDBoMTR2MjRIODZWMHoiLz48L3N2Zz4=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAFklEQVR4AWP4z8BARYwM+DAbfRCNPggAAL8pA9H87v8AAAAAAElFTkSuQmCC" )
-
-        // --- Satellite ---
-        ( "Direct TV", "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDMwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGZpbGw9IiMwMDY3QjIiIGQ9Ik01MCAwTDk0IDI1SDB6Ii8+PC9zdmc+", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAFklEQVR4AWP4z8BARYwM+DAbfRCNPggAAL8pA9H87v8AAAAAAElFTkSuQmCC" )
-        ( "Dish", "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDMwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGZpbGw9IiNFMjExMTciIGQ9Ik01IDVIMTV2MjBINXoiLz48L3N2Zz4=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAFklEQVR4AWP4z8BARYwM+DAbfRCNPggAAL8pA9H87v8AAAAAAElFTkSuQmCC" )
-        ( "Sirius XM", "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDMwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGZpbGw9IiMwMDY3QjIiIGQ9Ik0xMCAxMGgyMHYyMEgxMHpNMzAgMTBoNDB2MjBIMzB6Ii8+PC9zdmc+", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAFklEQVR4AWP4z8BARYwM+DAbfRCNPggAAL8pA9H87v8AAAAAAElFTkSuQmCC" )
-
-        // --- Security ---
-        ( "ADT", "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDUwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGZpbGw9IiMwMDVEOEEiIGQ9Ik0wIDBoMTAwdjUwSDB6TTIwIDEwaDYwdjMwSDIweiIvPjwvc3ZnPg==", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAFklEQVR4AWP4z8BARYwM+DAbfRCNPggAAL8pA9H87v8AAAAAAElFTkSuQmCC" )
-        ( "Vivint", "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDMwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGZpbGw9IiNGRjU5MDAiIGQ9Ik0xMCAxMGgyMHYyMEgxMHoiLz48L3N2Zz4=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAFklEQVR4AWP4z8BARYwM+DAbfRCNPggAAL8pA9H87v8AAAAAAElFTkSuQmCC" )
-        ( "Brinks", "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDMwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGZpbGw9IiMwMDAwMDAiIGQ9Ik01IDVIMTFWMTVINXpNMjAgNkg4MFYxOEgyMHoiLz48L3N2Zz4=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAFklEQVR4AWP4z8BARYwM+DAbfRCNPggAAL8pA9H87v8AAAAAAElFTkSuQmCC" )
-        ( "Slomin's", "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDMwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGZpbGw9IiNFRjA0MDQiIGQ9Ik0xMCAxMEgyMHYyMEgxMHoiLz48L3N2Zz4=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAFklEQVR4AWP4z8BARYwM+DAbfRCNPggAAL8pA9H87v8AAAAAAElFTkSuQmCC" )
-
-        // --- Payroll & Finance ---
-        ( "ADP", "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDQwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGZpbGw9IiNEMjExMUEiIGQ9Ik0xMCAxMEgyMHYzMEgxMHpNMzAgMTBINTB2MTBIMzB6TTMwIDMwSDUwdjEwSDMweiIvPjwvc3ZnPg==", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAFklEQVR4AWP4z8BARYwM+DAbfRCNPggAAL8pA9H87v8AAAAAAElFTkSuQmCC" )
-        ( "Paychex", "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDMwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGZpbGw9IiMwMDY3QjIiIGQ9Ik0wIDBoMTAwdjMwSDB6TTEwIDExaDgwVjIwSDEweiIvPjwvc3ZnPg==", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAFklEQVR4AWP4z8BARYwM+DAbfRCNPggAAL8pA9H87v8AAAAAAElFTkSuQmCC" )
-        ( "Global", "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDMwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGZpbGw9IiMwMDAwMDAiIGQ9Ik01MCAwQzMwIDAgMTAgMTUgMTAgMzVTNTAgNzAgNTAgNzB6Ii8+PC9zdmc+", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAFklEQVR4AWP4z8BARYwM+DAbfRCNPggAAL8pA9H87v8AAAAAAElFTkSuQmCC" )
-        ( "World Pay", "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDMwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGZpbGw9IiM1MzMxM0UiIGQ9Ik0wIDBoMTAwdjMwSDB6Ii8+PC9zdmc+", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAFklEQVR4AWP4z8BARYwM+DAbfRCNPggAAL8pA9H87v8AAAAAAElFTkSuQmCC" )
-
-        // --- Facility & Maintenance ---
-        ( "Waste Mgmt.", "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDMwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGZpbGw9IiMwMDcwMzkiIGQ9Ik0wIDEwaDQwdjIwSDB6TTEwIDExaDIwdjExSDEweiIvPjwvc3ZnPg==", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAFklEQVR4AWP4z8BARYwM+DAbfRCNPggAAL8pA9H87v8AAAAAAElFTkSuQmCC" )
-        ( "Republic", "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDMwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGZpbGw9IiMwMDY3QjIiIGQ9Ik01IDVIMTV2MjBINXpNMTggNUg5OFYyMEgxOHoiLz48L3N2Zz4=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAFklEQVR4AWP4z8BARYwM+DAbfRCNPggAAL8pA9H87v8AAAAAAElFTkSuQmCC" )
-        ( "GFL", "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDMwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGZpbGw9IiM4N0IyMDAiIGQ9Ik0wIDEwaDMwdjIwSDB6Ii8+PC9zdmc+", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAFklEQVR4AWP4z8BARYwM+DAbfRCNPggAAL8pA9H87v8AAAAAAElFTkSuQmCC" )
-        ( "Local companies", "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDMwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGZpbGw9IiM4MDgwODAiIGQ9Ik0wIDEwaDExMHYyMEgwem0xMCAxaDgwVjIwSDEweiIvPjwvc3ZnPg==", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAFklEQVR4AWP4z8BARYwM+DAbfRCNPggAAL8pA9H87v8AAAAAAElFTkSuQmCC" )
-
-        ( "Terminix", "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDMwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGZpbGw9IiMwMDgwMDAiIGQ9Ik0wIDEwaDEwMHYyMEgwem0xMCAxaDgwdjExSDEweiIvPjwvc3ZnPg==", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAFklEQVR4AWP4z8BARYwM+DAbfRCNPggAAL8pA9H87v8AAAAAAElFTkSuQmCC" )
-        ( "Orkin", "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDMwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGZpbGw9IiNFRjA0MDQiIGQ9Ik0wIDEwaDEwMHYyMEgwem0xMCAxaDgwdjExSDEweiIvPjwvc3ZnPg==", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAFklEQVR4AWP4z8BARYwM+DAbfRCNPggAAL8pA9H87v8AAAAAAElFTkSuQmCC" )
-        ( "TruGreen", "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDMwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGZpbGw9IiMwMDcwMzkiIGQ9Ik0wIDEwaDEwMHYyMEgwem0xMCAxaDgwdjExSDEweiIvPjwvc3ZnPg==", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAFklEQVR4AWP4z8BARYwM+DAbfRCNPggAAL8pA9H87v8AAAAAAElFTkSuQmCC" )
-        ( "Otis", "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDMwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGZpbGw9IiMwMDAwMDAiIGQ9Ik0wIDEwaDMwdjIwSDB6TTEwIDExaDEwdjExSDEweiIvPjwvc3ZnPg==", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAFklEQVR4AWP4z8BARYwM+DAbfRCNPggAAL8pA9H87v8AAAAAAElFTkSuQmCC" )
-
-        // --- SaaS & Subs ---
-        ( "Adobe", "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNTEyIDUxMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBmaWxsPSIjRkYwMDAwIiBkPSJNMzIzLjUgMTYwaC0xMzVMMTkyIDQ0OGg3Mi41bDMxLTY3LjVoNzIuNWwzMSA2Ny41SDQ0OHpNMjU2IDMxMmwzMi03MS4xaC02NHoiLz48L3N2Zz4=", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGklEQVR4AWP4z8BARYwM+DAbfRCNPggYfRCNBwBvVQDvH5A98AAAAABJRU5ErkJggg==" )
-        ( "Salesforce", "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDcwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGZpbGw9IiMwMEExRTIiIGQ9Ik01MCAwQzMwIDAgMTUgMTUgMTUgMzVzMTUgMzUgMzUgMzVzMzUtMTUgMzUtMzVTMzAgMCA1MCAweiIvPjwvc3ZnPg==", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMklEQVR4AWP4//8/AyUYGfABD8Ax6vBDWjD6IBp9EI0+iEYfRKMPotEH0eiDaPRBNPoAAL0S6967U1mGAAAAAElFTkSuQmCC" )
-        ( "HubSpot", "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDMwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGZpbGw9IiNGRjc3MDAiIGQ9Ik01MCAwQzMwIDAgMTAgMTAgMTAgMzBzMjAgMzAgNDAgMzBzNDAtMTAgNDAtMzBTNzAgMCA1MCAweiIvPjwvc3ZnPg==", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAFklEQVR4AWP4z8BARYwM+DAbfRCNPggAAL8pA9H87v8AAAAAAElFTkSuQmCC" )
-
-        // --- Advertising & Water ---
-        ( "Yellow Pages", "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDMwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGZpbGw9IiNGRkRBMTAiIGQ9Ik0wIDEwaDExMHYyMEgwem0xMCAxaDgwdjExSDEweiIvPjwvc3ZnPg==", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAFklEQVR4AWP4z8BARYwM+DAbfRCNPggAAL8pA9H87v8AAAAAAElFTkSuQmCC" )
-        ( "Ready Refresh", "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDMwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGZpbGw9IiMwMDZBQTMiIGQ9Ik01MCAwQzMwIDAgMTAgMTAgMTAgMzBTMzAgNjAgNTAgNjBTOTAgMzAgOTAgMTB6Ii8+PC9zdmc+", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAFklEQVR4AWP4z8BARYwM+DAbfRCNPggAAL8pA9H87v8AAAAAAElFTkSuQmCC" )
+        // --- Security & Maintenance ---
+        ( "ADT", "https://logo.clearbit.com/adt.com", "https://www.google.com/s2/favicons?domain=adt.com&sz=32" )
+        ( "Vivint", "https://logo.clearbit.com/vivint.com", "https://www.google.com/s2/favicons?domain=vivint.com&sz=32" )
+        ( "Otis", "https://logo.clearbit.com/otis.com", "https://www.google.com/s2/favicons?domain=otis.com&sz=32" )
+    
+        // --- Facilities ---
+        ( "Waste Mgmt.", "https://logo.clearbit.com/wm.com", "https://www.google.com/s2/favicons?domain=wm.com&sz=32" )
+        ( "Republic", "https://logo.clearbit.com/republicservices.com", "https://www.google.com/s2/favicons?domain=republicservices.com&sz=32" )
+        ( "Terminix", "https://logo.clearbit.com/terminix.com", "https://www.google.com/s2/favicons?domain=terminix.com&sz=32" )
+        ( "Orkin", "https://logo.clearbit.com/orkin.com", "https://www.google.com/s2/favicons?domain=orkin.com&sz=32" )
+        ( "TruGreen", "https://logo.clearbit.com/trugreen.com", "https://www.google.com/s2/favicons?domain=trugreen.com&sz=32" )
+    
+        // --- Others ---
+        ( "Sirius XM", "https://logo.clearbit.com/siriusxm.com", "https://www.google.com/s2/favicons?domain=siriusxm.com&sz=32" )
+        ( "Direct TV", "https://logo.clearbit.com/directv.com", "https://www.google.com/s2/favicons?domain=directv.com&sz=32" )
+        ( "Dish", "https://logo.clearbit.com/dish.com", "https://www.google.com/s2/favicons?domain=dish.com&sz=32" )
+        ( "Ready Refresh", "https://logo.clearbit.com/readyrefresh.com", "https://www.google.com/s2/favicons?domain=readyrefresh.com&sz=32" )
     |]
     |> Array.iter(fun (caption,logo,icon) -> 
         match
