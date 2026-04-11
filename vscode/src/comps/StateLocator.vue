@@ -65,7 +65,7 @@ import { glib } from '~/lib/glib'
 const state = defineModel<string>()
 
 glib.vue.onMounted(async () => {
-  console.log(state.value)
+
 })
 
 </script>

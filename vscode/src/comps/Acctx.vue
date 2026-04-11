@@ -6,7 +6,7 @@
   {{ props.acctx.acct.p.AcctNum }}
 </div>
 
-<div v-if="props.mode == 1">
+<div v-if="props.mode == 1"> 
   <div>
     {{ props.acctx.acct.p.AcctNum }}
   </div>
