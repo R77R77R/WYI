@@ -43,6 +43,11 @@ let tx sql =
         halt runtime.output "" ""
 
 let clearData() = 
+    //"DELETE FROM public.kernel_utilcat" |> tx
+    //"DELETE FROM public.kernel_utilprovider" |> tx
+    //"DELETE FROM public.kernel_utilcatprovider" |> tx
+
+
     //"DELETE FROM public.ca_file" |> tx
     //"DELETE FROM public.kernel_utilbill" |> tx
     //"DELETE FROM public.kernel_utilacct" |> tx
@@ -100,10 +105,6 @@ let importUtilProviders () =
                 runtime.data.providers[v.ID] <- v
                 checkBind ucat v
             | None -> halt runtime.output "" ""        
-
-    "DELETE FROM public.kernel_utilcat" |> tx
-    "DELETE FROM public.kernel_utilprovider" |> tx
-    "DELETE FROM public.kernel_utilcatprovider" |> tx
 
     let lines = new List<string * string>()
 
