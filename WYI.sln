@@ -27,6 +27,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{F7AAC36D-7480-46EC-937B-C3A1A5A81E0F}"
 	ProjectSection(SolutionItems) = preProject
 		doc\network.md = doc\network.md
+		doc\manual\prompt.md = doc\manual\prompt.md
 		doc\Prototype.pdf = doc\Prototype.pdf
 		doc\manual\WYI.pdf = doc\manual\WYI.pdf
 	EndProjectSection
