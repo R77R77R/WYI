@@ -93,7 +93,7 @@ let init (runtime:Runtime) =
             |> Array.concat)
     |> loadAll runtime.output conn KUCP_metadata
     
-    //WYI.BizLogics.Import.importUtilProviders()
+    WYI.BizLogics.Import.importUtilProviders()
 
     (fun (i:EU) -> runtime.users[i.ID] <- { 
         units = createModDictInt64 2

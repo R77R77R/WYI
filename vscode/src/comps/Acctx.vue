@@ -12,7 +12,9 @@
 
 <div v-if="props.mode == 1"> 
   <div v-if="props.acctx.cato && props.acctx.providero">
-    Service Provider: {{ props.acctx.providero.p.Caption }}
+    Service Provider: 
+    <img :src="props.acctx.providero.p.Icon" />
+    {{ props.acctx.providero.p.Caption }}
     ({{ props.acctx.cato.p.Caption }})
   </div>
 
