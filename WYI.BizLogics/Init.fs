@@ -104,6 +104,37 @@ let init (runtime:Runtime) =
         eux.units[i.ID] <- i)
     |> loadAll runtime.output conn UNIT_metadata
 
+    let files =
+        let res = Dictionary<int64,List<FILE>>()
+        (fun i -> 
+            if res.ContainsKey i.p.Bill = false then
+                res[i.p.Bill] <- new List<FILE>()
+            res[i.p.Bill].Add i)
+        |> loadAll runtime.output conn FILE_metadata
+        res
+
+    (fun (i:UBILL) ->
+        let eux = runtime.users[i.p.Owner]
+
+        let cato,providero =
+            match
+                runtime.data.catproviders
+                |> Array.tryFind(fun kucp ->
+                    kucp.p.Cat = i.p.Cat && kucp.p.Provider = i.p.Provider) with
+            | Some kucp -> 
+                runtime.data.cats[kucp.p.Cat] |> Some,runtime.data.providers[kucp.p.Provider] |> Some
+            | None -> None,None
+
+        eux.billxs[i.ID] <- {
+            cato = cato
+            providero = providero
+            owner = eux.eu
+            unito = None
+            accto = None
+            files = files[i.ID].ToArray()
+            bill = i })
+    |> loadAll runtime.output conn UBILL_metadata
+
     let users = runtime.users.Values |> Seq.toArray
 
     let sapwd = Util.Crypto.str__sha256 "21:16 EST, March 17th, 2026"
