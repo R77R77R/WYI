@@ -268,7 +268,7 @@ Amt: [$527.11]
                 yyyy + mm + dd
             else
                 ""
-        p.Amt <- tryFindStrByAtt "Amt" json |> parse_float
+        p.Amt <- (tryFindStrByAtt "Amt" json).Replace("$","") |> parse_float
 
         p.Cat <- tryFindStrByAtt "CategoryID" json |> parse_int64
         p.Provider <- tryFindStrByAtt "ProviderID" json |> parse_int64
