@@ -11,10 +11,9 @@
 
   <div v-if="s.rep.Er == 'OK'">
 
-    <div class="my-2 p-2 bg-[#eeeeff]"
-      v-if="s.rep.Ex != ''">
+    <div class="my-2 p-2 bg-[#eeeeff]" v-if="s.rep.Ex != ''">
       <p>We experienced an issue from the AI.
-      You can keyin the fields instead.</p>
+        You can keyin the fields instead.</p>
       <p>{{ s.rep.Ex }}</p>
     </div>
 
@@ -23,23 +22,23 @@
 
       <div>Address: </div>
       <div><input v-model="s.rep.data.bill.p.ShownAddr" /></div>
-      
+
       <div>Town: </div>
       <div><input v-model="s.rep.data.bill.p.ShownTown" /></div>
-      
+
       <div>State: </div>
       <StateLocator v-model="s.rep.data.bill.p.ShownState" />
 
       <div>ZIP: </div>
       <div><input v-model="s.rep.data.bill.p.ShownZip" /></div>
-    
+
       <div>Match existing unit</div>
       <div>
-        <SearchField
-          api="/api/eu/my-units"
-          :item__key="unit__key"
-          :item__text="unit__text"
+        <SearchField api="/api/eu/my-units" :item__key="(unit: wyi.UNIT) => unit.id" :item__text="unit__text"
           @select="onSelectUnit" />
+      </div>
+      <div v-for="i in s.units">
+        {{ unit__text(i) }}
       </div>
 
       <div class="flex">
@@ -48,28 +47,22 @@
       </div>
 
     </div>
-    
+
     <h2>Provider</h2>
     <div class="my-2 p-2 bg-[#eeeeff]">
       <div>Category</div>
       <div>
-        <select @change="onChangeCat"
-          v-model="s.rep.data.bill.p.Cat">
-          <option 
-            v-for="item in s.ucatproviders" 
-            :value="(item.ucat as wyi.UCAT).id">
+        <select @change="onChangeCat" v-model="s.rep.data.bill.p.Cat">
+          <option v-for="item in s.ucatproviders" :value="(item.ucat as wyi.UCAT).id">
             {{ (item.ucat as wyi.UCAT).p.Caption }}
           </option>
         </select>
       </div>
-      
+
       <div>Provider: {{ s.rep.data.bill.p.ShownProvider }}</div>
       <div>
-        <select
-          v-model="s.rep.data.bill.p.Provider">
-          <option
-            v-for="item in s.uproviders"
-            :value="(item as wyi.UPROVIDER).id">
+        <select v-model="s.rep.data.bill.p.Provider">
+          <option v-for="item in s.uproviders" :value="(item as wyi.UPROVIDER).id">
             {{ item.p.Caption }}
           </option>
         </select>
@@ -81,10 +74,10 @@
 
       <div>Account Number: </div>
       <div><input v-model="s.rep.data.bill.p.ShownAcctNum" /></div>
-      
+
       <div>Account Name: </div>
       <div><input v-model="s.rep.data.bill.p.ShownAcctName" /></div>
-    
+
       <div>Match existing account</div>
       <div>
         <SearchField />
@@ -96,7 +89,7 @@
 
     <div>Bill Data: </div>
     <div><input v-model="s.rep.data.bill.p.BillDate" /></div>
-    
+
     <div>Amount: </div>
     <div><input v-model="s.rep.data.bill.p.Amt" /></div>
 
@@ -129,6 +122,7 @@ const s = glib.vue.reactive({
   fids: [],
   rep: {} as any,
   showUnitAdded: false,
+  units: [] as wyi.UNIT[],
   ucatproviders: [] as any,
   uproviders: [] as wyi.UPROVIDER[],
   rt: runtime
@@ -155,6 +149,12 @@ glib.vue.onMounted(async () => {
 
   sessionStorage.setItem('fids', JSON.stringify([]))
 
+  Common.loader('my-units', {
+    act: "ls"
+  }, (rep: any) => {
+    s.units = rep.data as wyi.UNIT[]
+  })
+
   Common.loader('/api/eu/review-bill-files', {
     fids: s.fids
   }, (rep: any) => {
@@ -174,22 +174,20 @@ const onClickNewUnit = () => {
     },
     act: 'create'
   }, (rep: any) => {
+    s.units.push(rep.data as wyi.UNIT)
     s.showUnitAdded = true
   })
 }
 
-const unit__key = (unit:wyi.UNIT) => {
-  return unit.id
-}
 
-const unit__text = (unit:wyi.UNIT) => {
-  return unit.p.Address 
+const unit__text = (unit: wyi.UNIT) => {
+  return unit.p.Address
     + ", " + unit.p.Town
     + ", " + unit.p.State
     + "" + unit.p.Zip
 }
 
-const onSelectUnit = (unit:wyi.UNIT) => {
+const onSelectUnit = (unit: wyi.UNIT) => {
   s.rep.data.bill.id = unit.id
   s.rep.data.bill.p.ShownAddr = unit.p.Address
   s.rep.data.bill.p.ShownTown = unit.p.Town
@@ -202,18 +200,18 @@ const onChangeCat = () => {
   let found = s.ucatproviders.find((e: any) =>
     e.ucat.id == s.rep.data.bill.p.Cat)
 
-  if(found)
+  if (found)
     s.uproviders = found.uproviders
   else
     s.uproviders = []
 }
 
 const confirm = () => {
-    Common.loader('/api/eu/submit-bill', { 
-      data: s.rep.data
-    },(rep:any) => {
-        router.push("/")
-    })
+  Common.loader('/api/eu/submit-bill', {
+    data: s.rep.data
+  }, (rep: any) => {
+    router.push("/")
+  })
 }
 
 </script>

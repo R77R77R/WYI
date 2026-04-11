@@ -43,10 +43,10 @@ let tx sql =
         halt runtime.output "" ""
 
 let clearData() = 
-    "DELETE FROM public.kernel_utilbill" |> tx
-    "DELETE FROM public.kernel_utilacct" |> tx
-    "DELETE FROM public.kernel_unit" |> tx
-
+    //"DELETE FROM public.kernel_utilbill" |> tx
+    //"DELETE FROM public.kernel_utilacct" |> tx
+    //"DELETE FROM public.kernel_unit" |> tx
+    ()
 
 let importUtilProviders () = 
 
