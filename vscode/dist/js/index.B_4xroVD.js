@@ -9920,16 +9920,16 @@ var _hoisted_2$7 = {
 	key: 0,
 	class: "w-[300px]"
 };
-var _hoisted_3$7 = ["src"];
+var _hoisted_3$6 = ["src"];
 var _hoisted_4$5 = { key: 1 };
 var _hoisted_5$5 = { key: 0 };
-var _hoisted_6$5 = { key: 1 };
+var _hoisted_6$4 = { key: 1 };
 var _hoisted_7$2 = { key: 2 };
 var _hoisted_8$2 = { key: 3 };
-var _hoisted_9$2 = { key: 4 };
-var _hoisted_10$2 = { class: "progress-container" };
-var _hoisted_11$2 = { class: "status-row" };
-var _hoisted_12$2 = {
+var _hoisted_9$1 = { key: 4 };
+var _hoisted_10$1 = { class: "progress-container" };
+var _hoisted_11$1 = { class: "status-row" };
+var _hoisted_12$1 = {
 	key: 0,
 	class: "error-detail"
 };
@@ -10003,21 +10003,21 @@ var BillFile_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */ defin
 		});
 		return (_ctx, _cache) => {
 			return openBlock(), createElementBlock("div", _hoisted_1$7, [
-				props.filex.rcd.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_2$7, [createBaseVNode("img", { src: "/thumbnail/" + props.filex.rcd.id }, null, 8, _hoisted_3$7)])) : createCommentVNode("", true),
+				props.filex.rcd.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_2$7, [createBaseVNode("img", { src: "/thumbnail/" + props.filex.rcd.id }, null, 8, _hoisted_3$6)])) : createCommentVNode("", true),
 				props.filex.rcd.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_4$5, [
 					unref(s).billx.cato ? (openBlock(), createElementBlock("div", _hoisted_5$5, "Cat: " + toDisplayString(unref(s).billx.cato?.p.Caption), 1)) : createCommentVNode("", true),
-					unref(s).billx.providero ? (openBlock(), createElementBlock("div", _hoisted_6$5, "Provider: " + toDisplayString(unref(s).billx.providero?.p.Caption), 1)) : createCommentVNode("", true),
+					unref(s).billx.providero ? (openBlock(), createElementBlock("div", _hoisted_6$4, "Provider: " + toDisplayString(unref(s).billx.providero?.p.Caption), 1)) : createCommentVNode("", true),
 					unref(s).billx.unito ? (openBlock(), createElementBlock("div", _hoisted_7$2, "Unit: " + toDisplayString(unref(s).billx.unito?.p.Caption), 1)) : createCommentVNode("", true),
 					unref(s).billx.accto ? (openBlock(), createElementBlock("div", _hoisted_8$2, "Acct Number: " + toDisplayString(unref(s).billx.accto?.p.AcctNum), 1)) : createCommentVNode("", true),
-					unref(s).billx.bill.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_9$2, "Amount: " + toDisplayString(unref(s).billx.bill.p.Amout), 1)) : createCommentVNode("", true),
+					unref(s).billx.bill.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_9$1, "Amount: " + toDisplayString(unref(s).billx.bill.p.Amout), 1)) : createCommentVNode("", true),
 					createBaseVNode("div", null, "File Name: " + toDisplayString(props.filex.file.name), 1),
 					createBaseVNode("div", null, "File Size: " + toDisplayString((props.filex.file.size / 1024 / 1024).toFixed(2)) + " MB", 1)
 				])) : createCommentVNode("", true),
-				createBaseVNode("div", _hoisted_10$2, [createBaseVNode("div", {
+				createBaseVNode("div", _hoisted_10$1, [createBaseVNode("div", {
 					class: normalizeClass(["progress-fill", __props.filex.uploadTask.status]),
 					style: normalizeStyle({ width: props.filex.uploadTask.progress + "%" })
 				}, null, 6)]),
-				createBaseVNode("div", _hoisted_11$2, [createBaseVNode("span", { class: normalizeClass(["status-label", props.filex.uploadTask.status]) }, toDisplayString(getStatusText(props.filex.uploadTask)), 3), props.filex.uploadTask.message ? (openBlock(), createElementBlock("span", _hoisted_12$2, " - " + toDisplayString(props.filex.uploadTask.message), 1)) : createCommentVNode("", true)])
+				createBaseVNode("div", _hoisted_11$1, [createBaseVNode("span", { class: normalizeClass(["status-label", props.filex.uploadTask.status]) }, toDisplayString(getStatusText(props.filex.uploadTask)), 3), props.filex.uploadTask.message ? (openBlock(), createElementBlock("span", _hoisted_12$1, " - " + toDisplayString(props.filex.uploadTask.message), 1)) : createCommentVNode("", true)])
 			]);
 		};
 	}
@@ -10034,13 +10034,15 @@ var _plugin_vue_export_helper_default = (sfc, props) => {
 var BillFile_default = /* @__PURE__ */ _plugin_vue_export_helper_default(BillFile_vue_vue_type_script_setup_true_lang_default, [["__scopeId", "data-v-6ada0c57"]]);
 //#endregion
 //#region src/pages/UploadBills.vue?vue&type=script&setup=true&lang.ts
-var _withScopeId = (n) => (pushScopeId("data-v-2c6e445f"), n = n(), popScopeId(), n);
+var _withScopeId = (n) => (pushScopeId("data-v-48675402"), n = n(), popScopeId(), n);
 var _hoisted_1$6 = { class: "upload-page" };
-var _hoisted_2$6 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", { class: "header" }, [/* @__PURE__ */ createBaseVNode("h2", null, "Upload Bills")], -1));
-var _hoisted_3$6 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", null, [/* @__PURE__ */ createBaseVNode("p", null, [/* @__PURE__ */ createTextVNode("Drop your files here or "), /* @__PURE__ */ createBaseVNode("span", null, "Select")]), /* @__PURE__ */ createBaseVNode("small", null, "Max. 10GB")], -1));
-var _hoisted_4$4 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", { class: "icon" }, "📄", -1));
-var _hoisted_5$4 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", null, "File list", -1));
-var _hoisted_6$4 = { class: "flex flex-wrap gap-4 p-4" };
+var _hoisted_2$6 = { class: "card" };
+var _hoisted_3$5 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", { class: "header" }, [/* @__PURE__ */ createBaseVNode("h2", null, "Upload Bills")], -1));
+var _hoisted_4$4 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", null, [/* @__PURE__ */ createBaseVNode("p", null, [/* @__PURE__ */ createTextVNode("Drop your files here or "), /* @__PURE__ */ createBaseVNode("span", null, "Select")]), /* @__PURE__ */ createBaseVNode("small", null, "Max. 10GB")], -1));
+var _hoisted_5$4 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", { class: "icon" }, "📄", -1));
+var _hoisted_6$3 = { class: "card" };
+var _hoisted_7$1 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", null, "File list", -1));
+var _hoisted_8$1 = { class: "flex flex-wrap gap-4 p-4" };
 //#endregion
 //#region src/pages/UploadBills.vue
 var UploadBills_default = /* @__PURE__ */ _plugin_vue_export_helper_default(/* @__PURE__ */ defineComponent({
@@ -10085,9 +10087,9 @@ var UploadBills_default = /* @__PURE__ */ _plugin_vue_export_helper_default(/* @
 			await router.push("/ReviewBills");
 		};
 		return (_ctx, _cache) => {
-			return openBlock(), createElementBlock("div", _hoisted_1$6, [
-				_hoisted_2$6,
-				_hoisted_3$6,
+			return openBlock(), createElementBlock("div", _hoisted_1$6, [createBaseVNode("div", _hoisted_2$6, [
+				_hoisted_3$5,
+				_hoisted_4$4,
 				createBaseVNode("div", {
 					class: normalizeClass(["drop-zone", { "is-dragging": isDragging.value }]),
 					onDragover: _cache[0] || (_cache[0] = withModifiers(($event) => isDragging.value = true, ["prevent"])),
@@ -10101,19 +10103,20 @@ var UploadBills_default = /* @__PURE__ */ _plugin_vue_export_helper_default(/* @
 					ref: fileInput,
 					onChange: onFileSelect,
 					hidden: ""
-				}, null, 544), _hoisted_4$4], 34),
-				_hoisted_5$4,
-				createBaseVNode("div", _hoisted_6$4, [(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).filexs, (filex) => {
+				}, null, 544), _hoisted_5$4], 34)
+			]), createBaseVNode("div", _hoisted_6$3, [
+				_hoisted_7$1,
+				createBaseVNode("div", _hoisted_8$1, [(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).filexs, (filex) => {
 					return openBlock(), createBlock(BillFile_default, {
 						class: "w-48 h-32 bg-slate-100 border-2 border-dashed border-slate-300 rounded-lg flex",
 						filex
 					}, null, 8, ["filex"]);
 				}), 256))]),
 				createBaseVNode("div", null, [createBaseVNode("button", { onClick: upload }, "Upload")])
-			]);
+			])]);
 		};
 	}
-}), [["__scopeId", "data-v-2c6e445f"]]);
+}), [["__scopeId", "data-v-48675402"]]);
 //#endregion
 //#region src/lib/store/common.ts
 var loader = async (url, post, h, ex = () => {}) => {
@@ -10129,7 +10132,7 @@ var _hoisted_2$5 = {
 	key: 0,
 	class: "absolute z-10 w-full bg-white border rounded shadow-lg mt-1 max-h-48 overflow-y-auto"
 };
-var _hoisted_3$5 = ["onClick", "value"];
+var _hoisted_3$4 = ["onClick", "value"];
 //#endregion
 //#region src/comps/SearchField.vue
 var SearchField_default = /* @__PURE__ */ defineComponent({
@@ -10181,7 +10184,7 @@ var SearchField_default = /* @__PURE__ */ defineComponent({
 					onClick: ($event) => selectOption(opt),
 					value: props.item__key(opt),
 					class: "px-3 py-2 hover:bg-blue-50 cursor-pointer text-sm"
-				}, toDisplayString(props.item__text(opt)), 9, _hoisted_3$5);
+				}, toDisplayString(props.item__text(opt)), 9, _hoisted_3$4);
 			}), 256))])) : createCommentVNode("", true)]);
 		};
 	}
@@ -10212,19 +10215,19 @@ var StateLocator_default = /* @__PURE__ */ defineComponent({
 //#region src/pages/ReviewBills.vue?vue&type=script&setup=true&lang.ts
 var _hoisted_1$4 = /* @__PURE__ */ createBaseVNode("h2", null, "Review Bills", -1);
 var _hoisted_2$4 = { class: "w-[300px]" };
-var _hoisted_3$4 = ["src"];
+var _hoisted_3$3 = ["src"];
 var _hoisted_4$3 = { key: 0 };
 var _hoisted_5$3 = {
 	key: 0,
 	class: "my-2 p-2 bg-[#eeeeff]"
 };
-var _hoisted_6$3 = /* @__PURE__ */ createBaseVNode("p", null, "We experienced an issue from the AI. You can keyin the fields instead.", -1);
-var _hoisted_7$1 = /* @__PURE__ */ createBaseVNode("h2", null, "Unit", -1);
-var _hoisted_8$1 = { class: "my-2 p-2 bg-[#eeeeff]" };
-var _hoisted_9$1 = /* @__PURE__ */ createBaseVNode("div", null, "Address: ", -1);
-var _hoisted_10$1 = /* @__PURE__ */ createBaseVNode("div", null, "Town: ", -1);
-var _hoisted_11$1 = /* @__PURE__ */ createBaseVNode("div", null, "State: ", -1);
-var _hoisted_12$1 = /* @__PURE__ */ createBaseVNode("div", null, "ZIP: ", -1);
+var _hoisted_6$2 = /* @__PURE__ */ createBaseVNode("p", null, "We experienced an issue from the AI. You can keyin the fields instead.", -1);
+var _hoisted_7 = /* @__PURE__ */ createBaseVNode("h2", null, "Unit", -1);
+var _hoisted_8 = { class: "my-2 p-2 bg-[#eeeeff]" };
+var _hoisted_9 = /* @__PURE__ */ createBaseVNode("div", null, "Address: ", -1);
+var _hoisted_10 = /* @__PURE__ */ createBaseVNode("div", null, "Town: ", -1);
+var _hoisted_11 = /* @__PURE__ */ createBaseVNode("div", null, "State: ", -1);
+var _hoisted_12 = /* @__PURE__ */ createBaseVNode("div", null, "ZIP: ", -1);
 var _hoisted_13 = /* @__PURE__ */ createBaseVNode("div", null, "Match existing unit", -1);
 var _hoisted_14 = { class: "flex" };
 var _hoisted_15 = { key: 0 };
@@ -10315,22 +10318,22 @@ var ReviewBills_default = /* @__PURE__ */ defineComponent({
 			return openBlock(), createElementBlock(Fragment, null, [
 				_hoisted_1$4,
 				(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).fids, (fid) => {
-					return openBlock(), createElementBlock("div", null, [createBaseVNode("div", _hoisted_2$4, [createBaseVNode("img", { src: "/thumbnail/" + fid }, null, 8, _hoisted_3$4)])]);
+					return openBlock(), createElementBlock("div", null, [createBaseVNode("div", _hoisted_2$4, [createBaseVNode("img", { src: "/thumbnail/" + fid }, null, 8, _hoisted_3$3)])]);
 				}), 256)),
 				unref(s).rep.Er == "OK" ? (openBlock(), createElementBlock("div", _hoisted_4$3, [
-					unref(s).rep.Ex != "" ? (openBlock(), createElementBlock("div", _hoisted_5$3, [_hoisted_6$3, createBaseVNode("p", null, toDisplayString(unref(s).rep.Ex), 1)])) : createCommentVNode("", true),
-					_hoisted_7$1,
-					createBaseVNode("div", _hoisted_8$1, [
-						_hoisted_9$1,
+					unref(s).rep.Ex != "" ? (openBlock(), createElementBlock("div", _hoisted_5$3, [_hoisted_6$2, createBaseVNode("p", null, toDisplayString(unref(s).rep.Ex), 1)])) : createCommentVNode("", true),
+					_hoisted_7,
+					createBaseVNode("div", _hoisted_8, [
+						_hoisted_9,
 						createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => unref(s).rep.data.bill.p.ShownAddr = $event) }, null, 512), [[vModelText, unref(s).rep.data.bill.p.ShownAddr]])]),
-						_hoisted_10$1,
+						_hoisted_10,
 						createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => unref(s).rep.data.bill.p.ShownTown = $event) }, null, 512), [[vModelText, unref(s).rep.data.bill.p.ShownTown]])]),
-						_hoisted_11$1,
+						_hoisted_11,
 						createVNode(StateLocator_default, {
 							modelValue: unref(s).rep.data.bill.p.ShownState,
 							"onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => unref(s).rep.data.bill.p.ShownState = $event)
 						}, null, 8, ["modelValue"]),
-						_hoisted_12$1,
+						_hoisted_12,
 						createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[3] || (_cache[3] = ($event) => unref(s).rep.data.bill.p.ShownZip = $event) }, null, 512), [[vModelText, unref(s).rep.data.bill.p.ShownZip]])]),
 						_hoisted_13,
 						createBaseVNode("div", null, [createVNode(SearchField_default, {
@@ -10377,9 +10380,8 @@ var ReviewBills_default = /* @__PURE__ */ defineComponent({
 });
 //#endregion
 //#region src/pages/HomeCustomer.vue?vue&type=script&setup=true&lang.ts
-var _hoisted_1$3 = /* @__PURE__ */ createBaseVNode("div", null, "Welcome", -1);
-var _hoisted_2$3 = /* @__PURE__ */ createBaseVNode("div", null, "https://whatsyourideal.com/", -1);
-var _hoisted_3$3 = { class: "mt-[20px]" };
+var _hoisted_1$3 = /* @__PURE__ */ createBaseVNode("div", { class: "card" }, [/* @__PURE__ */ createBaseVNode("div", null, "Welcome"), /* @__PURE__ */ createBaseVNode("div", null, "https://whatsyourideal.com/")], -1);
+var _hoisted_2$3 = { class: "mt-[20px] card" };
 //#endregion
 //#region src/pages/HomeCustomer.vue
 var HomeCustomer_default = /* @__PURE__ */ defineComponent({
@@ -10406,15 +10408,11 @@ var HomeCustomer_default = /* @__PURE__ */ defineComponent({
 			});
 		});
 		return (_ctx, _cache) => {
-			return openBlock(), createElementBlock(Fragment, null, [
-				_hoisted_1$3,
-				_hoisted_2$3,
-				createBaseVNode("div", _hoisted_3$3, [(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).providers, (item, index) => {
-					return openBlock(), createElementBlock("div", null, [createBaseVNode("div", null, [createBaseVNode("b", null, toDisplayString(item.ucat), 1), (openBlock(true), createElementBlock(Fragment, null, renderList(item.uproviders, (ii) => {
-						return openBlock(), createElementBlock("span", null, " | " + toDisplayString(ii), 1);
-					}), 256))])]);
-				}), 256))])
-			], 64);
+			return openBlock(), createElementBlock(Fragment, null, [_hoisted_1$3, createBaseVNode("div", _hoisted_2$3, [(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).providers, (item, index) => {
+				return openBlock(), createElementBlock("div", null, [createBaseVNode("div", null, [createBaseVNode("b", null, toDisplayString(item.ucat), 1), (openBlock(true), createElementBlock(Fragment, null, renderList(item.uproviders, (ii) => {
+					return openBlock(), createElementBlock("span", null, " | " + toDisplayString(ii), 1);
+				}), 256))])]);
+			}), 256))])], 64);
 		};
 	}
 });
@@ -10422,55 +10420,43 @@ var HomeCustomer_default = /* @__PURE__ */ defineComponent({
 //#region src/pages/Admin.vue?vue&type=script&setup=true&lang.ts
 var _hoisted_1$2 = { class: "flex justify-center" };
 var _hoisted_2$2 = { class: "hor-range" };
-var _hoisted_3$2 = /* @__PURE__ */ createBaseVNode("div", { class: "card" }, [/* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Admin Console")], -1);
-var _hoisted_4$2 = { class: "card" };
-var _hoisted_5$2 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Log", -1);
-var _hoisted_6$2 = ["innerHTML"];
-var _hoisted_7 = ["innerHTML"];
-var _hoisted_8 = /* @__PURE__ */ createBaseVNode("hr", { class: "mt-3" }, null, -1);
-var _hoisted_9 = { class: "card" };
-var _hoisted_10 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Page Log", -1);
-var _hoisted_11 = /* @__PURE__ */ createBaseVNode("hr", { class: "mt-3" }, null, -1);
-var _hoisted_12 = /* @__PURE__ */ createBaseVNode("div", { class: "flex justify-center" }, [/* @__PURE__ */ createBaseVNode("div", { class: "hor-range" })], -1);
+var _hoisted_3$2 = { class: "card" };
+var _hoisted_4$2 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Users", -1);
+var _hoisted_5$2 = /* @__PURE__ */ createBaseVNode("div", { class: "flex justify-center" }, [/* @__PURE__ */ createBaseVNode("div", { class: "hor-range" })], -1);
 //#endregion
 //#region src/pages/Admin.vue
 var Admin_default = /* @__PURE__ */ defineComponent({
 	__name: "Admin",
 	setup(__props) {
 		const s = glib.vue.reactive({
-			logs: [],
-			plogs: []
+			users: [],
+			rt: runtime
 		});
+		const user__key = (eu) => {
+			return eu.id;
+		};
+		const user__text = (eu) => {
+			return eu.p.Caption + " " + eu.p.Username + " " + eu.p.Email;
+		};
+		const onSelectUser = (eu) => {};
 		glib.vue.onMounted(async () => {
-			loader("/api/admin/logs", {}, (rep) => {
-				s.logs = rep.list;
-			});
-			loader("/api/admin/plogs", {}, (rep) => {
-				s.plogs = rep.list;
+			loader("/api/admin/users", { act: "ls" }, (rep) => {
+				s.users = rep.data;
 			});
 		});
 		return (_ctx, _cache) => {
-			return openBlock(), createElementBlock(Fragment, null, [createBaseVNode("div", _hoisted_1$2, [createBaseVNode("div", _hoisted_2$2, [
-				_hoisted_3$2,
-				createBaseVNode("div", _hoisted_4$2, [_hoisted_5$2, (openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).logs, (log) => {
-					return openBlock(), createElementBlock("div", null, [
-						createBaseVNode("div", null, toDisplayString(log.createdat), 1),
-						createBaseVNode("div", null, toDisplayString(log.p.Location), 1),
-						createBaseVNode("div", { innerHTML: log.p.Sql }, null, 8, _hoisted_6$2),
-						createBaseVNode("div", { innerHTML: log.p.Content }, null, 8, _hoisted_7),
-						_hoisted_8
-					]);
-				}), 256))]),
-				createBaseVNode("div", _hoisted_9, [_hoisted_10, (openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).plogs, (plog) => {
-					return openBlock(), createElementBlock("div", null, [
-						createBaseVNode("div", null, toDisplayString(plog.time), 1),
-						createBaseVNode("div", null, toDisplayString(plog.ip), 1),
-						createBaseVNode("div", null, toDisplayString(plog.pathline), 1),
-						createBaseVNode("div", null, toDisplayString(plog.from), 1),
-						_hoisted_11
-					]);
-				}), 256))])
-			])]), _hoisted_12], 64);
+			return openBlock(), createElementBlock(Fragment, null, [createBaseVNode("div", _hoisted_1$2, [createBaseVNode("div", _hoisted_2$2, [createBaseVNode("div", _hoisted_3$2, [
+				_hoisted_4$2,
+				createBaseVNode("div", null, [createVNode(SearchField_default, {
+					api: "/api/admin/users",
+					item__key: user__key,
+					item__text: user__text,
+					onSelect: onSelectUser
+				})]),
+				(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).users, (i) => {
+					return openBlock(), createElementBlock("div", null, toDisplayString(i.p.Email), 1);
+				}), 256))
+			])])]), _hoisted_5$2], 64);
 		};
 	}
 });
@@ -12982,7 +12968,7 @@ var _sfc_main = {
 					default: withCtx(() => [createTextVNode("Upload Bills")]),
 					_: 1
 				})]),
-				createVNode(_component_router_view, { class: "m-h-[600px]" }),
+				createVNode(_component_router_view, { class: "min-h-[600px]" }),
 				_hoisted_5,
 				_hoisted_6
 			])])], 64);

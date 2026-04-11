@@ -73,6 +73,9 @@ let Bash output server (devDir, deployDir) (gitName, gitEmail) =
                 "sudo killall -9 dotnet || true"
                 "sudo fuser -k 80/tcp || true"
                 "sudo fuser -k 443/tcp || true"
+                "cd vscode"
+                "bun bd"
+                "cd .."
                 "cd Server"
                 "sudo dotnet run" // 如果这里不加 &，ssh 会一直保持连接并即时回传日志
             |]
@@ -86,6 +89,9 @@ let Bash output server (devDir, deployDir) (gitName, gitEmail) =
                 "git clone https://github.com/lchenmay/Common/ Common"
                 "git clone https://github.com/lchenmay/JCS/ JCS"
                 "git clone https://github.com/R77R77R/WYI/ WYI"
+                "cd vscode"
+                "bun bd"
+                "cd .."
                 "cd Server"
                 "dotnet restore --no-cache"
                 "dotnet build"
