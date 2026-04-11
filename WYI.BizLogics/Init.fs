@@ -188,16 +188,15 @@ let init (runtime:Runtime) =
     Monthly Recurring Bills | (Miscellaneous)    """
 
         txt1.Split Util.Text.crlf
-        |> Array.map(fun s -> 
-            s |> runtime.output
-            s.Trim())
+        |> Array.map(fun s -> s.Trim())
         |> Array.filter(fun s -> s.Contains "|")
         |> Array.map(fun s -> 
             let ss = s.Split "|"
             let cat = ss[0].Trim()
             let provider = ss[1].Trim()
             cat,provider)
-        |> Array.filter(fun (cat,provider) -> 
+        |> Array.filter(fun (cat,provider) ->
+            cat + " / " + provider |> runtime.output
             provider.StartsWith "(" = false && provider.EndsWith ")" = false)
         |> Array.iter(fun (cat,provider) -> 
             match getOrAddCat cat with
@@ -223,11 +222,10 @@ Advertising | Billboards | Newspapers | Magazines | Yellow Pages
 Water Delivery | Ready Refresh | Primo | Crystal Rock
 Elevator Maintenance Contracts | Otis        """
         txt2.Split Util.Text.crlf
-        |> Array.map(fun s -> 
-            s |> runtime.output
-            s.Trim().Replace("/","|"))
+        |> Array.map(fun s -> s.Trim().Replace("/","|"))
         |> Array.filter(fun s -> s.Contains "|")
         |> Array.iter(fun s -> 
+            s |> runtime.output
             let ss = s.Split "|"
             match getOrAddCat (ss[0].Trim()) with
             | Some cat ->
