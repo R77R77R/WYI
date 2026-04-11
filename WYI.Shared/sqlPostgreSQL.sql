@@ -693,6 +693,7 @@ BEGIN
             ,"unittext" TEXT
             ,"state" INT
             ,"uacct" BIGINT
+            ,"yyyymmdd" VARCHAR(8)
             ,"amt" FLOAT
             ,CONSTRAINT "pk_kernel_utilbill" PRIMARY KEY (id)
         );
@@ -710,7 +711,7 @@ BEGIN
         FROM information_schema.columns 
         WHERE table_name = 'kernel_utilbill' 
           AND table_schema = 'public' 
-          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'shownprovider', 'shownunitnum', 'shownacctnum', 'shownacctname', 'shownaddr', 'showntown', 'shownstate', 'shownzip', 'cat', 'provider', 'owner', 'unit', 'unittext', 'state', 'uacct', 'amt'])
+          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'shownprovider', 'shownunitnum', 'shownacctnum', 'shownacctname', 'shownaddr', 'showntown', 'shownstate', 'shownzip', 'cat', 'provider', 'owner', 'unit', 'unittext', 'state', 'uacct', 'yyyymmdd', 'amt'])
     LOOP
         -- 对应 PRINT 'Dropping ' + @tname + '.' + @fn
         
@@ -927,6 +928,20 @@ BEGIN
 
     IF not condition THEN
         ALTER TABLE kernel_utilbill ADD "uacct" bigint;
+    END IF;
+END $$;
+
+-- [kernel_utilbill.YYYYMMDD] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_utilbill' AND column_name='yyyymmdd'));
+
+    IF not condition THEN
+        ALTER TABLE kernel_utilbill ADD "yyyymmdd" varchar(8);
     END IF;
 END $$;
 

@@ -201,7 +201,7 @@
         "name": "UAcct"
       },
       {
-        "enum": "Char",
+        "enum": "Chars",
         "length": 8,
         "name": "YYYYMMDD"
       },

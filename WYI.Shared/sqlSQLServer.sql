@@ -1068,6 +1068,7 @@ BEGIN
         ,[UnitText] NVARCHAR(MAX)
         ,[State] INT
         ,[UAcct] BIGINT
+        ,[YYYYMMDD] NVARCHAR(8) COLLATE Chinese_PRC_CI_AS
         ,[Amt] FLOAT
 , CONSTRAINT [PK_kernel_utilbill] PRIMARY KEY CLUSTERED ([ID] ASC)) ON [PRIMARY]
 END
@@ -1076,7 +1077,7 @@ END
 -- Dropping obsolete fields -----------
 DECLARE @name_kernel_utilbill NVARCHAR(64)
 DECLARE cursor_kernel_utilbill CURSOR FOR 
-    SELECT name FROM SYSCOLUMNS WHERE id=object_id('kernel_utilbill') AND (name NOT IN ('ID','Createdat','Updatedat','Sort','ShownProvider','ShownUnitNum','ShownAcctNum','ShownAcctName','ShownAddr','ShownTown','ShownState','ShownZip','Cat','Provider','Owner','Unit','UnitText','State','UAcct','Amt'))
+    SELECT name FROM SYSCOLUMNS WHERE id=object_id('kernel_utilbill') AND (name NOT IN ('ID','Createdat','Updatedat','Sort','ShownProvider','ShownUnitNum','ShownAcctNum','ShownAcctName','ShownAddr','ShownTown','ShownState','ShownZip','Cat','Provider','Owner','Unit','UnitText','State','UAcct','YYYYMMDD','Amt'))
 
 OPEN cursor_kernel_utilbill
 FETCH NEXT FROM cursor_kernel_utilbill INTO @name_kernel_utilbill
@@ -1500,6 +1501,33 @@ IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_ut
 IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_utilbillUAcct')
     BEGIN
     ALTER TABLE kernel_utilbill DROP  CONSTRAINT [UniqueNonclustered_kernel_utilbillUAcct]
+    END
+
+-- [kernel_utilbill.YYYYMMDD] -------------
+
+
+-- [kernel_utilbill.YYYYMMDD] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('kernel_utilbill') AND name='YYYYMMDD')
+    BEGIN
+     ALTER TABLE kernel_utilbill ALTER COLUMN [YYYYMMDD] NVARCHAR(8) COLLATE Chinese_PRC_CI_AS
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_kernel_utilbill_YYYYMMDD NVARCHAR(MAX);
+    SET @sql_add_kernel_utilbill_YYYYMMDD = 'ALTER TABLE kernel_utilbill ADD [YYYYMMDD] NVARCHAR(8) COLLATE Chinese_PRC_CI_AS'
+    EXEC sp_executesql @sql_add_kernel_utilbill_YYYYMMDD
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_utilbillYYYYMMDD')
+    BEGIN
+    ALTER TABLE kernel_utilbill DROP  CONSTRAINT [Constraint_kernel_utilbillYYYYMMDD]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_utilbillYYYYMMDD')
+    BEGIN
+    ALTER TABLE kernel_utilbill DROP  CONSTRAINT [UniqueNonclustered_kernel_utilbillYYYYMMDD]
     END
 
 -- [kernel_utilbill.Amt] -------------

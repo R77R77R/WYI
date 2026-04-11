@@ -833,6 +833,10 @@ let pUBILL__bin (bb:BytesBuilder) (p:pUBILL) =
     
     p.UAcct |> BitConverter.GetBytes |> bb.append
     
+    let binYYYYMMDD = p.YYYYMMDD |> Encoding.UTF8.GetBytes
+    binYYYYMMDD.Length |> BitConverter.GetBytes |> bb.append
+    binYYYYMMDD |> bb.append
+    
     p.Amt |> BitConverter.GetBytes |> bb.append
 
 let UBILL__bin (bb:BytesBuilder) (v:UBILL) =
@@ -912,6 +916,11 @@ let bin__pUBILL (bi:BinIndexed):pUBILL =
     p.UAcct <- BitConverter.ToInt64(bin,index.Value)
     index.Value <- index.Value + 8
     
+    let count_YYYYMMDD = BitConverter.ToInt32(bin,index.Value)
+    index.Value <- index.Value + 4
+    p.YYYYMMDD <- Encoding.UTF8.GetString(bin,index.Value,count_YYYYMMDD)
+    index.Value <- index.Value + count_YYYYMMDD
+    
     p.Amt <- BitConverter.ToDouble(bin,index.Value)
     index.Value <- index.Value + 8
     
@@ -955,6 +964,7 @@ let pUBILL__json (p:pUBILL) =
         ("UnitText",p.UnitText |> Json.Str)
         ("State",(p.State |> EnumToValue).ToString() |> Json.Num)
         ("UAcct",p.UAcct.ToString() |> Json.Num)
+        ("YYYYMMDD",p.YYYYMMDD |> Json.Str)
         ("Amt",p.Amt.ToString() |> Json.Num) |]
     |> Json.Braket
 
@@ -1010,6 +1020,8 @@ let json__pUBILLo (json:Json):pUBILL option =
     p.State <- checkfield fields "State" |> parse_int32 |> EnumOfValue
     
     p.UAcct <- checkfield fields "UAcct" |> parse_int64
+    
+    p.YYYYMMDD <- checkfieldz fields "YYYYMMDD" 8
     
     p.Amt <- checkfield fields "Amt" |> parse_float
     
@@ -2660,7 +2672,8 @@ let db__pUBILL(line:Object[]): pUBILL =
     p.UnitText <- string(line[16]).TrimEnd()
     p.State <- EnumOfValue(if Convert.IsDBNull(line[17]) then 0 else line[17] :?> int)
     p.UAcct <- if Convert.IsDBNull(line[18]) then 0L else line[18] :?> int64
-    p.Amt <- if Convert.IsDBNull(line[19]) then 0.0 else line[19] :?> float
+    p.YYYYMMDD <- string(line[19]).TrimEnd()
+    p.Amt <- if Convert.IsDBNull(line[20]) then 0.0 else line[20] :?> float
 
     p
 
@@ -2683,6 +2696,7 @@ let pUBILL__sps (p:pUBILL) =
             ("UnitText", p.UnitText) |> kvp__sqlparam
             ("State", EnumToValue p.State) |> kvp__sqlparam
             ("UAcct", p.UAcct) |> kvp__sqlparam
+            ("YYYYMMDD", p.YYYYMMDD) |> kvp__sqlparam
             ("Amt", p.Amt) |> kvp__sqlparam |]
     | Rdbms.PostgreSql ->
         [|
@@ -2701,6 +2715,7 @@ let pUBILL__sps (p:pUBILL) =
             ("unittext", p.UnitText) |> kvp__sqlparam
             ("state", EnumToValue p.State) |> kvp__sqlparam
             ("uacct", p.UAcct) |> kvp__sqlparam
+            ("yyyymmdd", p.YYYYMMDD) |> kvp__sqlparam
             ("amt", p.Amt) |> kvp__sqlparam |]
 
 let db__UBILL = db__Rcd db__pUBILL
@@ -2725,6 +2740,7 @@ let pUBILL_clone (p:pUBILL): pUBILL = {
     UnitText = p.UnitText
     State = p.State
     UAcct = p.UAcct
+    YYYYMMDD = p.YYYYMMDD
     Amt = p.Amt }
 
 let UBILL_update_transaction output (updater,suc,fail) (rcd:UBILL) =
@@ -2804,6 +2820,7 @@ let UBILLTxSqlServer =
     ,[UnitText]
     ,[State]
     ,[UAcct]
+    ,[YYYYMMDD]
     ,[Amt])
     END
     """

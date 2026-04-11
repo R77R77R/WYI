@@ -301,6 +301,8 @@ export const pUBILL__bin = (bb:BytesBuilder) => (p:wyi.pUBILL) => {
     
     marshall.int64__bin (bb) (p.UAcct)
     
+    marshall.str__bin (bb) (p.YYYYMMDD)
+    
     marshall.float__bin (bb) (p.Amt)
 }
 
@@ -331,6 +333,7 @@ export const bin__pUBILL = (bi:BinIndexed):wyi.pUBILL => {
     p.UnitText = marshall.bin__str (bi)
     p.State = marshall.bin__int32 (bi)
     p.UAcct = marshall.bin__int64 (bi)
+    p.YYYYMMDD = marshall.bin__str (bi)
     p.Amt = marshall.bin__float (bi)
 
     return p
@@ -853,6 +856,7 @@ export const pUBILL_empty = (): wyi.pUBILL => {
         UnitText: "",
         State: 0,
         UAcct: 0,
+        YYYYMMDD: "",
         Amt: 0.0 }
 }
 

@@ -112,6 +112,7 @@ export type pUBILL = {
     UnitText: string
     State: number
     UAcct: number
+    YYYYMMDD: string
     Amt: number
 }
 
