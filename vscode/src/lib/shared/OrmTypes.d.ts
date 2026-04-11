@@ -161,6 +161,7 @@ p:pKUCP
 export type pUPROVIDER = {
 [key:string]: any
     Caption: string
+    Logo: string
     Cat: number
 }
 

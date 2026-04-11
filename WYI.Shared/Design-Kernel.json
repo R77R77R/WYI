@@ -22,6 +22,10 @@
         "name": "Caption"
       },
       {
+        "enum": "Text",
+        "name": "Logo"
+      },
+      {
         "enum": "FK",
         "ref": "Kernel_UtilCat",
         "name": "Cat"

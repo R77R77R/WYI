@@ -12,7 +12,7 @@
 
 <div v-if="props.mode == 1"> 
   <div v-if="props.acctx.cato && props.acctx.providero">
-    {{ props.acctx.providero.p.Caption }}
+    Service Provider: {{ props.acctx.providero.p.Caption }}
     ({{ props.acctx.cato.p.Caption }})
   </div>
 
@@ -20,10 +20,10 @@
     :unit="props.acctx.unito" :mode="1" />
 
   <div>
-    {{ props.acctx.acct.p.AcctName }}
+    A/C Name: {{ props.acctx.acct.p.AcctName }}
   </div>
   <div>
-    {{ props.acctx.acct.p.AcctNum }}
+    A/C Num: {{ props.acctx.acct.p.AcctNum }}
   </div>
  
 </div>

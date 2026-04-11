@@ -1753,6 +1753,7 @@ BEGIN
         ,[Updatedat] BIGINT NOT NULL
         ,[Sort] BIGINT NOT NULL,
         [Caption] NVARCHAR(MAX)
+        ,[Logo] NVARCHAR(MAX)
         ,[Cat] BIGINT
 , CONSTRAINT [PK_kernel_utilprovider] PRIMARY KEY CLUSTERED ([ID] ASC)) ON [PRIMARY]
 END
@@ -1761,7 +1762,7 @@ END
 -- Dropping obsolete fields -----------
 DECLARE @name_kernel_utilprovider NVARCHAR(64)
 DECLARE cursor_kernel_utilprovider CURSOR FOR 
-    SELECT name FROM SYSCOLUMNS WHERE id=object_id('kernel_utilprovider') AND (name NOT IN ('ID','Createdat','Updatedat','Sort','Caption','Cat'))
+    SELECT name FROM SYSCOLUMNS WHERE id=object_id('kernel_utilprovider') AND (name NOT IN ('ID','Createdat','Updatedat','Sort','Caption','Logo','Cat'))
 
 OPEN cursor_kernel_utilprovider
 FETCH NEXT FROM cursor_kernel_utilprovider INTO @name_kernel_utilprovider
@@ -1807,6 +1808,33 @@ IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_ut
 IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_utilproviderCaption')
     BEGIN
     ALTER TABLE kernel_utilprovider DROP  CONSTRAINT [UniqueNonclustered_kernel_utilproviderCaption]
+    END
+
+-- [kernel_utilprovider.Logo] -------------
+
+
+-- [kernel_utilprovider.Logo] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('kernel_utilprovider') AND name='Logo')
+    BEGIN
+     ALTER TABLE kernel_utilprovider ALTER COLUMN [Logo] NVARCHAR(MAX)
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_kernel_utilprovider_Logo NVARCHAR(MAX);
+    SET @sql_add_kernel_utilprovider_Logo = 'ALTER TABLE kernel_utilprovider ADD [Logo] NVARCHAR(MAX)'
+    EXEC sp_executesql @sql_add_kernel_utilprovider_Logo
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_utilproviderLogo')
+    BEGIN
+    ALTER TABLE kernel_utilprovider DROP  CONSTRAINT [Constraint_kernel_utilproviderLogo]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_utilproviderLogo')
+    BEGIN
+    ALTER TABLE kernel_utilprovider DROP  CONSTRAINT [UniqueNonclustered_kernel_utilproviderLogo]
     END
 
 -- [kernel_utilprovider.Cat] -------------

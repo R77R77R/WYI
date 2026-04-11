@@ -1320,6 +1320,10 @@ let pUPROVIDER__bin (bb:BytesBuilder) (p:pUPROVIDER) =
     binCaption.Length |> BitConverter.GetBytes |> bb.append
     binCaption |> bb.append
     
+    let binLogo = p.Logo |> Encoding.UTF8.GetBytes
+    binLogo.Length |> BitConverter.GetBytes |> bb.append
+    binLogo |> bb.append
+    
     p.Cat |> BitConverter.GetBytes |> bb.append
 
 let UPROVIDER__bin (bb:BytesBuilder) (v:UPROVIDER) =
@@ -1340,6 +1344,11 @@ let bin__pUPROVIDER (bi:BinIndexed):pUPROVIDER =
     index.Value <- index.Value + 4
     p.Caption <- Encoding.UTF8.GetString(bin,index.Value,count_Caption)
     index.Value <- index.Value + count_Caption
+    
+    let count_Logo = BitConverter.ToInt32(bin,index.Value)
+    index.Value <- index.Value + 4
+    p.Logo <- Encoding.UTF8.GetString(bin,index.Value,count_Logo)
+    index.Value <- index.Value + count_Logo
     
     p.Cat <- BitConverter.ToInt64(bin,index.Value)
     index.Value <- index.Value + 8
@@ -1370,6 +1379,7 @@ let pUPROVIDER__json (p:pUPROVIDER) =
 
     [|
         ("Caption",p.Caption |> Json.Str)
+        ("Logo",p.Logo |> Json.Str)
         ("Cat",p.Cat.ToString() |> Json.Num) |]
     |> Json.Braket
 
@@ -1397,6 +1407,8 @@ let json__pUPROVIDERo (json:Json):pUPROVIDER option =
     let p = pUPROVIDER_empty()
     
     p.Caption <- checkfield fields "Caption"
+    
+    p.Logo <- checkfield fields "Logo"
     
     p.Cat <- checkfield fields "Cat" |> parse_int64
     
@@ -3036,7 +3048,8 @@ let db__pUPROVIDER(line:Object[]): pUPROVIDER =
     let p = pUPROVIDER_empty()
 
     p.Caption <- string(line[4]).TrimEnd()
-    p.Cat <- if Convert.IsDBNull(line[5]) then 0L else line[5] :?> int64
+    p.Logo <- string(line[5]).TrimEnd()
+    p.Cat <- if Convert.IsDBNull(line[6]) then 0L else line[6] :?> int64
 
     p
 
@@ -3045,10 +3058,12 @@ let pUPROVIDER__sps (p:pUPROVIDER) =
     | Rdbms.SqlServer ->
         [|
             ("Caption", p.Caption) |> kvp__sqlparam
+            ("Logo", p.Logo) |> kvp__sqlparam
             ("Cat", p.Cat) |> kvp__sqlparam |]
     | Rdbms.PostgreSql ->
         [|
             ("caption", p.Caption) |> kvp__sqlparam
+            ("logo", p.Logo) |> kvp__sqlparam
             ("cat", p.Cat) |> kvp__sqlparam |]
 
 let db__UPROVIDER = db__Rcd db__pUPROVIDER
@@ -3059,6 +3074,7 @@ let UPROVIDER_wrapper item: UPROVIDER =
 
 let pUPROVIDER_clone (p:pUPROVIDER): pUPROVIDER = {
     Caption = p.Caption
+    Logo = p.Logo
     Cat = p.Cat }
 
 let UPROVIDER_update_transaction output (updater,suc,fail) (rcd:UPROVIDER) =
@@ -3124,6 +3140,7 @@ let UPROVIDERTxSqlServer =
     ,[Updatedat] BIGINT NOT NULL
     ,[Sort] BIGINT NOT NULL,
     ,[Caption]
+    ,[Logo]
     ,[Cat])
     END
     """
