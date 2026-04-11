@@ -74,6 +74,7 @@ let Bash output server (devDir, deployDir) (gitName, gitEmail) =
                 "sudo fuser -k 80/tcp || true"
                 "sudo fuser -k 443/tcp || true"
                 $"cd ~{deployDir}/vscode"
+                "source ~/.bashrc"
                 "bun bd"
                 "cd .."
                 "cd Server"
@@ -89,6 +90,7 @@ let Bash output server (devDir, deployDir) (gitName, gitEmail) =
                 "git clone https://github.com/lchenmay/JCS/ JCS"
                 "git clone https://github.com/R77R77R/WYI/ WYI"
                 $"cd ~{deployDir}/vscode"
+                "source ~/.bashrc"
                 "bun bd"
                 "cd .."
                 "cd Server"
@@ -102,4 +104,5 @@ let Bash output server (devDir, deployDir) (gitName, gitEmail) =
     |> ignore
     
     remoteCommands 
-    |> Array.iter(fun cmd -> exec "" "ssh" cmd |> ignore) 
+    |> Array.iter(fun cmd -> 
+        $"root@{server}" + cmd |> exec "" "ssh" |> ignore) 
