@@ -163,13 +163,13 @@ glib.vue.onMounted(async () => {
 
   sessionStorage.setItem('fids', JSON.stringify([]))
 
-  Common.loader('my-units', {
+  Common.loader('/api/eu/my-units', {
     act: "ls"
   }, (rep: any) => {
     s.units = rep.data as wyi.UNIT[]
   })
   
-  Common.loader('my-acctxs', {
+  Common.loader('/api/eu/my-acctxs', {
     act: "ls"
   }, (rep: any) => {
     s.acctxs = rep.data as wyi.AcctComplex[]

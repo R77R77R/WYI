@@ -11,9 +11,11 @@
 </div>
 
 <div v-if="props.mode == 1"> 
-  <div v-if="props.acctx.cato && props.acctx.providero">
+  <div class="flex" 
+    v-if="props.acctx.cato && props.acctx.providero">
     Service Provider: 
-    <img :src="props.acctx.providero.p.Icon" />
+    <img class="m-2"
+     :src="props.acctx.providero.p.Icon" />
     {{ props.acctx.providero.p.Caption }}
     ({{ props.acctx.cato.p.Caption }})
   </div>
