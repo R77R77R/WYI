@@ -99,10 +99,5 @@ let Bash output server (devDir, deployDir) (gitName, gitEmail) =
                 "dotnet run"
                 |]
 
-    $"root@{server}"
-    |> exec "" "ssh" 
-    |> ignore
-    
-    remoteCommands 
-    |> Array.iter(fun cmd -> 
-        $"root@{server}" + cmd |> exec "" "ssh" |> ignore) 
+    $"root@{server} " + (remoteCommands |> String.concat " && ")
+    |> exec "" "ssh" |> ignore 
