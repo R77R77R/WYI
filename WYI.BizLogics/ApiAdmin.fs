@@ -82,6 +82,10 @@ let billxs (x:X) =
             let mutable hit = false
             if i.unito.IsSome then
                 if i.unito.Value.p.Address.ToLower().Contains term then hit <- true
+            if i.cato.IsSome then
+                if i.cato.Value.p.Caption.ToLower().Contains term then hit <- true
+            if i.providero.IsSome then
+                if i.providero.Value.p.Caption.ToLower().Contains term then hit <- true
             hit)
         |> Array.map BillComplex__json
         |> Json.Ary
