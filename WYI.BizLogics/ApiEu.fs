@@ -217,7 +217,16 @@ Amt: [$527.11]
         p.ShownState <- tryFindStrByAtt "State" json
         p.ShownZip <- tryFindStrByAtt "ZIP" json
 
-        // <- tryFindStrByAtt "Amt" json |> parse_float
+        p.YYYYMMDD <-
+            let mutable s = tryFindStrByAtt "BillDate" json
+            s <- s.Replace("/","").Replace(" ","")
+            if s.Length = 8 then
+                let mm = s.Substring(0,2)
+                let dd = s.Substring(2,2)
+                let yyyy = s.Substring(4,4)
+                yyyy + mm + dd
+            else
+                ""
         p.Amt <- tryFindStrByAtt "Amt" json |> parse_float
 
         p.Cat <- tryFindStrByAtt "CategoryID" json |> parse_int64
