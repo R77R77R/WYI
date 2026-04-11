@@ -210,12 +210,17 @@ let init (runtime:Runtime) =
     Elevator Maintenance Contracts | Otis
     CO2 (for Restaurants) | (Not specified)
     Monthly Recurring Bills | (Miscellaneous)    """.Split Util.Text.crlf
-        |> Array.map(fun s -> s.Trim())
+        |> Array.map(fun s -> 
+            "Line214: " + s |> runtime.output
+            s.Trim())
         |> Array.filter(fun s -> s.Contains "|")
         |> Array.map(fun s -> 
             let ss = s.Split "|"
             let cat = ss[0].Trim()
             let provider = ss[1].Trim()
+
+            "Line222: " + provider |> runtime.output
+
             cat,provider)
         |> Array.filter(fun (cat,provider) ->
             provider.StartsWith "(" = false && provider.EndsWith ")" = false)
