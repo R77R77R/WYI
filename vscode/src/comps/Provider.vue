@@ -1,6 +1,6 @@
 <template>
 
-    <span class="ml-[20px] inline-block border-b border-gray-300">
+    <span class="ml-[20px] px-2 inline-block">
         <img class="image-inline" :src="props.uprovider.p.Logo" />
 
         {{ props.uprovider.p.Caption }}

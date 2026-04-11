@@ -4,50 +4,11 @@ open System
 open System.Diagnostics
 open System.Runtime.InteropServices
 
-let Bash output server (devDir, deployDir) (gitName, gitEmail) = 
+open Util.Bash
 
-    // ANSI 颜色处理
-    let cyan (s: string) = $"\u001b[36m{s}\u001b[0m"
-    let green (s: string) = $"\u001b[32m{s}\u001b[0m"
-    let red (s: string) = $"\u001b[31m{s}\u001b[0m"
-
-    /// 改进后的即时执行函数
-    let exec setDir (fileName: string) (args: string) =
-        $"{fileName}: {args}" |> cyan |> output
-
-        let psi = ProcessStartInfo(fileName, args)
-        if not (String.IsNullOrWhiteSpace setDir) then
-            psi.WorkingDirectory <- setDir
-        
-        psi.RedirectStandardOutput <- true
-        psi.RedirectStandardError <- true
-        psi.UseShellExecute <- false
-        psi.CreateNoWindow <- true
-
-        use proc = new Process(StartInfo = psi)
-
-        // 订阅输出事件，实现即时获取
-        proc.OutputDataReceived.Add(fun e -> 
-            if not (String.IsNullOrEmpty e.Data) then 
-                e.Data |> output)
-
-        proc.ErrorDataReceived.Add(fun e -> 
-            if not (String.IsNullOrEmpty e.Data) then 
-                // 某些工具（如 git）会将进度信息发往 stderr
-                e.Data |> output)
-
-        proc.Start() |> ignore
-        
-        // 开始异步读取流
-        proc.BeginOutputReadLine()
-        proc.BeginErrorReadLine()
-        
-        proc.WaitForExit()
-
-        if proc.ExitCode <> 0 then
-            $"ExitCode {proc.ExitCode}" |> red |> output
-
-        (proc.ExitCode, "", "") // 由于是即时输出，不再返回完整的 res 字符串
+let Bash output server 
+    (devDir, deployDir) 
+    (gitName, gitEmail) = 
 
     output (cyan $">>> 开始部署至 {server}...")
 
@@ -59,7 +20,7 @@ let Bash output server (devDir, deployDir) (gitName, gitEmail) =
         "commit -m \"auto-deploy\""
         "push"
     |]
-    |> Array.iter (fun args -> exec devDir @"C:\Program Files\Git\bin\git.exe" args |> ignore)
+    |> Array.iter (fun args -> exec output devDir @"C:\Program Files\Git\bin\git.exe" args |> ignore)
 
     // 2. 远程 SSH 操作
     // 注意：远程执行 dotnet run 时建议加上 nohup 或确保你希望持续观察输出
@@ -99,5 +60,5 @@ let Bash output server (devDir, deployDir) (gitName, gitEmail) =
                 "dotnet run"
                 |]
 
-    $"root@{server} " + (remoteCommands |> String.concat " && ")
-    |> exec "" "ssh" |> ignore 
+    remoteCommands
+    |> bash output "root" server 

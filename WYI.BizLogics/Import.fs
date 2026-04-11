@@ -43,15 +43,19 @@ let tx sql =
         halt runtime.output "" ""
 
 let clearData() = 
-    //"DELETE FROM public.kernel_utilcat" |> tx
-    //"DELETE FROM public.kernel_utilprovider" |> tx
-    //"DELETE FROM public.kernel_utilcatprovider" |> tx
 
+    "DELETE FROM public.kernel_utilcat" |> tx
+    "DELETE FROM public.kernel_utilprovider" |> tx
+    "DELETE FROM public.kernel_utilcatprovider" |> tx
 
     //"DELETE FROM public.ca_file" |> tx
-    //"DELETE FROM public.kernel_utilbill" |> tx
-    //"DELETE FROM public.kernel_utilacct" |> tx
-    //"DELETE FROM public.kernel_unit" |> tx
+    //[| "rm -rf ~/FsRoot/WYI" |]
+    //|> Util.Bash.bash runtime.output "root" "5.78.201.21"
+
+    "DELETE FROM public.kernel_utilbill" |> tx
+    "DELETE FROM public.kernel_utilacct" |> tx
+    "DELETE FROM public.kernel_unit" |> tx
+
     ()
 
 let importUtilProviders () = 

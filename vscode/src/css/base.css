@@ -63,7 +63,7 @@ h1{
 }
 
 .card{
-  @apply m-[20px] p-[20px] shadow-2xl rounded-lg
+  @apply m-[20px] p-[20px] shadow rounded
 }
 
 .card-caption{
