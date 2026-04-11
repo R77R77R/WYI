@@ -65,6 +65,7 @@ let branching (euxo:EuComplex option) (x:X) =
     | "admin" -> 
         match x.Struct.api with
         | "users" -> bindx users
+        | "billxs" -> bindx billxs
         | "plogs" -> (fun x -> 
             let metadata = PLOG_metadata
             match "ORDER BY ID DESC" |> loadall conn (metadata.table,metadata.fieldorders(),metadata.db__rcd) with

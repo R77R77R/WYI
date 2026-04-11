@@ -60,6 +60,33 @@ let users (x:X) =
         |> wrapOk "data"
     | _ -> er Er.InvalideParameter
 
+let billxs (x:X) = 
+
+    let billxs() = 
+        runtime.users.Values
+        |> Array.map(fun i -> i.billxs.Values)
+        |> Array.concat
+
+    match
+        x.Json
+        |> tryFindStrByAtt "act" with
+    | "ls" -> 
+        billxs()
+        |> Array.map BillComplex__json
+        |> Json.Ary
+        |> wrapOk "data"
+    | "search" ->
+        let term = (x.Json |> tryFindStrByAtt "term").ToLower()
+        billxs()
+        |> Array.filter(fun i ->
+            let mutable hit = false
+            if i.unito.IsSome then
+                if i.unito.Value.p.Address.ToLower().Contains term then hit <- true
+            hit)
+        |> Array.map BillComplex__json
+        |> Json.Ary
+        |> wrapOk "data"
+    | _ -> er Er.InvalideParameter
 
 let providers (x:X) = 
     match
