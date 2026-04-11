@@ -78,6 +78,8 @@ let init (runtime:Runtime) =
                 runtime.output ((fun rcd -> ()),(fun (eso,ctx) -> ())) p
         config["ApiKeyGemini"]
 
+    WYI.BizLogics.Import.clearData()
+
     (fun (i:UCAT) -> runtime.data.cats[i.ID] <- i)
     |> loadAll runtime.output conn UCAT_metadata
 

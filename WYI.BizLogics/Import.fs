@@ -25,25 +25,30 @@ open WYI.Shared.CustomMor
 open WYI.BizLogics.Common
 open WYI.BizLogics.Db
 
+let tx sql = 
+
+    sql |> runtime.output
+
+    let pretx = None |> opctx__pretx
+
+    sql
+    |> str__sql
+    |> pretx.sqls.Add
+
+    match 
+        pretx
+        |> pipeline conn with
+    | Suc ctx -> ()
+    | Fail(dte,ctx) -> 
+        halt runtime.output "" ""
+
+let clearData() = 
+    "DELETE FROM public.kernel_utilbill" |> tx
+    "DELETE FROM public.kernel_utilacct" |> tx
+    "DELETE FROM public.kernel_unit" |> tx
+
+
 let importUtilProviders () = 
-
-    let tx sql = 
-
-        sql |> runtime.output
-
-        let pretx = None |> opctx__pretx
-
-        sql
-        |> str__sql
-        |> pretx.sqls.Add
-
-        match 
-            pretx
-            |> pipeline conn with
-        | Suc ctx -> ()
-        | Fail(dte,ctx) -> 
-            halt runtime.output "" ""
-
 
     let checkBind (cat:UCAT) (provider:UPROVIDER) = 
         match
