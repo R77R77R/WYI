@@ -113,26 +113,26 @@ let init (runtime:Runtime) =
         |> loadAll runtime.output conn FILE_metadata
         res
 
-    (fun (i:UBILL) ->
-        let eux = runtime.users[i.p.Owner]
+    (fun (ubill:UBILL) ->
+        let eux = runtime.users[ubill.p.Owner]
 
         let cato,providero =
             match
                 runtime.data.catproviders
                 |> Array.tryFind(fun kucp ->
-                    kucp.p.Cat = i.p.Cat && kucp.p.Provider = i.p.Provider) with
+                    kucp.p.Cat = ubill.p.Cat && kucp.p.Provider = ubill.p.Provider) with
             | Some kucp -> 
                 runtime.data.cats[kucp.p.Cat] |> Some,runtime.data.providers[kucp.p.Provider] |> Some
             | None -> None,None
-
-        eux.billxs[i.ID] <- {
+        
+        eux.billxs[ubill.ID] <- {
             cato = cato
             providero = providero
             owner = eux.eu
-            unito = None
+            unito = eux.units.TryGet ubill.p.Unit
             accto = None
-            files = files[i.ID].ToArray()
-            bill = i })
+            files = files[ubill.ID].ToArray()
+            bill = ubill })
     |> loadAll runtime.output conn UBILL_metadata
 
     let users = runtime.users.Values |> Seq.toArray
