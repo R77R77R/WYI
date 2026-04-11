@@ -59,6 +59,7 @@ let branching (euxo:EuComplex option) (x:X) =
         let eux = euxo.Value
         match x.Struct.api with
         | "my-units" -> myUnits eux |> bindx
+        | "my-acctxs" -> myAcctxs eux |> bindx
         | "my-billxs" -> myBillxs eux |> bindx
         | "review-bill-files" -> reviewBillFiles eux |> bindx
         | "submit-bill" -> bindx submitBill
@@ -67,16 +68,16 @@ let branching (euxo:EuComplex option) (x:X) =
         match x.Struct.api with
         | "users" -> bindx users
         | "billxs" -> bindx billxs
-        | "plogs" -> (fun x -> 
-            let metadata = PLOG_metadata
-            match "ORDER BY ID DESC" |> loadall conn (metadata.table,metadata.fieldorders(),metadata.db__rcd) with
-            | Some items ->
-                items
-                |> Array.filter(fun i -> (UtilKestrel.PageLog.req__fromo i.p.Request).IsSome)
-                |> (fun items -> if items.Length > 200 then Array.sub items 0 200 else items)
-                |> Array.map(fun rcd -> UtilKestrel.PageLog.req__json (rcd.p.Ip,rcd.Createdat,rcd.p.Request))
-            | None -> [| |]
-            |> wrapOkAry) |> bindx
+        //| "plogs" -> (fun x -> 
+        //    let metadata = PLOG_metadata
+        //    match "ORDER BY ID DESC" |> loadall conn (metadata.table,metadata.fieldorders(),metadata.db__rcd) with
+        //    | Some items ->
+        //        items
+        //        |> Array.filter(fun i -> (UtilKestrel.PageLog.req__fromo i.p.Request).IsSome)
+        //        |> (fun items -> if items.Length > 200 then Array.sub items 0 200 else items)
+        //        |> Array.map(fun rcd -> UtilKestrel.PageLog.req__json (rcd.p.Ip,rcd.Createdat,rcd.p.Request))
+        //    | None -> [| |]
+        //    |> wrapOkAry) |> bindx
         | "monitorPerf" -> bindx apiMonitorPerf
         | _ -> Fail(Er.ApiNotExists,x)
     | "open" -> Fail(Er.ApiNotExists,x)

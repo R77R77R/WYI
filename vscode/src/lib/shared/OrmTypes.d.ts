@@ -79,7 +79,7 @@ export type pUACCT = {
 [key:string]: any
     Cat: number
     Provider: number
-    client: number
+    Owner: number
     Unit: number
     AcctNum: string
 }

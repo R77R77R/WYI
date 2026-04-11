@@ -34,6 +34,7 @@ open WYI.BizLogics.Common
 open WYI.BizLogics.Db
 open WYI.BizLogics.Auth
 open WYI.BizLogics.Ai
+open WYI.BizLogics.ApiHelperAcct
 open WYI.BizLogics.ApiHelperBill
 
 let output = runtime.output
@@ -79,6 +80,42 @@ let myUnits eux (x:X) =
             if i.p.Zip.ToLower().Contains term then hit <- true
             hit)
         |> Array.map UNIT__json
+        |> Json.Ary
+        |> wrapOk "data"
+    | _ -> er Er.InvalideParameter
+
+let myAcctxs eux (x:X) = 
+    let json = x.Json
+    match
+        json
+        |> tryFindStrByAtt "act" with
+    //| "create" ->
+    //    match
+    //        json
+    //        |> tryFindByAtt "data" with
+    //    | Some (s,data) -> 
+    //        match 
+    //            (fun (p:pUACCT) -> 
+    //                p.AcctNum <- tryFindStrByAtt "acctnum" data)
+    //                //p.client <- eux.eu.ID) 
+    //            |> creator UACCT_metadata with
+    //        | Some rcd -> 
+    //            //eux.acctxs[rcd.ID] <- {
+    //            //    acct = rcd}
+    //            rcd
+    //            |> UACCT__json
+    //            |> wrapOk "data"
+    //        | None -> er Er.Internal
+    //    | None -> er Er.InvalideParameter
+    | "ls" -> 
+        eux.acctxs.Values
+        |> Array.map AcctComplex__json
+        |> Json.Ary
+        |> wrapOk "data"
+    | "search" ->
+        (x.Json |> tryFindStrByAtt "term").ToLower()
+        |> searchAcctx eux.acctxs.Values
+        |> Array.map AcctComplex__json
         |> Json.Ary
         |> wrapOk "data"
     | _ -> er Er.InvalideParameter

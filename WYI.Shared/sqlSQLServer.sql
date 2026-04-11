@@ -878,7 +878,7 @@ BEGIN
         ,[Sort] BIGINT NOT NULL,
         [Cat] BIGINT
         ,[Provider] BIGINT
-        ,[client] BIGINT
+        ,[Owner] BIGINT
         ,[Unit] BIGINT
         ,[AcctNum] NVARCHAR(MAX)
 , CONSTRAINT [PK_kernel_utilacct] PRIMARY KEY CLUSTERED ([ID] ASC)) ON [PRIMARY]
@@ -888,7 +888,7 @@ END
 -- Dropping obsolete fields -----------
 DECLARE @name_kernel_utilacct NVARCHAR(64)
 DECLARE cursor_kernel_utilacct CURSOR FOR 
-    SELECT name FROM SYSCOLUMNS WHERE id=object_id('kernel_utilacct') AND (name NOT IN ('ID','Createdat','Updatedat','Sort','Cat','Provider','client','Unit','AcctNum'))
+    SELECT name FROM SYSCOLUMNS WHERE id=object_id('kernel_utilacct') AND (name NOT IN ('ID','Createdat','Updatedat','Sort','Cat','Provider','Owner','Unit','AcctNum'))
 
 OPEN cursor_kernel_utilacct
 FETCH NEXT FROM cursor_kernel_utilacct INTO @name_kernel_utilacct
@@ -963,31 +963,31 @@ IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_utilacc
     ALTER TABLE kernel_utilacct DROP  CONSTRAINT [UniqueNonclustered_kernel_utilacctProvider]
     END
 
--- [kernel_utilacct.client] -------------
+-- [kernel_utilacct.Owner] -------------
 
 
--- [kernel_utilacct.client] -------------
+-- [kernel_utilacct.Owner] -------------
 
-IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('kernel_utilacct') AND name='client')
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('kernel_utilacct') AND name='Owner')
     BEGIN
-     ALTER TABLE kernel_utilacct ALTER COLUMN [client] BIGINT
+     ALTER TABLE kernel_utilacct ALTER COLUMN [Owner] BIGINT
     END
 ELSE
     BEGIN
-    DECLARE @sql_add_kernel_utilacct_client NVARCHAR(MAX);
-    SET @sql_add_kernel_utilacct_client = 'ALTER TABLE kernel_utilacct ADD [client] BIGINT'
-    EXEC sp_executesql @sql_add_kernel_utilacct_client
+    DECLARE @sql_add_kernel_utilacct_Owner NVARCHAR(MAX);
+    SET @sql_add_kernel_utilacct_Owner = 'ALTER TABLE kernel_utilacct ADD [Owner] BIGINT'
+    EXEC sp_executesql @sql_add_kernel_utilacct_Owner
     END
 
 
-IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_utilacctclient')
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_utilacctOwner')
     BEGIN
-    ALTER TABLE kernel_utilacct DROP  CONSTRAINT [Constraint_kernel_utilacctclient]
+    ALTER TABLE kernel_utilacct DROP  CONSTRAINT [Constraint_kernel_utilacctOwner]
     END
 
-IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_utilacctclient')
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_utilacctOwner')
     BEGIN
-    ALTER TABLE kernel_utilacct DROP  CONSTRAINT [UniqueNonclustered_kernel_utilacctclient]
+    ALTER TABLE kernel_utilacct DROP  CONSTRAINT [UniqueNonclustered_kernel_utilacctOwner]
     END
 
 -- [kernel_utilacct.Unit] -------------

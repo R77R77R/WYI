@@ -109,7 +109,7 @@
       {
         "enum": "FK",
         "ref": "Kernel_Client",
-        "name": "client"
+        "name": "Owner"
       },
       {
         "enum": "FK",

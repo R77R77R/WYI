@@ -3,7 +3,7 @@
 <div class="card">
 
 <div v-if="props.mode == 0">
-  {{ props.unit.p.Address }}
+  {{ props.acct.p..p.Address }}
   {{ props.unit.p.Town }}
   {{ props.unit.p.State }}
   {{ props.unit.p.Zip }}
@@ -34,8 +34,8 @@ import { ref } from 'vue'
 import { glib } from '~/lib/glib'
 import * as Common from '~/lib/store/common'
 
-const props = defineProps(['acct','mode'])
-props.acct as wyi.UNIT
+const props = defineProps(['acctx','mode'])
+props.acctx as wyi.AcctComplex
 props.mode as number
 
 const s = glib.vue.reactive({

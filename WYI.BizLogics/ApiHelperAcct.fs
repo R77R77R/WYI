@@ -46,7 +46,7 @@ let searchAcctx acctxs (term:string) =
     acctxs
     |> Array.filter(fun i ->
         let mutable hit = false
-        //if i.p.AcctNum.ToLower().Contains term then hit <- true
+        if i.acct.p.AcctNum.ToLower().Contains term then hit <- true
         if i.unito.IsSome then
             if i.unito.Value.p.Address.ToLower().Contains term then hit <- true
         if i.cato.IsSome then

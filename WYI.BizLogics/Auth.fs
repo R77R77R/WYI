@@ -98,8 +98,7 @@ let auth (x:X) =
 
             [|  ok
                 "session", s.session |> str__json
-                //"eux", euxSimplified |> EuComplex__json 
-                    |]
+                "eux", euxSimplified |> EuComplex__json |]
         | None -> er Er.Internal
 
     else

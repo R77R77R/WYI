@@ -560,7 +560,7 @@ BEGIN
             ,sort BIGINT NOT NULL
             ,"cat" BIGINT
             ,"provider" BIGINT
-            ,"client" BIGINT
+            ,"owner" BIGINT
             ,"unit" BIGINT
             ,"acctnum" TEXT
             ,CONSTRAINT "pk_kernel_utilacct" PRIMARY KEY (id)
@@ -579,7 +579,7 @@ BEGIN
         FROM information_schema.columns 
         WHERE table_name = 'kernel_utilacct' 
           AND table_schema = 'public' 
-          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'cat', 'provider', 'client', 'unit', 'acctnum'])
+          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'cat', 'provider', 'owner', 'unit', 'acctnum'])
     LOOP
         -- 对应 PRINT 'Dropping ' + @tname + '.' + @fn
         
@@ -617,17 +617,17 @@ BEGIN
     END IF;
 END $$;
 
--- [kernel_utilacct.client] -------------
+-- [kernel_utilacct.Owner] -------------
 
 
 DO $$
 DECLARE
     condition boolean;
 BEGIN
-    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_utilacct' AND column_name='client'));
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_utilacct' AND column_name='owner'));
 
     IF not condition THEN
-        ALTER TABLE kernel_utilacct ADD "client" bigint;
+        ALTER TABLE kernel_utilacct ADD "owner" bigint;
     END IF;
 END $$;
 
