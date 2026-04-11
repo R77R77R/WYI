@@ -76,6 +76,21 @@ let Bash output server (devDir, deployDir) (gitName, gitEmail) =
         |]
         |> String.concat " && "
 
+    let remoteCommandsFull = 
+        [|  "cd Dev"
+            "rm -rf WYI"
+            "rm -rf JCS"
+            "rm -rf Common"
+            "dotnet nuget locals all --clear"
+            "git clone https://github.com/lchenmay/Common/ Common"
+            "git clone https://github.com/lchenmay/JCS/ JCS"
+            "git clone https://github.com/R77R77R/WYI/ WYI"
+            "cd Server"
+            "dotnet restore"
+            "dotnet build"
+            "dotnet run"
+            |]
+
     $"root@{server} \"{remoteCommands}\"" 
     |> exec "" "ssh" 
     |> ignore
