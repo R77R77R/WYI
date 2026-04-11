@@ -106,7 +106,10 @@
     </div>
 
   </div>
-  <div v-else>AI processing ... 20 seconds expected</div>
+  <div v-else>
+    <img src="https://media.tenor.com/P6OWWkfES0YAAAAm/loading-gif-loading.webp">
+    AI processing ... 20 seconds expected
+  </div>
 
 </template>
 
