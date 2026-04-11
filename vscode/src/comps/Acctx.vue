@@ -3,10 +3,22 @@
 <div class="card">
 
 <div v-if="props.mode == 0">
+  <span v-if="props.acctx.cato && props.acctx.providero">
+    {{ props.acctx.providero.p.Caption }}
+    ({{ props.acctx.cato.p.Caption }})
+  </span>
   {{ props.acctx.acct.p.AcctNum }}
 </div>
 
 <div v-if="props.mode == 1"> 
+  <div v-if="props.acctx.cato && props.acctx.providero">
+    {{ props.acctx.providero.p.Caption }}
+    ({{ props.acctx.cato.p.Caption }})
+  </div>
+
+  <div>
+    {{ props.acctx.acct.p.AcctName }}
+  </div>
   <div>
     {{ props.acctx.acct.p.AcctNum }}
   </div>
@@ -31,7 +43,6 @@ const s = glib.vue.reactive({
 })
 
 glib.vue.onMounted(async () => {
-
 })
 
 </script>

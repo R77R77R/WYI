@@ -36,7 +36,8 @@
 
   </div>
 
-  <Acctx v-for="i in s.acctxs" :unit="i" :mode="1" />
+  <Acctx v-for="i in s.acctxs" 
+    :acctx="i" :mode="1" />
 
 </template>
 

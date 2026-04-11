@@ -95,10 +95,11 @@ let myAcctxs eux (x:X) =
             |> tryFindByAtt "data" with
         | Some (s,data) -> 
             let kucpo = 
+                let cat = parse_int64(tryFindStrByAtt "cat" data)
+                let provider = parse_int64(tryFindStrByAtt "provider" data)
                 runtime.data.catproviders
                 |> Array.tryFind(fun kucp ->
-                    kucp.p.Cat = parse_int64(tryFindStrByAtt "cat" data)
-                    && kucp.p.Provider = parse_int64(tryFindStrByAtt "provider" data)) 
+                    kucp.p.Cat = cat && kucp.p.Provider = provider)
 
             let unito = 
                 match
