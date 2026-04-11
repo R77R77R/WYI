@@ -94,6 +94,10 @@ let init (runtime:Runtime) =
     let importUtilProviders () = 
 
         let checkBind cat provider = 
+
+            cat.ToString() |> runtime.output
+            provider.ToString() |> runtime.output
+
             match
                 runtime.data.catproviders
                 |> Array.tryFind(fun i -> i.p.Cat = cat.ID && i.p.Provider = provider.ID) with
