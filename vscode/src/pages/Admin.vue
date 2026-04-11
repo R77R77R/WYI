@@ -52,10 +52,9 @@ const user__key = (eu:wyi.EU) => {
 }
 
 const user__text = (eu:wyi.EU) => {
-  return eu.p.Address 
-    + ", " + eu.p.Town
-    + ", " + eu.p.State
-    + "" + eu.p.Zip
+  return eu.p.Caption 
+    + " " + eu.p.Username
+    + " " + eu.p.Email
 }
 
 const onSelectUser = (eu:wyi.EU) => {
