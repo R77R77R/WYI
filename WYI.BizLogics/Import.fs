@@ -44,17 +44,17 @@ let tx sql =
 
 let clearData() = 
 
-    "DELETE FROM public.kernel_utilcat" |> tx
-    "DELETE FROM public.kernel_utilprovider" |> tx
-    "DELETE FROM public.kernel_utilcatprovider" |> tx
+    //"DELETE FROM public.kernel_utilcat" |> tx
+    //"DELETE FROM public.kernel_utilprovider" |> tx
+    //"DELETE FROM public.kernel_utilcatprovider" |> tx
 
     //"DELETE FROM public.ca_file" |> tx
     //[| "rm -rf ~/FsRoot/WYI" |]
     //|> Util.Bash.bash runtime.output "root" "5.78.201.21"
 
-    "DELETE FROM public.kernel_utilbill" |> tx
-    "DELETE FROM public.kernel_utilacct" |> tx
-    "DELETE FROM public.kernel_unit" |> tx
+    //"DELETE FROM public.kernel_utilbill" |> tx
+    //"DELETE FROM public.kernel_utilacct" |> tx
+    //"DELETE FROM public.kernel_unit" |> tx
 
     ()
 
