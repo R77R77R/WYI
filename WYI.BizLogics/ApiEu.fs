@@ -89,24 +89,24 @@ let myAcctxs eux (x:X) =
     match
         json
         |> tryFindStrByAtt "act" with
-    //| "create" ->
-    //    match
-    //        json
-    //        |> tryFindByAtt "data" with
-    //    | Some (s,data) -> 
-    //        match 
-    //            (fun (p:pUACCT) -> 
-    //                p.AcctNum <- tryFindStrByAtt "acctnum" data)
-    //                //p.client <- eux.eu.ID) 
-    //            |> creator UACCT_metadata with
-    //        | Some rcd -> 
-    //            //eux.acctxs[rcd.ID] <- {
-    //            //    acct = rcd}
-    //            rcd
-    //            |> UACCT__json
-    //            |> wrapOk "data"
-    //        | None -> er Er.Internal
-    //    | None -> er Er.InvalideParameter
+    | "create" ->
+        match
+            json
+            |> tryFindByAtt "data" with
+        | Some (s,data) -> 
+            match 
+                (fun (p:pUACCT) -> 
+                    p.AcctNum <- tryFindStrByAtt "acctnum" data)
+                    //p.client <- eux.eu.ID) 
+                |> creator UACCT_metadata with
+            | Some rcd -> 
+                //eux.acctxs[rcd.ID] <- {
+                //    acct = rcd}
+                rcd
+                |> UACCT__json
+                |> wrapOk "data"
+            | None -> er Er.Internal
+        | None -> er Er.InvalideParameter
     | "ls" -> 
         eux.acctxs.Values
         |> Array.map AcctComplex__json
