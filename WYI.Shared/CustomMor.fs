@@ -37,6 +37,7 @@ let AcctComplex_empty(): AcctComplex =
         providero = None
         owner = { ID = 0L; Sort = 0L; Createdat = DateTime.MinValue; Updatedat = DateTime.MinValue; p = pEU_empty() }
         unito = None
+        acct = { ID = 0L; Sort = 0L; Createdat = DateTime.MinValue; Updatedat = DateTime.MinValue; p = pUACCT_empty() }
     }
 
 let AcctComplex__bin (bb:BytesBuilder) (v:AcctComplex) =
@@ -45,6 +46,7 @@ let AcctComplex__bin (bb:BytesBuilder) (v:AcctComplex) =
     Option__bin (UPROVIDER__bin) bb v.providero
     EU__bin bb v.owner
     Option__bin (UNIT__bin) bb v.unito
+    UACCT__bin bb v.acct
     ()
 
 let bin__AcctComplex (bi:BinIndexed):AcctComplex =
@@ -63,6 +65,9 @@ let bin__AcctComplex (bi:BinIndexed):AcctComplex =
         unito = 
             bi
             |> bin__Option (bin__UNIT)
+        acct = 
+            bi
+            |> bin__UACCT
     }
 
 let AcctComplex__json (v:AcctComplex) =
@@ -71,6 +76,7 @@ let AcctComplex__json (v:AcctComplex) =
         ("providero",Option__json (UPROVIDER__json) v.providero)
         ("owner",EU__json v.owner)
         ("unito",Option__json (UNIT__json) v.unito)
+        ("acct",UACCT__json v.acct)
          |]
     |> Json.Braket
 
@@ -134,12 +140,25 @@ let json__AcctComplexo (json:Json):AcctComplex option =
                 passOptions <- false
                 None
 
+    let accto =
+        match json__tryFindByName json "acct" with
+        | None ->
+            passOptions <- false
+            None
+        | Some v -> 
+            match v |> json__UACCTo with
+            | Some res -> Some res
+            | None ->
+                passOptions <- false
+                None
+
     if passOptions then
         ({
             cato = catoo.Value
             providero = provideroo.Value
             owner = ownero.Value
-            unito = unitoo.Value }:AcctComplex) |> Some
+            unito = unitoo.Value
+            acct = accto.Value }:AcctComplex) |> Some
     else
         None
 

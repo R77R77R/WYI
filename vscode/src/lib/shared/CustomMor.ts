@@ -28,6 +28,7 @@ export const AcctComplex_empty = (): wyi.AcctComplex => {
         providero: null,
         owner: { id: 0, sort: 0, createdat: new Date(), updatedat: new Date(), p: marshall.pEU_empty() },
         unito: null,
+        acct: { id: 0, sort: 0, createdat: new Date(), updatedat: new Date(), p: marshall.pUACCT_empty() },
     } as wyi.AcctComplex
 }
 
@@ -37,6 +38,7 @@ export const AcctComplex__bin = (bb:BytesBuilder) => (v:any) => {
     marshall.option__bin (marshall.UPROVIDER__bin) (bb) (v.providero)
     marshall.EU__bin (bb) (v.owner)
     marshall.option__bin (marshall.UNIT__bin) (bb) (v.unito)
+    marshall.UACCT__bin (bb) (v.acct)
 }
 
 export const bin__AcctComplex = (bi:BinIndexed):wyi.AcctComplex => {
@@ -46,6 +48,7 @@ export const bin__AcctComplex = (bi:BinIndexed):wyi.AcctComplex => {
         providero: marshall.bin__option (marshall.bin__UPROVIDER) (bi),
         owner: marshall.bin__EU (bi),
         unito: marshall.bin__option (marshall.bin__UNIT) (bi),
+        acct: marshall.bin__UACCT (bi),
     }
 }
 
