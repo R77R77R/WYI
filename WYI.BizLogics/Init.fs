@@ -94,10 +94,6 @@ let init (runtime:Runtime) =
     let importUtilProviders () = 
 
         let checkBind (cat:UCAT) (provider:UPROVIDER) = 
-
-            cat.p.Caption + " / " + provider.p.Caption
-            |> runtime.output
-
             match
                 runtime.data.catproviders
                 |> Array.tryFind(fun i -> i.p.Cat = cat.ID && i.p.Provider = provider.ID) with
@@ -116,10 +112,6 @@ let init (runtime:Runtime) =
                 | None -> halt runtime.output "" ""
 
         let getOrAddCat cat = 
-
-            "[" + cat + "]"
-            |> runtime.output
-
             match
                 runtime.data.cats.Values
                 |> Array.tryFind(fun i -> i.p.Caption = cat) with
@@ -196,7 +188,9 @@ let init (runtime:Runtime) =
     Monthly Recurring Bills | (Miscellaneous)    """
 
         txt1.Split Util.Text.crlf
-        |> Array.map(fun s -> s.Trim())
+        |> Array.map(fun s -> 
+            s |> runtime.output
+            s.Trim())
         |> Array.filter(fun s -> s.Contains "|")
         |> Array.map(fun s -> 
             let ss = s.Split "|"
@@ -229,7 +223,9 @@ Advertising | Billboards | Newspapers | Magazines | Yellow Pages
 Water Delivery | Ready Refresh | Primo | Crystal Rock
 Elevator Maintenance Contracts | Otis        """
         txt2.Split Util.Text.crlf
-        |> Array.map(fun s -> s.Trim().Replace("/","|"))
+        |> Array.map(fun s -> 
+            s |> runtime.output
+            s.Trim().Replace("/","|"))
         |> Array.filter(fun s -> s.Contains "|")
         |> Array.iter(fun s -> 
             let ss = s.Split "|"
