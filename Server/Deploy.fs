@@ -67,13 +67,13 @@ let Bash output server (devDir, deployDir) (gitName, gitEmail) =
 
         if true then
             [|
-                $"cd ~{deployDir}"
+                $"cd ~/{deployDir}"
                 "git fetch --all"
                 "git reset --hard origin/main"
                 "sudo killall -9 dotnet || true"
                 "sudo fuser -k 80/tcp || true"
                 "sudo fuser -k 443/tcp || true"
-                $"cd ~{deployDir}/vscode"
+                $"cd ~/{deployDir}/vscode"
                 "source ~/.bashrc"
                 "bun bd"
                 "cd .."
@@ -81,7 +81,7 @@ let Bash output server (devDir, deployDir) (gitName, gitEmail) =
                 "sudo dotnet run"
                 |]
         else
-            [|  "cd ~Dev"
+            [|  "cd ~/Dev"
                 "rm -rf WYI"
                 "rm -rf JCS"
                 "rm -rf Common"
@@ -89,7 +89,7 @@ let Bash output server (devDir, deployDir) (gitName, gitEmail) =
                 "git clone https://github.com/lchenmay/Common/ Common"
                 "git clone https://github.com/lchenmay/JCS/ JCS"
                 "git clone https://github.com/R77R77R/WYI/ WYI"
-                $"cd ~{deployDir}/vscode"
+                $"cd ~/{deployDir}/vscode"
                 "source ~/.bashrc"
                 "bun bd"
                 "cd .."
