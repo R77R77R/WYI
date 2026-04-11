@@ -116,6 +116,10 @@ let init (runtime:Runtime) =
                 | None -> halt runtime.output "" ""
 
         let getOrAddCat cat = 
+
+            "[" + cat + "]"
+            |> runtime.output
+
             match
                 runtime.data.cats.Values
                 |> Array.tryFind(fun i -> i.p.Caption = cat) with
