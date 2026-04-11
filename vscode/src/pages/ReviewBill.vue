@@ -2,23 +2,24 @@
 
   <h2>Review Bills</h2>
 
-  <div v-for="fid in s.fids">
-    <div class="w-[300px]">
-      <img :src='"/thumbnail/" + fid' />
+  <div class="card">
+    <div v-for="fid in s.fids">
+      <div class="w-[300px]">
+        <img :src='"/thumbnail/" + fid' />
+      </div>
     </div>
   </div>
 
-
   <div v-if="s.rep.Er == 'OK'">
 
-    <div class="my-2 p-2 bg-[#eeeeff]" v-if="s.rep.Ex != ''">
+    <div class="card" v-if="s.rep.Ex != ''">
       <p>We experienced an issue from the AI.
         You can keyin the fields instead.</p>
       <p>{{ s.rep.Ex }}</p>
     </div>
 
-    <h2>Unit</h2>
-    <div class="my-2 p-2 bg-[#eeeeff]">
+    <div class="card">
+      <div class="card-caption">Unit</div>
 
       <div>Address: </div>
       <div><input v-model="s.rep.data.bill.p.ShownAddr" /></div>
@@ -37,7 +38,7 @@
         <SearchField api="/api/eu/my-units" :item__key="(unit: wyi.UNIT) => unit.id" :item__text="unit__text"
           @select="onSelectUnit" />
       </div>
-      <div v-for="i in s.units">
+      <div class="border-blue-600 p-2" v-for="i in s.units">
         {{ unit__text(i) }}
       </div>
 
@@ -48,9 +49,8 @@
 
     </div>
 
-    <h2>Provider</h2>
-    <div class="my-2 p-2 bg-[#eeeeff]">
-      <div>Category</div>
+    <div class="card">
+      <div class="card-caption">Category</div>
       <div>
         <select @change="onChangeCat" v-model="s.rep.data.bill.p.Cat">
           <option v-for="item in s.ucatproviders" :value="(item.ucat as wyi.UCAT).id">
@@ -68,9 +68,10 @@
         </select>
       </div>
     </div>
+    <h2>Provider</h2>
 
-    <h2>Account</h2>
-    <div class="my-2 p-2 bg-[#eeeeff]">
+    <div class="card">
+      <div class="card-caption">Account</div>
 
       <div>Account Number: </div>
       <div><input v-model="s.rep.data.bill.p.ShownAcctNum" /></div>
@@ -99,7 +100,7 @@
     </div>
 
   </div>
-  <div v-else>
+  <div class="card" v-else>
     <img src="https://media.tenor.com/P6OWWkfES0YAAAAm/loading-gif-loading.webp">
     AI processing ... 20 seconds expected
   </div>

@@ -34,6 +34,8 @@ open WYI.BizLogics.Common
 open WYI.BizLogics.Db
 open WYI.BizLogics.Auth
 open WYI.BizLogics.Ai
+open WYI.BizLogics.ApiHelperBill
+
 
 let output = runtime.output
 
@@ -62,11 +64,6 @@ let users (x:X) =
 
 let billxs (x:X) = 
 
-    let billxs() = 
-        runtime.users.Values
-        |> Array.map(fun i -> i.billxs.Values)
-        |> Array.concat
-
     match
         x.Json
         |> tryFindStrByAtt "act" with
@@ -76,17 +73,8 @@ let billxs (x:X) =
         |> Json.Ary
         |> wrapOk "data"
     | "search" ->
-        let term = (x.Json |> tryFindStrByAtt "term").ToLower()
-        billxs()
-        |> Array.filter(fun i ->
-            let mutable hit = false
-            if i.unito.IsSome then
-                if i.unito.Value.p.Address.ToLower().Contains term then hit <- true
-            if i.cato.IsSome then
-                if i.cato.Value.p.Caption.ToLower().Contains term then hit <- true
-            if i.providero.IsSome then
-                if i.providero.Value.p.Caption.ToLower().Contains term then hit <- true
-            hit)
+        (x.Json |> tryFindStrByAtt "term").ToLower()
+        |> searchBillx
         |> Array.map BillComplex__json
         |> Json.Ary
         |> wrapOk "data"

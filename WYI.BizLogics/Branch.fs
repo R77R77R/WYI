@@ -59,6 +59,7 @@ let branching (euxo:EuComplex option) (x:X) =
         let eux = euxo.Value
         match x.Struct.api with
         | "my-units" -> myUnits eux |> bindx
+        | "my-billxs" -> myBillxs eux |> bindx
         | "review-bill-files" -> reviewBillFiles eux |> bindx
         | "submit-bill" -> bindx submitBill
         | _ -> Fail(Er.ApiNotExists,x)

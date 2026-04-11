@@ -2,13 +2,15 @@
   <div class="upload-page">
 
     <div class="card">
-
-      <div class="header">
-        <h2>Upload Bills</h2>
+      <div class="card-caption">
+        Upload bill files:
+        one bill a time
       </div>
+    </div>
 
+    <div class="card">
       <div>
-        <p>Drop your files here or <span>Select</span></p>
+        <p>Drop your files here or click the file icon</p>
         <small>Max. 10GB</small>
       </div>
 
@@ -19,9 +21,9 @@
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" v-if="s.filexs.length > 0">
 
-      <div>File list</div>
+      <div class="card-caption">File list</div>
       <div class="flex flex-wrap gap-4 p-4">
         <BillFile class="w-48 h-32 bg-slate-100 border-2 border-dashed border-slate-300 rounded-lg flex"
           v-for="filex in s.filexs" :filex="filex"></BillFile>
@@ -94,7 +96,7 @@ const upload = async () => {
 
   sessionStorage.setItem('fids', JSON.stringify(fids))
 
-  await router.push('/ReviewBills')
+  await router.push('/ReviewBill')
 }
 
 </script>

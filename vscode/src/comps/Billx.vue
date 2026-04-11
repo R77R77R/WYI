@@ -2,8 +2,9 @@
 
 <div class="card">
 
-<div>
-  Bill Complex
+<div v-if="props.billx.cato && props.billx.providero">
+  {{ props.billx.providero.p.Caption }}
+  ({{ props.billx.cato.p.Caption }})
 </div>
 
 <div v-if="props.mode > 0">

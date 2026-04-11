@@ -34,6 +34,7 @@ open WYI.BizLogics.Common
 open WYI.BizLogics.Db
 open WYI.BizLogics.Auth
 open WYI.BizLogics.Ai
+open WYI.BizLogics.ApiHelperBill
 
 let output = runtime.output
 
@@ -81,6 +82,25 @@ let myUnits eux (x:X) =
         |> Json.Ary
         |> wrapOk "data"
     | _ -> er Er.InvalideParameter
+
+let myBillxs eux (x:X) = 
+
+    match
+        x.Json
+        |> tryFindStrByAtt "act" with
+    | "ls" -> 
+        billxs()
+        |> Array.map BillComplex__json
+        |> Json.Ary
+        |> wrapOk "data"
+    | "search" ->
+        (x.Json |> tryFindStrByAtt "term").ToLower()
+        |> searchBillx
+        |> Array.map BillComplex__json
+        |> Json.Ary
+        |> wrapOk "data"
+    | _ -> er Er.InvalideParameter
+
 
 let reviewBillFiles eux (x:X) =
 

@@ -13,7 +13,12 @@
 
   <div class="w-full flex bg-[#9999ff] px-3 py-1 gap-5">
     <router-link to="/" class="text-white hover:text-gray-400">Home</router-link>
-    <router-link to="/UploadBills" class="text-white hover:text-gray-400">Upload Bills</router-link>
+    <router-link 
+      v-if="s.rt.user.eu.id > 0"
+      to="/UploadBill" class="text-white hover:text-gray-400">Upload Bills</router-link>
+    <router-link 
+      v-if="s.rt.user.eu.id > 0"
+      to="/MyBills" class="text-white hover:text-gray-400">My Bills</router-link>
   </div>
 
   <router-view class="min-h-[600px]" />

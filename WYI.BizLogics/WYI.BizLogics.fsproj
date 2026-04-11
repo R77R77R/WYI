@@ -16,6 +16,7 @@
     <Compile Include="Init.fs" />
     <Compile Include="Auth.fs" />
     <Compile Include="Ai.fs" />
+    <Compile Include="ApiHelperBill.fs" />
     <Compile Include="ApiPublic.fs" />
     <Compile Include="ApiEu.fs" />
     <Compile Include="ApiAdmin.fs" />

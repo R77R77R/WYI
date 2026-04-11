@@ -1,7 +1,7 @@
 <template>
 
 <div class="flex flex-col border-2">
-  <div v-for="i in s.selected">
+  <div v-for="i in s.files">
     <div>
       {{ i.p.Desc }}
     </div>
@@ -61,14 +61,13 @@ fileName: "",
 fileContent: "",
 desc: "",
 res: " - ",
-files: [] as [].FILE[],
-selected: [] as [].FBIND[],
+files: [] as wyi.FILE[],
 expand: false
 })
 
 const reload = () => {
   Common.loader('/api/eu/files', { },(rep:any) => {
-      s.files = rep.list as [].FILE[]
+      s.files = rep.list as wyi.FILE[]
     })
 }
 
@@ -86,7 +85,7 @@ const onFileChange = async (e:any) => {
   }
 }
 
-const update = (file:[].FILE) => {
+const update = (file:wyi.FILE) => {
   Common.loader('/api/eu/file', { 
     act: 'update', 
     p: file.p,
@@ -94,7 +93,7 @@ const update = (file:[].FILE) => {
   })
 }
 
-const remove = (file:[].FILE) => {
+const remove = (file:wyi.FILE) => {
   Common.loader('/api/eu/file', { 
     act: 'remove', 
     id: Number(file.id)},(rep:any) => {
