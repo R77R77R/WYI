@@ -16,6 +16,9 @@
     ({{ props.acctx.cato.p.Caption }})
   </div>
 
+  <Unit v-if="props.acctx.unito"
+    :unit="props.acctx.unito" :mode="1" />
+
   <div>
     {{ props.acctx.acct.p.AcctName }}
   </div>
@@ -33,6 +36,7 @@
 import { ref } from 'vue'
 import { glib } from '~/lib/glib'
 import * as Common from '~/lib/store/common'
+import Unit from '~/comps/Unit.vue'
 
 const props = defineProps(['acctx','mode'])
 props.acctx as wyi.AcctComplex
