@@ -13,6 +13,7 @@ BEGIN
         ,[Username] NVARCHAR(64) COLLATE Chinese_PRC_CI_AS
         ,[Email] NVARCHAR(255) COLLATE Chinese_PRC_CI_AS
         ,[Avatar] NVARCHAR(MAX)
+        ,[OAuthProvider] NVARCHAR(64) COLLATE Chinese_PRC_CI_AS
         ,[ClerkUserID] NVARCHAR(100) COLLATE Chinese_PRC_CI_AS
         ,[Pwd] NVARCHAR(64) COLLATE Chinese_PRC_CI_AS
         ,[AuthType] INT
@@ -23,7 +24,7 @@ END
 -- Dropping obsolete fields -----------
 DECLARE @name_ca_enduser NVARCHAR(64)
 DECLARE cursor_ca_enduser CURSOR FOR 
-    SELECT name FROM SYSCOLUMNS WHERE id=object_id('ca_enduser') AND (name NOT IN ('ID','Createdat','Updatedat','Sort','Caption','Username','Email','Avatar','ClerkUserID','Pwd','AuthType'))
+    SELECT name FROM SYSCOLUMNS WHERE id=object_id('ca_enduser') AND (name NOT IN ('ID','Createdat','Updatedat','Sort','Caption','Username','Email','Avatar','OAuthProvider','ClerkUserID','Pwd','AuthType'))
 
 OPEN cursor_ca_enduser
 FETCH NEXT FROM cursor_ca_enduser INTO @name_ca_enduser
@@ -150,6 +151,33 @@ IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_ca_enduse
 IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_ca_enduserAvatar')
     BEGIN
     ALTER TABLE ca_enduser DROP  CONSTRAINT [UniqueNonclustered_ca_enduserAvatar]
+    END
+
+-- [ca_enduser.OAuthProvider] -------------
+
+
+-- [ca_enduser.OAuthProvider] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('ca_enduser') AND name='OAuthProvider')
+    BEGIN
+     ALTER TABLE ca_enduser ALTER COLUMN [OAuthProvider] NVARCHAR(64) COLLATE Chinese_PRC_CI_AS
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_ca_enduser_OAuthProvider NVARCHAR(MAX);
+    SET @sql_add_ca_enduser_OAuthProvider = 'ALTER TABLE ca_enduser ADD [OAuthProvider] NVARCHAR(64) COLLATE Chinese_PRC_CI_AS'
+    EXEC sp_executesql @sql_add_ca_enduser_OAuthProvider
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_ca_enduserOAuthProvider')
+    BEGIN
+    ALTER TABLE ca_enduser DROP  CONSTRAINT [Constraint_ca_enduserOAuthProvider]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_ca_enduserOAuthProvider')
+    BEGIN
+    ALTER TABLE ca_enduser DROP  CONSTRAINT [UniqueNonclustered_ca_enduserOAuthProvider]
     END
 
 -- [ca_enduser.ClerkUserID] -------------

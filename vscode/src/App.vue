@@ -4,7 +4,6 @@
 
 <UserAuth
   @changed="onAuthChanged" />
-
 </div>
 
 <div class="lg:w-[1200px] m-[10px]">

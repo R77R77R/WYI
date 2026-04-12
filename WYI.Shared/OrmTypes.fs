@@ -61,6 +61,7 @@ mutable Caption: Chars
 mutable Username: Chars
 mutable Email: Chars
 mutable Avatar: Text
+mutable OAuthProvider: Chars
 mutable ClerkUserID: Chars
 mutable Pwd: Chars
 mutable AuthType: euAuthTypeEnum}
@@ -71,23 +72,24 @@ type EU = Rcd<pEU>
 let EU_fieldorders() =
     match rdbms with
     | Rdbms.SqlServer ->
-        "[ID],[Createdat],[Updatedat],[Sort],[Caption],[Username],[Email],[Avatar],[ClerkUserID],[Pwd],[AuthType]"
+        "[ID],[Createdat],[Updatedat],[Sort],[Caption],[Username],[Email],[Avatar],[OAuthProvider],[ClerkUserID],[Pwd],[AuthType]"
     | Rdbms.PostgreSql ->
-        $""" "id","createdat","updatedat","sort", "caption","username","email","avatar","clerkuserid","pwd","authtype" """
+        $""" "id","createdat","updatedat","sort", "caption","username","email","avatar","oauthprovider","clerkuserid","pwd","authtype" """
 
 let pEU_fieldordersArray = [|
     "Caption"
     "Username"
     "Email"
     "Avatar"
+    "OAuthProvider"
     "ClerkUserID"
     "Pwd"
     "AuthType" |]
 
 let EU_sql_update() =
     match rdbms with
-    | Rdbms.SqlServer -> "[Caption]=@Caption,[Username]=@Username,[Email]=@Email,[Avatar]=@Avatar,[ClerkUserID]=@ClerkUserID,[Pwd]=@Pwd,[AuthType]=@AuthType"
-    | Rdbms.PostgreSql -> "caption=@caption,username=@username,email=@email,avatar=@avatar,clerkuserid=@clerkuserid,pwd=@pwd,authtype=@authtype"
+    | Rdbms.SqlServer -> "[Caption]=@Caption,[Username]=@Username,[Email]=@Email,[Avatar]=@Avatar,[OAuthProvider]=@OAuthProvider,[ClerkUserID]=@ClerkUserID,[Pwd]=@Pwd,[AuthType]=@AuthType"
+    | Rdbms.PostgreSql -> "caption=@caption,username=@username,email=@email,avatar=@avatar,oauthprovider=@oauthprovider,clerkuserid=@clerkuserid,pwd=@pwd,authtype=@authtype"
 
 let pEU_fields() =
     match rdbms with
@@ -97,6 +99,7 @@ let pEU_fields() =
             Chars("Username", 64)
             Chars("Email", 255)
             Text("Avatar")
+            Chars("OAuthProvider", 64)
             Chars("ClerkUserID", 100)
             Chars("Pwd", 64)
             SelectLines("AuthType", [| ("Normal","Normal");("Authorized","Authorized");("Admin","Admin") |]) |]
@@ -106,6 +109,7 @@ let pEU_fields() =
             Chars("username", 64)
             Chars("email", 255)
             Text("avatar")
+            Chars("oauthprovider", 64)
             Chars("clerkuserid", 100)
             Chars("pwd", 64)
             SelectLines("authtype", [| ("Normal","Normal");("Authorized","Authorized");("Admin","Admin") |]) |]
@@ -115,6 +119,7 @@ let pEU_empty(): pEU = {
     Username = ""
     Email = ""
     Avatar = ""
+    OAuthProvider = ""
     ClerkUserID = ""
     Pwd = ""
     AuthType = EnumOfValue 0 }

@@ -11,6 +11,7 @@ export type pEU = {
     Username: string
     Email: string
     Avatar: string
+    OAuthProvider: string
     ClerkUserID: string
     Pwd: string
     AuthType: number

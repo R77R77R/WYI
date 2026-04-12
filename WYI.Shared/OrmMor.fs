@@ -52,6 +52,10 @@ let pEU__bin (bb:BytesBuilder) (p:pEU) =
     binAvatar.Length |> BitConverter.GetBytes |> bb.append
     binAvatar |> bb.append
     
+    let binOAuthProvider = p.OAuthProvider |> Encoding.UTF8.GetBytes
+    binOAuthProvider.Length |> BitConverter.GetBytes |> bb.append
+    binOAuthProvider |> bb.append
+    
     let binClerkUserID = p.ClerkUserID |> Encoding.UTF8.GetBytes
     binClerkUserID.Length |> BitConverter.GetBytes |> bb.append
     binClerkUserID |> bb.append
@@ -96,6 +100,11 @@ let bin__pEU (bi:BinIndexed):pEU =
     p.Avatar <- Encoding.UTF8.GetString(bin,index.Value,count_Avatar)
     index.Value <- index.Value + count_Avatar
     
+    let count_OAuthProvider = BitConverter.ToInt32(bin,index.Value)
+    index.Value <- index.Value + 4
+    p.OAuthProvider <- Encoding.UTF8.GetString(bin,index.Value,count_OAuthProvider)
+    index.Value <- index.Value + count_OAuthProvider
+    
     let count_ClerkUserID = BitConverter.ToInt32(bin,index.Value)
     index.Value <- index.Value + 4
     p.ClerkUserID <- Encoding.UTF8.GetString(bin,index.Value,count_ClerkUserID)
@@ -138,6 +147,7 @@ let pEU__json (p:pEU) =
         ("Username",p.Username |> Json.Str)
         ("Email",p.Email |> Json.Str)
         ("Avatar",p.Avatar |> Json.Str)
+        ("OAuthProvider",p.OAuthProvider |> Json.Str)
         ("ClerkUserID",p.ClerkUserID |> Json.Str)
         ("Pwd",p.Pwd |> Json.Str)
         ("AuthType",(p.AuthType |> EnumToValue).ToString() |> Json.Num) |]
@@ -173,6 +183,8 @@ let json__pEUo (json:Json):pEU option =
     p.Email <- checkfieldz fields "Email" 255
     
     p.Avatar <- checkfield fields "Avatar"
+    
+    p.OAuthProvider <- checkfieldz fields "OAuthProvider" 64
     
     p.ClerkUserID <- checkfieldz fields "ClerkUserID" 100
     
@@ -2189,9 +2201,10 @@ let db__pEU(line:Object[]): pEU =
     p.Username <- string(line[5]).TrimEnd()
     p.Email <- string(line[6]).TrimEnd()
     p.Avatar <- string(line[7]).TrimEnd()
-    p.ClerkUserID <- string(line[8]).TrimEnd()
-    p.Pwd <- string(line[9]).TrimEnd()
-    p.AuthType <- EnumOfValue(if Convert.IsDBNull(line[10]) then 0 else line[10] :?> int)
+    p.OAuthProvider <- string(line[8]).TrimEnd()
+    p.ClerkUserID <- string(line[9]).TrimEnd()
+    p.Pwd <- string(line[10]).TrimEnd()
+    p.AuthType <- EnumOfValue(if Convert.IsDBNull(line[11]) then 0 else line[11] :?> int)
 
     p
 
@@ -2203,6 +2216,7 @@ let pEU__sps (p:pEU) =
             ("Username", p.Username) |> kvp__sqlparam
             ("Email", p.Email) |> kvp__sqlparam
             ("Avatar", p.Avatar) |> kvp__sqlparam
+            ("OAuthProvider", p.OAuthProvider) |> kvp__sqlparam
             ("ClerkUserID", p.ClerkUserID) |> kvp__sqlparam
             ("Pwd", p.Pwd) |> kvp__sqlparam
             ("AuthType", EnumToValue p.AuthType) |> kvp__sqlparam |]
@@ -2212,6 +2226,7 @@ let pEU__sps (p:pEU) =
             ("username", p.Username) |> kvp__sqlparam
             ("email", p.Email) |> kvp__sqlparam
             ("avatar", p.Avatar) |> kvp__sqlparam
+            ("oauthprovider", p.OAuthProvider) |> kvp__sqlparam
             ("clerkuserid", p.ClerkUserID) |> kvp__sqlparam
             ("pwd", p.Pwd) |> kvp__sqlparam
             ("authtype", EnumToValue p.AuthType) |> kvp__sqlparam |]
@@ -2227,6 +2242,7 @@ let pEU_clone (p:pEU): pEU = {
     Username = p.Username
     Email = p.Email
     Avatar = p.Avatar
+    OAuthProvider = p.OAuthProvider
     ClerkUserID = p.ClerkUserID
     Pwd = p.Pwd
     AuthType = p.AuthType }
@@ -2297,6 +2313,7 @@ let EUTxSqlServer =
     ,[Username]
     ,[Email]
     ,[Avatar]
+    ,[OAuthProvider]
     ,[ClerkUserID]
     ,[Pwd]
     ,[AuthType])

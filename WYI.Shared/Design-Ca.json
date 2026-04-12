@@ -25,6 +25,11 @@
       },
       {
         "enum": "Chars",
+        "length": 64,
+        "name": "OAuthProvider"
+      },
+      {
+        "enum": "Chars",
         "length": 100,
         "name": "ClerkUserID"
       },

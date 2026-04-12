@@ -22,6 +22,7 @@ BEGIN
             ,"username" VARCHAR(64)
             ,"email" VARCHAR(255)
             ,"avatar" TEXT
+            ,"oauthprovider" VARCHAR(64)
             ,"clerkuserid" VARCHAR(100)
             ,"pwd" VARCHAR(64)
             ,"authtype" INT
@@ -41,7 +42,7 @@ BEGIN
         FROM information_schema.columns 
         WHERE table_name = 'ca_enduser' 
           AND table_schema = 'public' 
-          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'caption', 'username', 'email', 'avatar', 'clerkuserid', 'pwd', 'authtype'])
+          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'caption', 'username', 'email', 'avatar', 'oauthprovider', 'clerkuserid', 'pwd', 'authtype'])
     LOOP
         -- 对应 PRINT 'Dropping ' + @tname + '.' + @fn
         
@@ -104,6 +105,20 @@ BEGIN
 
     IF not condition THEN
         ALTER TABLE ca_enduser ADD "avatar" text;
+    END IF;
+END $$;
+
+-- [ca_enduser.OAuthProvider] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='ca_enduser' AND column_name='oauthprovider'));
+
+    IF not condition THEN
+        ALTER TABLE ca_enduser ADD "oauthprovider" varchar(64);
     END IF;
 END $$;
 
