@@ -31,8 +31,11 @@
 
         <div>Provider</div>
         <div>
-          <Provider ></Provider>
-          <input v-model="s.selected.acct.p.AcctNum" /></div>
+          <Provider :uprovider="props.uprovider" />
+        </div>
+
+        <div>Unit</div>
+        <Unit :unit="props.unit" :mode="1" />
 
         <div>Account Number: </div>
         <div><input v-model="s.selected.acct.p.AcctNum" /></div>
@@ -71,12 +74,14 @@ import SearchField from '~/comps/SearchField.vue'
 import Acctx from '~/comps/Acctx.vue'
 import { AcctComplex_empty } from '~/lib/shared/CustomMor'
 import Provider from './Provider.vue'
+import Unit from './Unit.vue'
 
-const props = defineProps(['api','acctx','ucat','uprovider'])
+const props = defineProps(['api','acctx','ucat','uprovider','unit'])
 props.api as string
 props.acctx as wyi.AcctComplex
 props.ucat as wyi.UCAT
 props.uprovider as wyi.UPROVIDER
+props.unit as wyi.UNIT
 
 const s = glib.vue.reactive({
   showAdded: false,
@@ -86,23 +91,27 @@ const s = glib.vue.reactive({
   rt: runtime
 })
 
-watch(
-  () => props.ucat,
-  (newP, oldP) => {
-    s.selected.cato = newP
-  }
-)
+watch(() => props.ucat,(newP, oldP) => {
+  s.selected.cato = newP
+})
 
-watch(
-  () => props.uprovider,
-  (newP, oldP) => {
-    s.selected.providero = newP
-  }
-)
+watch(() => props.uprovider,(newP, oldP) => {
+  s.selected.providero = newP
+})
+
+watch(() => props.unit,(newP, oldP) => {
+  s.selected.unito = newP
+})
 
 glib.vue.onMounted(async () => {
 
   s.selected = props.acctx 
+  if(props.ucat != null)
+    s.selected.cato = props.ucat
+  if(props.uprovider != null)
+    s.selected.providero = props.uprovider
+  if(props.unit != null)
+    s.selected.unito = props.unit
 
   Common.loader(props.api, {
     act: "ls"
@@ -112,11 +121,19 @@ glib.vue.onMounted(async () => {
 })
 
 const onClickNew = () => {
+
+  if(s.selected.unito != null)
+    s.selected.acct.p.Unit = s.selected.unito.id
+  if(s.selected.cato != null)
+    s.selected.acct.p.Cat = s.selected.cato.id
+  if(s.selected.providero != null)
+    s.selected.acct.p.Provider = s.selected.providero.id
+
   Common.loader(props.api, {
     data: {
-      //unit: s.selected,
-//      cat: s.rep.data.bill.p.Cat,
-//      provider: s.rep.data.bill.p.Provider,
+      unit: s.selected.acct.p.Unit,
+      cat: s.selected.acct.p.Cat,
+      provider: s.selected.acct.p.Provider,
       acctname: s.selected.acct.p.AcctName,
       acctnum: s.selected.acct.p.AcctNum
     },

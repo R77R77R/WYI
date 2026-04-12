@@ -31,6 +31,7 @@
     <LocateAcctx
       :ucat="s.ucat"
       :uprovider="s.uprovider"
+      :unit="s.unit"
       :acctx="s.acctx"
       api="/api/eu/my-acctxs" />
 
@@ -113,7 +114,7 @@ glib.vue.onMounted(async () => {
     fids: s.fids
   }, (rep: any) => {
     s.er = rep.Er
-    s.ex = rep.ex
+    s.ex = "" + rep.ex
 
     if(rep.ucat)
       s.ucat = rep.ucat
