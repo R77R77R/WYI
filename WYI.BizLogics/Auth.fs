@@ -41,6 +41,12 @@ let auth (x:X) =
 
     let session = (tryFindStrByAttWithDefault "" "session" json).Trim()
     let cid = tryFindStrByAtt "clerkId" json
+    let oauthProvider = 
+        let s = tryFindStrByAtt "oauthProvider" json
+        if s.StartsWith "oauth_" then
+            s.Substring 6
+        else
+            s
     if (tryFindStrByAtt "act" json).Trim() = "sign-out" then
         if runtime.sessions.ContainsKey session then
             runtime.sessions.Remove session |> ignore
@@ -58,9 +64,12 @@ let auth (x:X) =
             
         match euxo with
         | Some eux ->
-            if email <> eux.eu.p.Email
+            if  oauthProvider <> eux.eu.p.OAuthProvider
+                || email <> eux.eu.p.Email
                 || caption <> eux.eu.p.Caption
                 || avatar <> eux.eu.p.Avatar then
+
+                eux.eu.p.OAuthProvider <- oauthProvider
 
                 eux.eu.p.Email <- email
                 eux.eu.p.Caption <- caption
