@@ -188,10 +188,21 @@ let reviewBillFiles eux (x:X) =
         [|  ("Er",er.ToString() |> Json.Str) 
             ("ex",ex |> Json.Str) |]
     else
+        let ls = new List<string * Json>()
+        match pBill.Cat |> runtime.data.cats.TryGet with
+        | Some v -> ls.Add("ucat",v |> UCAT__json)
+        | None -> ()
+        match pBill.Provider |> runtime.data.providers.TryGet with
+        | Some v -> ls.Add("uprovider",v |> UPROVIDER__json)
+        | None -> ()
         [|  ("pUnit",pUnit |> pUNIT__json)
             ("pAcct",pAcct |> pUACCT__json)
             ("pBill",pBill |> pUBILL__json)
             ok |]
+        |> ls.AddRange
+        ls.ToArray()
+
+
 
 let submitBill (x:X) =
 

@@ -82,17 +82,19 @@ import * as Common from '~/lib/store/common'
 
 import { router } from '~/lib/mod/route'
 
-import LocateUnit from '~/comps/LocateUnit.vue'
-import { UNIT_empty } from '~/lib/shared/OrmMor'
-import LocateAcctx from '~/comps/LocateAcctx.vue'
+import { UCAT_empty, UPROVIDER_empty, UBILL_empty, UNIT_empty } from '~/lib/shared/OrmMor'
 import { AcctComplex_empty } from '~/lib/shared/CustomMor'
+import LocateUnit from '~/comps/LocateUnit.vue'
+import LocateAcctx from '~/comps/LocateAcctx.vue'
 import LocateProvider from '~/comps/LocateProvider.vue'
-import { UCAT_empty, UPROVIDER_empty } from '~/lib/shared/OrmMor'
-
 
 const s = glib.vue.reactive({
   fids: [],
-  rep: {} as any,
+  er: "",
+  ex: "",
+  unit: UNIT_empty(),
+  acctx: AcctComplex_empty(),
+  bill: UBILL_empty(),
   rt: runtime
 })
 
@@ -110,15 +112,18 @@ glib.vue.onMounted(async () => {
   Common.loader('/api/eu/review-bill-files', {
     fids: s.fids
   }, (rep: any) => {
-    s.rep = rep
-    console.log(s.rep)
+    s.er = rep.Er
+    s.ex = rep.ex
+    s.unit.p = rep.pUnit
+    s.acctx.acct.p = rep.pAcct
+    s.bill.p = rep.pBill
   })
 
 })
 
 const confirm = () => {
   Common.loader('/api/eu/submit-bill', {
-    data: s.rep.data
+
   }, (rep: any) => {
     router.push("/")
   })
