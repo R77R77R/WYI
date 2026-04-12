@@ -218,6 +218,7 @@ let submitBill eux (x:X) =
         
             let pretx = None |> opctx__pretx
 
+            p.State <- ubillStateEnum.Submitted
             p.Owner <- eux.eu.ID
 
             let rcd = 

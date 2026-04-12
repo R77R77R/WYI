@@ -389,33 +389,33 @@ let UACCT_table = "Kernel_UtilAcct"
 // [Kernel_UtilBill] (UBILL)
 
 type ubillStateEnum = 
-| Draft = 0 // Draft
-| Uploaded = 1 // Uploaded
-| Submitted = 2 // Submitted
+| Submitted = 0 // Submitted
+| Accepted = 1 // Accepted
+| Closed = 2 // Closed
 
-let ubillStateEnums = [| ubillStateEnum.Draft; ubillStateEnum.Uploaded; ubillStateEnum.Submitted |]
+let ubillStateEnums = [| ubillStateEnum.Submitted; ubillStateEnum.Accepted; ubillStateEnum.Closed |]
 let ubillStateEnumstrs = [| "ubillStateEnum"; "ubillStateEnum"; "ubillStateEnum" |]
 let ubillStateNum = 3
 
 let int__ubillStateEnum v =
     match v with
-    | 0 -> Some ubillStateEnum.Draft
-    | 1 -> Some ubillStateEnum.Uploaded
-    | 2 -> Some ubillStateEnum.Submitted
+    | 0 -> Some ubillStateEnum.Submitted
+    | 1 -> Some ubillStateEnum.Accepted
+    | 2 -> Some ubillStateEnum.Closed
     | _ -> None
 
 let str__ubillStateEnum s =
     match s with
-    | "Draft" -> Some ubillStateEnum.Draft
-    | "Uploaded" -> Some ubillStateEnum.Uploaded
     | "Submitted" -> Some ubillStateEnum.Submitted
+    | "Accepted" -> Some ubillStateEnum.Accepted
+    | "Closed" -> Some ubillStateEnum.Closed
     | _ -> None
 
 let ubillStateEnum__caption e =
     match e with
-    | ubillStateEnum.Draft -> "Draft"
-    | ubillStateEnum.Uploaded -> "Uploaded"
     | ubillStateEnum.Submitted -> "Submitted"
+    | ubillStateEnum.Accepted -> "Accepted"
+    | ubillStateEnum.Closed -> "Closed"
     | _ -> ""
 
 type pUBILL = {
@@ -423,7 +423,6 @@ mutable Cat: FK
 mutable Provider: FK
 mutable Owner: FK
 mutable Unit: FK
-mutable UnitText: Text
 mutable State: ubillStateEnum
 mutable UAcct: FK
 mutable YYYYMMDD: Chars
@@ -435,16 +434,15 @@ type UBILL = Rcd<pUBILL>
 let UBILL_fieldorders() =
     match rdbms with
     | Rdbms.SqlServer ->
-        "[ID],[Createdat],[Updatedat],[Sort],[Cat],[Provider],[Owner],[Unit],[UnitText],[State],[UAcct],[YYYYMMDD],[Amt]"
+        "[ID],[Createdat],[Updatedat],[Sort],[Cat],[Provider],[Owner],[Unit],[State],[UAcct],[YYYYMMDD],[Amt]"
     | Rdbms.PostgreSql ->
-        $""" "id","createdat","updatedat","sort", "cat","provider","owner","unit","unittext","state","uacct","yyyymmdd","amt" """
+        $""" "id","createdat","updatedat","sort", "cat","provider","owner","unit","state","uacct","yyyymmdd","amt" """
 
 let pUBILL_fieldordersArray = [|
     "Cat"
     "Provider"
     "Owner"
     "Unit"
-    "UnitText"
     "State"
     "UAcct"
     "YYYYMMDD"
@@ -452,8 +450,8 @@ let pUBILL_fieldordersArray = [|
 
 let UBILL_sql_update() =
     match rdbms with
-    | Rdbms.SqlServer -> "[Cat]=@Cat,[Provider]=@Provider,[Owner]=@Owner,[Unit]=@Unit,[UnitText]=@UnitText,[State]=@State,[UAcct]=@UAcct,[YYYYMMDD]=@YYYYMMDD,[Amt]=@Amt"
-    | Rdbms.PostgreSql -> "cat=@cat,provider=@provider,owner=@owner,unit=@unit,unittext=@unittext,state=@state,uacct=@uacct,yyyymmdd=@yyyymmdd,amt=@amt"
+    | Rdbms.SqlServer -> "[Cat]=@Cat,[Provider]=@Provider,[Owner]=@Owner,[Unit]=@Unit,[State]=@State,[UAcct]=@UAcct,[YYYYMMDD]=@YYYYMMDD,[Amt]=@Amt"
+    | Rdbms.PostgreSql -> "cat=@cat,provider=@provider,owner=@owner,unit=@unit,state=@state,uacct=@uacct,yyyymmdd=@yyyymmdd,amt=@amt"
 
 let pUBILL_fields() =
     match rdbms with
@@ -463,8 +461,7 @@ let pUBILL_fields() =
             FK("Provider")
             FK("Owner")
             FK("Unit")
-            Text("UnitText")
-            SelectLines("State", [| ("Draft","Draft");("Uploaded","Uploaded");("Submitted","Submitted") |])
+            SelectLines("State", [| ("Submitted","Submitted");("Accepted","Accepted");("Closed","Closed") |])
             FK("UAcct")
             Chars("YYYYMMDD", 8)
             Float("Amt") |]
@@ -474,8 +471,7 @@ let pUBILL_fields() =
             FK("provider")
             FK("owner")
             FK("unit")
-            Text("unittext")
-            SelectLines("state", [| ("Draft","Draft");("Uploaded","Uploaded");("Submitted","Submitted") |])
+            SelectLines("state", [| ("Submitted","Submitted");("Accepted","Accepted");("Closed","Closed") |])
             FK("uacct")
             Chars("yyyymmdd", 8)
             Float("amt") |]
@@ -485,7 +481,6 @@ let pUBILL_empty(): pUBILL = {
     Provider = 0L
     Owner = 0L
     Unit = 0L
-    UnitText = ""
     State = EnumOfValue 0
     UAcct = 0L
     YYYYMMDD = ""

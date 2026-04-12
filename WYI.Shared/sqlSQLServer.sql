@@ -1113,7 +1113,6 @@ BEGIN
         ,[Provider] BIGINT
         ,[Owner] BIGINT
         ,[Unit] BIGINT
-        ,[UnitText] NVARCHAR(MAX)
         ,[State] INT
         ,[UAcct] BIGINT
         ,[YYYYMMDD] NVARCHAR(8) COLLATE Chinese_PRC_CI_AS
@@ -1125,7 +1124,7 @@ END
 -- Dropping obsolete fields -----------
 DECLARE @name_kernel_utilbill NVARCHAR(64)
 DECLARE cursor_kernel_utilbill CURSOR FOR 
-    SELECT name FROM SYSCOLUMNS WHERE id=object_id('kernel_utilbill') AND (name NOT IN ('ID','Createdat','Updatedat','Sort','Cat','Provider','Owner','Unit','UnitText','State','UAcct','YYYYMMDD','Amt'))
+    SELECT name FROM SYSCOLUMNS WHERE id=object_id('kernel_utilbill') AND (name NOT IN ('ID','Createdat','Updatedat','Sort','Cat','Provider','Owner','Unit','State','UAcct','YYYYMMDD','Amt'))
 
 OPEN cursor_kernel_utilbill
 FETCH NEXT FROM cursor_kernel_utilbill INTO @name_kernel_utilbill
@@ -1252,33 +1251,6 @@ IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_ut
 IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_utilbillUnit')
     BEGIN
     ALTER TABLE kernel_utilbill DROP  CONSTRAINT [UniqueNonclustered_kernel_utilbillUnit]
-    END
-
--- [kernel_utilbill.UnitText] -------------
-
-
--- [kernel_utilbill.UnitText] -------------
-
-IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('kernel_utilbill') AND name='UnitText')
-    BEGIN
-     ALTER TABLE kernel_utilbill ALTER COLUMN [UnitText] NVARCHAR(MAX)
-    END
-ELSE
-    BEGIN
-    DECLARE @sql_add_kernel_utilbill_UnitText NVARCHAR(MAX);
-    SET @sql_add_kernel_utilbill_UnitText = 'ALTER TABLE kernel_utilbill ADD [UnitText] NVARCHAR(MAX)'
-    EXEC sp_executesql @sql_add_kernel_utilbill_UnitText
-    END
-
-
-IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_utilbillUnitText')
-    BEGIN
-    ALTER TABLE kernel_utilbill DROP  CONSTRAINT [Constraint_kernel_utilbillUnitText]
-    END
-
-IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_utilbillUnitText')
-    BEGIN
-    ALTER TABLE kernel_utilbill DROP  CONSTRAINT [UniqueNonclustered_kernel_utilbillUnitText]
     END
 
 -- [kernel_utilbill.State] -------------

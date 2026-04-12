@@ -817,10 +817,6 @@ let pUBILL__bin (bb:BytesBuilder) (p:pUBILL) =
     
     p.Unit |> BitConverter.GetBytes |> bb.append
     
-    let binUnitText = p.UnitText |> Encoding.UTF8.GetBytes
-    binUnitText.Length |> BitConverter.GetBytes |> bb.append
-    binUnitText |> bb.append
-    
     p.State |> EnumToValue |> BitConverter.GetBytes |> bb.append
     
     p.UAcct |> BitConverter.GetBytes |> bb.append
@@ -856,11 +852,6 @@ let bin__pUBILL (bi:BinIndexed):pUBILL =
     
     p.Unit <- BitConverter.ToInt64(bin,index.Value)
     index.Value <- index.Value + 8
-    
-    let count_UnitText = BitConverter.ToInt32(bin,index.Value)
-    index.Value <- index.Value + 4
-    p.UnitText <- Encoding.UTF8.GetString(bin,index.Value,count_UnitText)
-    index.Value <- index.Value + count_UnitText
     
     p.State <- BitConverter.ToInt32(bin,index.Value) |> EnumOfValue
     index.Value <- index.Value + 4
@@ -905,7 +896,6 @@ let pUBILL__json (p:pUBILL) =
         ("Provider",p.Provider.ToString() |> Json.Num)
         ("Owner",p.Owner.ToString() |> Json.Num)
         ("Unit",p.Unit.ToString() |> Json.Num)
-        ("UnitText",p.UnitText |> Json.Str)
         ("State",(p.State |> EnumToValue).ToString() |> Json.Num)
         ("UAcct",p.UAcct.ToString() |> Json.Num)
         ("YYYYMMDD",p.YYYYMMDD |> Json.Str)
@@ -942,8 +932,6 @@ let json__pUBILLo (json:Json):pUBILL option =
     p.Owner <- checkfield fields "Owner" |> parse_int64
     
     p.Unit <- checkfield fields "Unit" |> parse_int64
-    
-    p.UnitText <- checkfield fields "UnitText"
     
     p.State <- checkfield fields "State" |> parse_int32 |> EnumOfValue
     
@@ -2623,11 +2611,10 @@ let db__pUBILL(line:Object[]): pUBILL =
     p.Provider <- if Convert.IsDBNull(line[5]) then 0L else line[5] :?> int64
     p.Owner <- if Convert.IsDBNull(line[6]) then 0L else line[6] :?> int64
     p.Unit <- if Convert.IsDBNull(line[7]) then 0L else line[7] :?> int64
-    p.UnitText <- string(line[8]).TrimEnd()
-    p.State <- EnumOfValue(if Convert.IsDBNull(line[9]) then 0 else line[9] :?> int)
-    p.UAcct <- if Convert.IsDBNull(line[10]) then 0L else line[10] :?> int64
-    p.YYYYMMDD <- string(line[11]).TrimEnd()
-    p.Amt <- if Convert.IsDBNull(line[12]) then 0.0 else line[12] :?> float
+    p.State <- EnumOfValue(if Convert.IsDBNull(line[8]) then 0 else line[8] :?> int)
+    p.UAcct <- if Convert.IsDBNull(line[9]) then 0L else line[9] :?> int64
+    p.YYYYMMDD <- string(line[10]).TrimEnd()
+    p.Amt <- if Convert.IsDBNull(line[11]) then 0.0 else line[11] :?> float
 
     p
 
@@ -2639,7 +2626,6 @@ let pUBILL__sps (p:pUBILL) =
             ("Provider", p.Provider) |> kvp__sqlparam
             ("Owner", p.Owner) |> kvp__sqlparam
             ("Unit", p.Unit) |> kvp__sqlparam
-            ("UnitText", p.UnitText) |> kvp__sqlparam
             ("State", EnumToValue p.State) |> kvp__sqlparam
             ("UAcct", p.UAcct) |> kvp__sqlparam
             ("YYYYMMDD", p.YYYYMMDD) |> kvp__sqlparam
@@ -2650,7 +2636,6 @@ let pUBILL__sps (p:pUBILL) =
             ("provider", p.Provider) |> kvp__sqlparam
             ("owner", p.Owner) |> kvp__sqlparam
             ("unit", p.Unit) |> kvp__sqlparam
-            ("unittext", p.UnitText) |> kvp__sqlparam
             ("state", EnumToValue p.State) |> kvp__sqlparam
             ("uacct", p.UAcct) |> kvp__sqlparam
             ("yyyymmdd", p.YYYYMMDD) |> kvp__sqlparam
@@ -2667,7 +2652,6 @@ let pUBILL_clone (p:pUBILL): pUBILL = {
     Provider = p.Provider
     Owner = p.Owner
     Unit = p.Unit
-    UnitText = p.UnitText
     State = p.State
     UAcct = p.UAcct
     YYYYMMDD = p.YYYYMMDD
@@ -2739,7 +2723,6 @@ let UBILLTxSqlServer =
     ,[Provider]
     ,[Owner]
     ,[Unit]
-    ,[UnitText]
     ,[State]
     ,[UAcct]
     ,[YYYYMMDD]

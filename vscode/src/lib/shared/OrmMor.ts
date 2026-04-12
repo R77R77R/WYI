@@ -285,8 +285,6 @@ export const pUBILL__bin = (bb:BytesBuilder) => (p:wyi.pUBILL) => {
     
     marshall.int64__bin (bb) (p.Unit)
     
-    marshall.str__bin (bb) (p.UnitText)
-    
     marshall.int32__bin (bb) (p.State)
     
     marshall.int64__bin (bb) (p.UAcct)
@@ -312,7 +310,6 @@ export const bin__pUBILL = (bi:BinIndexed):wyi.pUBILL => {
     p.Provider = marshall.bin__int64 (bi)
     p.Owner = marshall.bin__int64 (bi)
     p.Unit = marshall.bin__int64 (bi)
-    p.UnitText = marshall.bin__str (bi)
     p.State = marshall.bin__int32 (bi)
     p.UAcct = marshall.bin__int64 (bi)
     p.YYYYMMDD = marshall.bin__str (bi)
@@ -825,9 +822,9 @@ export const UACCT_empty = (): wyi.UACCT => {
         p: pUACCT_empty() }
 }
 
-export const ubillStateEnum_Draft = 0 // Draft
-export const ubillStateEnum_Uploaded = 1 // Uploaded
-export const ubillStateEnum_Submitted = 2 // Submitted
+export const ubillStateEnum_Submitted = 0 // Submitted
+export const ubillStateEnum_Accepted = 1 // Accepted
+export const ubillStateEnum_Closed = 2 // Closed
 
 export const pUBILL_empty = (): wyi.pUBILL => {
     return {
@@ -835,7 +832,6 @@ export const pUBILL_empty = (): wyi.pUBILL => {
         Provider: 0,
         Owner: 0,
         Unit: 0,
-        UnitText: "",
         State: 0,
         UAcct: 0,
         YYYYMMDD: "",

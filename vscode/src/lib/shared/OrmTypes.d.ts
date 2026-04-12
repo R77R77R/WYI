@@ -103,7 +103,6 @@ export type pUBILL = {
     Provider: number
     Owner: number
     Unit: number
-    UnitText: string
     State: number
     UAcct: number
     YYYYMMDD: string

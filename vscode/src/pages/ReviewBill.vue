@@ -136,6 +136,7 @@ const confirm = () => {
   s.bill.p.Cat = s.ucat.id
   s.bill.p.Provider = s.uprovider.id
   s.bill.p.Unit = s.unit.id
+  s.bill.p.UAcct = s.acctx.acct.id
 
   Common.loader('/api/eu/submit-bill', {
     fids: s.fids,

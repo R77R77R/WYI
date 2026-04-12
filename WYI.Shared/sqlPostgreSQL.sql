@@ -712,7 +712,6 @@ BEGIN
             ,"provider" BIGINT
             ,"owner" BIGINT
             ,"unit" BIGINT
-            ,"unittext" TEXT
             ,"state" INT
             ,"uacct" BIGINT
             ,"yyyymmdd" VARCHAR(8)
@@ -733,7 +732,7 @@ BEGIN
         FROM information_schema.columns 
         WHERE table_name = 'kernel_utilbill' 
           AND table_schema = 'public' 
-          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'cat', 'provider', 'owner', 'unit', 'unittext', 'state', 'uacct', 'yyyymmdd', 'amt'])
+          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'cat', 'provider', 'owner', 'unit', 'state', 'uacct', 'yyyymmdd', 'amt'])
     LOOP
         -- 对应 PRINT 'Dropping ' + @tname + '.' + @fn
         
@@ -796,20 +795,6 @@ BEGIN
 
     IF not condition THEN
         ALTER TABLE kernel_utilbill ADD "unit" bigint;
-    END IF;
-END $$;
-
--- [kernel_utilbill.UnitText] -------------
-
-
-DO $$
-DECLARE
-    condition boolean;
-BEGIN
-    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_utilbill' AND column_name='unittext'));
-
-    IF not condition THEN
-        ALTER TABLE kernel_utilbill ADD "unittext" text;
     END IF;
 END $$;
 

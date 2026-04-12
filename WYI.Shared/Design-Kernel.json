@@ -160,14 +160,10 @@
         "ref": "Kernel_Unit",
         "name": "Unit"
       },
-      {
-        "enum": "Text",
-        "name": "UnitText"
-      },
 
       {
         "enum": "SelectLines",
-        "lines": "Draft//Draft///Uploaded//Uploaded///Submitted//Submitted",
+        "lines": "Submitted//Submitted///Accepted//Accepted///Closed//Closed",
         "name": "State"
       },
 
