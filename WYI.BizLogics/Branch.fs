@@ -62,7 +62,7 @@ let branching (euxo:EuComplex option) (x:X) =
         | "my-acctxs" -> myAcctxs eux |> bindx
         | "my-billxs" -> myBillxs eux |> bindx
         | "review-bill-files" -> reviewBillFiles eux |> bindx
-        | "submit-bill" -> bindx submitBill
+        | "submit-bill" -> submitBill eux |> bindx
         | _ -> Fail(Er.ApiNotExists,x)
     | "admin" -> 
         match x.Struct.api with

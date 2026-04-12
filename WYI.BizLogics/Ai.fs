@@ -334,18 +334,7 @@ Amount: [$69.99]
 
 let reviewBillFiles eux (x:X) =
 
-    let files = 
-        x.Json
-        |> tryFindAryByAtt "fids"
-        |> Array.map(fun item -> 
-            match item with
-            | Json.Num v -> parse_int64 v
-            | _ -> 0L)
-        |> Array.filter(fun id -> id > 0L)
-        |> Array.distinct
-        |> Array.map id__FILEo
-        |> Array.filter(fun o -> o.IsSome)
-        |> Array.map(fun o -> o.Value)
+    let files = x.Json |> Ca.json__files
 
     let pathes = 
         files

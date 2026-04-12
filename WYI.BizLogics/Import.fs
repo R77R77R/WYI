@@ -44,21 +44,21 @@ let tx sql =
 
 let clearData() = 
 
-    "DELETE FROM public.kernel_utilcat" |> tx
-    "DELETE FROM public.kernel_utilprovider" |> tx
-    "DELETE FROM public.kernel_utilcatprovider" |> tx
+    //"DELETE FROM public.kernel_utilcat" |> tx
+    //"DELETE FROM public.kernel_utilprovider" |> tx
+    //"DELETE FROM public.kernel_utilcatprovider" |> tx
 
-    "DELETE FROM public.ca_file" |> tx
+    //"DELETE FROM public.ca_file" |> tx
 
-    runtime.host.fsDir
-    |> Directory.GetFiles
-    |> Array.iter(fun f -> 
-        File.Delete f
-        "Deleted: " + f |> output)
+    //runtime.host.fsDir
+    //|> Directory.GetFiles
+    //|> Array.iter(fun f -> 
+    //    File.Delete f
+    //    "Deleted: " + f |> output)
 
-    "DELETE FROM public.kernel_utilbill" |> tx
-    "DELETE FROM public.kernel_utilacct" |> tx
-    "DELETE FROM public.kernel_unit" |> tx
+    //"DELETE FROM public.kernel_utilbill" |> tx
+    //"DELETE FROM public.kernel_utilacct" |> tx
+    //"DELETE FROM public.kernel_unit" |> tx
 
     ()
 

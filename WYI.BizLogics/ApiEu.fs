@@ -204,37 +204,56 @@ let reviewBillFiles eux (x:X) =
 
 
 
-let submitBill (x:X) =
+let submitBill eux (x:X) =
 
-    //let pretx = None |> opctx__pretx
+    let json = x.Json
+    let files = json |> Ca.json__files
+    
+    match
+        json
+        |> tryFindByAtt "p" with
+    | Some (s,j) -> 
+        match j |> json__pUBILLo with
+        | Some p ->
+        
+            let pretx = None |> opctx__pretx
+
+            p.Owner <- eux.eu.ID
+
+            let rcd = 
+                p
+                |> populateCreateTx pretx UBILL_metadata
+
+            files
+            |> Array.iter(fun f -> 
+                f.p.Bill <- rcd.ID
+                (f.ID,DateTime.UtcNow,f.p)
+                |> build_update_sql FILE_metadata
+                |> pretx.sqls.Add)
+
+            if pretx |> loggedPipeline dbLoggero "submitBill" conn then
+                let billx = {
+                    cato = p.Cat |> id__UCATo
+                    providero = p.Provider |> id__UPROVIDERo
+                    owner = eux.eu
+                    unito = p.Unit |> id__UNITo
+                    accto = p.UAcct |> id__UACCTo
+                    files = files
+                    bill = rcd }
+                eux.billxs[rcd.ID] <- billx
+
+                billx 
+                |> BillComplex__json
+                |> wrapOk "data"
+            else
+                er Er.Internal
+        | None -> er Er.InvalideParameter
+    | None -> er InvalideParameter
 
 
-    //let rcd = 
-    //    p
-    //    |> populateCreateTx pretx UBILL_metadata
 
-    //files
-    //|> Array.iter(fun f -> 
-    //    f.p.Bill <- rcd.ID
-    //    (f.ID,DateTime.UtcNow,f.p)
-    //    |> build_update_sql FILE_metadata
-    //    |> pretx.sqls.Add)
-    //if pretx |> loggedPipeline dbLoggero "reviewBillFiles" conn then
-    //    let billx = {
-    //        cato = rcd.p.Cat |> id__UCATo
-    //        providero = rcd.p.Provider |> id__UPROVIDERo
-    //        owner = eux.eu
-    //        unito = rcd.p.Unit |> id__UNITo
-    //        accto = rcd.p.UAcct |> id__UACCTo
-    //        files = files
-    //        bill = rcd }
-    //    eux.billxs[rcd.ID] <- billx
 
-    //    [|  ok
-    //        "data",billx |> BillComplex__json
-    //        "Ex",ex |> Json.Str |]
 
-    [|  ok |]
 
 
 

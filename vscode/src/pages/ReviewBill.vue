@@ -88,7 +88,7 @@ import LocateAcctx from '~/comps/LocateAcctx.vue'
 import LocateProvider from '~/comps/LocateProvider.vue'
 
 const s = glib.vue.reactive({
-  fids: [],
+  fids: [] as number[],
   er: "",
   ex: "",
   ucat: UCAT_empty(),
@@ -114,7 +114,10 @@ glib.vue.onMounted(async () => {
     fids: s.fids
   }, (rep: any) => {
     s.er = rep.Er
-    s.ex = "" + rep.ex
+    if(rep.ex)
+      s.ex = "" + rep.ex
+    else
+      s.ex = ""
 
     if(rep.ucat)
       s.ucat = rep.ucat
@@ -129,10 +132,16 @@ glib.vue.onMounted(async () => {
 })
 
 const confirm = () => {
-  Common.loader('/api/eu/submit-bill', {
 
+  s.bill.p.Cat = s.ucat.id
+  s.bill.p.Provider = s.uprovider.id
+  s.bill.p.Unit = s.unit.id
+
+  Common.loader('/api/eu/submit-bill', {
+    fids: s.fids,
+    p: s.bill.p
   }, (rep: any) => {
-    router.push("/")
+    router.push("/MyBills")
   })
 }
 

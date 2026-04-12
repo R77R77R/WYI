@@ -15,6 +15,7 @@
     <Compile Include="Import.fs" />
     <Compile Include="Init.fs" />
     <Compile Include="Auth.fs" />
+    <Compile Include="Ca.fs" />
     <Compile Include="Ai.fs" />
     <Compile Include="ApiHelperAcct.fs" />
     <Compile Include="ApiHelperBill.fs" />
