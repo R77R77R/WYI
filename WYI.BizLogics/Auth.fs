@@ -42,7 +42,7 @@ let auth (x:X) =
     let session = (tryFindStrByAttWithDefault "" "session" json).Trim()
     let cid = tryFindStrByAtt "clerkId" json
     let oauthProvider = 
-        let s = tryFindStrByAtt "oauthProvider" json
+        let s = (tryFindStrByAtt "oauthProvider" json).ToLower().Trim()
         if s.StartsWith "oauth_" then
             s.Substring 6
         else

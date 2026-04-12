@@ -68,10 +68,8 @@ watch(isSignedIn, async (newVal) => {
     console.log(user?.value)
     try {
 
-      // 获取 OAuth 来源 (如 "google", "apple")
-      // 使用可选链确保在数组为空时不会报错
       const provider = user?.value?.externalAccounts?.[0]?.provider || '';
-      console.log(provider)
+
       const payload = {
         oauthProvider: provider,
         clerkId: user?.value?.id,
