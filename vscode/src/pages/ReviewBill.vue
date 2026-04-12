@@ -10,31 +10,29 @@
   </div>
 
   <div class="card-double-col-container"
-    v-if="s.rep.Er == 'OK'">
+    v-if="s.er == 'OK'">
 
     <div class="card-double-col">
-    <div class="card" v-if="s.rep.Ex != ''">
+    <div class="card" v-if="s.ex != ''">
       <p>We experienced an issue from the AI.
         You can keyin the fields instead.</p>
-      <p>{{ s.rep.Ex }}</p>
+      <p>{{ s.ex }}</p>
     </div>
     </div>
 
     <LocateProvider 
-      :ucat="UCAT_empty()"
-      :uprovider="UPROVIDER_empty()" />
+      :ucat="s.ucat"
+      :uprovider="s.uprovider" />
 
     <LocateUnit 
-      :unit="UNIT_empty()"
+      :unit="s.unit"
       api="/api/eu/my-units" />
 
     <LocateAcctx
-      :acctx="AcctComplex_empty()"
+      :ucat="s.ucat"
+      :uprovider="s.uprovider"
+      :acctx="s.acctx"
       api="/api/eu/my-acctxs" />
-
-    <LocateUnit 
-      :pbill="s.rep.data.bill"
-      api="/api/eu/my-units" />
 
     <div class="card-double-col">
 
@@ -47,10 +45,10 @@
 
       <div class="card-double-col-2">
         <div>Bill Date: </div>
-        <div><input v-model="s.rep.data.bill.p.BillDate" /></div>
+        <div><input v-model="s.bill.p.YYYYMMDD" /></div>
 
         <div>Amount: </div>
-        <div><input v-model="s.rep.data.bill.p.Amt" /></div>
+        <div><input v-model="s.bill.p.Amt" /></div>
 
       </div>
     
@@ -92,6 +90,8 @@ const s = glib.vue.reactive({
   fids: [],
   er: "",
   ex: "",
+  ucat: UCAT_empty(),
+  uprovider: UPROVIDER_empty(),
   unit: UNIT_empty(),
   acctx: AcctComplex_empty(),
   bill: UBILL_empty(),
@@ -114,6 +114,12 @@ glib.vue.onMounted(async () => {
   }, (rep: any) => {
     s.er = rep.Er
     s.ex = rep.ex
+
+    if(rep.ucat)
+      s.ucat = rep.ucat
+    if(rep.uprovider)
+      s.uprovider = rep.uprovider
+
     s.unit.p = rep.pUnit
     s.acctx.acct.p = rep.pAcct
     s.bill.p = rep.pBill

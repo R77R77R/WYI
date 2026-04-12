@@ -4,7 +4,7 @@
         <img class="image-inline" :src="props.uprovider.p.Logo" />
 
         <span v-if="props.highlight">
-            <b>{{ props.uprovider.p.Caption }}</b>
+            <b class="selected">{{ props.uprovider.p.Caption }}</b>
         </span>
         <span v-else>
             {{ props.uprovider.p.Caption }}

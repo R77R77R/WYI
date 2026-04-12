@@ -11,7 +11,7 @@
           v-for="[k,v] in Object.entries(s.cat__providers)"
           @click="s.selectedCat = v.ucat">
             <span v-if="s.selectedCat.id == v.ucat.id">
-              <b>{{ v.ucat.p.Caption }}</b>
+              <b class="selected">{{ v.ucat.p.Caption }}</b>
             </span>
             <span v-else>
               {{ v.ucat.p.Caption }}
@@ -20,7 +20,7 @@
       </div>
 
       <div class="border-blue-300 m-3"
-        v-if="s.selectedCat.id > 0">
+        v-if="s.cat__providers[s.selectedCat.id]">
           <Provider class="card-clickable m-3"
             @click="s.selectedProvider = ii"
             v-for="ii in s.cat__providers[s.selectedCat.id].uproviders"

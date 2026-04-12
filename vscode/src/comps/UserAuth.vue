@@ -69,9 +69,9 @@ glib.vue.onMounted(async () => {
 // App.vue 调试代码
 watch(isSignedIn, async (newVal) => {
   if (newVal === true) {
-    console.log('🚀 登录成功，准备联调后端...');
-    console.log(user)
-    console.log(user?.value)
+    //console.log('🚀 登录成功，准备联调后端...');
+    //console.log(user)
+    //console.log(user?.value)
     try {
 
       const provider = user?.value?.externalAccounts?.[0]?.provider || '';
@@ -94,7 +94,7 @@ watch(isSignedIn, async (newVal) => {
         s.rt.session = session;
       }
     } catch (err) {
-      console.error('❌ 请求后端失败，请检查终端日志或 C# 断面:', err);
+      //console.error('❌ 请求后端失败，请检查终端日志或 C# 断面:', err);
     }
   }
 })

@@ -21,13 +21,18 @@
       <Acctx class="card-clickable" 
         @click="onSelect(i)" 
         v-for="i in s.items" 
-        :unit="i" :mode="0" />
+        :acctx="i" :mode="0" />
     </div>
 
     <div class="card-double-col-2"
       v-if="s.showDetails">
 
       <div class="form">
+
+        <div>Provider</div>
+        <div>
+          <Provider ></Provider>
+          <input v-model="s.selected.acct.p.AcctNum" /></div>
 
         <div>Account Number: </div>
         <div><input v-model="s.selected.acct.p.AcctNum" /></div>
@@ -47,7 +52,7 @@
     <div class="card-double-col-span" 
       v-if="s.selected.acct.id > 0">
       <div class="card-caption">Selected Account</div>
-      <Unit :unit="s.selected" :mode="1" />
+      <Acct :acctx="s.selected" :mode="1" />
       <button @click="s.showDetails = true">Reselect</button>
     </div>
 
@@ -60,15 +65,18 @@
 
 import { glib } from '~/lib/glib'
 import * as Common from '~/lib/store/common'
+import { watch } from 'vue'
 
 import SearchField from '~/comps/SearchField.vue'
-import StateLocator from '~/comps/StateLocator.vue'
 import Acctx from '~/comps/Acctx.vue'
 import { AcctComplex_empty } from '~/lib/shared/CustomMor'
+import Provider from './Provider.vue'
 
-const props = defineProps(['api', 'acctx'])
+const props = defineProps(['api','acctx','ucat','uprovider'])
 props.api as string
 props.acctx as wyi.AcctComplex
+props.ucat as wyi.UCAT
+props.uprovider as wyi.UPROVIDER
 
 const s = glib.vue.reactive({
   showAdded: false,
@@ -77,6 +85,20 @@ const s = glib.vue.reactive({
   selected: AcctComplex_empty(),
   rt: runtime
 })
+
+watch(
+  () => props.ucat,
+  (newP, oldP) => {
+    s.selected.cato = newP
+  }
+)
+
+watch(
+  () => props.uprovider,
+  (newP, oldP) => {
+    s.selected.providero = newP
+  }
+)
 
 glib.vue.onMounted(async () => {
 

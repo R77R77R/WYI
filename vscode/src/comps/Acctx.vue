@@ -3,7 +3,7 @@
 <div class="card">
 
 <div v-if="props.mode == 0">
-  <span v-if="props.acctx.cato && props.acctx.providero">
+  <span v-if="props.acctx.cato != null && props.acctx.providero != null">
     {{ props.acctx.providero.p.Caption }}
     ({{ props.acctx.cato.p.Caption }})
   </span>

@@ -119,6 +119,10 @@ h1{
   transform: translateY(0) scale(0.98);
 }
 
+.selected{
+  @apply text-blue-700 font-bold
+}
+
 .main-color{
   @apply bg-[#ffffff] text-[#333333]
 }
