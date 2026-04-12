@@ -809,38 +809,6 @@ let UACCT_clone src =
 let pUBILL__bin (bb:BytesBuilder) (p:pUBILL) =
 
     
-    let binShownProvider = p.ShownProvider |> Encoding.UTF8.GetBytes
-    binShownProvider.Length |> BitConverter.GetBytes |> bb.append
-    binShownProvider |> bb.append
-    
-    let binShownUnitNum = p.ShownUnitNum |> Encoding.UTF8.GetBytes
-    binShownUnitNum.Length |> BitConverter.GetBytes |> bb.append
-    binShownUnitNum |> bb.append
-    
-    let binShownAcctNum = p.ShownAcctNum |> Encoding.UTF8.GetBytes
-    binShownAcctNum.Length |> BitConverter.GetBytes |> bb.append
-    binShownAcctNum |> bb.append
-    
-    let binShownAcctName = p.ShownAcctName |> Encoding.UTF8.GetBytes
-    binShownAcctName.Length |> BitConverter.GetBytes |> bb.append
-    binShownAcctName |> bb.append
-    
-    let binShownAddr = p.ShownAddr |> Encoding.UTF8.GetBytes
-    binShownAddr.Length |> BitConverter.GetBytes |> bb.append
-    binShownAddr |> bb.append
-    
-    let binShownTown = p.ShownTown |> Encoding.UTF8.GetBytes
-    binShownTown.Length |> BitConverter.GetBytes |> bb.append
-    binShownTown |> bb.append
-    
-    let binShownState = p.ShownState |> Encoding.UTF8.GetBytes
-    binShownState.Length |> BitConverter.GetBytes |> bb.append
-    binShownState |> bb.append
-    
-    let binShownZip = p.ShownZip |> Encoding.UTF8.GetBytes
-    binShownZip.Length |> BitConverter.GetBytes |> bb.append
-    binShownZip |> bb.append
-    
     p.Cat |> BitConverter.GetBytes |> bb.append
     
     p.Provider |> BitConverter.GetBytes |> bb.append
@@ -876,46 +844,6 @@ let bin__pUBILL (bi:BinIndexed):pUBILL =
     let bin,index = bi
 
     let p = pUBILL_empty()
-    
-    let count_ShownProvider = BitConverter.ToInt32(bin,index.Value)
-    index.Value <- index.Value + 4
-    p.ShownProvider <- Encoding.UTF8.GetString(bin,index.Value,count_ShownProvider)
-    index.Value <- index.Value + count_ShownProvider
-    
-    let count_ShownUnitNum = BitConverter.ToInt32(bin,index.Value)
-    index.Value <- index.Value + 4
-    p.ShownUnitNum <- Encoding.UTF8.GetString(bin,index.Value,count_ShownUnitNum)
-    index.Value <- index.Value + count_ShownUnitNum
-    
-    let count_ShownAcctNum = BitConverter.ToInt32(bin,index.Value)
-    index.Value <- index.Value + 4
-    p.ShownAcctNum <- Encoding.UTF8.GetString(bin,index.Value,count_ShownAcctNum)
-    index.Value <- index.Value + count_ShownAcctNum
-    
-    let count_ShownAcctName = BitConverter.ToInt32(bin,index.Value)
-    index.Value <- index.Value + 4
-    p.ShownAcctName <- Encoding.UTF8.GetString(bin,index.Value,count_ShownAcctName)
-    index.Value <- index.Value + count_ShownAcctName
-    
-    let count_ShownAddr = BitConverter.ToInt32(bin,index.Value)
-    index.Value <- index.Value + 4
-    p.ShownAddr <- Encoding.UTF8.GetString(bin,index.Value,count_ShownAddr)
-    index.Value <- index.Value + count_ShownAddr
-    
-    let count_ShownTown = BitConverter.ToInt32(bin,index.Value)
-    index.Value <- index.Value + 4
-    p.ShownTown <- Encoding.UTF8.GetString(bin,index.Value,count_ShownTown)
-    index.Value <- index.Value + count_ShownTown
-    
-    let count_ShownState = BitConverter.ToInt32(bin,index.Value)
-    index.Value <- index.Value + 4
-    p.ShownState <- Encoding.UTF8.GetString(bin,index.Value,count_ShownState)
-    index.Value <- index.Value + count_ShownState
-    
-    let count_ShownZip = BitConverter.ToInt32(bin,index.Value)
-    index.Value <- index.Value + 4
-    p.ShownZip <- Encoding.UTF8.GetString(bin,index.Value,count_ShownZip)
-    index.Value <- index.Value + count_ShownZip
     
     p.Cat <- BitConverter.ToInt64(bin,index.Value)
     index.Value <- index.Value + 8
@@ -973,14 +901,6 @@ let bin__UBILL (bi:BinIndexed):UBILL =
 let pUBILL__json (p:pUBILL) =
 
     [|
-        ("ShownProvider",p.ShownProvider |> Json.Str)
-        ("ShownUnitNum",p.ShownUnitNum |> Json.Str)
-        ("ShownAcctNum",p.ShownAcctNum |> Json.Str)
-        ("ShownAcctName",p.ShownAcctName |> Json.Str)
-        ("ShownAddr",p.ShownAddr |> Json.Str)
-        ("ShownTown",p.ShownTown |> Json.Str)
-        ("ShownState",p.ShownState |> Json.Str)
-        ("ShownZip",p.ShownZip |> Json.Str)
         ("Cat",p.Cat.ToString() |> Json.Num)
         ("Provider",p.Provider.ToString() |> Json.Num)
         ("Owner",p.Owner.ToString() |> Json.Num)
@@ -1014,22 +934,6 @@ let json__pUBILLo (json:Json):pUBILL option =
     let fields = json |> json__items
 
     let p = pUBILL_empty()
-    
-    p.ShownProvider <- checkfield fields "ShownProvider"
-    
-    p.ShownUnitNum <- checkfieldz fields "ShownUnitNum" 5
-    
-    p.ShownAcctNum <- checkfield fields "ShownAcctNum"
-    
-    p.ShownAcctName <- checkfield fields "ShownAcctName"
-    
-    p.ShownAddr <- checkfield fields "ShownAddr"
-    
-    p.ShownTown <- checkfield fields "ShownTown"
-    
-    p.ShownState <- checkfieldz fields "ShownState" 2
-    
-    p.ShownZip <- checkfieldz fields "ShownZip" 10
     
     p.Cat <- checkfield fields "Cat" |> parse_int64
     
@@ -2715,23 +2619,15 @@ let UACCTTxSqlServer =
 let db__pUBILL(line:Object[]): pUBILL =
     let p = pUBILL_empty()
 
-    p.ShownProvider <- string(line[4]).TrimEnd()
-    p.ShownUnitNum <- string(line[5]).TrimEnd()
-    p.ShownAcctNum <- string(line[6]).TrimEnd()
-    p.ShownAcctName <- string(line[7]).TrimEnd()
-    p.ShownAddr <- string(line[8]).TrimEnd()
-    p.ShownTown <- string(line[9]).TrimEnd()
-    p.ShownState <- string(line[10]).TrimEnd()
-    p.ShownZip <- string(line[11]).TrimEnd()
-    p.Cat <- if Convert.IsDBNull(line[12]) then 0L else line[12] :?> int64
-    p.Provider <- if Convert.IsDBNull(line[13]) then 0L else line[13] :?> int64
-    p.Owner <- if Convert.IsDBNull(line[14]) then 0L else line[14] :?> int64
-    p.Unit <- if Convert.IsDBNull(line[15]) then 0L else line[15] :?> int64
-    p.UnitText <- string(line[16]).TrimEnd()
-    p.State <- EnumOfValue(if Convert.IsDBNull(line[17]) then 0 else line[17] :?> int)
-    p.UAcct <- if Convert.IsDBNull(line[18]) then 0L else line[18] :?> int64
-    p.YYYYMMDD <- string(line[19]).TrimEnd()
-    p.Amt <- if Convert.IsDBNull(line[20]) then 0.0 else line[20] :?> float
+    p.Cat <- if Convert.IsDBNull(line[4]) then 0L else line[4] :?> int64
+    p.Provider <- if Convert.IsDBNull(line[5]) then 0L else line[5] :?> int64
+    p.Owner <- if Convert.IsDBNull(line[6]) then 0L else line[6] :?> int64
+    p.Unit <- if Convert.IsDBNull(line[7]) then 0L else line[7] :?> int64
+    p.UnitText <- string(line[8]).TrimEnd()
+    p.State <- EnumOfValue(if Convert.IsDBNull(line[9]) then 0 else line[9] :?> int)
+    p.UAcct <- if Convert.IsDBNull(line[10]) then 0L else line[10] :?> int64
+    p.YYYYMMDD <- string(line[11]).TrimEnd()
+    p.Amt <- if Convert.IsDBNull(line[12]) then 0.0 else line[12] :?> float
 
     p
 
@@ -2739,14 +2635,6 @@ let pUBILL__sps (p:pUBILL) =
     match rdbms with
     | Rdbms.SqlServer ->
         [|
-            ("ShownProvider", p.ShownProvider) |> kvp__sqlparam
-            ("ShownUnitNum", p.ShownUnitNum) |> kvp__sqlparam
-            ("ShownAcctNum", p.ShownAcctNum) |> kvp__sqlparam
-            ("ShownAcctName", p.ShownAcctName) |> kvp__sqlparam
-            ("ShownAddr", p.ShownAddr) |> kvp__sqlparam
-            ("ShownTown", p.ShownTown) |> kvp__sqlparam
-            ("ShownState", p.ShownState) |> kvp__sqlparam
-            ("ShownZip", p.ShownZip) |> kvp__sqlparam
             ("Cat", p.Cat) |> kvp__sqlparam
             ("Provider", p.Provider) |> kvp__sqlparam
             ("Owner", p.Owner) |> kvp__sqlparam
@@ -2758,14 +2646,6 @@ let pUBILL__sps (p:pUBILL) =
             ("Amt", p.Amt) |> kvp__sqlparam |]
     | Rdbms.PostgreSql ->
         [|
-            ("shownprovider", p.ShownProvider) |> kvp__sqlparam
-            ("shownunitnum", p.ShownUnitNum) |> kvp__sqlparam
-            ("shownacctnum", p.ShownAcctNum) |> kvp__sqlparam
-            ("shownacctname", p.ShownAcctName) |> kvp__sqlparam
-            ("shownaddr", p.ShownAddr) |> kvp__sqlparam
-            ("showntown", p.ShownTown) |> kvp__sqlparam
-            ("shownstate", p.ShownState) |> kvp__sqlparam
-            ("shownzip", p.ShownZip) |> kvp__sqlparam
             ("cat", p.Cat) |> kvp__sqlparam
             ("provider", p.Provider) |> kvp__sqlparam
             ("owner", p.Owner) |> kvp__sqlparam
@@ -2783,14 +2663,6 @@ let UBILL_wrapper item: UBILL =
     { ID = i; Createdat = c; Updatedat = u; Sort = s; p = p }
 
 let pUBILL_clone (p:pUBILL): pUBILL = {
-    ShownProvider = p.ShownProvider
-    ShownUnitNum = p.ShownUnitNum
-    ShownAcctNum = p.ShownAcctNum
-    ShownAcctName = p.ShownAcctName
-    ShownAddr = p.ShownAddr
-    ShownTown = p.ShownTown
-    ShownState = p.ShownState
-    ShownZip = p.ShownZip
     Cat = p.Cat
     Provider = p.Provider
     Owner = p.Owner
@@ -2863,14 +2735,6 @@ let UBILLTxSqlServer =
     ,[Createdat] BIGINT NOT NULL
     ,[Updatedat] BIGINT NOT NULL
     ,[Sort] BIGINT NOT NULL,
-    ,[ShownProvider]
-    ,[ShownUnitNum]
-    ,[ShownAcctNum]
-    ,[ShownAcctName]
-    ,[ShownAddr]
-    ,[ShownTown]
-    ,[ShownState]
-    ,[ShownZip]
     ,[Cat]
     ,[Provider]
     ,[Owner]

@@ -141,42 +141,6 @@
     "id": 4426561,
     "fields": [
       {
-        "enum": "Text",
-        "name": "ShownProvider"
-      },
-      {
-        "enum": "Chars",
-        "length": 5,
-        "name": "ShownUnitNum"
-      },
-      {
-        "enum": "Text",
-        "name": "ShownAcctNum"
-      },
-      {
-        "enum": "Text",
-        "name": "ShownAcctName"
-      },
-      {
-        "enum": "Text",
-        "name": "ShownAddr"
-      },
-      {
-        "enum": "Text",
-        "name": "ShownTown"
-      },
-      {
-        "enum": "Chars",
-        "length": 2,
-        "name": "ShownState"
-      },
-      {
-        "enum": "Chars",
-        "length": 10,
-        "name": "ShownZip"
-      },
-
-      {
         "enum": "FK",
         "ref": "Kernel_UtilCat",
         "name": "Cat"

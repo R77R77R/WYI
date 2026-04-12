@@ -708,14 +708,6 @@ BEGIN
             ,createdat BIGINT NOT NULL
             ,updatedat BIGINT NOT NULL
             ,sort BIGINT NOT NULL
-            ,"shownprovider" TEXT
-            ,"shownunitnum" VARCHAR(5)
-            ,"shownacctnum" TEXT
-            ,"shownacctname" TEXT
-            ,"shownaddr" TEXT
-            ,"showntown" TEXT
-            ,"shownstate" VARCHAR(2)
-            ,"shownzip" VARCHAR(10)
             ,"cat" BIGINT
             ,"provider" BIGINT
             ,"owner" BIGINT
@@ -741,7 +733,7 @@ BEGIN
         FROM information_schema.columns 
         WHERE table_name = 'kernel_utilbill' 
           AND table_schema = 'public' 
-          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'shownprovider', 'shownunitnum', 'shownacctnum', 'shownacctname', 'shownaddr', 'showntown', 'shownstate', 'shownzip', 'cat', 'provider', 'owner', 'unit', 'unittext', 'state', 'uacct', 'yyyymmdd', 'amt'])
+          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'cat', 'provider', 'owner', 'unit', 'unittext', 'state', 'uacct', 'yyyymmdd', 'amt'])
     LOOP
         -- 对应 PRINT 'Dropping ' + @tname + '.' + @fn
         
@@ -750,118 +742,6 @@ BEGIN
     END LOOP;
 END $$;
 
-
--- [kernel_utilbill.ShownProvider] -------------
-
-
-DO $$
-DECLARE
-    condition boolean;
-BEGIN
-    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_utilbill' AND column_name='shownprovider'));
-
-    IF not condition THEN
-        ALTER TABLE kernel_utilbill ADD "shownprovider" text;
-    END IF;
-END $$;
-
--- [kernel_utilbill.ShownUnitNum] -------------
-
-
-DO $$
-DECLARE
-    condition boolean;
-BEGIN
-    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_utilbill' AND column_name='shownunitnum'));
-
-    IF not condition THEN
-        ALTER TABLE kernel_utilbill ADD "shownunitnum" varchar(5);
-    END IF;
-END $$;
-
--- [kernel_utilbill.ShownAcctNum] -------------
-
-
-DO $$
-DECLARE
-    condition boolean;
-BEGIN
-    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_utilbill' AND column_name='shownacctnum'));
-
-    IF not condition THEN
-        ALTER TABLE kernel_utilbill ADD "shownacctnum" text;
-    END IF;
-END $$;
-
--- [kernel_utilbill.ShownAcctName] -------------
-
-
-DO $$
-DECLARE
-    condition boolean;
-BEGIN
-    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_utilbill' AND column_name='shownacctname'));
-
-    IF not condition THEN
-        ALTER TABLE kernel_utilbill ADD "shownacctname" text;
-    END IF;
-END $$;
-
--- [kernel_utilbill.ShownAddr] -------------
-
-
-DO $$
-DECLARE
-    condition boolean;
-BEGIN
-    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_utilbill' AND column_name='shownaddr'));
-
-    IF not condition THEN
-        ALTER TABLE kernel_utilbill ADD "shownaddr" text;
-    END IF;
-END $$;
-
--- [kernel_utilbill.ShownTown] -------------
-
-
-DO $$
-DECLARE
-    condition boolean;
-BEGIN
-    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_utilbill' AND column_name='showntown'));
-
-    IF not condition THEN
-        ALTER TABLE kernel_utilbill ADD "showntown" text;
-    END IF;
-END $$;
-
--- [kernel_utilbill.ShownState] -------------
-
-
-DO $$
-DECLARE
-    condition boolean;
-BEGIN
-    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_utilbill' AND column_name='shownstate'));
-
-    IF not condition THEN
-        ALTER TABLE kernel_utilbill ADD "shownstate" varchar(2);
-    END IF;
-END $$;
-
--- [kernel_utilbill.ShownZip] -------------
-
-
-DO $$
-DECLARE
-    condition boolean;
-BEGIN
-    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_utilbill' AND column_name='shownzip'));
-
-    IF not condition THEN
-        ALTER TABLE kernel_utilbill ADD "shownzip" varchar(10);
-    END IF;
-END $$;
 
 -- [kernel_utilbill.Cat] -------------
 

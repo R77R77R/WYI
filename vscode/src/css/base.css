@@ -50,6 +50,10 @@ img{
   @apply inline
 }
 
+.img-oauth{
+  @apply inline mx-1
+}
+
 p{
   @apply mb-3
 }
@@ -72,6 +76,47 @@ h1{
 
 .card-toggle-expand{
   @apply m-2 text-xl font-bold
+}
+
+.card-double-col-container{
+  @apply flex flex-col space-y-4 p-4 bg-slate-50 
+}
+
+.card-double-col{
+  @apply mb-[20px] p-[20px] shadow rounded bg-white grid grid-cols-[45%_55%] gap-x-8 items-start
+}
+
+.card-double-col-1{
+  @apply flex flex-col text-right border-r border-gray-100 pr-8
+}
+
+.card-double-col-2{
+  @apply flex-col flex-wrap gap-4
+}
+
+.card-double-col-span{
+  @apply col-span-2
+}
+
+.form{
+  @apply border border-blue-200 p-3 m-2
+}
+
+.card-clickable {
+  /* 基础：手型光标和禁止文字选中 */
+  @apply cursor-pointer select-none transition-all duration-200;
+}
+
+.card-clickable:hover {
+  /* 悬停：阴影加深、微弱上移或背景变亮 */
+  @apply shadow-lg bg-slate-50 border-indigo-100;
+  transform: translateY(-1px);
+}
+
+.card-clickable:active {
+  /* 点击：瞬间缩小感（物理回馈） */
+  @apply shadow-md;
+  transform: translateY(0) scale(0.98);
 }
 
 .main-color{

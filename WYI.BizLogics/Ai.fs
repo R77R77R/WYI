@@ -331,3 +331,97 @@ Amount: [$69.99]
 <<<
 
 *)
+
+let reviewBillFiles eux (x:X) =
+
+    let files = 
+        x.Json
+        |> tryFindAryByAtt "fids"
+        |> Array.map(fun item -> 
+            match item with
+            | Json.Num v -> parse_int64 v
+            | _ -> 0L)
+        |> Array.filter(fun id -> id > 0L)
+        |> Array.distinct
+        |> Array.map id__FILEo
+        |> Array.filter(fun o -> o.IsSome)
+        |> Array.map(fun o -> o.Value)
+
+    let pathes = 
+        files
+        |> Array.map(fun f -> Path.Combine(runtime.host.fsDir,f.p.Path))
+
+    let pUnit = pUNIT_empty()
+    let pAcct = pUACCT_empty()
+    let pBill = pUBILL_empty()
+    
+    let ex,msg =
+        async{
+            let! (ex,msg) = 
+                GeminiMultimodal
+                    runtime.output 
+                    runtime.data.apiKeyGemini
+                    runtime.data.aiModel
+                    prompt 
+                    pathes
+            ex + msg |> output
+            return ex,msg
+        }
+        |> Async.RunSynchronously
+
+    if ex.Length = 0 then
+
+        let json =
+
+        (*
+
+CategoryID: [6462],
+Category: [Internet],
+ProviderID: [254300],
+Provider: [Cox],
+AcctNum: [0017410044200801],
+AcctName: [SEA Academy],
+Addr: [10080 Morrison Rd],
+Town: [New Orleans],
+State: [LA],
+ZIP: [70127-1821],
+BillDate: [01/29/2026],
+Amt: [$527.11]               
+        *)
+
+            let parse (line:string) = 
+                let k = line.Substring(0,line.IndexOf ":")
+                let v = Util.Text.regex_match
+                            (str__regex "(?<=\[).*?(?=\])") line
+                k,Json.Str v
+
+            msg.Split lf
+            |> Array.filter(fun line -> line.Contains ":")
+            |> Array.map parse
+            |> Json.Braket
+        
+        pUnit.Address <- tryFindStrByAtt "Addr" json
+        pUnit.Town <- tryFindStrByAtt "Town" json
+        pUnit.State <- tryFindStrByAtt "State" json
+        pUnit.Zip <- tryFindStrByAtt "ZIP" json
+        
+        pAcct.AcctNum <- tryFindStrByAtt "AcctNum" json
+        pAcct.AcctName <- tryFindStrByAtt "AcctName" json
+
+        pBill.Owner <- eux.eu.ID
+        pBill.Cat <- tryFindStrByAtt "CategoryID" json |> parse_int64
+        pBill.Provider <- tryFindStrByAtt "ProviderID" json |> parse_int64
+
+        pBill.YYYYMMDD <-
+            let mutable s = tryFindStrByAtt "BillDate" json
+            s <- s.Replace("/","").Replace(" ","")
+            if s.Length = 8 then
+                let mm = s.Substring(0,2)
+                let dd = s.Substring(2,2)
+                let yyyy = s.Substring(4,4)
+                yyyy + mm + dd
+            else
+                ""
+        pBill.Amt <- (tryFindStrByAtt "Amt" json).Replace("$","") |> parse_float
+    
+    ex,(pUnit,pAcct,pBill)

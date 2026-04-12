@@ -182,130 +182,46 @@ let myBillxs eux (x:X) =
 
 let reviewBillFiles eux (x:X) =
 
-    let files = 
-        x.Json
-        |> tryFindAryByAtt "fids"
-        |> Array.map(fun item -> 
-            match item with
-            | Json.Num v -> parse_int64 v
-            | _ -> 0L)
-        |> Array.filter(fun id -> id > 0L)
-        |> Array.distinct
-        |> Array.map id__FILEo
-        |> Array.filter(fun o -> o.IsSome)
-        |> Array.map(fun o -> o.Value)
+    let ex,(pUnit,pAcct,pBill) = Ai.reviewBillFiles eux x
 
-    let pathes = 
-        files
-        |> Array.map(fun f -> Path.Combine(runtime.host.fsDir,f.p.Path))
-
-    let pretx = None |> opctx__pretx
-    let p = pUBILL_empty()
-
-    p.Owner <- eux.eu.ID
-    
-    let ex,msg =
-        async{
-            let! (ex,msg) = 
-                GeminiMultimodal
-                    runtime.output 
-                    runtime.data.apiKeyGemini
-                    runtime.data.aiModel
-                    prompt 
-                    pathes
-            ex + msg |> output
-            return ex,msg
-        }
-        |> Async.RunSynchronously
-
-    if ex.Length = 0 then
-
-        let json =
-
-        (*
-
-CategoryID: [6462],
-Category: [Internet],
-ProviderID: [254300],
-Provider: [Cox],
-AcctNum: [0017410044200801],
-AcctName: [SEA Academy],
-Addr: [10080 Morrison Rd],
-Town: [New Orleans],
-State: [LA],
-ZIP: [70127-1821],
-BillDate: [01/29/2026],
-Amt: [$527.11]               
-        *)
-
-            let parse (line:string) = 
-                let k = line.Substring(0,line.IndexOf ":")
-                let v = Util.Text.regex_match
-                            (str__regex "(?<=\[).*?(?=\])") line
-                k,Json.Str v
-
-            msg.Split lf
-            |> Array.filter(fun line -> line.Contains ":")
-            |> Array.map parse
-            |> Json.Braket
-
-        p.ShownProvider <- tryFindStrByAtt "Provider" json
-        p.ShownUnitNum <- tryFindStrByAtt "Unit" json
-        p.ShownAcctNum <- tryFindStrByAtt "AcctNum" json
-        p.ShownAcctName <- tryFindStrByAtt "AcctName" json
-        p.ShownAddr <- tryFindStrByAtt "Addr" json
-        p.ShownTown <- tryFindStrByAtt "Town" json
-        p.ShownState <- tryFindStrByAtt "State" json
-        p.ShownZip <- tryFindStrByAtt "ZIP" json
-
-        p.YYYYMMDD <-
-            let mutable s = tryFindStrByAtt "BillDate" json
-            s <- s.Replace("/","").Replace(" ","")
-            if s.Length = 8 then
-                let mm = s.Substring(0,2)
-                let dd = s.Substring(2,2)
-                let yyyy = s.Substring(4,4)
-                yyyy + mm + dd
-            else
-                ""
-        p.Amt <- (tryFindStrByAtt "Amt" json).Replace("$","") |> parse_float
-
-        p.Cat <- tryFindStrByAtt "CategoryID" json |> parse_int64
-        p.Provider <- tryFindStrByAtt "ProviderID" json |> parse_int64
-
-    let rcd = 
-        p
-        |> populateCreateTx pretx UBILL_metadata
-
-    files
-    |> Array.iter(fun f -> 
-        f.p.Bill <- rcd.ID
-        (f.ID,DateTime.UtcNow,f.p)
-        |> build_update_sql FILE_metadata
-        |> pretx.sqls.Add)
-
-    if pretx |> loggedPipeline dbLoggero "reviewBillFiles" conn then
-        let billx = {
-            cato = rcd.p.Cat |> id__UCATo
-            providero = rcd.p.Provider |> id__UPROVIDERo
-            owner = eux.eu
-            unito = rcd.p.Unit |> id__UNITo
-            accto = rcd.p.UAcct |> id__UACCTo
-            files = files
-            bill = rcd }
-        eux.billxs[rcd.ID] <- billx
-
-        [|  ok
-            "data",billx |> BillComplex__json
-            "Ex",ex |> Json.Str |]
+    if ex.Length > 0 then
+        [|  ("Er",er.ToString() |> Json.Str) 
+            ("ex",ex |> Json.Str) |]
     else
-        files
-        |> Array.iter(fun f -> f.p.Bill <- 0L)
-        er Er.Internal
+        [|  ("pUnit",pUnit |> pUNIT__json)
+            ("pAcct",pAcct |> pUACCT__json)
+            ("pBill",pBill |> pUBILL__json)
+            ok |]
 
 let submitBill (x:X) =
 
-    
+    //let pretx = None |> opctx__pretx
+
+
+    //let rcd = 
+    //    p
+    //    |> populateCreateTx pretx UBILL_metadata
+
+    //files
+    //|> Array.iter(fun f -> 
+    //    f.p.Bill <- rcd.ID
+    //    (f.ID,DateTime.UtcNow,f.p)
+    //    |> build_update_sql FILE_metadata
+    //    |> pretx.sqls.Add)
+    //if pretx |> loggedPipeline dbLoggero "reviewBillFiles" conn then
+    //    let billx = {
+    //        cato = rcd.p.Cat |> id__UCATo
+    //        providero = rcd.p.Provider |> id__UPROVIDERo
+    //        owner = eux.eu
+    //        unito = rcd.p.Unit |> id__UNITo
+    //        accto = rcd.p.UAcct |> id__UACCTo
+    //        files = files
+    //        bill = rcd }
+    //    eux.billxs[rcd.ID] <- billx
+
+    //    [|  ok
+    //        "data",billx |> BillComplex__json
+    //        "Ex",ex |> Json.Str |]
 
     [|  ok |]
 

@@ -419,14 +419,6 @@ let ubillStateEnum__caption e =
     | _ -> ""
 
 type pUBILL = {
-mutable ShownProvider: Text
-mutable ShownUnitNum: Chars
-mutable ShownAcctNum: Text
-mutable ShownAcctName: Text
-mutable ShownAddr: Text
-mutable ShownTown: Text
-mutable ShownState: Chars
-mutable ShownZip: Chars
 mutable Cat: FK
 mutable Provider: FK
 mutable Owner: FK
@@ -443,19 +435,11 @@ type UBILL = Rcd<pUBILL>
 let UBILL_fieldorders() =
     match rdbms with
     | Rdbms.SqlServer ->
-        "[ID],[Createdat],[Updatedat],[Sort],[ShownProvider],[ShownUnitNum],[ShownAcctNum],[ShownAcctName],[ShownAddr],[ShownTown],[ShownState],[ShownZip],[Cat],[Provider],[Owner],[Unit],[UnitText],[State],[UAcct],[YYYYMMDD],[Amt]"
+        "[ID],[Createdat],[Updatedat],[Sort],[Cat],[Provider],[Owner],[Unit],[UnitText],[State],[UAcct],[YYYYMMDD],[Amt]"
     | Rdbms.PostgreSql ->
-        $""" "id","createdat","updatedat","sort", "shownprovider","shownunitnum","shownacctnum","shownacctname","shownaddr","showntown","shownstate","shownzip","cat","provider","owner","unit","unittext","state","uacct","yyyymmdd","amt" """
+        $""" "id","createdat","updatedat","sort", "cat","provider","owner","unit","unittext","state","uacct","yyyymmdd","amt" """
 
 let pUBILL_fieldordersArray = [|
-    "ShownProvider"
-    "ShownUnitNum"
-    "ShownAcctNum"
-    "ShownAcctName"
-    "ShownAddr"
-    "ShownTown"
-    "ShownState"
-    "ShownZip"
     "Cat"
     "Provider"
     "Owner"
@@ -468,21 +452,13 @@ let pUBILL_fieldordersArray = [|
 
 let UBILL_sql_update() =
     match rdbms with
-    | Rdbms.SqlServer -> "[ShownProvider]=@ShownProvider,[ShownUnitNum]=@ShownUnitNum,[ShownAcctNum]=@ShownAcctNum,[ShownAcctName]=@ShownAcctName,[ShownAddr]=@ShownAddr,[ShownTown]=@ShownTown,[ShownState]=@ShownState,[ShownZip]=@ShownZip,[Cat]=@Cat,[Provider]=@Provider,[Owner]=@Owner,[Unit]=@Unit,[UnitText]=@UnitText,[State]=@State,[UAcct]=@UAcct,[YYYYMMDD]=@YYYYMMDD,[Amt]=@Amt"
-    | Rdbms.PostgreSql -> "shownprovider=@shownprovider,shownunitnum=@shownunitnum,shownacctnum=@shownacctnum,shownacctname=@shownacctname,shownaddr=@shownaddr,showntown=@showntown,shownstate=@shownstate,shownzip=@shownzip,cat=@cat,provider=@provider,owner=@owner,unit=@unit,unittext=@unittext,state=@state,uacct=@uacct,yyyymmdd=@yyyymmdd,amt=@amt"
+    | Rdbms.SqlServer -> "[Cat]=@Cat,[Provider]=@Provider,[Owner]=@Owner,[Unit]=@Unit,[UnitText]=@UnitText,[State]=@State,[UAcct]=@UAcct,[YYYYMMDD]=@YYYYMMDD,[Amt]=@Amt"
+    | Rdbms.PostgreSql -> "cat=@cat,provider=@provider,owner=@owner,unit=@unit,unittext=@unittext,state=@state,uacct=@uacct,yyyymmdd=@yyyymmdd,amt=@amt"
 
 let pUBILL_fields() =
     match rdbms with
     | Rdbms.SqlServer ->
         [|
-            Text("ShownProvider")
-            Chars("ShownUnitNum", 5)
-            Text("ShownAcctNum")
-            Text("ShownAcctName")
-            Text("ShownAddr")
-            Text("ShownTown")
-            Chars("ShownState", 2)
-            Chars("ShownZip", 10)
             FK("Cat")
             FK("Provider")
             FK("Owner")
@@ -494,14 +470,6 @@ let pUBILL_fields() =
             Float("Amt") |]
     | Rdbms.PostgreSql ->
         [|
-            Text("shownprovider")
-            Chars("shownunitnum", 5)
-            Text("shownacctnum")
-            Text("shownacctname")
-            Text("shownaddr")
-            Text("showntown")
-            Chars("shownstate", 2)
-            Chars("shownzip", 10)
             FK("cat")
             FK("provider")
             FK("owner")
@@ -513,14 +481,6 @@ let pUBILL_fields() =
             Float("amt") |]
 
 let pUBILL_empty(): pUBILL = {
-    ShownProvider = ""
-    ShownUnitNum = ""
-    ShownAcctNum = ""
-    ShownAcctName = ""
-    ShownAddr = ""
-    ShownTown = ""
-    ShownState = ""
-    ShownZip = ""
     Cat = 0L
     Provider = 0L
     Owner = 0L

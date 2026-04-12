@@ -4,6 +4,10 @@
   class="flex items-center">
     <UserButton />
     <div>{{ s.rt.user.eu.p.Email }}</div>
+    <div v-if="s.rt.user.eu.p.OAuthProvider != ''">
+      <img class="img-oauth"
+        :src="'https://img.clerk.com/static/' + s.rt.user.eu.p.OAuthProvider + '.svg'" />
+    </div>
     <div v-if="s.rt.user.eu.p.AuthType == 2" class="p-[15px]">
       <button @click="router.push('/Admin')">Admin Console</button>
     </div>
@@ -16,7 +20,9 @@
         </button>
       </SignInButton>
       <div class="px-2">with</div>
-      <img src="https://img.clerk.com/static/google.svg?width=160" />
+      <img class="img-oauth" src="https://img.clerk.com/static/google.svg" />
+      <img class="img-oauth" src="https://img.clerk.com/static/apple.svg" />
+      <img class="img-oauth" src="https://img.clerk.com/static/microsoft.svg" />
       <!--SignUpButton /-->
 </div>
 

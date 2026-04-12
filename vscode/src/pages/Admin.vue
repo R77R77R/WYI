@@ -12,7 +12,14 @@
             @select="onSelectUser" />
         </div>
         <div v-for="i in s.users">
-          {{ i.p.Email }}
+          <span v-if="i.p.OAuthProvider != ''">
+            {{ i.p.Email }}
+            <img class="img-oauth"
+              :src="'https://img.clerk.com/static/' + i.p.OAuthProvider + '.svg'" />
+          </span>
+          <span v-else>
+            {{ i.p.Username }}
+          </span>
         </div>
       </div>
 
