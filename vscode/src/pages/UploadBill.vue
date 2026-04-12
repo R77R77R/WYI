@@ -11,7 +11,7 @@
     <div class="card">
       <div>
         <p>Drop your files here or click the file icon</p>
-        <small>Pictures (.jpg, .png, .bmp, ...) or PDFs, Max. 10GB</small>
+        <small>Images (.jpg, .png, .bmp, ...) or PDFs, Max. 10GB</small>
       </div>
 
       <div class="drop-zone" :class="{ 'is-dragging': isDragging }" @dragover.prevent="isDragging = true"
