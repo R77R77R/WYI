@@ -59,7 +59,7 @@ let generateThumbnailBytes (fileStream: Stream) (isPdf: bool) =
     with ex ->
         [||]
 
-let incomingFile (formfile:IFormFile) = 
+let incomingFile httpx (formfile:IFormFile) = 
     async{
 
     let rawfilename = formfile.FileName
@@ -114,7 +114,14 @@ let incomingFile (formfile:IFormFile) =
     }
     
 let fileid__localpath id = 
-    ""
+    
+    match
+        id
+        |> parse_int64
+        |> id__FILEo with
+    | Some file -> 
+        file.p.Path
+    | None -> ""
 
 let id__thumbnail id = 
     match 

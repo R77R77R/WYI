@@ -1,19 +1,22 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
+import basicSsl from '@vitejs/plugin-basic-ssl'
 import path from 'path'
 export default defineConfig({
   base: '/',
   plugins: [
     vue(),
-    vueJsx()
+    vueJsx(),
+    basicSsl()
   ],
   server: {
+    https: true,
     host: '0.0.0.0',
     port: 2019,
     proxy: {
       '/api': {
-        target: 'https://localhost', // 你的 F# 后端地址
+        target: 'https://localhost:443', // 你的 F# 后端地址
         secure: false, // 如果是自签名证书则需设为 false
         changeOrigin: true,
         configure: (proxy, options) => {
@@ -23,12 +26,14 @@ export default defineConfig({
       },
 
       '/thumbnail': {
-        target: 'https://localhost', // 指向你的 Kestrel 端口
+        target: 'https://localhost:443', // 指向你的 Kestrel 端口
+        secure: false, // 如果是自签名证书则需设为 false
         changeOrigin: true,
       },      
 
       '/file': {
-        target: 'https://localhost', // 指向你的 Kestrel 端口
+        target: 'https://localhost:443', // 指向你的 Kestrel 端口
+        secure: false, // 如果是自签名证书则需设为 false
         changeOrigin: true,
       }      
 
