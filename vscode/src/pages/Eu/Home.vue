@@ -3,8 +3,8 @@
   <div class="card">
     <div>Production: <a href="https://whatsyourideal.com/" target="_blank">https://whatsyourideal.com/</a></div>
     <div>Demo: <a href="https://5.78.201.21/" target="_blank">https://5.78.201.21/</a></div>
+    <div><a href="https://docs.google.com/document/d/1ST0W7PcwX-jppBmm4fPdORJHrkoe5yqgPvA7SfTSq0s/edit?usp=sharing" target="_blank">Google Doc</a></div>
   </div>
-
   <div class="card" v-if="s.rt.user != null && s.rt.user.eu.id > 0">
     <div class="card-caption">Upload and Review Your Bill</div>
     <div>

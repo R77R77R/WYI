@@ -26,7 +26,7 @@ let Bash output server
     // 注意：远程执行 dotnet run 时建议加上 nohup 或确保你希望持续观察输出
     let remoteCommands = 
 
-        if true then
+        if false then
             [|
                 $"cd ~/{deployDir}"
                 "git fetch --all"

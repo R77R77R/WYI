@@ -1,18 +1,13 @@
 <template>
 
   <div class="flex">
-
     <UserAuth @changed="onAuthChanged" />
   </div>
 
   <div class="lg:w-[1200px] m-[10px]">
-
     <div class="main-color w-screen">
-
       <router-view class="min-h-[600px]" />
-
       <div class="hor" />
-
       <div class="flex justify-center">
         <div class="hor-range">
           <div class="pt-2 pb-5">
@@ -20,9 +15,7 @@
           </div>
         </div>
       </div>
-
     </div>
-
   </div>
 
 </template>
