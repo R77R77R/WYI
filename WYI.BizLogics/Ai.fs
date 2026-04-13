@@ -77,7 +77,7 @@ let myAcctxs eux =
         
         "; " |> w.newline)
     
-    w.ToString()
+    w.text()
 
 let prompt eux = 
     $"""
