@@ -390,23 +390,26 @@ let UACCT_table = "Kernel_UtilAcct"
 
 type ubillStateEnum = 
 | Submitted = 0 // Submitted
-| Accepted = 1 // Accepted
-| Closed = 2 // Closed
+| Declined = 1 // Declined
+| Accepted = 2 // Accepted
+| Closed = 3 // Closed
 
-let ubillStateEnums = [| ubillStateEnum.Submitted; ubillStateEnum.Accepted; ubillStateEnum.Closed |]
-let ubillStateEnumstrs = [| "ubillStateEnum"; "ubillStateEnum"; "ubillStateEnum" |]
-let ubillStateNum = 3
+let ubillStateEnums = [| ubillStateEnum.Submitted; ubillStateEnum.Declined; ubillStateEnum.Accepted; ubillStateEnum.Closed |]
+let ubillStateEnumstrs = [| "ubillStateEnum"; "ubillStateEnum"; "ubillStateEnum"; "ubillStateEnum" |]
+let ubillStateNum = 4
 
 let int__ubillStateEnum v =
     match v with
     | 0 -> Some ubillStateEnum.Submitted
-    | 1 -> Some ubillStateEnum.Accepted
-    | 2 -> Some ubillStateEnum.Closed
+    | 1 -> Some ubillStateEnum.Declined
+    | 2 -> Some ubillStateEnum.Accepted
+    | 3 -> Some ubillStateEnum.Closed
     | _ -> None
 
 let str__ubillStateEnum s =
     match s with
     | "Submitted" -> Some ubillStateEnum.Submitted
+    | "Declined" -> Some ubillStateEnum.Declined
     | "Accepted" -> Some ubillStateEnum.Accepted
     | "Closed" -> Some ubillStateEnum.Closed
     | _ -> None
@@ -414,6 +417,7 @@ let str__ubillStateEnum s =
 let ubillStateEnum__caption e =
     match e with
     | ubillStateEnum.Submitted -> "Submitted"
+    | ubillStateEnum.Declined -> "Declined"
     | ubillStateEnum.Accepted -> "Accepted"
     | ubillStateEnum.Closed -> "Closed"
     | _ -> ""
@@ -461,7 +465,7 @@ let pUBILL_fields() =
             FK("Provider")
             FK("Owner")
             FK("Unit")
-            SelectLines("State", [| ("Submitted","Submitted");("Accepted","Accepted");("Closed","Closed") |])
+            SelectLines("State", [| ("Submitted","Submitted");("Declined","Declined");("Accepted","Accepted");("Closed","Closed") |])
             FK("UAcct")
             Chars("YYYYMMDD", 8)
             Float("Amt") |]
@@ -471,7 +475,7 @@ let pUBILL_fields() =
             FK("provider")
             FK("owner")
             FK("unit")
-            SelectLines("state", [| ("Submitted","Submitted");("Accepted","Accepted");("Closed","Closed") |])
+            SelectLines("state", [| ("Submitted","Submitted");("Declined","Declined");("Accepted","Accepted");("Closed","Closed") |])
             FK("uacct")
             Chars("yyyymmdd", 8)
             Float("amt") |]

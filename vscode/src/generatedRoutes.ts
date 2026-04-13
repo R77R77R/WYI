@@ -51,6 +51,18 @@ import { RouteRecordRaw } from 'vue-router';
       }]
     },
     {
+      path: '/Admin/Sys',
+      component: ()=>import ( "/src/layouts/blank.vue" ),
+      meta: {"layout":"blank"},
+      children: [{
+        path: "",
+        name: 'Admin-Sys',
+        component:()=> import("~/pages/Admin/Sys.vue"),
+        meta: {"layout":"blank"},
+        props: true
+      }]
+    },
+    {
       path: '//Admin',
       component: ()=>import ( "/src/layouts/blank.vue" ),
       meta: {"layout":"blank"},

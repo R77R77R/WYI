@@ -3,11 +3,20 @@
 <div class="card">
 
 <div v-if="props.mode == 0">
-  <span v-if="props.acctx.cato != null && props.acctx.providero != null">
+  <div v-if="props.acctx.cato != null && props.acctx.providero != null">
     {{ props.acctx.providero.p.Caption }}
     ({{ props.acctx.cato.p.Caption }})
-  </span>
-  {{ props.acctx.acct.p.AcctNum }}
+  </div>
+  <div v-if="props.acctx.unito != null">
+    {{ props.acctx.unito.p.Address }} &nbsp;
+    {{ props.acctx.unito.p.Town }} &nbsp;
+    {{ props.acctx.unito.p.State }}
+    {{ props.acctx.unito.p.Zip }}
+  </div>
+  <div>
+    {{ props.acctx.acct.p.AcctName }}
+    {{ props.acctx.acct.p.AcctNum }}
+  </div>
 </div>
 
 <div v-if="props.mode == 1"> 

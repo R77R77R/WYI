@@ -823,8 +823,9 @@ export const UACCT_empty = (): wyi.UACCT => {
 }
 
 export const ubillStateEnum_Submitted = 0 // Submitted
-export const ubillStateEnum_Accepted = 1 // Accepted
-export const ubillStateEnum_Closed = 2 // Closed
+export const ubillStateEnum_Declined = 1 // Declined
+export const ubillStateEnum_Accepted = 2 // Accepted
+export const ubillStateEnum_Closed = 3 // Closed
 
 export const pUBILL_empty = (): wyi.pUBILL => {
     return {

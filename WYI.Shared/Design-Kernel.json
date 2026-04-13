@@ -163,7 +163,7 @@
 
       {
         "enum": "SelectLines",
-        "lines": "Submitted//Submitted///Accepted//Accepted///Closed//Closed",
+        "lines": "Submitted//Submitted///Declined//Declined///Accepted//Accepted///Closed//Closed",
         "name": "State"
       },
 
