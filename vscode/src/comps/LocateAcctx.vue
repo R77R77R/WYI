@@ -19,6 +19,7 @@
       </div>
 
       <Acctx class="card-clickable" 
+        :class="{ 'selected': s.selected.acct.id == i.acct.id }"
         @click="onSelect(i)" 
         v-for="i in s.items" 
         :acctx="i" :mode="0" />
@@ -55,7 +56,7 @@
     <div class="card-double-col-span" 
       v-if="s.selected.acct.id > 0">
       <div class="card-caption">Selected Account</div>
-      <Acct :acctx="s.selected" :mode="1" />
+      <Acctx :acctx="s.selected" :mode="1" />
       <button @click="s.showDetails = true">Reselect</button>
     </div>
 

@@ -2,38 +2,28 @@
 
   <div class="card">
     <div class="card-caption">Review Your Bill</div>
-    <div v-for="fid in s.fids">
-      <div class="w-[300px]">
-        <img :src='"/thumbnail/" + fid' />
-      </div>
+    <div class="flex">
+      <a target="_blank" v-for="fid in s.fids" :href="'/file/' + fid">
+        <img :src="'/thumbnail/' + fid" />
+      </a>
     </div>
   </div>
 
-  <div class="card-double-col-container"
-    v-if="s.er == 'OK'">
+  <div class="card-double-col-container" v-if="s.er == 'OK'">
 
     <div class="card-double-col">
-    <div class="card" v-if="s.ex != ''">
-      <p>We experienced an issue from the AI.
-        You can keyin the fields instead.</p>
-      <p>{{ s.ex }}</p>
+      <div class="card" v-if="s.ex != ''">
+        <p>We experienced an issue from the AI.
+          You can keyin the fields instead.</p>
+        <p>{{ s.ex }}</p>
+      </div>
     </div>
-    </div>
 
-    <LocateProvider 
-      :ucat="s.ucat"
-      :uprovider="s.uprovider" />
+    <LocateProvider :ucat="s.ucat" :uprovider="s.uprovider" />
 
-    <LocateUnit 
-      :unit="s.unit"
-      api="/api/eu/my-units" />
+    <LocateUnit :unit="s.unit" api="/api/eu/my-units" />
 
-    <LocateAcctx
-      :ucat="s.ucat"
-      :uprovider="s.uprovider"
-      :unit="s.unit"
-      :acctx="s.acctx"
-      api="/api/eu/my-acctxs" />
+    <LocateAcctx :ucat="s.ucat" :uprovider="s.uprovider" :unit="s.unit" :acctx="s.acctx" api="/api/eu/my-acctxs" />
 
     <div class="card-double-col">
 
@@ -52,14 +42,16 @@
         <div><input v-model="s.bill.p.Amt" /></div>
 
       </div>
-    
+
     </div>
 
     <div class="card-double-col">
       <div class="card-double-col-span">
         <div class="flex">
           <button @click="confirm">Confirm</button>
-          the details and submit to our professional team.
+        </div>
+        <div>
+          {{ s.msg }}
         </div>
       </div>
     </div>
@@ -91,6 +83,7 @@ const s = glib.vue.reactive({
   fids: [] as number[],
   er: "",
   ex: "",
+  msg: "",
   ucat: UCAT_empty(),
   uprovider: UPROVIDER_empty(),
   unit: UNIT_empty(),
@@ -114,15 +107,19 @@ glib.vue.onMounted(async () => {
     fids: s.fids
   }, (rep: any) => {
     s.er = rep.Er
-    if(rep.ex)
+    if (rep.ex)
       s.ex = "" + rep.ex
     else
       s.ex = ""
 
-    if(rep.ucat)
+    if (rep.ucat)
       s.ucat = rep.ucat
-    if(rep.uprovider)
+    if (rep.uprovider)
       s.uprovider = rep.uprovider
+    if (rep.unit)
+      s.unit = rep.unit
+    if (rep.acctx)
+      s.acctx = rep.acctx
 
     s.unit.p = rep.pUnit
     s.acctx.acct.p = rep.pAcct
@@ -132,6 +129,24 @@ glib.vue.onMounted(async () => {
 })
 
 const confirm = () => {
+
+  s.msg = ""
+  if (s.ucat.id == 0){
+    s.msg = "Please select service provider."
+    return
+  }
+  if (s.uprovider.id == 0){
+    s.msg = "Please select service provider."
+    return
+  }
+  if (s.unit.id == 0){
+    s.msg = "Please select unit."
+    return
+  }
+  if (s.acctx.acct.id == 0){
+    s.msg = "Please select service account."
+    return
+  }
 
   s.bill.p.Cat = s.ucat.id
   s.bill.p.Provider = s.uprovider.id

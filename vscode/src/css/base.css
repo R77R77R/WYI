@@ -70,6 +70,11 @@ h1{
   @apply m-[20px] p-[20px] shadow rounded
 }
 
+/* 当元素同时拥有 .card 和 .selected 类时触发 */
+.card.selected {
+  @apply border-orange-500;
+}
+
 .card-caption{
   @apply m-2 text-blue-700 text-xl font-bold
 }

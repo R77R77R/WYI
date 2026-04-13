@@ -19,6 +19,7 @@
       </div>
 
       <Unit class="card-clickable" 
+        :class="{ 'selected': s.selected.id == i.id }"
         @click="onSelect(i)" 
         v-for="i in s.items" 
         :unit="i" :mode="0" />
