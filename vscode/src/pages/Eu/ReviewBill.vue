@@ -142,7 +142,7 @@ const confirm = () => {
     fids: s.fids,
     p: s.bill.p
   }, (rep: any) => {
-    router.push("/MyBills")
+    router.push("/eu/myBills")
   })
 }
 

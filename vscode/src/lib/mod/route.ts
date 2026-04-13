@@ -11,6 +11,7 @@ const routes = [
     children: [
       { path: 'home', component: () => import('~/pages/Eu/Home.vue') },
       { path: 'uploadBill', component: () => import('~/pages/Eu/UploadBill.vue') },
+      { path: 'reviewBill', component: () => import('~/pages/Eu/ReviewBill.vue') },
       { path: 'myUnits', component: () => import('~/pages/Eu/MyUnits.vue') },
       { path: 'myBills', component: () => import('~/pages/Eu/MyBills.vue') },
       { path: 'myAcctxs', component: () => import('~/pages/Eu/MyAcctxs.vue') },

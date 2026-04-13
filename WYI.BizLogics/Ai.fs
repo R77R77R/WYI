@@ -33,7 +33,7 @@ open WYI.BizLogics.Auth
 
 let output = runtime.output
 
-let providerInfo =
+let providerInfo() =
     let items = runtime.data.providers.Values
     runtime.data.cats.Values
     |> Array.map(fun ucat -> 
@@ -48,7 +48,38 @@ let providerInfo =
         cattext + ", Providers: " + providerstxt)
     |> String.concat "; "
 
-let prompt = 
+let myUnits eux = 
+    eux.units.Values
+    |> Array.map(fun i -> 
+        "ID=" + i.ID.ToString() + ": " + i.p.Address + " " + i.p.Town + " " + i.p.State + " " + i.p.Zip)
+    |> String.concat "; "
+
+let myAcctxs eux =
+    let w = Util.Text.empty__TextBlockWriter()
+    eux.acctxs.Values
+    |> Array.iter(fun i ->
+        let acct = i.acct
+        
+        [|  "ID=" + acct.ID.ToString()
+            ": " + acct.p.AcctName
+            " " + acct.p.AcctNum |]
+        |> w.multiLine
+        
+        match i.unito with
+        | Some unit -> 
+            " " + unit.p.Address + " " + unit.p.Town + " " + unit.p.State + " " + unit.p.Zip
+            |> w.newline
+        | None -> ()
+        
+        if i.cato.IsSome && i.providero.IsSome then
+            " " + i.providero.Value.p.Caption
+            |> w.newline
+        
+        "; " |> w.newline)
+    
+    w.ToString()
+
+let prompt eux = 
     $"""
 
     ## 任务：根据上传的文件获得账单的信息
@@ -61,10 +92,22 @@ let prompt =
 
     ## Exihibit A: 供应商provider及其分类cat的信息
 
-    {providerInfo}
+    {providerInfo()}
+
+    ## Exihibit B: 可选的商业/住宅单元Unit信息
+
+    {myUnits eux}
+
+    ## Exihibit C: 可选的账号Acct信息
+
+    {myAcctxs eux}
+
+    ## 任务
 
     从上传的文件中提取cat,provider,账号，地址和金额，
     若cat或provider在以上信息中存在，则提取其ID，否则ID=0
+    若unit在以上信息中存在，则提取其ID，否则ID=0
+    若acct在以上信息中存在，则提取其ID，否则ID=0
 
     ## 输出格式
 
@@ -76,10 +119,12 @@ let prompt =
     Provider: [T-Mobile],
     AcctNum: [1234567890123],
     AcctName: [Jone Browning]
+    AcctID: [从Exihibit C获取],
     Addr: [133 Keystone Dr, Suite 12]
     Town: [Dingmans Ferry]
     State: [PA]
     ZIP: [18328]
+    UnitID: [从Exihibit B获取],
     BillDate: [MM/DD/YYYY]
     Amt: [$123.45]
     """
@@ -351,7 +396,7 @@ let reviewBillFiles eux (x:X) =
                     runtime.output 
                     runtime.data.apiKeyGemini
                     runtime.data.aiModel
-                    prompt 
+                    (prompt eux)
                     pathes
             ex + msg |> output
             return ex,msg

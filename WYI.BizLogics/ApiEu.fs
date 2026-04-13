@@ -202,8 +202,6 @@ let reviewBillFiles eux (x:X) =
         |> ls.AddRange
         ls.ToArray()
 
-
-
 let submitBill eux (x:X) =
 
     let json = x.Json

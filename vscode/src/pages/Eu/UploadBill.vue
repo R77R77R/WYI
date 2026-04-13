@@ -96,7 +96,7 @@ const upload = async () => {
 
   sessionStorage.setItem('fids', JSON.stringify(fids))
 
-  await router.push('/ReviewBill')
+  await router.push('/eu/reviewBill')
 }
 
 </script>
