@@ -3,6 +3,7 @@ import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import basicSsl from '@vitejs/plugin-basic-ssl'
 import path from 'path'
+
 export default defineConfig({
   base: '/',
   plugins: [
@@ -11,7 +12,7 @@ export default defineConfig({
     basicSsl()
   ],
   server: {
-    https: true,
+    https: true as any,
     host: '0.0.0.0',
     port: 2019,
     proxy: {
@@ -20,8 +21,8 @@ export default defineConfig({
         secure: false, // 如果是自签名证书则需设为 false
         changeOrigin: true,
         configure: (proxy, options) => {
-          proxy.on('proxyReq', (proxyReq, req, res) => {
-            console.log('代理发送请求:', req.method, req.url, '->', options.target + proxyReq.path);
+          proxy.on('proxyReq', (proxyReq:any, req:any, res:any) => {
+            //console.log('代理发送请求:', req.method, req.url, '->', options.target + proxyReq.path);
           })}
       },
 
