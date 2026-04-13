@@ -33,26 +33,32 @@ open WYI.BizLogics.Auth
 
 let output = runtime.output
 
+let lf = Util.Text.lf
+
 let providerInfo() =
+    let w = Util.Text.empty__TextBlockWriter()
     let items = runtime.data.providers.Values
     runtime.data.cats.Values
-    |> Array.map(fun ucat -> 
-        let cattext = 
-            "ID=" + ucat.ID.ToString() + ": " + ucat.p.Caption
-        let providerstxt = 
-            items
-            |> Array.filter(fun i -> i.p.Cat = ucat.ID)
-            |> Array.map(fun i -> 
-                "ID=" + i.ID.ToString() + ": " + i.p.Caption)
-            |> String.concat ", "
-        cattext + ", Providers: " + providerstxt)
-    |> String.concat "; "
+    |> Array.iter(fun ucat -> 
+        "CategoryID=" + ucat.ID.ToString() + ": " + ucat.p.Caption + lf
+        |> w.newline
+
+        items
+        |> Array.filter(fun i -> i.p.Cat = ucat.ID)
+        |> Array.map(fun i -> 
+            "ProviderID=" + i.ID.ToString() + ": " + i.p.Caption + lf)
+        |> w.multiLine
+
+        lf |> w.newline)
+    w.text()
 
 let myUnits eux = 
+    let w = Util.Text.empty__TextBlockWriter()
     eux.units.Values
     |> Array.map(fun i -> 
-        "ID=" + i.ID.ToString() + ": " + i.p.Address + " " + i.p.Town + " " + i.p.State + " " + i.p.Zip)
-    |> String.concat "; "
+        "UnitID=" + i.ID.ToString() + ": " + i.p.Address + " " + i.p.Town + " " + i.p.State + " " + i.p.Zip + lf)
+    |> w.multiLine
+    w.text()
 
 let myAcctxs eux =
     let w = Util.Text.empty__TextBlockWriter()
@@ -60,7 +66,7 @@ let myAcctxs eux =
     |> Array.iter(fun i ->
         let acct = i.acct
         
-        [|  "ID=" + acct.ID.ToString()
+        [|  "AcctID=" + acct.ID.ToString()
             ": " + acct.p.AcctName
             " " + acct.p.AcctNum |]
         |> w.multiLine
@@ -75,7 +81,7 @@ let myAcctxs eux =
             " " + i.providero.Value.p.Caption
             |> w.newline
         
-        "; " |> w.newline)
+        lf |> w.newline)
     
     w.text()
 
@@ -89,6 +95,7 @@ let prompt eux =
     3. 有可能多个文件对应同一个账单
     4. 文字尝试匹配供应商及其分类信息
     5. 输出账单信息
+    6. 如果匹配出多个账单信息，以页码小的优先，最终只输出一个账单信息
 
     ## Exihibit A: 供应商provider及其分类cat的信息
 
