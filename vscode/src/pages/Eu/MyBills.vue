@@ -7,7 +7,7 @@
 </div>
 
 <Billx v-for="i in s.billxs"
-  :billx="i" :mode="1" />
+  :billx="i" :mode="0" />
 
 </template>
 

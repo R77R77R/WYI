@@ -23,7 +23,14 @@ export default defineConfig({
       },
 
       '/thumbnail': {
-        target: 'http://localhost', // 指向你的 Kestrel 端口
+        target: 'https://localhost', // 指向你的 Kestrel 端口
+        secure: false, // 如果是自签名证书则需设为 false
+        changeOrigin: true,
+      },      
+
+      '/file': {
+        target: 'https://localhost', // 指向你的 Kestrel 端口
+        secure: false, // 如果是自签名证书则需设为 false
         changeOrigin: true,
       }      
 

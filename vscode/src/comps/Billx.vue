@@ -1,42 +1,66 @@
 <template>
 
-<div class="card">
+  <div class="card">
 
+    <div class="flex" v-if="props.mode == 0">
 
-<div v-if="props.mode == 0">
-  <div v-if="props.billx.cato && props.billx.providero">
-    <span class="text-block">
-      {{ props.billx.bill.p.State }}
-    </span>
-    {{ props.billx.providero.p.Caption }}
-    ({{ props.billx.cato.p.Caption }})
-    ${{ props.billx.bill.p.Amt }}
-  </div>
-</div>
-<div v-if="props.mode == 1">
-    <div class="text-block">
-      {{ props.billx.bill.p.State }}
+      <div>
+        <BillState :state="props.billx.bill.p.State" />
+      </div>
+
+      <div>
+        <div v-if="props.billx.cato && props.billx.providero">
+          <Provider 
+            :ucat="props.billx.cato"
+            :uprovider="props.billx.providero" />
+        </div>
+
+        <Unit v-if="props.billx.unito"
+          :unit="props.billx.unito" />
+
+        <Acctx v-if="props.billx.acctxo"
+          :acctx="props.billx.acctxo" />
+
+        <div v-if="props.billx.cato && props.billx.providero">
+          Amount: ${{ props.billx.bill.p.Amt }}
+        </div>
+      </div>
+
     </div>
-  <div v-if="props.billx.cato && props.billx.providero">
-    {{ props.billx.providero.p.Caption }}
-    ({{ props.billx.cato.p.Caption }})
-  </div>
-  <div v-if="props.billx.unito">
-    {{ props.billx.unito.p.Address }}
-  </div>
-  <div>
-    <b>${{ props.billx.bill.p.Amt }}</b>
-  </div>
-  <div class="flex">
-    <a target="_blank"
-      v-for="i in props.billx.files"
-      :href="'/file/'+ i.id">
-      <img :src="'/thumbnail/'+ i.id" />
-    </a>
-  </div>
-</div>
 
-</div>
+    <div v-if="props.mode == 1">
+
+      <div>
+        <BillState :state="props.billx.bill.p.State" />
+      </div>
+
+      <div>
+        <div v-if="props.billx.cato && props.billx.providero">
+          <Provider 
+            :ucat="props.billx.cato"
+            :uprovider="props.billx.providero" />
+        </div>
+
+        <Unit v-if="props.billx.unito"
+          :unit="props.billx.unito" />
+
+        <Acctx v-if="props.billx.acctxo"
+          :acctx="props.billx.acctxo" />
+
+        <div v-if="props.billx.cato && props.billx.providero">
+          Amount: ${{ props.billx.bill.p.Amt }}
+        </div>
+      </div>
+
+      <div class="flex">
+        <a target="_blank" v-for="i in props.billx.files" :href="'/file/' + i.id">
+          <img :src="'/thumbnail/' + i.id" />
+        </a>
+      </div>
+      
+    </div>
+
+  </div>
 
 </template>
 
@@ -44,8 +68,12 @@
 import { ref } from 'vue'
 import { glib } from '~/lib/glib'
 import * as Common from '~/lib/store/common'
+import BillState from '~/comps/BillState.vue'
+import Provider from '~/comps/Provider.vue'
+import Unit from '~/comps/Unit.vue'
+import Acctx from '~/comps/Acctx.vue'
 
-const props = defineProps(['billx','mode'])
+const props = defineProps(['billx', 'mode'])
 props.billx as wyi.BillComplex
 props.mode as number
 

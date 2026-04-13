@@ -185,3 +185,15 @@ h1{
 .text-block{
   @apply p-1 bg-gray-600 text-white
 }
+
+.bill-state-Submitted{
+  @apply bg-[#125699] text-white px-2 py-1 mx-2
+}
+
+.bill-state-Accepted{
+  @apply bg-[#00aa00] text-white px-2 py-1 mx-2
+}
+
+.bill-state-Closed{
+  @apply bg-[#999999] text-white px-2 py-1 mx-2
+}
