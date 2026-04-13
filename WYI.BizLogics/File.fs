@@ -120,7 +120,12 @@ let fileid__localpath id =
         |> parse_int64
         |> id__FILEo with
     | Some file -> 
-        Path.Combine(runtime.host.fsDir,file.p.Path)
+        let filename = 
+            if file.p.Suffix.Length = 0 then
+                file.p.Path
+            else
+                file.p.Path + "." + file.p.Suffix
+        Path.Combine(runtime.host.fsDir,filename)
     | None -> ""
 
 let id__thumbnail id = 
