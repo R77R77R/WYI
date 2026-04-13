@@ -19,6 +19,20 @@ WYI 项目主程序：https://github.com/R77R77R/WYI/
 以及库中各个project的引用关系，
 你可以分析理解整个solution的结构。
 
+- 开发环境为：localhost
+- 部署环境为: 5.78.201.21
+
+- F#/Kestrel/PostgreSQL后端在所有环境都运行于80/443端口
+- 开发环境，前端在vscode/vue执行于 http://localhost:2019 
+- 部署环境，vue编译后的代码，作为静态文件，被后端的文件服务管理
+
+## 任务
+
+你需要：
+- 从公开的 repo 里分析关于前端主机转发的代码，特别是 vite.config.ts和Common/UtilKestrel/Server.fs
+- 找到在开发环境无法正确映射到app.MapGet("/file/{id}"和app.MapGet("/thumbnail/{id}"的原因
+
+
 ## WYI
 
 . /WYI.sln 是后端开发主solution，它引用了其它库 Common 和 JCS 中的 project
