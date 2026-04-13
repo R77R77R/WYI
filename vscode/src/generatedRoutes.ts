@@ -21,7 +21,7 @@ import { RouteRecordRaw } from 'vue-router';
       children: [{
         path: "",
         name: '-Bills',
-        component:()=> import("~/pages//Bills.vue"),
+        component:()=> import("~/pages/Admin/Bills.vue"),
         meta: {"layout":"blank"},
         props: true
       }]
@@ -33,7 +33,7 @@ import { RouteRecordRaw } from 'vue-router';
       children: [{
         path: "",
         name: '-HomeCustomer',
-        component:()=> import("~/pages//HomeCustomer.vue"),
+        component:()=> import("~/pages/Eu/HomeCustomer.vue"),
         meta: {"layout":"blank"},
         props: true
       }]
@@ -45,7 +45,7 @@ import { RouteRecordRaw } from 'vue-router';
       children: [{
         path: "",
         name: '-MyAcctxs',
-        component:()=> import("~/pages//MyAcctxs.vue"),
+        component:()=> import("~/pages/Eu/MyAcctxs.vue"),
         meta: {"layout":"blank"},
         props: true
       }]
@@ -57,7 +57,7 @@ import { RouteRecordRaw } from 'vue-router';
       children: [{
         path: "",
         name: '-MyBills',
-        component:()=> import("~/pages//MyBills.vue"),
+        component:()=> import("~/pages/Eu/MyBills.vue"),
         meta: {"layout":"blank"},
         props: true
       }]
@@ -69,7 +69,7 @@ import { RouteRecordRaw } from 'vue-router';
       children: [{
         path: "",
         name: '-MyUnits',
-        component:()=> import("~/pages//MyUnits.vue"),
+        component:()=> import("~/pages/Eu/MyUnits.vue"),
         meta: {"layout":"blank"},
         props: true
       }]
@@ -93,7 +93,7 @@ import { RouteRecordRaw } from 'vue-router';
       children: [{
         path: "",
         name: '-UploadBill',
-        component:()=> import("~/pages//UploadBill.vue"),
+        component:()=> import("~/pages/Eu/UploadBill.vue"),
         meta: {"layout":"blank"},
         props: true
       }]

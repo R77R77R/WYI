@@ -66,6 +66,7 @@ let branching (euxo:EuComplex option) (x:X) =
         | _ -> Fail(Er.ApiNotExists,x)
     | "admin" -> 
         match x.Struct.api with
+        | "providers" -> bindx providers
         | "users" -> bindx users
         | "billxs" -> bindx billxs
         //| "plogs" -> (fun x -> 

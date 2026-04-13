@@ -9,7 +9,8 @@
         :src="'https://img.clerk.com/static/' + s.rt.user.eu.p.OAuthProvider + '.svg'" />
     </div>
     <div v-if="s.rt.user.eu.p.AuthType == 2" class="p-[15px]">
-      <button @click="router.push('/Admin')">Admin Console</button>
+      <button class="button-small"
+        @click="router.push('/Admin/Home')">Admin Console</button>
     </div>
 </div>
 <div v-else class="flex items-center">

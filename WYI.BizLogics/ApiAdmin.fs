@@ -81,8 +81,9 @@ let billxs (x:X) =
     | _ -> er Er.InvalideParameter
 
 let providers (x:X) = 
+    let json = x.Json
     match
-        x.Json
+        json
         |> tryFindStrByAtt "act" with
     | "create" ->
         match 
@@ -95,6 +96,40 @@ let providers (x:X) =
             |> UPROVIDER__json
             |> wrapOk "data"
         | None -> er Er.Internal
+    | "load" ->
+        let cato = 
+            json 
+            |> tryFindStrByAtt "cat" 
+            |> parse_int64
+            |> id__UCATo
+        let providero = 
+            json 
+            |> tryFindStrByAtt "provider" 
+            |> parse_int64
+            |> id__UPROVIDERo
+
+        if cato.IsNone || providero.IsNone then
+            er Er.InvalideParameter
+        else
+            let cat,provider = cato.Value,providero.Value
+            match
+                runtime.data.catproviders
+                |> Array.tryFind(fun i -> 
+                    i.p.Cat = cat.ID && i.p.Provider = provider.ID) with
+            | Some i -> 
+                let billxs = 
+                    runtime.users.Values
+                    |> Array.map(fun eux -> eux.billxs.Values)
+                    |> Array.concat
+                    |> Array.filter(fun billx -> billx.providero.IsSome)
+                    |> Array.filter(fun billx -> billx.providero.Value.ID = provider.ID)
+                    |> Array.map BillComplex__json
+                    |> Json.Ary
+                [|  ("cat",cat |> UCAT__json)
+                    ("provider",provider |> UPROVIDER__json)
+                    ("billxs",billxs)
+                    ok |]
+            | None -> er Er.InvalideParameter
     | "ls" -> 
         runtime.data.providers.Values
         |> Array.map UPROVIDER__json

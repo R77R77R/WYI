@@ -1,113 +1,56 @@
 <template>
 
-  <div class="flex justify-center">
-    <div class="hor-range">
+  <div class="lg:w-[1200px] m-[10px]">
 
-      <div class="card">
-        <div class="card-caption">Users</div>
-        <div>
-          <SearchField api="/api/admin/users" 
-            :item__key="(eu: wyi.EU) => eu.id" 
-            :item__text='(eu: wyi.EU) => eu.p.Caption + " " + eu.p.Username + " " + eu.p.Email'
-            @select="onSelectUser" />
-        </div>
-        <div v-for="i in s.users">
-          <span v-if="i.p.OAuthProvider != ''">
-            {{ i.p.Email }}
-            <img class="img-oauth"
-              :src="'https://img.clerk.com/static/' + i.p.OAuthProvider + '.svg'" />
-          </span>
-          <span v-else>
-            {{ i.p.Username }}
-          </span>
-        </div>
+    <div class="main-color w-screen">
+
+      <div class="w-full flex bg-[#ffcc99] px-3 py-1 gap-5">
+        
+        <router-link to="/eu/home" 
+          class="bg-white px-2 text-[#ffcc99] hover:text-gray-400">
+          User View
+        </router-link>
+
+        <router-link to="/" class="text-white hover:text-gray-400">
+          Home
+        </router-link>
+        
+        <router-link to="/Admin/Providers" class="text-white hover:text-gray-400">
+          Providers
+        </router-link>
+ 
+        <router-link to="/Admin/Bills" class="text-white hover:text-gray-400">
+          Bills
+        </router-link>
+
       </div>
 
-      <div class="card">
-        <div class="card-caption">Bills</div>
-        <div>
-          <button @click="s.rt.router.push('/Bills')">
-            Mange bills
-          </button>
-        </div>
-        <div>
-          <SearchField api="/api/admin/billxs" 
-            :item__key="(billx: wyi.BillComplex) => billx.bill.id" 
-            :item__text="billx__text" 
-            @select="onSelectBillx" />
-        </div>
-        <Billx v-for="i in s.billxs"
-          :billx="i" :mode="0" />
-      </div>
+      <router-view class="min-h-[600px]" />
 
     </div>
-  </div>
 
-  <div class="flex justify-center">
-    <div class="hor-range">
-
-
-
-
-    </div>
   </div>
 
 </template>
 
-<script setup lang="ts">
+
+<script setup>
 
 import { glib } from '~/lib/glib'
-import * as Common from '~/lib/store/common'
-import SearchField from '~/comps/SearchField.vue'
-import Billx from '~/comps/Billx.vue'
+
+import UserAuth from '~/comps/UserAuth.vue'
 
 const s = glib.vue.reactive({
-  users: [] as wyi.EU[],
-  billxs: [] as wyi.BillComplex[],
   rt: runtime
 })
 
-
-const onSelectUser = (eu: wyi.EU) => {
-}
-
-
-const billx__text = (billx: wyi.BillComplex) => {
-  
-  let cat = ""
-  if(billx.cato)
-    cat = "(" + billx.cato.p.Caption + ") "
-
-  let provider = ""
-  if(billx.providero)
-    provider = billx.providero.p.Caption + " "
-    
-  let unit = ""
-  if(billx.unito){
-    let p = billx.unito.p
-    unit = p.Address + " " + p.Town + " " + p.State + p.Zip }
-  
-  return provider + cat + unit + " $" + billx.bill.p.Amt
-}
-
-const onSelectBillx = (billx: wyi.BillComplex) => {
-}
-
-
 glib.vue.onMounted(async () => {
-
-  Common.loader('/api/admin/users', {
-    act: "ls"
-  }, (rep: any) => {
-    s.users = rep.data as wyi.EU[]
-  })
-
-  Common.loader('/api/admin/billxs', {
-    act: "ls"
-  }, (rep: any) => {
-    s.billxs = rep.data as wyi.BillComplex[]
-  })
-
+  if(s.rt.user == null)
+    s.rt.router.push('/')
+  if(s.rt.user.eu.id == 0)
+    s.rt.router.push('/')
+  if(s.rt.user.eu.p.AuthType != 2)
+    s.rt.router.push('/')
 })
 
 </script>

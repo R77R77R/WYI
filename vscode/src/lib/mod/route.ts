@@ -1,24 +1,37 @@
 import { createMemoryHistory, createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
-import MyBills from '~/pages/MyBills.vue'
-import MyUnits from '~/pages/MyUnits.vue'
-import MyAcctxs from '~/pages/MyAcctxs.vue'
-import Bills from '~/pages/Bills.vue'
-import UploadBill from '~/pages/UploadBill.vue'
-import ReviewBill from '~/pages/ReviewBill.vue'
-import HomeCustomer from '~/pages/HomeCustomer.vue'
-
-import Admin from '~/pages/Admin.vue'
+import LayoutEu from '~/pages/Eu.vue'
+import LayoutAdmin from '~/pages/Admin.vue'
 
 const routes = [
-  { path: '/', component: HomeCustomer },
-  { path: '/MyBills', component: MyBills },
-  { path: '/MyUnits', component: MyUnits },
-  { path: '/MyAcctxs', component: MyAcctxs },
-  { path: '/Bills', component: Bills },
-  { path: '/UploadBill', component: UploadBill },
-  { path: '/ReviewBill', component: ReviewBill },
-  { path: '/admin', component: Admin },
+  // EndUser 分支
+  {
+    path: '/eu',
+    component: LayoutEu,
+    children: [
+      { path: 'home', component: () => import('~/pages/Eu/Home.vue') },
+      { path: 'uploadBill', component: () => import('~/pages/Eu/UploadBill.vue') },
+      { path: 'myUnits', component: () => import('~/pages/Eu/MyUnits.vue') },
+      { path: 'myBills', component: () => import('~/pages/Eu/MyBills.vue') },
+      { path: 'myAcctxs', component: () => import('~/pages/Eu/MyAcctxs.vue') },
+    ]
+  },
+
+  // Admin 分支
+  {
+    path: '/admin',
+    component: LayoutAdmin,
+    children: [
+      { path: 'home', component: () => import('~/pages/Admin/Home.vue') },
+      { path: 'providers', component: () => import('~/pages/Admin/Providers.vue') },
+      { path: 'provider/:cat/:provider', 
+        component: () => import('~/pages/Admin/Provider.vue'),
+        props: true },
+      { path: 'bills', component: () => import('~/pages/Admin/Bills.vue') },
+    ]
+  },
+  // 默认重定向
+  { path: '/', redirect: '/eu/home' }
 ]
 
 export const router = createRouter({
