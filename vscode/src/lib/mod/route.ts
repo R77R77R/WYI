@@ -23,6 +23,7 @@ const routes = [
     component: LayoutAdmin,
     children: [
       { path: 'home', component: () => import('~/pages/Admin/Home.vue') },
+      { path: 'sys', component: () => import('~/pages/Admin/Sys.vue') },
       { path: 'providers', component: () => import('~/pages/Admin/Providers.vue') },
       { path: 'provider/:cat/:provider', 
         component: () => import('~/pages/Admin/Provider.vue'),

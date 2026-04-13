@@ -26,7 +26,7 @@ let Bash output server
     // 注意：远程执行 dotnet run 时建议加上 nohup 或确保你希望持续观察输出
     let remoteCommands = 
 
-        if false then
+        if true then
             [|
                 $"cd ~/{deployDir}"
                 "git fetch --all"
@@ -53,8 +53,6 @@ let Bash output server
                 "git clone https://github.com/lchenmay/JCS/ JCS"
                 "git clone https://github.com/R77R77R/WYI/ WYI"
                 $"cd ~/{deployDir}/vscode"
-                "/root/.bun/bin/bun install"
-                "/root/.bun/bin/bun add vite @vitejs/plugin-vue @vitejs/plugin-vue-jsx @vitejs/plugin-basic-ssl -D"
                 "/root/.bun/bin/bun generateRoutes.cjs"
                 "/root/.bun/bin/bunx --/root/.bun/bin/bun vite build --emptyOutDir"
                 "cd .."

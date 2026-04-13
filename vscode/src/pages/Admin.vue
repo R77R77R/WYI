@@ -15,12 +15,16 @@
           Home
         </router-link>
         
-        <router-link to="/Admin/Providers" class="text-white hover:text-gray-400">
+        <router-link to="/admin/providers" class="text-white hover:text-gray-400">
           Providers
         </router-link>
  
-        <router-link to="/Admin/Bills" class="text-white hover:text-gray-400">
+        <router-link to="/admin/bills" class="text-white hover:text-gray-400">
           Bills
+        </router-link>
+ 
+        <router-link to="/admin/sys" class="text-white hover:text-gray-400">
+          System
         </router-link>
 
       </div>
