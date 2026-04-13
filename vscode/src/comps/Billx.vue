@@ -28,7 +28,14 @@
 
       <div class="flex">
         <BillState :state="props.billx.bill.p.State" />
-        <button class="button-small">Accept</button>
+        <button class="button-small"
+          v-if="s.rt.user.eu.p.AuthType == 2">
+          Accept
+        </button>
+        <button class="button-small"
+          v-if="s.rt.user.eu.p.AuthType == 2">
+          Decline
+        </button>
       </div>
 
       <div>
