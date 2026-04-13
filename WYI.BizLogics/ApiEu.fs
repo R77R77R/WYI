@@ -195,6 +195,12 @@ let reviewBillFiles eux (x:X) =
         match pBill.Provider |> runtime.data.providers.TryGet with
         | Some v -> ls.Add("uprovider",v |> UPROVIDER__json)
         | None -> ()
+        match pBill.Unit |> eux.units.TryGet with
+        | Some v -> ls.Add("unit",v |> UNIT__json)
+        | None -> ()
+        match pBill.UAcct |> eux.acctxs.TryGet with
+        | Some v -> ls.Add("acctx",v |> AcctComplex__json)
+        | None -> ()
         [|  ("pUnit",pUnit |> pUNIT__json)
             ("pAcct",pAcct |> pUACCT__json)
             ("pBill",pBill |> pUBILL__json)
