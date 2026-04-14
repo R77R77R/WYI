@@ -1,18 +1,18 @@
 <template>
 
-  <span class="bill-state-Submitted"
+  <span class="state-clickable bill-state-Submitted"
     v-if="props.state == 0">
     Submitted
   </span>
-  <span class="bill-state-Declined"
+  <span class="state-clickable bill-state-Declined"
     v-else-if="props.state == 1">
     Declined
   </span>
-  <span class="bill-state-Accepted"
+  <span class="state-clickable bill-state-Accepted"
     v-else-if="props.state == 2">
     Accepted
   </span>
-  <span class="bill-state-Closed"
+  <span class="state-clickable bill-state-Closed"
     v-else>
     Closed
   </span>

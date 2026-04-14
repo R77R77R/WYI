@@ -113,6 +113,9 @@ h1{
 }
 
 .card-clickable:hover {
+  cursor: pointer;
+  user-select: none;  
+
   /* 悬停：阴影加深、微弱上移或背景变亮 */
   @apply shadow-lg bg-slate-50 border-indigo-100;
   transform: translateY(-1px);
@@ -189,6 +192,29 @@ h1{
 
 .text-block{
   @apply p-1 bg-gray-600 text-white
+}
+
+/* States */
+
+.state-clickable:active {
+  /* 点击：瞬间缩小感（物理回馈） */
+  @apply shadow-md;
+  transform: translateY(0) scale(0.98);
+}
+
+.state-clickable:hover {
+  cursor: pointer;
+  user-select: none;  
+
+  /* 悬停：阴影加深、微弱上移或背景变亮 */
+  @apply shadow-lg bg-slate-50 border-indigo-100;
+  transform: translateY(-1px);
+}
+
+.state-clickable:active {
+  /* 点击：瞬间缩小感（物理回馈） */
+  @apply shadow-md;
+  transform: translateY(0) scale(0.98);
 }
 
 .bill-state-Submitted{
