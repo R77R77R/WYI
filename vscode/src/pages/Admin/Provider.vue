@@ -7,6 +7,15 @@
     </div>
   </div>
 
+  <div class="card">
+    <div class="card-caption">
+      Bill Pools
+    </div>
+
+    Draft//Draft///OnGoing//OnGoing///Closed//Closed
+
+  </div>
+
   <div class="card" v-if="s.billxs.length > 0">
     <div class="card-caption">
       Bills
