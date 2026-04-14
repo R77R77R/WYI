@@ -388,6 +388,156 @@ BEGIN
         ALTER TABLE ca_file ADD "bill" bigint;
     END IF;
 END $$;
+-- [kernel_pool] ----------------------
+
+-- [kernel_pool] ----------------------
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(
+        SELECT 1 FROM information_schema.tables 
+        WHERE table_name = 'kernel_pool' 
+          AND table_schema = 'public'
+    ));
+
+    IF not condition THEN
+        CREATE TABLE "kernel_pool" (
+            id BIGINT NOT NULL
+            ,createdat BIGINT NOT NULL
+            ,updatedat BIGINT NOT NULL
+            ,sort BIGINT NOT NULL
+            ,"cat" BIGINT
+            ,"provider" BIGINT
+            ,"manager" BIGINT
+            ,"state" INT
+            ,"amt" FLOAT
+            ,"amtreduction" FLOAT
+            ,"amtreturn" FLOAT
+            ,CONSTRAINT "pk_kernel_pool" PRIMARY KEY (id)
+        );
+    END IF;
+END $$;
+
+
+-- PostgreSQL: Dropping obsolete fields -----------
+DO $$ 
+DECLARE
+    fn TEXT;
+BEGIN
+    FOR fn IN 
+        SELECT column_name 
+        FROM information_schema.columns 
+        WHERE table_name = 'kernel_pool' 
+          AND table_schema = 'public' 
+          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'cat', 'provider', 'manager', 'state', 'amt', 'amtreduction', 'amtreturn'])
+    LOOP
+        -- 对应 PRINT 'Dropping ' + @tname + '.' + @fn
+        
+        -- 对应 EXEC sp_executesql @sql (format %I 对应 QUOTENAME)
+        EXECUTE format('ALTER TABLE %I DROP COLUMN %I', 'kernel_pool', fn);
+    END LOOP;
+END $$;
+
+
+-- [kernel_pool.Cat] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_pool' AND column_name='cat'));
+
+    IF not condition THEN
+        ALTER TABLE kernel_pool ADD "cat" bigint;
+    END IF;
+END $$;
+
+-- [kernel_pool.Provider] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_pool' AND column_name='provider'));
+
+    IF not condition THEN
+        ALTER TABLE kernel_pool ADD "provider" bigint;
+    END IF;
+END $$;
+
+-- [kernel_pool.Manager] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_pool' AND column_name='manager'));
+
+    IF not condition THEN
+        ALTER TABLE kernel_pool ADD "manager" bigint;
+    END IF;
+END $$;
+
+-- [kernel_pool.State] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_pool' AND column_name='state'));
+
+    IF not condition THEN
+        ALTER TABLE kernel_pool ADD "state" int;
+    END IF;
+END $$;
+
+-- [kernel_pool.Amt] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_pool' AND column_name='amt'));
+
+    IF not condition THEN
+        ALTER TABLE kernel_pool ADD "amt" float;
+    END IF;
+END $$;
+
+-- [kernel_pool.AmtReduction] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_pool' AND column_name='amtreduction'));
+
+    IF not condition THEN
+        ALTER TABLE kernel_pool ADD "amtreduction" float;
+    END IF;
+END $$;
+
+-- [kernel_pool.AmtReturn] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_pool' AND column_name='amtreturn'));
+
+    IF not condition THEN
+        ALTER TABLE kernel_pool ADD "amtreturn" float;
+    END IF;
+END $$;
 -- [kernel_unit] ----------------------
 
 -- [kernel_unit] ----------------------
@@ -711,11 +861,15 @@ BEGIN
             ,"cat" BIGINT
             ,"provider" BIGINT
             ,"owner" BIGINT
+            ,"representative" BIGINT
             ,"unit" BIGINT
             ,"state" INT
             ,"uacct" BIGINT
+            ,"pool" BIGINT
             ,"yyyymmdd" VARCHAR(8)
             ,"amt" FLOAT
+            ,"amtreduction" FLOAT
+            ,"amtreturn" FLOAT
             ,CONSTRAINT "pk_kernel_utilbill" PRIMARY KEY (id)
         );
     END IF;
@@ -732,7 +886,7 @@ BEGIN
         FROM information_schema.columns 
         WHERE table_name = 'kernel_utilbill' 
           AND table_schema = 'public' 
-          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'cat', 'provider', 'owner', 'unit', 'state', 'uacct', 'yyyymmdd', 'amt'])
+          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'cat', 'provider', 'owner', 'representative', 'unit', 'state', 'uacct', 'pool', 'yyyymmdd', 'amt', 'amtreduction', 'amtreturn'])
     LOOP
         -- 对应 PRINT 'Dropping ' + @tname + '.' + @fn
         
@@ -784,6 +938,20 @@ BEGIN
     END IF;
 END $$;
 
+-- [kernel_utilbill.Representative] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_utilbill' AND column_name='representative'));
+
+    IF not condition THEN
+        ALTER TABLE kernel_utilbill ADD "representative" bigint;
+    END IF;
+END $$;
+
 -- [kernel_utilbill.Unit] -------------
 
 
@@ -826,6 +994,20 @@ BEGIN
     END IF;
 END $$;
 
+-- [kernel_utilbill.Pool] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_utilbill' AND column_name='pool'));
+
+    IF not condition THEN
+        ALTER TABLE kernel_utilbill ADD "pool" bigint;
+    END IF;
+END $$;
+
 -- [kernel_utilbill.YYYYMMDD] -------------
 
 
@@ -851,6 +1033,34 @@ BEGIN
 
     IF not condition THEN
         ALTER TABLE kernel_utilbill ADD "amt" float;
+    END IF;
+END $$;
+
+-- [kernel_utilbill.AmtReduction] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_utilbill' AND column_name='amtreduction'));
+
+    IF not condition THEN
+        ALTER TABLE kernel_utilbill ADD "amtreduction" float;
+    END IF;
+END $$;
+
+-- [kernel_utilbill.AmtReturn] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_utilbill' AND column_name='amtreturn'));
+
+    IF not condition THEN
+        ALTER TABLE kernel_utilbill ADD "amtreturn" float;
     END IF;
 END $$;
 -- [kernel_utilcat] ----------------------

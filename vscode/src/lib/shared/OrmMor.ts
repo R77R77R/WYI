@@ -149,6 +149,67 @@ export const bin__FILE = (bi:BinIndexed):wyi.FILE => {
     }
 }
 
+// [POOL] Structure
+
+
+export const pPOOL__bin = (bb:BytesBuilder) => (p:wyi.pPOOL) => {
+
+    
+    marshall.int64__bin (bb) (p.Cat)
+    
+    marshall.int64__bin (bb) (p.Provider)
+    
+    marshall.int64__bin (bb) (p.Manager)
+    
+    marshall.int32__bin (bb) (p.State)
+    
+    marshall.float__bin (bb) (p.Amt)
+    
+    marshall.float__bin (bb) (p.AmtReduction)
+    
+    marshall.float__bin (bb) (p.AmtReturn)
+}
+
+export const POOL__bin = (bb:BytesBuilder) => (v:wyi.POOL) => {
+    marshall.int64__bin (bb) (v.id)
+    marshall.int64__bin (bb) (v.sort)
+    marshall.DateTime__bin (bb) (v.createdat)
+    marshall.DateTime__bin (bb) (v.updatedat)
+
+    pPOOL__bin (bb) (v.p)
+}
+
+export const bin__pPOOL = (bi:BinIndexed):wyi.pPOOL => {
+
+    let p = pPOOL_empty()
+    p.Cat = marshall.bin__int64 (bi)
+    p.Provider = marshall.bin__int64 (bi)
+    p.Manager = marshall.bin__int64 (bi)
+    p.State = marshall.bin__int32 (bi)
+    p.Amt = marshall.bin__float (bi)
+    p.AmtReduction = marshall.bin__float (bi)
+    p.AmtReturn = marshall.bin__float (bi)
+
+    return p
+}
+
+
+export const bin__POOL = (bi:BinIndexed):wyi.POOL => {
+
+    let ID = marshall.bin__int64 (bi)
+    let Sort = marshall.bin__int64 (bi)
+    let Createdat = marshall.bin__DateTime (bi)
+    let Updatedat = marshall.bin__DateTime (bi)
+    
+    return {
+        id: ID,
+        sort: Sort,
+        createdat: Createdat,
+        updatedat: Updatedat,
+        p:  bin__pPOOL (bi)
+    }
+}
+
 // [UNIT] Structure
 
 
@@ -283,15 +344,23 @@ export const pUBILL__bin = (bb:BytesBuilder) => (p:wyi.pUBILL) => {
     
     marshall.int64__bin (bb) (p.Owner)
     
+    marshall.int64__bin (bb) (p.Representative)
+    
     marshall.int64__bin (bb) (p.Unit)
     
     marshall.int32__bin (bb) (p.State)
     
     marshall.int64__bin (bb) (p.UAcct)
     
+    marshall.int64__bin (bb) (p.Pool)
+    
     marshall.str__bin (bb) (p.YYYYMMDD)
     
     marshall.float__bin (bb) (p.Amt)
+    
+    marshall.float__bin (bb) (p.AmtReduction)
+    
+    marshall.float__bin (bb) (p.AmtReturn)
 }
 
 export const UBILL__bin = (bb:BytesBuilder) => (v:wyi.UBILL) => {
@@ -309,11 +378,15 @@ export const bin__pUBILL = (bi:BinIndexed):wyi.pUBILL => {
     p.Cat = marshall.bin__int64 (bi)
     p.Provider = marshall.bin__int64 (bi)
     p.Owner = marshall.bin__int64 (bi)
+    p.Representative = marshall.bin__int64 (bi)
     p.Unit = marshall.bin__int64 (bi)
     p.State = marshall.bin__int32 (bi)
     p.UAcct = marshall.bin__int64 (bi)
+    p.Pool = marshall.bin__int64 (bi)
     p.YYYYMMDD = marshall.bin__str (bi)
     p.Amt = marshall.bin__float (bi)
+    p.AmtReduction = marshall.bin__float (bi)
+    p.AmtReturn = marshall.bin__float (bi)
 
     return p
 }
@@ -782,6 +855,30 @@ export const FILE_empty = (): wyi.FILE => {
         p: pFILE_empty() }
 }
 
+export const poolStateEnum_Draft = 0 // Draft
+export const poolStateEnum_OnGoing = 1 // OnGoing
+export const poolStateEnum_Closed = 2 // Closed
+
+export const pPOOL_empty = (): wyi.pPOOL => {
+    return {
+        Cat: 0,
+        Provider: 0,
+        Manager: 0,
+        State: 0,
+        Amt: 0.0,
+        AmtReduction: 0.0,
+        AmtReturn: 0.0 }
+}
+
+export const POOL_empty = (): wyi.POOL => {
+    return {
+        id: 0,
+        createdat: new Date(),
+        updatedat: new Date(),
+        sort: 0,
+        p: pPOOL_empty() }
+}
+
 export const pUNIT_empty = (): wyi.pUNIT => {
     return {
         Caption: "",
@@ -832,11 +929,15 @@ export const pUBILL_empty = (): wyi.pUBILL => {
         Cat: 0,
         Provider: 0,
         Owner: 0,
+        Representative: 0,
         Unit: 0,
         State: 0,
         UAcct: 0,
+        Pool: 0,
         YYYYMMDD: "",
-        Amt: 0.0 }
+        Amt: 0.0,
+        AmtReduction: 0.0,
+        AmtReturn: 0.0 }
 }
 
 export const UBILL_empty = (): wyi.UBILL => {

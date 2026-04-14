@@ -248,6 +248,105 @@ let FILE_id = ref 35461231L
 let FILE_count = ref 0
 let FILE_table = "Ca_File"
 
+// [Kernel_Pool] (POOL)
+
+type poolStateEnum = 
+| Draft = 0 // Draft
+| OnGoing = 1 // OnGoing
+| Closed = 2 // Closed
+
+let poolStateEnums = [| poolStateEnum.Draft; poolStateEnum.OnGoing; poolStateEnum.Closed |]
+let poolStateEnumstrs = [| "poolStateEnum"; "poolStateEnum"; "poolStateEnum" |]
+let poolStateNum = 3
+
+let int__poolStateEnum v =
+    match v with
+    | 0 -> Some poolStateEnum.Draft
+    | 1 -> Some poolStateEnum.OnGoing
+    | 2 -> Some poolStateEnum.Closed
+    | _ -> None
+
+let str__poolStateEnum s =
+    match s with
+    | "Draft" -> Some poolStateEnum.Draft
+    | "OnGoing" -> Some poolStateEnum.OnGoing
+    | "Closed" -> Some poolStateEnum.Closed
+    | _ -> None
+
+let poolStateEnum__caption e =
+    match e with
+    | poolStateEnum.Draft -> "Draft"
+    | poolStateEnum.OnGoing -> "OnGoing"
+    | poolStateEnum.Closed -> "Closed"
+    | _ -> ""
+
+type pPOOL = {
+mutable Cat: FK
+mutable Provider: FK
+mutable Manager: FK
+mutable State: poolStateEnum
+mutable Amt: Float
+mutable AmtReduction: Float
+mutable AmtReturn: Float}
+
+
+type POOL = Rcd<pPOOL>
+
+let POOL_fieldorders() =
+    match rdbms with
+    | Rdbms.SqlServer ->
+        "[ID],[Createdat],[Updatedat],[Sort],[Cat],[Provider],[Manager],[State],[Amt],[AmtReduction],[AmtReturn]"
+    | Rdbms.PostgreSql ->
+        $""" "id","createdat","updatedat","sort", "cat","provider","manager","state","amt","amtreduction","amtreturn" """
+
+let pPOOL_fieldordersArray = [|
+    "Cat"
+    "Provider"
+    "Manager"
+    "State"
+    "Amt"
+    "AmtReduction"
+    "AmtReturn" |]
+
+let POOL_sql_update() =
+    match rdbms with
+    | Rdbms.SqlServer -> "[Cat]=@Cat,[Provider]=@Provider,[Manager]=@Manager,[State]=@State,[Amt]=@Amt,[AmtReduction]=@AmtReduction,[AmtReturn]=@AmtReturn"
+    | Rdbms.PostgreSql -> "cat=@cat,provider=@provider,manager=@manager,state=@state,amt=@amt,amtreduction=@amtreduction,amtreturn=@amtreturn"
+
+let pPOOL_fields() =
+    match rdbms with
+    | Rdbms.SqlServer ->
+        [|
+            FK("Cat")
+            FK("Provider")
+            FK("Manager")
+            SelectLines("State", [| ("Draft","Draft");("OnGoing","OnGoing");("Closed","Closed") |])
+            Float("Amt")
+            Float("AmtReduction")
+            Float("AmtReturn") |]
+    | Rdbms.PostgreSql ->
+        [|
+            FK("cat")
+            FK("provider")
+            FK("manager")
+            SelectLines("state", [| ("Draft","Draft");("OnGoing","OnGoing");("Closed","Closed") |])
+            Float("amt")
+            Float("amtreduction")
+            Float("amtreturn") |]
+
+let pPOOL_empty(): pPOOL = {
+    Cat = 0L
+    Provider = 0L
+    Manager = 0L
+    State = EnumOfValue 0
+    Amt = 0.0
+    AmtReduction = 0.0
+    AmtReturn = 0.0 }
+
+let POOL_id = ref 6544261L
+let POOL_count = ref 0
+let POOL_table = "Kernel_Pool"
+
 // [Kernel_Unit] (UNIT)
 
 type pUNIT = {
@@ -426,11 +525,15 @@ type pUBILL = {
 mutable Cat: FK
 mutable Provider: FK
 mutable Owner: FK
+mutable Representative: FK
 mutable Unit: FK
 mutable State: ubillStateEnum
 mutable UAcct: FK
+mutable Pool: FK
 mutable YYYYMMDD: Chars
-mutable Amt: Float}
+mutable Amt: Float
+mutable AmtReduction: Float
+mutable AmtReturn: Float}
 
 
 type UBILL = Rcd<pUBILL>
@@ -438,24 +541,28 @@ type UBILL = Rcd<pUBILL>
 let UBILL_fieldorders() =
     match rdbms with
     | Rdbms.SqlServer ->
-        "[ID],[Createdat],[Updatedat],[Sort],[Cat],[Provider],[Owner],[Unit],[State],[UAcct],[YYYYMMDD],[Amt]"
+        "[ID],[Createdat],[Updatedat],[Sort],[Cat],[Provider],[Owner],[Representative],[Unit],[State],[UAcct],[Pool],[YYYYMMDD],[Amt],[AmtReduction],[AmtReturn]"
     | Rdbms.PostgreSql ->
-        $""" "id","createdat","updatedat","sort", "cat","provider","owner","unit","state","uacct","yyyymmdd","amt" """
+        $""" "id","createdat","updatedat","sort", "cat","provider","owner","representative","unit","state","uacct","pool","yyyymmdd","amt","amtreduction","amtreturn" """
 
 let pUBILL_fieldordersArray = [|
     "Cat"
     "Provider"
     "Owner"
+    "Representative"
     "Unit"
     "State"
     "UAcct"
+    "Pool"
     "YYYYMMDD"
-    "Amt" |]
+    "Amt"
+    "AmtReduction"
+    "AmtReturn" |]
 
 let UBILL_sql_update() =
     match rdbms with
-    | Rdbms.SqlServer -> "[Cat]=@Cat,[Provider]=@Provider,[Owner]=@Owner,[Unit]=@Unit,[State]=@State,[UAcct]=@UAcct,[YYYYMMDD]=@YYYYMMDD,[Amt]=@Amt"
-    | Rdbms.PostgreSql -> "cat=@cat,provider=@provider,owner=@owner,unit=@unit,state=@state,uacct=@uacct,yyyymmdd=@yyyymmdd,amt=@amt"
+    | Rdbms.SqlServer -> "[Cat]=@Cat,[Provider]=@Provider,[Owner]=@Owner,[Representative]=@Representative,[Unit]=@Unit,[State]=@State,[UAcct]=@UAcct,[Pool]=@Pool,[YYYYMMDD]=@YYYYMMDD,[Amt]=@Amt,[AmtReduction]=@AmtReduction,[AmtReturn]=@AmtReturn"
+    | Rdbms.PostgreSql -> "cat=@cat,provider=@provider,owner=@owner,representative=@representative,unit=@unit,state=@state,uacct=@uacct,pool=@pool,yyyymmdd=@yyyymmdd,amt=@amt,amtreduction=@amtreduction,amtreturn=@amtreturn"
 
 let pUBILL_fields() =
     match rdbms with
@@ -464,31 +571,43 @@ let pUBILL_fields() =
             FK("Cat")
             FK("Provider")
             FK("Owner")
+            FK("Representative")
             FK("Unit")
             SelectLines("State", [| ("Submitted","Submitted");("Declined","Declined");("Accepted","Accepted");("Closed","Closed") |])
             FK("UAcct")
+            FK("Pool")
             Chars("YYYYMMDD", 8)
-            Float("Amt") |]
+            Float("Amt")
+            Float("AmtReduction")
+            Float("AmtReturn") |]
     | Rdbms.PostgreSql ->
         [|
             FK("cat")
             FK("provider")
             FK("owner")
+            FK("representative")
             FK("unit")
             SelectLines("state", [| ("Submitted","Submitted");("Declined","Declined");("Accepted","Accepted");("Closed","Closed") |])
             FK("uacct")
+            FK("pool")
             Chars("yyyymmdd", 8)
-            Float("amt") |]
+            Float("amt")
+            Float("amtreduction")
+            Float("amtreturn") |]
 
 let pUBILL_empty(): pUBILL = {
     Cat = 0L
     Provider = 0L
     Owner = 0L
+    Representative = 0L
     Unit = 0L
     State = EnumOfValue 0
     UAcct = 0L
+    Pool = 0L
     YYYYMMDD = ""
-    Amt = 0.0 }
+    Amt = 0.0
+    AmtReduction = 0.0
+    AmtReturn = 0.0 }
 
 let UBILL_id = ref 4426561L
 let UBILL_count = ref 0

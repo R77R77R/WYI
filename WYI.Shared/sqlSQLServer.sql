@@ -633,6 +633,239 @@ IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_ca_fileBill')
     BEGIN
     ALTER TABLE ca_file DROP  CONSTRAINT [UniqueNonclustered_ca_fileBill]
     END
+-- [kernel_pool] ----------------------
+
+IF NOT EXISTS(SELECT * FROM sysobjects WHERE [name]='kernel_pool' AND xtype='U')
+
+BEGIN
+
+    CREATE TABLE kernel_pool ([ID] BIGINT NOT NULL
+        ,[Createdat] BIGINT NOT NULL
+        ,[Updatedat] BIGINT NOT NULL
+        ,[Sort] BIGINT NOT NULL,
+        [Cat] BIGINT
+        ,[Provider] BIGINT
+        ,[Manager] BIGINT
+        ,[State] INT
+        ,[Amt] FLOAT
+        ,[AmtReduction] FLOAT
+        ,[AmtReturn] FLOAT
+, CONSTRAINT [PK_kernel_pool] PRIMARY KEY CLUSTERED ([ID] ASC)) ON [PRIMARY]
+END
+
+
+-- Dropping obsolete fields -----------
+DECLARE @name_kernel_pool NVARCHAR(64)
+DECLARE cursor_kernel_pool CURSOR FOR 
+    SELECT name FROM SYSCOLUMNS WHERE id=object_id('kernel_pool') AND (name NOT IN ('ID','Createdat','Updatedat','Sort','Cat','Provider','Manager','State','Amt','AmtReduction','AmtReturn'))
+
+OPEN cursor_kernel_pool
+FETCH NEXT FROM cursor_kernel_pool INTO @name_kernel_pool
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    PRINT 'Dropping kernel_pool.' + @name_kernel_pool;
+    
+    DECLARE @sql_kernel_pool NVARCHAR(MAX);
+    SET @sql_kernel_pool = 'ALTER TABLE kernel_pool DROP COLUMN ' + QUOTENAME(@name_kernel_pool)
+    EXEC sp_executesql @sql_kernel_pool
+    
+    
+    FETCH NEXT FROM cursor_kernel_pool INTO @name_kernel_pool
+END
+
+CLOSE cursor_kernel_pool;
+DEALLOCATE cursor_kernel_pool;
+
+
+-- [kernel_pool.Cat] -------------
+
+
+-- [kernel_pool.Cat] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('kernel_pool') AND name='Cat')
+    BEGIN
+     ALTER TABLE kernel_pool ALTER COLUMN [Cat] BIGINT
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_kernel_pool_Cat NVARCHAR(MAX);
+    SET @sql_add_kernel_pool_Cat = 'ALTER TABLE kernel_pool ADD [Cat] BIGINT'
+    EXEC sp_executesql @sql_add_kernel_pool_Cat
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_poolCat')
+    BEGIN
+    ALTER TABLE kernel_pool DROP  CONSTRAINT [Constraint_kernel_poolCat]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_poolCat')
+    BEGIN
+    ALTER TABLE kernel_pool DROP  CONSTRAINT [UniqueNonclustered_kernel_poolCat]
+    END
+
+-- [kernel_pool.Provider] -------------
+
+
+-- [kernel_pool.Provider] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('kernel_pool') AND name='Provider')
+    BEGIN
+     ALTER TABLE kernel_pool ALTER COLUMN [Provider] BIGINT
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_kernel_pool_Provider NVARCHAR(MAX);
+    SET @sql_add_kernel_pool_Provider = 'ALTER TABLE kernel_pool ADD [Provider] BIGINT'
+    EXEC sp_executesql @sql_add_kernel_pool_Provider
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_poolProvider')
+    BEGIN
+    ALTER TABLE kernel_pool DROP  CONSTRAINT [Constraint_kernel_poolProvider]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_poolProvider')
+    BEGIN
+    ALTER TABLE kernel_pool DROP  CONSTRAINT [UniqueNonclustered_kernel_poolProvider]
+    END
+
+-- [kernel_pool.Manager] -------------
+
+
+-- [kernel_pool.Manager] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('kernel_pool') AND name='Manager')
+    BEGIN
+     ALTER TABLE kernel_pool ALTER COLUMN [Manager] BIGINT
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_kernel_pool_Manager NVARCHAR(MAX);
+    SET @sql_add_kernel_pool_Manager = 'ALTER TABLE kernel_pool ADD [Manager] BIGINT'
+    EXEC sp_executesql @sql_add_kernel_pool_Manager
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_poolManager')
+    BEGIN
+    ALTER TABLE kernel_pool DROP  CONSTRAINT [Constraint_kernel_poolManager]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_poolManager')
+    BEGIN
+    ALTER TABLE kernel_pool DROP  CONSTRAINT [UniqueNonclustered_kernel_poolManager]
+    END
+
+-- [kernel_pool.State] -------------
+
+
+-- [kernel_pool.State] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('kernel_pool') AND name='State')
+    BEGIN
+     ALTER TABLE kernel_pool ALTER COLUMN [State] INT
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_kernel_pool_State NVARCHAR(MAX);
+    SET @sql_add_kernel_pool_State = 'ALTER TABLE kernel_pool ADD [State] INT'
+    EXEC sp_executesql @sql_add_kernel_pool_State
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_poolState')
+    BEGIN
+    ALTER TABLE kernel_pool DROP  CONSTRAINT [Constraint_kernel_poolState]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_poolState')
+    BEGIN
+    ALTER TABLE kernel_pool DROP  CONSTRAINT [UniqueNonclustered_kernel_poolState]
+    END
+
+-- [kernel_pool.Amt] -------------
+
+
+-- [kernel_pool.Amt] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('kernel_pool') AND name='Amt')
+    BEGIN
+     ALTER TABLE kernel_pool ALTER COLUMN [Amt] FLOAT
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_kernel_pool_Amt NVARCHAR(MAX);
+    SET @sql_add_kernel_pool_Amt = 'ALTER TABLE kernel_pool ADD [Amt] FLOAT'
+    EXEC sp_executesql @sql_add_kernel_pool_Amt
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_poolAmt')
+    BEGIN
+    ALTER TABLE kernel_pool DROP  CONSTRAINT [Constraint_kernel_poolAmt]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_poolAmt')
+    BEGIN
+    ALTER TABLE kernel_pool DROP  CONSTRAINT [UniqueNonclustered_kernel_poolAmt]
+    END
+
+-- [kernel_pool.AmtReduction] -------------
+
+
+-- [kernel_pool.AmtReduction] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('kernel_pool') AND name='AmtReduction')
+    BEGIN
+     ALTER TABLE kernel_pool ALTER COLUMN [AmtReduction] FLOAT
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_kernel_pool_AmtReduction NVARCHAR(MAX);
+    SET @sql_add_kernel_pool_AmtReduction = 'ALTER TABLE kernel_pool ADD [AmtReduction] FLOAT'
+    EXEC sp_executesql @sql_add_kernel_pool_AmtReduction
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_poolAmtReduction')
+    BEGIN
+    ALTER TABLE kernel_pool DROP  CONSTRAINT [Constraint_kernel_poolAmtReduction]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_poolAmtReduction')
+    BEGIN
+    ALTER TABLE kernel_pool DROP  CONSTRAINT [UniqueNonclustered_kernel_poolAmtReduction]
+    END
+
+-- [kernel_pool.AmtReturn] -------------
+
+
+-- [kernel_pool.AmtReturn] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('kernel_pool') AND name='AmtReturn')
+    BEGIN
+     ALTER TABLE kernel_pool ALTER COLUMN [AmtReturn] FLOAT
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_kernel_pool_AmtReturn NVARCHAR(MAX);
+    SET @sql_add_kernel_pool_AmtReturn = 'ALTER TABLE kernel_pool ADD [AmtReturn] FLOAT'
+    EXEC sp_executesql @sql_add_kernel_pool_AmtReturn
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_poolAmtReturn')
+    BEGIN
+    ALTER TABLE kernel_pool DROP  CONSTRAINT [Constraint_kernel_poolAmtReturn]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_poolAmtReturn')
+    BEGIN
+    ALTER TABLE kernel_pool DROP  CONSTRAINT [UniqueNonclustered_kernel_poolAmtReturn]
+    END
 -- [kernel_unit] ----------------------
 
 IF NOT EXISTS(SELECT * FROM sysobjects WHERE [name]='kernel_unit' AND xtype='U')
@@ -1112,11 +1345,15 @@ BEGIN
         [Cat] BIGINT
         ,[Provider] BIGINT
         ,[Owner] BIGINT
+        ,[Representative] BIGINT
         ,[Unit] BIGINT
         ,[State] INT
         ,[UAcct] BIGINT
+        ,[Pool] BIGINT
         ,[YYYYMMDD] NVARCHAR(8) COLLATE Chinese_PRC_CI_AS
         ,[Amt] FLOAT
+        ,[AmtReduction] FLOAT
+        ,[AmtReturn] FLOAT
 , CONSTRAINT [PK_kernel_utilbill] PRIMARY KEY CLUSTERED ([ID] ASC)) ON [PRIMARY]
 END
 
@@ -1124,7 +1361,7 @@ END
 -- Dropping obsolete fields -----------
 DECLARE @name_kernel_utilbill NVARCHAR(64)
 DECLARE cursor_kernel_utilbill CURSOR FOR 
-    SELECT name FROM SYSCOLUMNS WHERE id=object_id('kernel_utilbill') AND (name NOT IN ('ID','Createdat','Updatedat','Sort','Cat','Provider','Owner','Unit','State','UAcct','YYYYMMDD','Amt'))
+    SELECT name FROM SYSCOLUMNS WHERE id=object_id('kernel_utilbill') AND (name NOT IN ('ID','Createdat','Updatedat','Sort','Cat','Provider','Owner','Representative','Unit','State','UAcct','Pool','YYYYMMDD','Amt','AmtReduction','AmtReturn'))
 
 OPEN cursor_kernel_utilbill
 FETCH NEXT FROM cursor_kernel_utilbill INTO @name_kernel_utilbill
@@ -1226,6 +1463,33 @@ IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_utilbil
     ALTER TABLE kernel_utilbill DROP  CONSTRAINT [UniqueNonclustered_kernel_utilbillOwner]
     END
 
+-- [kernel_utilbill.Representative] -------------
+
+
+-- [kernel_utilbill.Representative] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('kernel_utilbill') AND name='Representative')
+    BEGIN
+     ALTER TABLE kernel_utilbill ALTER COLUMN [Representative] BIGINT
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_kernel_utilbill_Representative NVARCHAR(MAX);
+    SET @sql_add_kernel_utilbill_Representative = 'ALTER TABLE kernel_utilbill ADD [Representative] BIGINT'
+    EXEC sp_executesql @sql_add_kernel_utilbill_Representative
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_utilbillRepresentative')
+    BEGIN
+    ALTER TABLE kernel_utilbill DROP  CONSTRAINT [Constraint_kernel_utilbillRepresentative]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_utilbillRepresentative')
+    BEGIN
+    ALTER TABLE kernel_utilbill DROP  CONSTRAINT [UniqueNonclustered_kernel_utilbillRepresentative]
+    END
+
 -- [kernel_utilbill.Unit] -------------
 
 
@@ -1307,6 +1571,33 @@ IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_utilbil
     ALTER TABLE kernel_utilbill DROP  CONSTRAINT [UniqueNonclustered_kernel_utilbillUAcct]
     END
 
+-- [kernel_utilbill.Pool] -------------
+
+
+-- [kernel_utilbill.Pool] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('kernel_utilbill') AND name='Pool')
+    BEGIN
+     ALTER TABLE kernel_utilbill ALTER COLUMN [Pool] BIGINT
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_kernel_utilbill_Pool NVARCHAR(MAX);
+    SET @sql_add_kernel_utilbill_Pool = 'ALTER TABLE kernel_utilbill ADD [Pool] BIGINT'
+    EXEC sp_executesql @sql_add_kernel_utilbill_Pool
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_utilbillPool')
+    BEGIN
+    ALTER TABLE kernel_utilbill DROP  CONSTRAINT [Constraint_kernel_utilbillPool]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_utilbillPool')
+    BEGIN
+    ALTER TABLE kernel_utilbill DROP  CONSTRAINT [UniqueNonclustered_kernel_utilbillPool]
+    END
+
 -- [kernel_utilbill.YYYYMMDD] -------------
 
 
@@ -1359,6 +1650,60 @@ IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_ut
 IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_utilbillAmt')
     BEGIN
     ALTER TABLE kernel_utilbill DROP  CONSTRAINT [UniqueNonclustered_kernel_utilbillAmt]
+    END
+
+-- [kernel_utilbill.AmtReduction] -------------
+
+
+-- [kernel_utilbill.AmtReduction] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('kernel_utilbill') AND name='AmtReduction')
+    BEGIN
+     ALTER TABLE kernel_utilbill ALTER COLUMN [AmtReduction] FLOAT
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_kernel_utilbill_AmtReduction NVARCHAR(MAX);
+    SET @sql_add_kernel_utilbill_AmtReduction = 'ALTER TABLE kernel_utilbill ADD [AmtReduction] FLOAT'
+    EXEC sp_executesql @sql_add_kernel_utilbill_AmtReduction
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_utilbillAmtReduction')
+    BEGIN
+    ALTER TABLE kernel_utilbill DROP  CONSTRAINT [Constraint_kernel_utilbillAmtReduction]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_utilbillAmtReduction')
+    BEGIN
+    ALTER TABLE kernel_utilbill DROP  CONSTRAINT [UniqueNonclustered_kernel_utilbillAmtReduction]
+    END
+
+-- [kernel_utilbill.AmtReturn] -------------
+
+
+-- [kernel_utilbill.AmtReturn] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('kernel_utilbill') AND name='AmtReturn')
+    BEGIN
+     ALTER TABLE kernel_utilbill ALTER COLUMN [AmtReturn] FLOAT
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_kernel_utilbill_AmtReturn NVARCHAR(MAX);
+    SET @sql_add_kernel_utilbill_AmtReturn = 'ALTER TABLE kernel_utilbill ADD [AmtReturn] FLOAT'
+    EXEC sp_executesql @sql_add_kernel_utilbill_AmtReturn
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_utilbillAmtReturn')
+    BEGIN
+    ALTER TABLE kernel_utilbill DROP  CONSTRAINT [Constraint_kernel_utilbillAmtReturn]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_utilbillAmtReturn')
+    BEGIN
+    ALTER TABLE kernel_utilbill DROP  CONSTRAINT [UniqueNonclustered_kernel_utilbillAmtReturn]
     END
 -- [kernel_utilcat] ----------------------
 

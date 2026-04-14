@@ -157,6 +157,11 @@
       },
       {
         "enum": "FK",
+        "ref": "Ca_EndUser",
+        "name": "Representative"
+      },
+      {
+        "enum": "FK",
         "ref": "Kernel_Unit",
         "name": "Unit"
       },
@@ -172,6 +177,13 @@
         "ref": "Kernel_UnitAcct",
         "name": "UAcct"
       },
+
+      {
+        "enum": "FK",
+        "ref": "Kernel_Pool",
+        "name": "Pool"
+      },
+
       {
         "enum": "Chars",
         "length": 8,
@@ -180,6 +192,56 @@
       {
         "enum": "Float",
         "name": "Amt"
+      },
+      {
+        "enum": "Float",
+        "name": "AmtReduction"
+      },
+      {
+        "enum": "Float",
+        "name": "AmtReturn"
+      }
+    ]
+  },
+
+  {
+    "name": "Kernel_Pool",
+    "shorthand": "pool",
+    "id": 6544261,
+    "fields": [
+      {
+        "enum": "FK",
+        "ref": "Kernel_UtilCat",
+        "name": "Cat"
+      },
+      {
+        "enum": "FK",
+        "ref": "Kernel_UtilProvider",
+        "name": "Provider"
+      },
+
+      {
+        "enum": "FK",
+        "ref": "Ca_EndUser",
+        "name": "Manager"
+      },
+      {
+        "enum": "SelectLines",
+        "lines": "Draft//Draft///OnGoing//OnGoing///Closed//Closed",
+        "name": "State"
+      },
+
+      {
+        "enum": "Float",
+        "name": "Amt"
+      },
+      {
+        "enum": "Float",
+        "name": "AmtReduction"
+      },
+      {
+        "enum": "Float",
+        "name": "AmtReturn"
       }
     ]
   }

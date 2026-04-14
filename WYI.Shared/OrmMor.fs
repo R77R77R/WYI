@@ -445,6 +445,167 @@ let FILE_clone src =
     FILE__bin bb src
     bin__FILE (bb.bytes(),ref 0)
 
+// [POOL] Structure
+
+
+let pPOOL__bin (bb:BytesBuilder) (p:pPOOL) =
+
+    
+    p.Cat |> BitConverter.GetBytes |> bb.append
+    
+    p.Provider |> BitConverter.GetBytes |> bb.append
+    
+    p.Manager |> BitConverter.GetBytes |> bb.append
+    
+    p.State |> EnumToValue |> BitConverter.GetBytes |> bb.append
+    
+    p.Amt |> BitConverter.GetBytes |> bb.append
+    
+    p.AmtReduction |> BitConverter.GetBytes |> bb.append
+    
+    p.AmtReturn |> BitConverter.GetBytes |> bb.append
+
+let POOL__bin (bb:BytesBuilder) (v:POOL) =
+    v.ID |> BitConverter.GetBytes |> bb.append
+    v.Sort |> BitConverter.GetBytes |> bb.append
+    DateTime__bin bb v.Createdat
+    DateTime__bin bb v.Updatedat
+    
+    pPOOL__bin bb v.p
+    ()
+
+let bin__pPOOL (bi:BinIndexed):pPOOL =
+    let bin,index = bi
+
+    let p = pPOOL_empty()
+    
+    p.Cat <- BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    p.Provider <- BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    p.Manager <- BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    p.State <- BitConverter.ToInt32(bin,index.Value) |> EnumOfValue
+    index.Value <- index.Value + 4
+    
+    p.Amt <- BitConverter.ToDouble(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    p.AmtReduction <- BitConverter.ToDouble(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    p.AmtReturn <- BitConverter.ToDouble(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    p
+
+let bin__POOL (bi:BinIndexed):POOL =
+    let bin,index = bi
+
+    let ID = BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    let Sort = BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    let Createdat = bin__DateTime bi
+    
+    let Updatedat = bin__DateTime bi
+    
+    {
+        ID = ID
+        Sort = Sort
+        Createdat = Createdat
+        Updatedat = Updatedat
+        p = bin__pPOOL bi }
+
+let pPOOL__json (p:pPOOL) =
+
+    [|
+        ("Cat",p.Cat.ToString() |> Json.Num)
+        ("Provider",p.Provider.ToString() |> Json.Num)
+        ("Manager",p.Manager.ToString() |> Json.Num)
+        ("State",(p.State |> EnumToValue).ToString() |> Json.Num)
+        ("Amt",p.Amt.ToString() |> Json.Num)
+        ("AmtReduction",p.AmtReduction.ToString() |> Json.Num)
+        ("AmtReturn",p.AmtReturn.ToString() |> Json.Num) |]
+    |> Json.Braket
+
+let POOL__json (v:POOL) =
+
+    let p = v.p
+    
+    [|  ("id",v.ID.ToString() |> Json.Num)
+        ("sort",v.Sort.ToString() |> Json.Num)
+        ("createdat",(v.Createdat |> Util.Time.wintime__unixtime).ToString() |> Json.Num)
+        ("updatedat",(v.Updatedat |> Util.Time.wintime__unixtime).ToString() |> Json.Num)
+        ("p",pPOOL__json v.p) |]
+    |> Json.Braket
+
+let POOL__jsonTbw (w:TextBlockWriter) (v:POOL) =
+    json__str w (POOL__json v)
+
+let POOL__jsonStr (v:POOL) =
+    (POOL__json v) |> json__strFinal
+
+
+let json__pPOOLo (json:Json):pPOOL option =
+    let fields = json |> json__items
+
+    let p = pPOOL_empty()
+    
+    p.Cat <- checkfield fields "Cat" |> parse_int64
+    
+    p.Provider <- checkfield fields "Provider" |> parse_int64
+    
+    p.Manager <- checkfield fields "Manager" |> parse_int64
+    
+    p.State <- checkfield fields "State" |> parse_int32 |> EnumOfValue
+    
+    p.Amt <- checkfield fields "Amt" |> parse_float
+    
+    p.AmtReduction <- checkfield fields "AmtReduction" |> parse_float
+    
+    p.AmtReturn <- checkfield fields "AmtReturn" |> parse_float
+    
+    p |> Some
+    
+
+let json__POOLo (json:Json):POOL option =
+    let fields = json |> json__items
+
+    let ID = checkfield fields "id" |> parse_int64
+    let Sort = checkfield fields "sort" |> parse_int64
+    let Createdat = checkfield fields "createdat" |> parse_int64 |> DateTime.FromBinary
+    let Updatedat = checkfield fields "updatedat" |> parse_int64 |> DateTime.FromBinary
+    
+    let o  =
+        match
+            json
+            |> tryFindByAtt "p" with
+        | Some (s,v) -> json__pPOOLo v
+        | None -> None
+    
+    match o with
+    | Some p ->
+        
+        {
+            ID = ID
+            Sort = Sort
+            Createdat = Createdat
+            Updatedat = Updatedat
+            p = p } |> Some
+        
+    | None -> None
+
+let POOL_clone src =
+    let bb = new BytesBuilder()
+    POOL__bin bb src
+    bin__POOL (bb.bytes(),ref 0)
+
 // [UNIT] Structure
 
 
@@ -815,17 +976,25 @@ let pUBILL__bin (bb:BytesBuilder) (p:pUBILL) =
     
     p.Owner |> BitConverter.GetBytes |> bb.append
     
+    p.Representative |> BitConverter.GetBytes |> bb.append
+    
     p.Unit |> BitConverter.GetBytes |> bb.append
     
     p.State |> EnumToValue |> BitConverter.GetBytes |> bb.append
     
     p.UAcct |> BitConverter.GetBytes |> bb.append
     
+    p.Pool |> BitConverter.GetBytes |> bb.append
+    
     let binYYYYMMDD = p.YYYYMMDD |> Encoding.UTF8.GetBytes
     binYYYYMMDD.Length |> BitConverter.GetBytes |> bb.append
     binYYYYMMDD |> bb.append
     
     p.Amt |> BitConverter.GetBytes |> bb.append
+    
+    p.AmtReduction |> BitConverter.GetBytes |> bb.append
+    
+    p.AmtReturn |> BitConverter.GetBytes |> bb.append
 
 let UBILL__bin (bb:BytesBuilder) (v:UBILL) =
     v.ID |> BitConverter.GetBytes |> bb.append
@@ -850,6 +1019,9 @@ let bin__pUBILL (bi:BinIndexed):pUBILL =
     p.Owner <- BitConverter.ToInt64(bin,index.Value)
     index.Value <- index.Value + 8
     
+    p.Representative <- BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
     p.Unit <- BitConverter.ToInt64(bin,index.Value)
     index.Value <- index.Value + 8
     
@@ -859,12 +1031,21 @@ let bin__pUBILL (bi:BinIndexed):pUBILL =
     p.UAcct <- BitConverter.ToInt64(bin,index.Value)
     index.Value <- index.Value + 8
     
+    p.Pool <- BitConverter.ToInt64(bin,index.Value)
+    index.Value <- index.Value + 8
+    
     let count_YYYYMMDD = BitConverter.ToInt32(bin,index.Value)
     index.Value <- index.Value + 4
     p.YYYYMMDD <- Encoding.UTF8.GetString(bin,index.Value,count_YYYYMMDD)
     index.Value <- index.Value + count_YYYYMMDD
     
     p.Amt <- BitConverter.ToDouble(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    p.AmtReduction <- BitConverter.ToDouble(bin,index.Value)
+    index.Value <- index.Value + 8
+    
+    p.AmtReturn <- BitConverter.ToDouble(bin,index.Value)
     index.Value <- index.Value + 8
     
     p
@@ -895,11 +1076,15 @@ let pUBILL__json (p:pUBILL) =
         ("Cat",p.Cat.ToString() |> Json.Num)
         ("Provider",p.Provider.ToString() |> Json.Num)
         ("Owner",p.Owner.ToString() |> Json.Num)
+        ("Representative",p.Representative.ToString() |> Json.Num)
         ("Unit",p.Unit.ToString() |> Json.Num)
         ("State",(p.State |> EnumToValue).ToString() |> Json.Num)
         ("UAcct",p.UAcct.ToString() |> Json.Num)
+        ("Pool",p.Pool.ToString() |> Json.Num)
         ("YYYYMMDD",p.YYYYMMDD |> Json.Str)
-        ("Amt",p.Amt.ToString() |> Json.Num) |]
+        ("Amt",p.Amt.ToString() |> Json.Num)
+        ("AmtReduction",p.AmtReduction.ToString() |> Json.Num)
+        ("AmtReturn",p.AmtReturn.ToString() |> Json.Num) |]
     |> Json.Braket
 
 let UBILL__json (v:UBILL) =
@@ -931,15 +1116,23 @@ let json__pUBILLo (json:Json):pUBILL option =
     
     p.Owner <- checkfield fields "Owner" |> parse_int64
     
+    p.Representative <- checkfield fields "Representative" |> parse_int64
+    
     p.Unit <- checkfield fields "Unit" |> parse_int64
     
     p.State <- checkfield fields "State" |> parse_int32 |> EnumOfValue
     
     p.UAcct <- checkfield fields "UAcct" |> parse_int64
     
+    p.Pool <- checkfield fields "Pool" |> parse_int64
+    
     p.YYYYMMDD <- checkfieldz fields "YYYYMMDD" 8
     
     p.Amt <- checkfield fields "Amt" |> parse_float
+    
+    p.AmtReduction <- checkfield fields "AmtReduction" |> parse_float
+    
+    p.AmtReturn <- checkfield fields "AmtReturn" |> parse_float
     
     p |> Some
     
@@ -2360,6 +2553,128 @@ let FILETxSqlServer =
     """
 
 
+let db__pPOOL(line:Object[]): pPOOL =
+    let p = pPOOL_empty()
+
+    p.Cat <- if Convert.IsDBNull(line[4]) then 0L else line[4] :?> int64
+    p.Provider <- if Convert.IsDBNull(line[5]) then 0L else line[5] :?> int64
+    p.Manager <- if Convert.IsDBNull(line[6]) then 0L else line[6] :?> int64
+    p.State <- EnumOfValue(if Convert.IsDBNull(line[7]) then 0 else line[7] :?> int)
+    p.Amt <- if Convert.IsDBNull(line[8]) then 0.0 else line[8] :?> float
+    p.AmtReduction <- if Convert.IsDBNull(line[9]) then 0.0 else line[9] :?> float
+    p.AmtReturn <- if Convert.IsDBNull(line[10]) then 0.0 else line[10] :?> float
+
+    p
+
+let pPOOL__sps (p:pPOOL) =
+    match rdbms with
+    | Rdbms.SqlServer ->
+        [|
+            ("Cat", p.Cat) |> kvp__sqlparam
+            ("Provider", p.Provider) |> kvp__sqlparam
+            ("Manager", p.Manager) |> kvp__sqlparam
+            ("State", EnumToValue p.State) |> kvp__sqlparam
+            ("Amt", p.Amt) |> kvp__sqlparam
+            ("AmtReduction", p.AmtReduction) |> kvp__sqlparam
+            ("AmtReturn", p.AmtReturn) |> kvp__sqlparam |]
+    | Rdbms.PostgreSql ->
+        [|
+            ("cat", p.Cat) |> kvp__sqlparam
+            ("provider", p.Provider) |> kvp__sqlparam
+            ("manager", p.Manager) |> kvp__sqlparam
+            ("state", EnumToValue p.State) |> kvp__sqlparam
+            ("amt", p.Amt) |> kvp__sqlparam
+            ("amtreduction", p.AmtReduction) |> kvp__sqlparam
+            ("amtreturn", p.AmtReturn) |> kvp__sqlparam |]
+
+let db__POOL = db__Rcd db__pPOOL
+
+let POOL_wrapper item: POOL =
+    let (i,c,u,s),p = item
+    { ID = i; Createdat = c; Updatedat = u; Sort = s; p = p }
+
+let pPOOL_clone (p:pPOOL): pPOOL = {
+    Cat = p.Cat
+    Provider = p.Provider
+    Manager = p.Manager
+    State = p.State
+    Amt = p.Amt
+    AmtReduction = p.AmtReduction
+    AmtReturn = p.AmtReturn }
+
+let POOL_update_transaction output (updater,suc,fail) (rcd:POOL) =
+    let rollback_p = rcd.p |> pPOOL_clone
+    let rollback_updatedat = rcd.Updatedat
+    updater rcd.p
+    let ctime,res =
+        (rcd.ID,rcd.p,rollback_p,rollback_updatedat)
+        |> update (conn,output,POOL_table,POOL_sql_update(),pPOOL__sps,suc,fail)
+    match res with
+    | Suc ctx ->
+        rcd.Updatedat <- ctime
+        suc(ctime,ctx)
+    | Fail(eso,ctx) ->
+        rcd.p <- rollback_p
+        rcd.Updatedat <- rollback_updatedat
+        fail eso
+
+let POOL_update output (rcd:POOL) =
+    rcd
+    |> POOL_update_transaction output ((fun p -> ()),(fun (ctime,ctx) -> ()),(fun dte -> ()))
+
+let POOL_create_incremental_transaction output (suc,fail) p =
+    let cid = Interlocked.Increment POOL_id
+    let ctime = DateTime.UtcNow
+    match create (conn,output,POOL_table,pPOOL__sps) (cid,ctime,p) with
+    | Suc ctx -> ((cid,ctime,ctime,cid),p) |> POOL_wrapper |> suc
+    | Fail(eso,ctx) -> fail(eso,ctx)
+
+let POOL_create output p =
+    POOL_create_incremental_transaction output ((fun rcd -> ()),(fun (eso,ctx) -> ())) p
+    
+
+let id__POOLo id: POOL option = id__rcd(conn,POOL_fieldorders(),POOL_table,db__POOL) id
+
+let POOL_metadata = {
+    fieldorders = POOL_fieldorders
+    db__rcd = db__POOL 
+    wrapper = POOL_wrapper
+    sps = pPOOL__sps
+    id = POOL_id
+    id__rcdo = id__POOLo
+    clone = pPOOL_clone
+    empty__p = pPOOL_empty
+    rcd__bin = POOL__bin
+    bin__rcd = bin__POOL
+    p__json = pPOOL__json
+    json__po = json__pPOOLo
+    rcd__json = POOL__json
+    json__rcdo = json__POOLo
+    sql_update = POOL_sql_update
+    rcd_update = POOL_update
+    table = POOL_table
+    shorthand = "pool" }
+
+let POOLTxSqlServer =
+    """
+    IF NOT EXISTS(SELECT * FROM sysobjects WHERE [name]='Kernel_Pool' AND xtype='U')
+    BEGIN
+
+        CREATE TABLE Kernel_Pool ([ID] BIGINT NOT NULL
+    ,[Createdat] BIGINT NOT NULL
+    ,[Updatedat] BIGINT NOT NULL
+    ,[Sort] BIGINT NOT NULL,
+    ,[Cat]
+    ,[Provider]
+    ,[Manager]
+    ,[State]
+    ,[Amt]
+    ,[AmtReduction]
+    ,[AmtReturn])
+    END
+    """
+
+
 let db__pUNIT(line:Object[]): pUNIT =
     let p = pUNIT_empty()
 
@@ -2610,11 +2925,15 @@ let db__pUBILL(line:Object[]): pUBILL =
     p.Cat <- if Convert.IsDBNull(line[4]) then 0L else line[4] :?> int64
     p.Provider <- if Convert.IsDBNull(line[5]) then 0L else line[5] :?> int64
     p.Owner <- if Convert.IsDBNull(line[6]) then 0L else line[6] :?> int64
-    p.Unit <- if Convert.IsDBNull(line[7]) then 0L else line[7] :?> int64
-    p.State <- EnumOfValue(if Convert.IsDBNull(line[8]) then 0 else line[8] :?> int)
-    p.UAcct <- if Convert.IsDBNull(line[9]) then 0L else line[9] :?> int64
-    p.YYYYMMDD <- string(line[10]).TrimEnd()
-    p.Amt <- if Convert.IsDBNull(line[11]) then 0.0 else line[11] :?> float
+    p.Representative <- if Convert.IsDBNull(line[7]) then 0L else line[7] :?> int64
+    p.Unit <- if Convert.IsDBNull(line[8]) then 0L else line[8] :?> int64
+    p.State <- EnumOfValue(if Convert.IsDBNull(line[9]) then 0 else line[9] :?> int)
+    p.UAcct <- if Convert.IsDBNull(line[10]) then 0L else line[10] :?> int64
+    p.Pool <- if Convert.IsDBNull(line[11]) then 0L else line[11] :?> int64
+    p.YYYYMMDD <- string(line[12]).TrimEnd()
+    p.Amt <- if Convert.IsDBNull(line[13]) then 0.0 else line[13] :?> float
+    p.AmtReduction <- if Convert.IsDBNull(line[14]) then 0.0 else line[14] :?> float
+    p.AmtReturn <- if Convert.IsDBNull(line[15]) then 0.0 else line[15] :?> float
 
     p
 
@@ -2625,21 +2944,29 @@ let pUBILL__sps (p:pUBILL) =
             ("Cat", p.Cat) |> kvp__sqlparam
             ("Provider", p.Provider) |> kvp__sqlparam
             ("Owner", p.Owner) |> kvp__sqlparam
+            ("Representative", p.Representative) |> kvp__sqlparam
             ("Unit", p.Unit) |> kvp__sqlparam
             ("State", EnumToValue p.State) |> kvp__sqlparam
             ("UAcct", p.UAcct) |> kvp__sqlparam
+            ("Pool", p.Pool) |> kvp__sqlparam
             ("YYYYMMDD", p.YYYYMMDD) |> kvp__sqlparam
-            ("Amt", p.Amt) |> kvp__sqlparam |]
+            ("Amt", p.Amt) |> kvp__sqlparam
+            ("AmtReduction", p.AmtReduction) |> kvp__sqlparam
+            ("AmtReturn", p.AmtReturn) |> kvp__sqlparam |]
     | Rdbms.PostgreSql ->
         [|
             ("cat", p.Cat) |> kvp__sqlparam
             ("provider", p.Provider) |> kvp__sqlparam
             ("owner", p.Owner) |> kvp__sqlparam
+            ("representative", p.Representative) |> kvp__sqlparam
             ("unit", p.Unit) |> kvp__sqlparam
             ("state", EnumToValue p.State) |> kvp__sqlparam
             ("uacct", p.UAcct) |> kvp__sqlparam
+            ("pool", p.Pool) |> kvp__sqlparam
             ("yyyymmdd", p.YYYYMMDD) |> kvp__sqlparam
-            ("amt", p.Amt) |> kvp__sqlparam |]
+            ("amt", p.Amt) |> kvp__sqlparam
+            ("amtreduction", p.AmtReduction) |> kvp__sqlparam
+            ("amtreturn", p.AmtReturn) |> kvp__sqlparam |]
 
 let db__UBILL = db__Rcd db__pUBILL
 
@@ -2651,11 +2978,15 @@ let pUBILL_clone (p:pUBILL): pUBILL = {
     Cat = p.Cat
     Provider = p.Provider
     Owner = p.Owner
+    Representative = p.Representative
     Unit = p.Unit
     State = p.State
     UAcct = p.UAcct
+    Pool = p.Pool
     YYYYMMDD = p.YYYYMMDD
-    Amt = p.Amt }
+    Amt = p.Amt
+    AmtReduction = p.AmtReduction
+    AmtReturn = p.AmtReturn }
 
 let UBILL_update_transaction output (updater,suc,fail) (rcd:UBILL) =
     let rollback_p = rcd.p |> pUBILL_clone
@@ -2722,11 +3053,15 @@ let UBILLTxSqlServer =
     ,[Cat]
     ,[Provider]
     ,[Owner]
+    ,[Representative]
     ,[Unit]
     ,[State]
     ,[UAcct]
+    ,[Pool]
     ,[YYYYMMDD]
-    ,[Amt])
+    ,[Amt]
+    ,[AmtReduction]
+    ,[AmtReturn])
     END
     """
 
@@ -3555,21 +3890,23 @@ let PLOGTxSqlServer =
 type MetadataEnum = 
 | EU = 0
 | FILE = 1
-| UNIT = 2
-| UACCT = 3
-| UBILL = 4
-| UCAT = 5
-| KUCP = 6
-| UPROVIDER = 7
-| FBIND = 8
-| MOMENT = 9
-| CONFIG = 10
-| LOG = 11
-| PLOG = 12
+| POOL = 2
+| UNIT = 3
+| UACCT = 4
+| UBILL = 5
+| UCAT = 6
+| KUCP = 7
+| UPROVIDER = 8
+| FBIND = 9
+| MOMENT = 10
+| CONFIG = 11
+| LOG = 12
+| PLOG = 13
 
 let tablenames = [|
     EU_metadata.table
     FILE_metadata.table
+    POOL_metadata.table
     UNIT_metadata.table
     UACCT_metadata.table
     UBILL_metadata.table
@@ -3617,6 +3954,25 @@ let init() =
     match singlevalue_query conn (str__sql sqlCountCa_File) with
     | Some v ->
         FILE_count.Value <-
+            match rdbms with
+            | Rdbms.SqlServer -> v :?> int32
+            | Rdbms.PostgreSql -> v :?> int64 |> int32
+    | None -> ()
+
+    let sqlMaxKernel_Pool, sqlCountKernel_Pool =
+        match rdbms with
+        | Rdbms.SqlServer -> "SELECT MAX(ID) FROM [Kernel_Pool]", "SELECT COUNT(ID) FROM [Kernel_Pool]"
+        | Rdbms.PostgreSql -> "SELECT MAX(id) FROM kernel_pool", "SELECT COUNT(id) FROM kernel_pool"
+    match singlevalue_query conn (str__sql sqlMaxKernel_Pool) with
+    | Some v ->
+        let max = v :?> int64
+        if max > POOL_id.Value then
+            POOL_id.Value <- max
+    | None -> ()
+
+    match singlevalue_query conn (str__sql sqlCountKernel_Pool) with
+    | Some v ->
+        POOL_count.Value <-
             match rdbms with
             | Rdbms.SqlServer -> v :?> int32
             | Rdbms.PostgreSql -> v :?> int64 |> int32

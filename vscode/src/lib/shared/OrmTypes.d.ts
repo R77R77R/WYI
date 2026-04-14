@@ -52,6 +52,28 @@ sort:number
 p:pFILE
 }
 
+// [Kernel_Pool] (POOL)
+
+
+export type pPOOL = {
+[key:string]: any
+    Cat: number
+    Provider: number
+    Manager: number
+    State: number
+    Amt: number
+    AmtReduction: number
+    AmtReturn: number
+}
+
+export type POOL = {
+id:number
+createdat:Date
+updatedat:Date
+sort:number
+p:pPOOL
+}
+
 // [Kernel_Unit] (UNIT)
 
 export type pUNIT = {
@@ -102,11 +124,15 @@ export type pUBILL = {
     Cat: number
     Provider: number
     Owner: number
+    Representative: number
     Unit: number
     State: number
     UAcct: number
+    Pool: number
     YYYYMMDD: string
     Amt: number
+    AmtReduction: number
+    AmtReturn: number
 }
 
 export type UBILL = {
