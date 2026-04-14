@@ -4,8 +4,12 @@
     v-if="props.state == 0">
     Submitted
   </span>
-  <span class="bill-state-Accepted"
+  <span class="bill-state-Declined"
     v-else-if="props.state == 1">
+    Declined
+  </span>
+  <span class="bill-state-Accepted"
+    v-else-if="props.state == 2">
     Accepted
   </span>
   <span class="bill-state-Closed"

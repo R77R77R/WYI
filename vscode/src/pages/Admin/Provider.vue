@@ -12,7 +12,11 @@
       Bill Pools
     </div>
 
-    Draft//Draft///OnGoing//OnGoing///Closed//Closed
+    <div class="flex">
+      <PoolState :state="0" />
+      <PoolState :state="1" />
+      <PoolState :state="2" />
+    </div>
 
   </div>
 
@@ -21,21 +25,12 @@
       Bills
     </div>
 
-    <div class="m-3">
-      Bill States
-    </div>
-    <p>
+    <div class="flex">
       <BillState :state="0" />
-      The user uploaded the files and submitted the bill for back office review.
-    </p>
-    <p>
       <BillState :state="1" />
-      The officer review the bill and consider this bill is valid and eligible for negotiation.
-    </p>
-    <p>
       <BillState :state="2" />
-      The bill has been added for a successful negotiation and the discount and commission are completely settled.
-    </p>
+      <BillState :state="3" />
+    </div>
 
     <Billx v-for="i in s.billxs" :billx="i" :mode="1" />
 
@@ -50,6 +45,7 @@ import Provider from '~/comps/Provider.vue';
 import { glib } from '~/lib/glib'
 import { UCAT_empty, UPROVIDER_empty } from '~/lib/shared/OrmMor';
 import * as Common from '~/lib/store/common'
+import PoolState from '~/comps/PoolState.vue'
 import BillState from '~/comps/BillState.vue'
 import Billx from '~/comps/Billx.vue'
 
