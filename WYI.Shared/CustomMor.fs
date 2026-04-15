@@ -344,6 +344,145 @@ let BillComplex_clone src =
     BillComplex__bin bb src
     bin__BillComplex (bb.bytes(),ref 0)
 
+// [PoolComplex] Structure
+
+let PoolComplex_empty(): PoolComplex =
+    {
+        cato = None
+        providero = None
+        manager = { ID = 0L; Sort = 0L; Createdat = DateTime.MinValue; Updatedat = DateTime.MinValue; p = pEU_empty() }
+        billxs = ModDict_empty()
+        pool = { ID = 0L; Sort = 0L; Createdat = DateTime.MinValue; Updatedat = DateTime.MinValue; p = pPOOL_empty() }
+    }
+
+let PoolComplex__bin (bb:BytesBuilder) (v:PoolComplex) =
+
+    Option__bin (UCAT__bin) bb v.cato
+    Option__bin (UPROVIDER__bin) bb v.providero
+    EU__bin bb v.manager
+    
+    ModDictInt64__bin (BillComplex__bin) bb v.billxs
+    POOL__bin bb v.pool
+    ()
+
+let bin__PoolComplex (bi:BinIndexed):PoolComplex =
+    let bin,index = bi
+
+    {
+        cato = 
+            bi
+            |> bin__Option (bin__UCAT)
+        providero = 
+            bi
+            |> bin__Option (bin__UPROVIDER)
+        manager = 
+            bi
+            |> bin__EU
+        billxs = 
+            bi
+            |> bin__ModDictInt64(bin__BillComplex)
+        pool = 
+            bi
+            |> bin__POOL
+    }
+
+let PoolComplex__json (v:PoolComplex) =
+
+    [|  ("cato",Option__json (UCAT__json) v.cato)
+        ("providero",Option__json (UPROVIDER__json) v.providero)
+        ("manager",EU__json v.manager)
+        ("billxs",ModDictInt64__json (BillComplex__json) v.billxs)
+        ("pool",POOL__json v.pool)
+         |]
+    |> Json.Braket
+
+let PoolComplex__jsonTbw (w:TextBlockWriter) (v:PoolComplex) =
+    json__str w (PoolComplex__json v)
+
+let PoolComplex__jsonStr (v:PoolComplex) =
+    (PoolComplex__json v) |> json__strFinal
+
+
+let json__PoolComplexo (json:Json):PoolComplex option =
+    let fields = json |> json__items
+
+    let mutable passOptions = true
+
+    let catoo =
+        match json__tryFindByName json "cato" with
+        | None ->
+            passOptions <- false
+            None
+        | Some v -> 
+            match v |> json__Optiono (json__UCATo) with
+            | Some res -> Some res
+            | None ->
+                passOptions <- false
+                None
+
+    let provideroo =
+        match json__tryFindByName json "providero" with
+        | None ->
+            passOptions <- false
+            None
+        | Some v -> 
+            match v |> json__Optiono (json__UPROVIDERo) with
+            | Some res -> Some res
+            | None ->
+                passOptions <- false
+                None
+
+    let managero =
+        match json__tryFindByName json "manager" with
+        | None ->
+            passOptions <- false
+            None
+        | Some v -> 
+            match v |> json__EUo with
+            | Some res -> Some res
+            | None ->
+                passOptions <- false
+                None
+
+    let billxso =
+        match json__tryFindByName json "billxs" with
+        | None ->
+            passOptions <- false
+            None
+        | Some v -> 
+            match v |> (fun json ->json__ModDictInt64o (json__BillComplexo) (new Dictionary<int64,BillComplex>()) json) with
+            | Some res -> Some res
+            | None ->
+                passOptions <- false
+                None
+
+    let poolo =
+        match json__tryFindByName json "pool" with
+        | None ->
+            passOptions <- false
+            None
+        | Some v -> 
+            match v |> json__POOLo with
+            | Some res -> Some res
+            | None ->
+                passOptions <- false
+                None
+
+    if passOptions then
+        ({
+            cato = catoo.Value
+            providero = provideroo.Value
+            manager = managero.Value
+            billxs = billxso.Value
+            pool = poolo.Value }:PoolComplex) |> Some
+    else
+        None
+
+let PoolComplex_clone src =
+    let bb = new BytesBuilder()
+    PoolComplex__bin bb src
+    bin__PoolComplex (bb.bytes(),ref 0)
+
 // [EuComplex] Structure
 
 let EuComplex_empty(): EuComplex =

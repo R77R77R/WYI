@@ -14,6 +14,10 @@
         <router-link to="/" class="text-white hover:text-gray-400">
           Home
         </router-link>
+ 
+        <router-link to="/admin/users" class="text-white hover:text-gray-400">
+          Users
+        </router-link>
         
         <router-link to="/admin/providers" class="text-white hover:text-gray-400">
           Providers

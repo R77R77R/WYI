@@ -33,6 +33,19 @@ files:FILE[],
 bill:UBILL
 }
 
+// [PoolComplex]
+export type PoolComplex = {
+cato:UCAT | null,
+
+providero:UPROVIDER | null,
+
+manager:EU,
+
+billxs:{[key:number]: BillComplex},
+
+pool:POOL
+}
+
 // [EuComplex]
 export type EuComplex = {
 units:{[key:number]: UNIT},

@@ -29,6 +29,7 @@ const routes = [
       { path: 'provider/:cat/:provider', 
         component: () => import('~/pages/Admin/Provider.vue'),
         props: true },
+      { path: 'users', component: () => import('~/pages/Admin/Users.vue') },
       { path: 'bills', component: () => import('~/pages/Admin/Bills.vue') },
     ]
   },

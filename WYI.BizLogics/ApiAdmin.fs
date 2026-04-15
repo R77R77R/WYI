@@ -80,6 +80,29 @@ let billxs (x:X) =
         |> wrapOk "data"
     | _ -> er Er.InvalideParameter
 
+let userss (x:X) = 
+    match
+        x.Json
+        |> tryFindStrByAtt "act" with
+    | "ls" -> 
+        runtime.users.Values
+        |> Array.map(fun i -> i.eu |> EU__json)
+        |> Json.Ary
+        |> wrapOk "data"
+    | "search" ->
+        let term = (x.Json |> tryFindStrByAtt "term").ToLower()
+        runtime.users.Values
+        |> Array.filter(fun i ->
+            let mutable hit = false
+            if i.eu.p.Email.ToLower().Contains term then hit <- true
+            if i.eu.p.Caption.ToLower().Contains term then hit <- true
+            if i.eu.p.Username.ToLower().Contains term then hit <- true
+            hit)
+        |> Array.map(fun i -> i.eu |> EU__json)
+        |> Json.Ary
+        |> wrapOk "data"
+    | _ -> er Er.InvalideParameter
+
 let providers (x:X) = 
     let json = x.Json
     match

@@ -12,11 +12,7 @@
       Bill Pools
     </div>
 
-    <div class="flex">
-      <PoolState :state="0" />
-      <PoolState :state="1" />
-      <PoolState :state="2" />
-    </div>
+    <PoolStates />
 
   </div>
 
@@ -25,12 +21,7 @@
       Bills
     </div>
 
-    <div class="flex">
-      <BillState :state="0" />
-      <BillState :state="1" />
-      <BillState :state="2" />
-      <BillState :state="3" />
-    </div>
+    <BillStates />
 
     <Billx v-for="i in s.billxs" :billx="i" :mode="1" />
 
@@ -45,8 +36,8 @@ import Provider from '~/comps/Provider.vue';
 import { glib } from '~/lib/glib'
 import { UCAT_empty, UPROVIDER_empty } from '~/lib/shared/OrmMor';
 import * as Common from '~/lib/store/common'
-import PoolState from '~/comps/PoolState.vue'
-import BillState from '~/comps/BillState.vue'
+import PoolStates from '~/comps/PoolStates.vue'
+import BillStates from '~/comps/BillStates.vue'
 import Billx from '~/comps/Billx.vue'
 
 const props = defineProps({

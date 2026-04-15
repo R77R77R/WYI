@@ -29,6 +29,13 @@ mutable accto: UACCT option
 mutable files: FILE[]
 bill: UBILL }
 
+type PoolComplex = {
+mutable cato: UCAT option
+mutable providero: UPROVIDER option
+mutable manager: EU
+mutable billxs: ModDictInt64<BillComplex>
+pool: POOL }
+
 type EuComplex = {
 units: ModDictInt64<UNIT>
 acctxs: ModDictInt64<AcctComplex>

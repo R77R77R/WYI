@@ -6,6 +6,8 @@
     </div>
 </div>
 
+<BillStates />
+
 <Billx v-for="i in s.billxs"
   :billx="i" :mode="0" />
 
@@ -18,6 +20,7 @@ import { glib } from '~/lib/glib'
 import * as Common from '~/lib/store/common'
 import SearchField from '~/comps/SearchField.vue'
 import Billx from '~/comps/Billx.vue'
+import BillStates from '~/comps/BillStates.vue'
 
 const s = glib.vue.reactive({
   users: [] as wyi.EU[],
