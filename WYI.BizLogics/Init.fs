@@ -148,6 +148,11 @@ let init (runtime:Runtime) =
             bill = ubill })
     |> loadAll runtime.output conn UBILL_metadata
 
+    let billxs = 
+        runtime.users.Values
+        |> Array.map(fun i -> i.billxs.Values)
+        |> Array.concat
+
     let users = runtime.users.Values |> Seq.toArray
 
     let sapwd = Util.Crypto.str__sha256 "21:16 EST, March 17th, 2026"
@@ -168,6 +173,18 @@ let init (runtime:Runtime) =
             billxs = createModDictInt64 2
             eu = rcd }
         | None -> halt runtime.output ("BizLogics.Init.createEU") ""
+
+    (fun (i:POOL) ->
+        runtime.data.poolxs[i.ID] <- {
+            providero = runtime.data.providers.TryGet i.p.Provider
+            manager = runtime.users[i.p.Manager].eu
+            billxs = 
+                billxs 
+                |> Array.filter(fun billx -> billx.bill.p.Provider = i.p.Provider)
+                |> array__ModDictInt64 4 (fun billx -> billx.bill.ID)
+            pool = i })
+    |> loadAll runtime.output conn POOL_metadata
+
 
 
 
