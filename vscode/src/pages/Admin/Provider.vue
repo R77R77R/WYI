@@ -79,6 +79,7 @@ glib.vue.onMounted(async () => {
     act: 'load'
   }, (rep: any) => {
     //s.ucat = rep.cat
+    console.log(rep)
     s.view = rep.data as wyi.ProviderView
   })
 

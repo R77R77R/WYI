@@ -195,7 +195,7 @@ let providers (x:X) =
                     pools = 
                         runtime.data.poolxs.Values
                         |> Array.map(fun poolx -> poolx.pool)
-                        |> Array.filter(fun pool -> pool.p.Provider = i.ID)
+                        |> Array.filter(fun pool -> pool.p.Provider = provider.ID)
                     uprovider = provider }
                 |> ProviderView__json
                 |> wrapOk "data"
