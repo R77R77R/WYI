@@ -8911,1785 +8911,6 @@ function extractChangingRecords(to, from) {
 	];
 }
 //#endregion
-//#region src/lib/shared/OrmMor.ts
-var OrmMor_exports = /* @__PURE__ */ __exportAll({
-	CONFIG__bin: () => CONFIG__bin,
-	CONFIG_empty: () => CONFIG_empty,
-	EU__bin: () => EU__bin,
-	EU_empty: () => EU_empty,
-	FBIND__bin: () => FBIND__bin,
-	FBIND_empty: () => FBIND_empty,
-	FILE__bin: () => FILE__bin,
-	FILE_empty: () => FILE_empty,
-	KUCP__bin: () => KUCP__bin,
-	KUCP_empty: () => KUCP_empty,
-	LOG__bin: () => LOG__bin,
-	LOG_empty: () => LOG_empty,
-	MOMENT__bin: () => MOMENT__bin,
-	MOMENT_empty: () => MOMENT_empty,
-	PLOG__bin: () => PLOG__bin,
-	PLOG_empty: () => PLOG_empty,
-	UACCT__bin: () => UACCT__bin,
-	UACCT_empty: () => UACCT_empty,
-	UBILL__bin: () => UBILL__bin,
-	UBILL_empty: () => UBILL_empty,
-	UCAT__bin: () => UCAT__bin,
-	UCAT_empty: () => UCAT_empty,
-	UNIT__bin: () => UNIT__bin,
-	UNIT_empty: () => UNIT_empty,
-	UPROVIDER__bin: () => UPROVIDER__bin,
-	UPROVIDER_empty: () => UPROVIDER_empty,
-	bin__CONFIG: () => bin__CONFIG,
-	bin__EU: () => bin__EU,
-	bin__FBIND: () => bin__FBIND,
-	bin__FILE: () => bin__FILE,
-	bin__KUCP: () => bin__KUCP,
-	bin__LOG: () => bin__LOG,
-	bin__MOMENT: () => bin__MOMENT,
-	bin__PLOG: () => bin__PLOG,
-	bin__UACCT: () => bin__UACCT,
-	bin__UBILL: () => bin__UBILL,
-	bin__UCAT: () => bin__UCAT,
-	bin__UNIT: () => bin__UNIT,
-	bin__UPROVIDER: () => bin__UPROVIDER,
-	bin__pCONFIG: () => bin__pCONFIG,
-	bin__pEU: () => bin__pEU,
-	bin__pFBIND: () => bin__pFBIND,
-	bin__pFILE: () => bin__pFILE,
-	bin__pKUCP: () => bin__pKUCP,
-	bin__pLOG: () => bin__pLOG,
-	bin__pMOMENT: () => bin__pMOMENT,
-	bin__pPLOG: () => bin__pPLOG,
-	bin__pUACCT: () => bin__pUACCT,
-	bin__pUBILL: () => bin__pUBILL,
-	bin__pUCAT: () => bin__pUCAT,
-	bin__pUNIT: () => bin__pUNIT,
-	bin__pUPROVIDER: () => bin__pUPROVIDER,
-	euAuthTypeEnum_Admin: () => 2,
-	euAuthTypeEnum_Authorized: () => 1,
-	euAuthTypeEnum_Normal: () => 0,
-	fileStateEnum_Failed: () => 1,
-	fileStateEnum_Normal: () => 0,
-	momentMediaTypeEnum_Audio: () => 2,
-	momentMediaTypeEnum_None: () => 0,
-	momentMediaTypeEnum_Video: () => 1,
-	momentStateEnum_Deleted: () => 1,
-	momentStateEnum_Normal: () => 0,
-	momentStateEnum_Scratch: () => 2,
-	momentTypeEnum_Answer: () => 5,
-	momentTypeEnum_BookmarkList: () => 6,
-	momentTypeEnum_Dict: () => 9,
-	momentTypeEnum_Forum: () => 3,
-	momentTypeEnum_MediaFile: () => 11,
-	momentTypeEnum_Miles: () => 8,
-	momentTypeEnum_Original: () => 0,
-	momentTypeEnum_Poll: () => 7,
-	momentTypeEnum_Question: () => 4,
-	momentTypeEnum_Repost: () => 1,
-	momentTypeEnum_Thread: () => 2,
-	momentTypeEnum_WebPage: () => 10,
-	pCONFIG__bin: () => pCONFIG__bin,
-	pCONFIG_empty: () => pCONFIG_empty,
-	pEU__bin: () => pEU__bin,
-	pEU_empty: () => pEU_empty,
-	pFBIND__bin: () => pFBIND__bin,
-	pFBIND_empty: () => pFBIND_empty,
-	pFILE__bin: () => pFILE__bin,
-	pFILE_empty: () => pFILE_empty,
-	pKUCP__bin: () => pKUCP__bin,
-	pKUCP_empty: () => pKUCP_empty,
-	pLOG__bin: () => pLOG__bin,
-	pLOG_empty: () => pLOG_empty,
-	pMOMENT__bin: () => pMOMENT__bin,
-	pMOMENT_empty: () => pMOMENT_empty,
-	pPLOG__bin: () => pPLOG__bin,
-	pPLOG_empty: () => pPLOG_empty,
-	pUACCT__bin: () => pUACCT__bin,
-	pUACCT_empty: () => pUACCT_empty,
-	pUBILL__bin: () => pUBILL__bin,
-	pUBILL_empty: () => pUBILL_empty,
-	pUCAT__bin: () => pUCAT__bin,
-	pUCAT_empty: () => pUCAT_empty,
-	pUNIT__bin: () => pUNIT__bin,
-	pUNIT_empty: () => pUNIT_empty,
-	pUPROVIDER__bin: () => pUPROVIDER__bin,
-	pUPROVIDER_empty: () => pUPROVIDER_empty
-});
-var marshall$1 = { ...bin_exports };
-var pEU__bin = (bb) => (p) => {
-	marshall$1.str__bin(bb)(p.Caption);
-	marshall$1.str__bin(bb)(p.Username);
-	marshall$1.str__bin(bb)(p.Email);
-	marshall$1.str__bin(bb)(p.Avatar);
-	marshall$1.str__bin(bb)(p.ClerkUserID);
-	marshall$1.str__bin(bb)(p.Pwd);
-	marshall$1.int32__bin(bb)(p.AuthType);
-};
-var EU__bin = (bb) => (v) => {
-	marshall$1.int64__bin(bb)(v.id);
-	marshall$1.int64__bin(bb)(v.sort);
-	marshall$1.DateTime__bin(bb)(v.createdat);
-	marshall$1.DateTime__bin(bb)(v.updatedat);
-	pEU__bin(bb)(v.p);
-};
-var bin__pEU = (bi) => {
-	let p = pEU_empty();
-	p.Caption = marshall$1.bin__str(bi);
-	p.Username = marshall$1.bin__str(bi);
-	p.Email = marshall$1.bin__str(bi);
-	p.Avatar = marshall$1.bin__str(bi);
-	p.ClerkUserID = marshall$1.bin__str(bi);
-	p.Pwd = marshall$1.bin__str(bi);
-	p.AuthType = marshall$1.bin__int32(bi);
-	return p;
-};
-var bin__EU = (bi) => {
-	return {
-		id: marshall$1.bin__int64(bi),
-		sort: marshall$1.bin__int64(bi),
-		createdat: marshall$1.bin__DateTime(bi),
-		updatedat: marshall$1.bin__DateTime(bi),
-		p: bin__pEU(bi)
-	};
-};
-var pFILE__bin = (bb) => (p) => {
-	marshall$1.str__bin(bb)(p.Caption);
-	marshall$1.str__bin(bb)(p.Path);
-	marshall$1.int32__bin(bb)(p.State);
-	marshall$1.str__bin(bb)(p.ContentType);
-	marshall$1.str__bin(bb)(p.Suffix);
-	marshall$1.int64__bin(bb)(p.Size);
-	marshall$1.int32__bin(bb)(p.Thumbnail.length);
-	bb.append(p.Thumbnail);
-	marshall$1.int64__bin(bb)(p.Owner);
-	marshall$1.int64__bin(bb)(p.Cat);
-	marshall$1.int64__bin(bb)(p.Provider);
-	marshall$1.int64__bin(bb)(p.Unit);
-	marshall$1.int64__bin(bb)(p.Bill);
-};
-var FILE__bin = (bb) => (v) => {
-	marshall$1.int64__bin(bb)(v.id);
-	marshall$1.int64__bin(bb)(v.sort);
-	marshall$1.DateTime__bin(bb)(v.createdat);
-	marshall$1.DateTime__bin(bb)(v.updatedat);
-	pFILE__bin(bb)(v.p);
-};
-var bin__pFILE = (bi) => {
-	let p = pFILE_empty();
-	p.Caption = marshall$1.bin__str(bi);
-	p.Path = marshall$1.bin__str(bi);
-	p.State = marshall$1.bin__int32(bi);
-	p.ContentType = marshall$1.bin__str(bi);
-	p.Suffix = marshall$1.bin__str(bi);
-	p.Size = marshall$1.bin__int64(bi);
-	let lengthThumbnail = bin__int32(bi);
-	p.Thumbnail = bi.bin.slice(bi.index, lengthThumbnail);
-	bi.index += lengthThumbnail;
-	p.Owner = marshall$1.bin__int64(bi);
-	p.Cat = marshall$1.bin__int64(bi);
-	p.Provider = marshall$1.bin__int64(bi);
-	p.Unit = marshall$1.bin__int64(bi);
-	p.Bill = marshall$1.bin__int64(bi);
-	return p;
-};
-var bin__FILE = (bi) => {
-	return {
-		id: marshall$1.bin__int64(bi),
-		sort: marshall$1.bin__int64(bi),
-		createdat: marshall$1.bin__DateTime(bi),
-		updatedat: marshall$1.bin__DateTime(bi),
-		p: bin__pFILE(bi)
-	};
-};
-var pUNIT__bin = (bb) => (p) => {
-	marshall$1.str__bin(bb)(p.Caption);
-	marshall$1.int64__bin(bb)(p.Owner);
-	marshall$1.str__bin(bb)(p.UnitNum);
-	marshall$1.str__bin(bb)(p.AcctNum);
-	marshall$1.str__bin(bb)(p.Address);
-	marshall$1.str__bin(bb)(p.Town);
-	marshall$1.str__bin(bb)(p.State);
-	marshall$1.str__bin(bb)(p.Zip);
-};
-var UNIT__bin = (bb) => (v) => {
-	marshall$1.int64__bin(bb)(v.id);
-	marshall$1.int64__bin(bb)(v.sort);
-	marshall$1.DateTime__bin(bb)(v.createdat);
-	marshall$1.DateTime__bin(bb)(v.updatedat);
-	pUNIT__bin(bb)(v.p);
-};
-var bin__pUNIT = (bi) => {
-	let p = pUNIT_empty();
-	p.Caption = marshall$1.bin__str(bi);
-	p.Owner = marshall$1.bin__int64(bi);
-	p.UnitNum = marshall$1.bin__str(bi);
-	p.AcctNum = marshall$1.bin__str(bi);
-	p.Address = marshall$1.bin__str(bi);
-	p.Town = marshall$1.bin__str(bi);
-	p.State = marshall$1.bin__str(bi);
-	p.Zip = marshall$1.bin__str(bi);
-	return p;
-};
-var bin__UNIT = (bi) => {
-	return {
-		id: marshall$1.bin__int64(bi),
-		sort: marshall$1.bin__int64(bi),
-		createdat: marshall$1.bin__DateTime(bi),
-		updatedat: marshall$1.bin__DateTime(bi),
-		p: bin__pUNIT(bi)
-	};
-};
-var pUACCT__bin = (bb) => (p) => {
-	marshall$1.int64__bin(bb)(p.Cat);
-	marshall$1.int64__bin(bb)(p.Provider);
-	marshall$1.int64__bin(bb)(p.client);
-	marshall$1.int64__bin(bb)(p.Unit);
-	marshall$1.str__bin(bb)(p.AcctNum);
-};
-var UACCT__bin = (bb) => (v) => {
-	marshall$1.int64__bin(bb)(v.id);
-	marshall$1.int64__bin(bb)(v.sort);
-	marshall$1.DateTime__bin(bb)(v.createdat);
-	marshall$1.DateTime__bin(bb)(v.updatedat);
-	pUACCT__bin(bb)(v.p);
-};
-var bin__pUACCT = (bi) => {
-	let p = pUACCT_empty();
-	p.Cat = marshall$1.bin__int64(bi);
-	p.Provider = marshall$1.bin__int64(bi);
-	p.client = marshall$1.bin__int64(bi);
-	p.Unit = marshall$1.bin__int64(bi);
-	p.AcctNum = marshall$1.bin__str(bi);
-	return p;
-};
-var bin__UACCT = (bi) => {
-	return {
-		id: marshall$1.bin__int64(bi),
-		sort: marshall$1.bin__int64(bi),
-		createdat: marshall$1.bin__DateTime(bi),
-		updatedat: marshall$1.bin__DateTime(bi),
-		p: bin__pUACCT(bi)
-	};
-};
-var pUBILL__bin = (bb) => (p) => {
-	marshall$1.str__bin(bb)(p.ShownProvider);
-	marshall$1.str__bin(bb)(p.ShownUnitNum);
-	marshall$1.str__bin(bb)(p.ShownAcctNum);
-	marshall$1.str__bin(bb)(p.ShownAcctName);
-	marshall$1.str__bin(bb)(p.ShownAddr);
-	marshall$1.str__bin(bb)(p.ShownTown);
-	marshall$1.str__bin(bb)(p.ShownState);
-	marshall$1.str__bin(bb)(p.ShownZip);
-	marshall$1.int64__bin(bb)(p.Cat);
-	marshall$1.int64__bin(bb)(p.Provider);
-	marshall$1.int64__bin(bb)(p.Owner);
-	marshall$1.int64__bin(bb)(p.Unit);
-	marshall$1.str__bin(bb)(p.UnitText);
-	marshall$1.int64__bin(bb)(p.UAcct);
-	marshall$1.float__bin(bb)(p.Amt);
-};
-var UBILL__bin = (bb) => (v) => {
-	marshall$1.int64__bin(bb)(v.id);
-	marshall$1.int64__bin(bb)(v.sort);
-	marshall$1.DateTime__bin(bb)(v.createdat);
-	marshall$1.DateTime__bin(bb)(v.updatedat);
-	pUBILL__bin(bb)(v.p);
-};
-var bin__pUBILL = (bi) => {
-	let p = pUBILL_empty();
-	p.ShownProvider = marshall$1.bin__str(bi);
-	p.ShownUnitNum = marshall$1.bin__str(bi);
-	p.ShownAcctNum = marshall$1.bin__str(bi);
-	p.ShownAcctName = marshall$1.bin__str(bi);
-	p.ShownAddr = marshall$1.bin__str(bi);
-	p.ShownTown = marshall$1.bin__str(bi);
-	p.ShownState = marshall$1.bin__str(bi);
-	p.ShownZip = marshall$1.bin__str(bi);
-	p.Cat = marshall$1.bin__int64(bi);
-	p.Provider = marshall$1.bin__int64(bi);
-	p.Owner = marshall$1.bin__int64(bi);
-	p.Unit = marshall$1.bin__int64(bi);
-	p.UnitText = marshall$1.bin__str(bi);
-	p.UAcct = marshall$1.bin__int64(bi);
-	p.Amt = marshall$1.bin__float(bi);
-	return p;
-};
-var bin__UBILL = (bi) => {
-	return {
-		id: marshall$1.bin__int64(bi),
-		sort: marshall$1.bin__int64(bi),
-		createdat: marshall$1.bin__DateTime(bi),
-		updatedat: marshall$1.bin__DateTime(bi),
-		p: bin__pUBILL(bi)
-	};
-};
-var pUCAT__bin = (bb) => (p) => {
-	marshall$1.str__bin(bb)(p.Caption);
-};
-var UCAT__bin = (bb) => (v) => {
-	marshall$1.int64__bin(bb)(v.id);
-	marshall$1.int64__bin(bb)(v.sort);
-	marshall$1.DateTime__bin(bb)(v.createdat);
-	marshall$1.DateTime__bin(bb)(v.updatedat);
-	pUCAT__bin(bb)(v.p);
-};
-var bin__pUCAT = (bi) => {
-	let p = pUCAT_empty();
-	p.Caption = marshall$1.bin__str(bi);
-	return p;
-};
-var bin__UCAT = (bi) => {
-	return {
-		id: marshall$1.bin__int64(bi),
-		sort: marshall$1.bin__int64(bi),
-		createdat: marshall$1.bin__DateTime(bi),
-		updatedat: marshall$1.bin__DateTime(bi),
-		p: bin__pUCAT(bi)
-	};
-};
-var pKUCP__bin = (bb) => (p) => {
-	marshall$1.int64__bin(bb)(p.Cat);
-	marshall$1.int64__bin(bb)(p.Provider);
-};
-var KUCP__bin = (bb) => (v) => {
-	marshall$1.int64__bin(bb)(v.id);
-	marshall$1.int64__bin(bb)(v.sort);
-	marshall$1.DateTime__bin(bb)(v.createdat);
-	marshall$1.DateTime__bin(bb)(v.updatedat);
-	pKUCP__bin(bb)(v.p);
-};
-var bin__pKUCP = (bi) => {
-	let p = pKUCP_empty();
-	p.Cat = marshall$1.bin__int64(bi);
-	p.Provider = marshall$1.bin__int64(bi);
-	return p;
-};
-var bin__KUCP = (bi) => {
-	return {
-		id: marshall$1.bin__int64(bi),
-		sort: marshall$1.bin__int64(bi),
-		createdat: marshall$1.bin__DateTime(bi),
-		updatedat: marshall$1.bin__DateTime(bi),
-		p: bin__pKUCP(bi)
-	};
-};
-var pUPROVIDER__bin = (bb) => (p) => {
-	marshall$1.str__bin(bb)(p.Caption);
-	marshall$1.int64__bin(bb)(p.Cat);
-};
-var UPROVIDER__bin = (bb) => (v) => {
-	marshall$1.int64__bin(bb)(v.id);
-	marshall$1.int64__bin(bb)(v.sort);
-	marshall$1.DateTime__bin(bb)(v.createdat);
-	marshall$1.DateTime__bin(bb)(v.updatedat);
-	pUPROVIDER__bin(bb)(v.p);
-};
-var bin__pUPROVIDER = (bi) => {
-	let p = pUPROVIDER_empty();
-	p.Caption = marshall$1.bin__str(bi);
-	p.Cat = marshall$1.bin__int64(bi);
-	return p;
-};
-var bin__UPROVIDER = (bi) => {
-	return {
-		id: marshall$1.bin__int64(bi),
-		sort: marshall$1.bin__int64(bi),
-		createdat: marshall$1.bin__DateTime(bi),
-		updatedat: marshall$1.bin__DateTime(bi),
-		p: bin__pUPROVIDER(bi)
-	};
-};
-var pFBIND__bin = (bb) => (p) => {
-	marshall$1.int64__bin(bb)(p.File);
-	marshall$1.int64__bin(bb)(p.Moment);
-	marshall$1.str__bin(bb)(p.Desc);
-};
-var FBIND__bin = (bb) => (v) => {
-	marshall$1.int64__bin(bb)(v.id);
-	marshall$1.int64__bin(bb)(v.sort);
-	marshall$1.DateTime__bin(bb)(v.createdat);
-	marshall$1.DateTime__bin(bb)(v.updatedat);
-	pFBIND__bin(bb)(v.p);
-};
-var bin__pFBIND = (bi) => {
-	let p = pFBIND_empty();
-	p.File = marshall$1.bin__int64(bi);
-	p.Moment = marshall$1.bin__int64(bi);
-	p.Desc = marshall$1.bin__str(bi);
-	return p;
-};
-var bin__FBIND = (bi) => {
-	return {
-		id: marshall$1.bin__int64(bi),
-		sort: marshall$1.bin__int64(bi),
-		createdat: marshall$1.bin__DateTime(bi),
-		updatedat: marshall$1.bin__DateTime(bi),
-		p: bin__pFBIND(bi)
-	};
-};
-var pMOMENT__bin = (bb) => (p) => {
-	marshall$1.str__bin(bb)(p.Title);
-	marshall$1.str__bin(bb)(p.Summary);
-	marshall$1.str__bin(bb)(p.FullText);
-	marshall$1.str__bin(bb)(p.PreviewImgUrl);
-	marshall$1.str__bin(bb)(p.Link);
-	marshall$1.int32__bin(bb)(p.Type);
-	marshall$1.int32__bin(bb)(p.State);
-	marshall$1.int32__bin(bb)(p.MediaType);
-};
-var MOMENT__bin = (bb) => (v) => {
-	marshall$1.int64__bin(bb)(v.id);
-	marshall$1.int64__bin(bb)(v.sort);
-	marshall$1.DateTime__bin(bb)(v.createdat);
-	marshall$1.DateTime__bin(bb)(v.updatedat);
-	pMOMENT__bin(bb)(v.p);
-};
-var bin__pMOMENT = (bi) => {
-	let p = pMOMENT_empty();
-	p.Title = marshall$1.bin__str(bi);
-	p.Summary = marshall$1.bin__str(bi);
-	p.FullText = marshall$1.bin__str(bi);
-	p.PreviewImgUrl = marshall$1.bin__str(bi);
-	p.Link = marshall$1.bin__str(bi);
-	p.Type = marshall$1.bin__int32(bi);
-	p.State = marshall$1.bin__int32(bi);
-	p.MediaType = marshall$1.bin__int32(bi);
-	return p;
-};
-var bin__MOMENT = (bi) => {
-	return {
-		id: marshall$1.bin__int64(bi),
-		sort: marshall$1.bin__int64(bi),
-		createdat: marshall$1.bin__DateTime(bi),
-		updatedat: marshall$1.bin__DateTime(bi),
-		p: bin__pMOMENT(bi)
-	};
-};
-var pCONFIG__bin = (bb) => (p) => {
-	marshall$1.str__bin(bb)(p.Key);
-	marshall$1.str__bin(bb)(p.Val);
-};
-var CONFIG__bin = (bb) => (v) => {
-	marshall$1.int64__bin(bb)(v.id);
-	marshall$1.int64__bin(bb)(v.sort);
-	marshall$1.DateTime__bin(bb)(v.createdat);
-	marshall$1.DateTime__bin(bb)(v.updatedat);
-	pCONFIG__bin(bb)(v.p);
-};
-var bin__pCONFIG = (bi) => {
-	let p = pCONFIG_empty();
-	p.Key = marshall$1.bin__str(bi);
-	p.Val = marshall$1.bin__str(bi);
-	return p;
-};
-var bin__CONFIG = (bi) => {
-	return {
-		id: marshall$1.bin__int64(bi),
-		sort: marshall$1.bin__int64(bi),
-		createdat: marshall$1.bin__DateTime(bi),
-		updatedat: marshall$1.bin__DateTime(bi),
-		p: bin__pCONFIG(bi)
-	};
-};
-var pLOG__bin = (bb) => (p) => {
-	marshall$1.str__bin(bb)(p.Location);
-	marshall$1.str__bin(bb)(p.Content);
-	marshall$1.str__bin(bb)(p.Sql);
-};
-var LOG__bin = (bb) => (v) => {
-	marshall$1.int64__bin(bb)(v.id);
-	marshall$1.int64__bin(bb)(v.sort);
-	marshall$1.DateTime__bin(bb)(v.createdat);
-	marshall$1.DateTime__bin(bb)(v.updatedat);
-	pLOG__bin(bb)(v.p);
-};
-var bin__pLOG = (bi) => {
-	let p = pLOG_empty();
-	p.Location = marshall$1.bin__str(bi);
-	p.Content = marshall$1.bin__str(bi);
-	p.Sql = marshall$1.bin__str(bi);
-	return p;
-};
-var bin__LOG = (bi) => {
-	return {
-		id: marshall$1.bin__int64(bi),
-		sort: marshall$1.bin__int64(bi),
-		createdat: marshall$1.bin__DateTime(bi),
-		updatedat: marshall$1.bin__DateTime(bi),
-		p: bin__pLOG(bi)
-	};
-};
-var pPLOG__bin = (bb) => (p) => {
-	marshall$1.str__bin(bb)(p.Ip);
-	marshall$1.str__bin(bb)(p.Request);
-};
-var PLOG__bin = (bb) => (v) => {
-	marshall$1.int64__bin(bb)(v.id);
-	marshall$1.int64__bin(bb)(v.sort);
-	marshall$1.DateTime__bin(bb)(v.createdat);
-	marshall$1.DateTime__bin(bb)(v.updatedat);
-	pPLOG__bin(bb)(v.p);
-};
-var bin__pPLOG = (bi) => {
-	let p = pPLOG_empty();
-	p.Ip = marshall$1.bin__str(bi);
-	p.Request = marshall$1.bin__str(bi);
-	return p;
-};
-var bin__PLOG = (bi) => {
-	return {
-		id: marshall$1.bin__int64(bi),
-		sort: marshall$1.bin__int64(bi),
-		createdat: marshall$1.bin__DateTime(bi),
-		updatedat: marshall$1.bin__DateTime(bi),
-		p: bin__pPLOG(bi)
-	};
-};
-var pEU_empty = () => {
-	return {
-		Caption: "",
-		Username: "",
-		Email: "",
-		Avatar: "",
-		ClerkUserID: "",
-		Pwd: "",
-		AuthType: 0
-	};
-};
-var EU_empty = () => {
-	return {
-		id: 0,
-		createdat: /* @__PURE__ */ new Date(),
-		updatedat: /* @__PURE__ */ new Date(),
-		sort: 0,
-		p: pEU_empty()
-	};
-};
-var pFILE_empty = () => {
-	return {
-		Caption: "",
-		Path: "",
-		State: 0,
-		ContentType: "",
-		Suffix: "",
-		Size: 0,
-		Thumbnail: [],
-		Owner: 0,
-		Cat: 0,
-		Provider: 0,
-		Unit: 0,
-		Bill: 0
-	};
-};
-var FILE_empty = () => {
-	return {
-		id: 0,
-		createdat: /* @__PURE__ */ new Date(),
-		updatedat: /* @__PURE__ */ new Date(),
-		sort: 0,
-		p: pFILE_empty()
-	};
-};
-var pUNIT_empty = () => {
-	return {
-		Caption: "",
-		Owner: 0,
-		UnitNum: "",
-		AcctNum: "",
-		Address: "",
-		Town: "",
-		State: "",
-		Zip: ""
-	};
-};
-var UNIT_empty = () => {
-	return {
-		id: 0,
-		createdat: /* @__PURE__ */ new Date(),
-		updatedat: /* @__PURE__ */ new Date(),
-		sort: 0,
-		p: pUNIT_empty()
-	};
-};
-var pUACCT_empty = () => {
-	return {
-		Cat: 0,
-		Provider: 0,
-		client: 0,
-		Unit: 0,
-		AcctNum: ""
-	};
-};
-var UACCT_empty = () => {
-	return {
-		id: 0,
-		createdat: /* @__PURE__ */ new Date(),
-		updatedat: /* @__PURE__ */ new Date(),
-		sort: 0,
-		p: pUACCT_empty()
-	};
-};
-var pUBILL_empty = () => {
-	return {
-		ShownProvider: "",
-		ShownUnitNum: "",
-		ShownAcctNum: "",
-		ShownAcctName: "",
-		ShownAddr: "",
-		ShownTown: "",
-		ShownState: "",
-		ShownZip: "",
-		Cat: 0,
-		Provider: 0,
-		Owner: 0,
-		Unit: 0,
-		UnitText: "",
-		UAcct: 0,
-		Amt: 0
-	};
-};
-var UBILL_empty = () => {
-	return {
-		id: 0,
-		createdat: /* @__PURE__ */ new Date(),
-		updatedat: /* @__PURE__ */ new Date(),
-		sort: 0,
-		p: pUBILL_empty()
-	};
-};
-var pUCAT_empty = () => {
-	return { Caption: "" };
-};
-var UCAT_empty = () => {
-	return {
-		id: 0,
-		createdat: /* @__PURE__ */ new Date(),
-		updatedat: /* @__PURE__ */ new Date(),
-		sort: 0,
-		p: pUCAT_empty()
-	};
-};
-var pKUCP_empty = () => {
-	return {
-		Cat: 0,
-		Provider: 0
-	};
-};
-var KUCP_empty = () => {
-	return {
-		id: 0,
-		createdat: /* @__PURE__ */ new Date(),
-		updatedat: /* @__PURE__ */ new Date(),
-		sort: 0,
-		p: pKUCP_empty()
-	};
-};
-var pUPROVIDER_empty = () => {
-	return {
-		Caption: "",
-		Cat: 0
-	};
-};
-var UPROVIDER_empty = () => {
-	return {
-		id: 0,
-		createdat: /* @__PURE__ */ new Date(),
-		updatedat: /* @__PURE__ */ new Date(),
-		sort: 0,
-		p: pUPROVIDER_empty()
-	};
-};
-var pFBIND_empty = () => {
-	return {
-		File: 0,
-		Moment: 0,
-		Desc: ""
-	};
-};
-var FBIND_empty = () => {
-	return {
-		id: 0,
-		createdat: /* @__PURE__ */ new Date(),
-		updatedat: /* @__PURE__ */ new Date(),
-		sort: 0,
-		p: pFBIND_empty()
-	};
-};
-var pMOMENT_empty = () => {
-	return {
-		Title: "",
-		Summary: "",
-		FullText: "",
-		PreviewImgUrl: "",
-		Link: "",
-		Type: 0,
-		State: 0,
-		MediaType: 0
-	};
-};
-var MOMENT_empty = () => {
-	return {
-		id: 0,
-		createdat: /* @__PURE__ */ new Date(),
-		updatedat: /* @__PURE__ */ new Date(),
-		sort: 0,
-		p: pMOMENT_empty()
-	};
-};
-var pCONFIG_empty = () => {
-	return {
-		Key: "",
-		Val: ""
-	};
-};
-var CONFIG_empty = () => {
-	return {
-		id: 0,
-		createdat: /* @__PURE__ */ new Date(),
-		updatedat: /* @__PURE__ */ new Date(),
-		sort: 0,
-		p: pCONFIG_empty()
-	};
-};
-var pLOG_empty = () => {
-	return {
-		Location: "",
-		Content: "",
-		Sql: ""
-	};
-};
-var LOG_empty = () => {
-	return {
-		id: 0,
-		createdat: /* @__PURE__ */ new Date(),
-		updatedat: /* @__PURE__ */ new Date(),
-		sort: 0,
-		p: pLOG_empty()
-	};
-};
-var pPLOG_empty = () => {
-	return {
-		Ip: "",
-		Request: ""
-	};
-};
-var PLOG_empty = () => {
-	return {
-		id: 0,
-		createdat: /* @__PURE__ */ new Date(),
-		updatedat: /* @__PURE__ */ new Date(),
-		sort: 0,
-		p: pPLOG_empty()
-	};
-};
-//#endregion
-//#region src/lib/shared/CustomMor.ts
-var CustomMor_exports = /* @__PURE__ */ __exportAll({
-	BillComplex__bin: () => BillComplex__bin,
-	BillComplex_empty: () => BillComplex_empty,
-	ClientRuntime__bin: () => ClientRuntime__bin,
-	ClientRuntime_empty: () => ClientRuntime_empty,
-	ErEnum: () => ErEnum,
-	Er__bin: () => Er__bin,
-	Er_empty: () => Er_empty,
-	EuComplex__bin: () => EuComplex__bin,
-	EuComplex_empty: () => EuComplex_empty,
-	MomentComplex__bin: () => MomentComplex__bin,
-	MomentComplex_empty: () => MomentComplex_empty,
-	MsgEnum: () => MsgEnum,
-	Msg__bin: () => Msg__bin,
-	Msg_empty: () => Msg_empty,
-	RuntimeData__bin: () => RuntimeData__bin,
-	RuntimeData_empty: () => RuntimeData_empty,
-	bin__BillComplex: () => bin__BillComplex,
-	bin__ClientRuntime: () => bin__ClientRuntime,
-	bin__Er: () => bin__Er,
-	bin__EuComplex: () => bin__EuComplex,
-	bin__MomentComplex: () => bin__MomentComplex,
-	bin__Msg: () => bin__Msg,
-	bin__RuntimeData: () => bin__RuntimeData
-});
-var marshall = {
-	...bin_exports,
-	...OrmMor_exports
-};
-var MsgEnum = /* @__PURE__ */ function(MsgEnum) {
-	MsgEnum[MsgEnum["Heartbeat"] = 0] = "Heartbeat";
-	MsgEnum[MsgEnum["ApiRequest"] = 1] = "ApiRequest";
-	MsgEnum[MsgEnum["ApiResponse"] = 2] = "ApiResponse";
-	return MsgEnum;
-}({});
-var ErEnum = /* @__PURE__ */ function(ErEnum) {
-	ErEnum[ErEnum["ApiNotExists"] = 0] = "ApiNotExists";
-	ErEnum[ErEnum["InvalideParameter"] = 1] = "InvalideParameter";
-	ErEnum[ErEnum["Unauthorized"] = 2] = "Unauthorized";
-	ErEnum[ErEnum["NotAvailable"] = 3] = "NotAvailable";
-	ErEnum[ErEnum["Internal"] = 4] = "Internal";
-	ErEnum[ErEnum["API3rdParty"] = 5] = "API3rdParty";
-	return ErEnum;
-}({});
-var BillComplex_empty = () => {
-	return {
-		cato: null,
-		providero: null,
-		owner: {
-			id: 0,
-			sort: 0,
-			createdat: /* @__PURE__ */ new Date(),
-			updatedat: /* @__PURE__ */ new Date(),
-			p: marshall.pEU_empty()
-		},
-		unito: null,
-		accto: null,
-		files: [],
-		bill: {
-			id: 0,
-			sort: 0,
-			createdat: /* @__PURE__ */ new Date(),
-			updatedat: /* @__PURE__ */ new Date(),
-			p: marshall.pUBILL_empty()
-		}
-	};
-};
-var BillComplex__bin = (bb) => (v) => {
-	marshall.option__bin(marshall.UCAT__bin)(bb)(v.cato);
-	marshall.option__bin(marshall.UPROVIDER__bin)(bb)(v.providero);
-	marshall.EU__bin(bb)(v.owner);
-	marshall.option__bin(marshall.UNIT__bin)(bb)(v.unito);
-	marshall.option__bin(marshall.UACCT__bin)(bb)(v.accto);
-	marshall.array__bin(marshall.FILE__bin)(bb)(v.files);
-	marshall.UBILL__bin(bb)(v.bill);
-};
-var bin__BillComplex = (bi) => {
-	return {
-		cato: marshall.bin__option(marshall.bin__UCAT)(bi),
-		providero: marshall.bin__option(marshall.bin__UPROVIDER)(bi),
-		owner: marshall.bin__EU(bi),
-		unito: marshall.bin__option(marshall.bin__UNIT)(bi),
-		accto: marshall.bin__option(marshall.bin__UACCT)(bi),
-		files: marshall.bin__array(marshall.bin__FILE)(bi),
-		bill: marshall.bin__UBILL(bi)
-	};
-};
-var EuComplex_empty = () => {
-	return {
-		units: {},
-		billxs: {},
-		eu: {
-			id: 0,
-			sort: 0,
-			createdat: /* @__PURE__ */ new Date(),
-			updatedat: /* @__PURE__ */ new Date(),
-			p: marshall.pEU_empty()
-		}
-	};
-};
-var EuComplex__bin = (bb) => (v) => {
-	marshall.dict__bin(marshall.int64__bin)(marshall.UNIT__bin)(bb)(v.units);
-	marshall.dict__bin(marshall.int64__bin)(BillComplex__bin)(bb)(v.billxs);
-	marshall.EU__bin(bb)(v.eu);
-};
-var bin__EuComplex = (bi) => {
-	return {
-		units: marshall.bin__dict(marshall.bin__int64)(marshall.bin__UNIT)(bi),
-		billxs: marshall.bin__dict(marshall.bin__int64)(bin__BillComplex)(bi),
-		eu: marshall.bin__EU(bi)
-	};
-};
-var MomentComplex_empty = () => {
-	return { m: {
-		id: 0,
-		sort: 0,
-		createdat: /* @__PURE__ */ new Date(),
-		updatedat: /* @__PURE__ */ new Date(),
-		p: marshall.pMOMENT_empty()
-	} };
-};
-var MomentComplex__bin = (bb) => (v) => {
-	marshall.MOMENT__bin(bb)(v.m);
-};
-var bin__MomentComplex = (bi) => {
-	return { m: marshall.bin__MOMENT(bi) };
-};
-var RuntimeData_empty = () => {
-	return {
-		apiKeyGemini: "",
-		aiModel: "",
-		cats: {},
-		providers: {},
-		catproviders: []
-	};
-};
-var RuntimeData__bin = (bb) => (v) => {
-	marshall.str__bin(bb)(v.apiKeyGemini);
-	marshall.str__bin(bb)(v.aiModel);
-	marshall.dict__bin(marshall.int64__bin)(marshall.UCAT__bin)(bb)(v.cats);
-	marshall.dict__bin(marshall.int64__bin)(marshall.UPROVIDER__bin)(bb)(v.providers);
-	marshall.array__bin(marshall.KUCP__bin)(bb)(v.catproviders);
-};
-var bin__RuntimeData = (bi) => {
-	return {
-		apiKeyGemini: marshall.bin__str(bi),
-		aiModel: marshall.bin__str(bi),
-		cats: marshall.bin__dict(marshall.bin__int64)(marshall.bin__UCAT)(bi),
-		providers: marshall.bin__dict(marshall.bin__int64)(marshall.bin__UPROVIDER)(bi),
-		catproviders: marshall.bin__array(marshall.bin__KUCP)(bi)
-	};
-};
-var ClientRuntime_empty = () => {
-	return { version: 0 };
-};
-var ClientRuntime__bin = (bb) => (v) => {
-	marshall.int32__bin(bb)(v.version);
-};
-var bin__ClientRuntime = (bi) => {
-	return { version: marshall.bin__int32(bi) };
-};
-var Msg_empty = () => {
-	return {
-		e: 0,
-		val: {}
-	};
-};
-var Msg__bin = (bb) => (v) => {
-	marshall.int32__bin(bb)(v.e);
-	switch (v.e) {
-		case 0: break;
-		case 1:
-			marshall.Json__bin(bb)(v.val);
-			break;
-		case 2:
-			marshall.Json__bin(bb)(v.val);
-			break;
-	}
-};
-var bin__Msg = (bi) => {
-	let v = {
-		e: 0,
-		val: {}
-	};
-	v.e = marshall.bin__int32(bi);
-	switch (v.e) {
-		case 2:
-			v.val = marshall.bin__Json(bi);
-			break;
-		case 1:
-			v.val = marshall.bin__Json(bi);
-			break;
-		case 0: break;
-	}
-	return v;
-};
-var Er_empty = () => {
-	return {
-		e: 0,
-		val: {}
-	};
-};
-var Er__bin = (bb) => (v) => {
-	marshall.int32__bin(bb)(v.e);
-	switch (v.e) {
-		case 0: break;
-		case 1: break;
-		case 2: break;
-		case 3: break;
-		case 4: break;
-		case 5: break;
-	}
-};
-var bin__Er = (bi) => {
-	let v = {
-		e: 0,
-		val: {}
-	};
-	v.e = marshall.bin__int32(bi);
-	switch (v.e) {
-		case 5: break;
-		case 4: break;
-		case 3: break;
-		case 2: break;
-		case 1: break;
-		case 0: break;
-	}
-	return v;
-};
-//#endregion
-//#region src/comps/BillFile.vue?vue&type=script&setup=true&lang.ts
-var _hoisted_1$7 = { class: "h-full w-full flex flex-col p-3" };
-var _hoisted_2$7 = {
-	key: 0,
-	class: "w-[300px]"
-};
-var _hoisted_3$6 = ["src"];
-var _hoisted_4$5 = { key: 1 };
-var _hoisted_5$5 = { key: 0 };
-var _hoisted_6$4 = { key: 1 };
-var _hoisted_7$2 = { key: 2 };
-var _hoisted_8$2 = { key: 3 };
-var _hoisted_9$1 = { key: 4 };
-var _hoisted_10$1 = { class: "progress-container" };
-var _hoisted_11$1 = { class: "status-row" };
-var _hoisted_12$1 = {
-	key: 0,
-	class: "error-detail"
-};
-var BillFile_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */ defineComponent({
-	__name: "BillFile",
-	props: ["filex"],
-	setup(__props) {
-		const props = __props;
-		props.filex;
-		const s = glib.vue.reactive({
-			billx: BillComplex_empty(),
-			rt: runtime
-		});
-		const getStatusText = (task) => {
-			switch (task.status) {
-				case "uploading": return "Uploading ...";
-				case "success": return "Succeeded";
-				case "error": return "Failed";
-				default: return "Pending ...";
-			}
-		};
-		const executeUpload = async (task) => {
-			task.status = "uploading";
-			task.progress = 0;
-			const token = await window.Clerk?.session?.getToken();
-			const formData = new FormData();
-			formData.append("file", task.file);
-			formData.append("session", s.rt.session);
-			return new Promise((resolve, reject) => {
-				const xhr = new XMLHttpRequest();
-				xhr.upload.onprogress = (event) => {
-					if (event.lengthComputable) {
-						const percent = Math.round(event.loaded * 100 / event.total);
-						task.progress = Math.min(percent, 99);
-					}
-				};
-				xhr.onload = () => {
-					if (xhr.status >= 200 && xhr.status < 300) try {
-						let rep = JSON.parse(xhr.responseText);
-						if (rep.Er == "OK") {
-							props.filex.rcd = rep.file;
-							s.billx = rep.billx;
-						}
-						task.status = "success";
-						task.progress = 100;
-						resolve(rep);
-					} catch (e) {
-						task.status = "error";
-						task.message = "Invalid JSON response";
-						reject("Invalid JSON");
-					}
-					else {
-						task.status = "error";
-						task.message = `Server Error: ${xhr.status}`;
-						reject(xhr.status);
-					}
-				};
-				xhr.onerror = () => {
-					task.status = "error";
-					task.message = "Network error or file too large";
-					console.error("Upload failed");
-					reject("Network error");
-				};
-				xhr.open("POST", "/api/public/upload");
-				if (token) xhr.setRequestHeader("Authorization", `Bearer ${token}`);
-				xhr.send(formData);
-			});
-		};
-		glib.vue.onMounted(async () => {
-			executeUpload(props.filex.uploadTask);
-		});
-		return (_ctx, _cache) => {
-			return openBlock(), createElementBlock("div", _hoisted_1$7, [
-				props.filex.rcd.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_2$7, [createBaseVNode("img", { src: "/thumbnail/" + props.filex.rcd.id }, null, 8, _hoisted_3$6)])) : createCommentVNode("", true),
-				props.filex.rcd.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_4$5, [
-					unref(s).billx.cato ? (openBlock(), createElementBlock("div", _hoisted_5$5, "Cat: " + toDisplayString(unref(s).billx.cato?.p.Caption), 1)) : createCommentVNode("", true),
-					unref(s).billx.providero ? (openBlock(), createElementBlock("div", _hoisted_6$4, "Provider: " + toDisplayString(unref(s).billx.providero?.p.Caption), 1)) : createCommentVNode("", true),
-					unref(s).billx.unito ? (openBlock(), createElementBlock("div", _hoisted_7$2, "Unit: " + toDisplayString(unref(s).billx.unito?.p.Caption), 1)) : createCommentVNode("", true),
-					unref(s).billx.accto ? (openBlock(), createElementBlock("div", _hoisted_8$2, "Acct Number: " + toDisplayString(unref(s).billx.accto?.p.AcctNum), 1)) : createCommentVNode("", true),
-					unref(s).billx.bill.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_9$1, "Amount: " + toDisplayString(unref(s).billx.bill.p.Amout), 1)) : createCommentVNode("", true),
-					createBaseVNode("div", null, "File Name: " + toDisplayString(props.filex.file.name), 1),
-					createBaseVNode("div", null, "File Size: " + toDisplayString((props.filex.file.size / 1024 / 1024).toFixed(2)) + " MB", 1)
-				])) : createCommentVNode("", true),
-				createBaseVNode("div", _hoisted_10$1, [createBaseVNode("div", {
-					class: normalizeClass(["progress-fill", __props.filex.uploadTask.status]),
-					style: normalizeStyle({ width: props.filex.uploadTask.progress + "%" })
-				}, null, 6)]),
-				createBaseVNode("div", _hoisted_11$1, [createBaseVNode("span", { class: normalizeClass(["status-label", props.filex.uploadTask.status]) }, toDisplayString(getStatusText(props.filex.uploadTask)), 3), props.filex.uploadTask.message ? (openBlock(), createElementBlock("span", _hoisted_12$1, " - " + toDisplayString(props.filex.uploadTask.message), 1)) : createCommentVNode("", true)])
-			]);
-		};
-	}
-});
-//#endregion
-//#region \0plugin-vue:export-helper
-var _plugin_vue_export_helper_default = (sfc, props) => {
-	const target = sfc.__vccOpts || sfc;
-	for (const [key, val] of props) target[key] = val;
-	return target;
-};
-//#endregion
-//#region src/comps/BillFile.vue
-var BillFile_default = /* @__PURE__ */ _plugin_vue_export_helper_default(BillFile_vue_vue_type_script_setup_true_lang_default, [["__scopeId", "data-v-6ada0c57"]]);
-//#endregion
-//#region src/pages/UploadBills.vue?vue&type=script&setup=true&lang.ts
-var _withScopeId = (n) => (pushScopeId("data-v-48675402"), n = n(), popScopeId(), n);
-var _hoisted_1$6 = { class: "upload-page" };
-var _hoisted_2$6 = { class: "card" };
-var _hoisted_3$5 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", { class: "header" }, [/* @__PURE__ */ createBaseVNode("h2", null, "Upload Bills")], -1));
-var _hoisted_4$4 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", null, [/* @__PURE__ */ createBaseVNode("p", null, [/* @__PURE__ */ createTextVNode("Drop your files here or "), /* @__PURE__ */ createBaseVNode("span", null, "Select")]), /* @__PURE__ */ createBaseVNode("small", null, "Max. 10GB")], -1));
-var _hoisted_5$4 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", { class: "icon" }, "📄", -1));
-var _hoisted_6$3 = { class: "card" };
-var _hoisted_7$1 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", null, "File list", -1));
-var _hoisted_8$1 = { class: "flex flex-wrap gap-4 p-4" };
-//#endregion
-//#region src/pages/UploadBills.vue
-var UploadBills_default = /* @__PURE__ */ _plugin_vue_export_helper_default(/* @__PURE__ */ defineComponent({
-	__name: "UploadBills",
-	setup(__props) {
-		const s = glib.vue.reactive({
-			filexs: [],
-			rep: {},
-			rt: runtime
-		});
-		const isDragging = ref(false);
-		const fileInput = ref(null);
-		const triggerSelect = () => fileInput.value?.click();
-		const onFileSelect = (e) => {
-			const files = e.target.files;
-			handleFiles(files);
-		};
-		const onDrop = (e) => {
-			isDragging.value = false;
-			handleFiles(e.dataTransfer?.files || null);
-		};
-		const handleFiles = (fileList) => {
-			if (!fileList) return;
-			Array.from(fileList).forEach((file) => {
-				let filex = {
-					uploadTask: {},
-					rcd: FILE_empty(),
-					file
-				};
-				filex.uploadTask = {
-					id: Math.random().toString(36).slice(2),
-					file,
-					progress: 0,
-					status: "pending"
-				};
-				s.filexs.push(filex);
-			});
-		};
-		const upload = async () => {
-			let fids = s.filexs.map((filex) => filex.rcd.id);
-			sessionStorage.setItem("fids", JSON.stringify(fids));
-			await router.push("/ReviewBills");
-		};
-		return (_ctx, _cache) => {
-			return openBlock(), createElementBlock("div", _hoisted_1$6, [createBaseVNode("div", _hoisted_2$6, [
-				_hoisted_3$5,
-				_hoisted_4$4,
-				createBaseVNode("div", {
-					class: normalizeClass(["drop-zone", { "is-dragging": isDragging.value }]),
-					onDragover: _cache[0] || (_cache[0] = withModifiers(($event) => isDragging.value = true, ["prevent"])),
-					onDragleave: _cache[1] || (_cache[1] = withModifiers(($event) => isDragging.value = false, ["prevent"])),
-					onDrop: withModifiers(onDrop, ["prevent"]),
-					onClick: triggerSelect
-				}, [createBaseVNode("input", {
-					type: "file",
-					multiple: "",
-					ref_key: "fileInput",
-					ref: fileInput,
-					onChange: onFileSelect,
-					hidden: ""
-				}, null, 544), _hoisted_5$4], 34)
-			]), createBaseVNode("div", _hoisted_6$3, [
-				_hoisted_7$1,
-				createBaseVNode("div", _hoisted_8$1, [(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).filexs, (filex) => {
-					return openBlock(), createBlock(BillFile_default, {
-						class: "w-48 h-32 bg-slate-100 border-2 border-dashed border-slate-300 rounded-lg flex",
-						filex
-					}, null, 8, ["filex"]);
-				}), 256))]),
-				createBaseVNode("div", null, [createBaseVNode("button", { onClick: upload }, "Upload")])
-			])]);
-		};
-	}
-}), [["__scopeId", "data-v-48675402"]]);
-//#endregion
-//#region src/lib/store/common.ts
-var loader = async (url, post, h, ex = () => {}) => {
-	post.session = runtime.session;
-	let rep = await glib.post(url, post);
-	if (rep.Er == "OK") h(rep);
-	else ex(rep);
-};
-//#endregion
-//#region src/comps/SearchField.vue?vue&type=script&setup=true&lang.ts
-var _hoisted_1$5 = { class: "relative w-[200px]" };
-var _hoisted_2$5 = {
-	key: 0,
-	class: "absolute z-10 w-full bg-white border rounded shadow-lg mt-1 max-h-48 overflow-y-auto"
-};
-var _hoisted_3$4 = ["onClick", "value"];
-//#endregion
-//#region src/comps/SearchField.vue
-var SearchField_default = /* @__PURE__ */ defineComponent({
-	__name: "SearchField",
-	props: [
-		"api",
-		"item__key",
-		"item__text"
-	],
-	emits: ["select"],
-	setup(__props, { emit: __emit }) {
-		const props = __props;
-		props.api;
-		props.item__key;
-		props.item__text;
-		const s = glib.vue.reactive({ opts: [] });
-		const emits = __emit;
-		const searchText = ref("");
-		const isDropdownVisible = ref(false);
-		const onInput = () => {
-			if (!searchText.value) return;
-			loader(props.api, {
-				term: searchText.value,
-				act: "search"
-			}, (rep) => {
-				s.opts = rep.data;
-				console.log(s.opts);
-			}, () => {});
-		};
-		const selectOption = (opt) => {
-			searchText.value = props.item__key(opt);
-			isDropdownVisible.value = false;
-			emits("select", opt);
-		};
-		const onBlur = () => {
-			setTimeout(() => isDropdownVisible.value = false, 200);
-		};
-		return (_ctx, _cache) => {
-			return openBlock(), createElementBlock("div", _hoisted_1$5, [withDirectives(createBaseVNode("input", {
-				type: "text",
-				"onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => searchText.value = $event),
-				onFocus: _cache[1] || (_cache[1] = ($event) => isDropdownVisible.value = true),
-				onBlur,
-				onInput,
-				placeholder: "Start typing...",
-				class: "w-full border rounded px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
-			}, null, 544), [[vModelText, searchText.value]]), isDropdownVisible.value && unref(s).opts.length > 0 ? (openBlock(), createElementBlock("ul", _hoisted_2$5, [(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).opts, (opt) => {
-				return openBlock(), createElementBlock("li", {
-					onClick: ($event) => selectOption(opt),
-					value: props.item__key(opt),
-					class: "px-3 py-2 hover:bg-blue-50 cursor-pointer text-sm"
-				}, toDisplayString(props.item__text(opt)), 9, _hoisted_3$4);
-			}), 256))])) : createCommentVNode("", true)]);
-		};
-	}
-});
-//#endregion
-//#region src/comps/StateLocator.vue?vue&type=script&setup=true&lang.ts
-var _hoisted_51 = [/* @__PURE__ */ createStaticVNode("<option value=\"AL\">AL Alabama</option><option value=\"AK\">AK Alaska</option><option value=\"AZ\">AZ Arizona</option><option value=\"AR\">AR Arkansas</option><option value=\"CA\">CA California</option><option value=\"CO\">CO Colorado</option><option value=\"CT\">CT Connecticut</option><option value=\"DE\">DE Delaware</option><option value=\"FL\">FL Florida</option><option value=\"GA\">GA Georgia</option><option value=\"HI\">HI Hawaii</option><option value=\"ID\">ID Idaho</option><option value=\"IL\">IL Illinois</option><option value=\"IN\">IN Indiana</option><option value=\"IA\">IA Iowa</option><option value=\"KS\">KS Kansas</option><option value=\"KY\">KY Kentucky</option><option value=\"LA\">LA Louisiana</option><option value=\"ME\">ME Maine</option><option value=\"MD\">MD Maryland</option><option value=\"MA\">MA Massachusetts</option><option value=\"MI\">MI Michigan</option><option value=\"MN\">MN Minnesota</option><option value=\"MS\">MS Mississippi</option><option value=\"MO\">MO Missouri</option><option value=\"MT\">MT Montana</option><option value=\"NE\">NE Nebraska</option><option value=\"NV\">NV Nevada</option><option value=\"NH\">NH New Hampshire</option><option value=\"NJ\">NJ New Jersey</option><option value=\"NM\">NM New Mexico</option><option value=\"NY\">NY New York</option><option value=\"NC\">NC North Carolina</option><option value=\"ND\">ND North Dakota</option><option value=\"OH\">OH Ohio</option><option value=\"OK\">OK Oklahoma</option><option value=\"OR\">OR Oregon</option><option value=\"PA\">PA Pennsylvania</option><option value=\"RI\">RI Rhode Island</option><option value=\"SC\">SC South Carolina</option><option value=\"SD\">SD South Dakota</option><option value=\"TN\">TN Tennessee</option><option value=\"TX\">TX Texas</option><option value=\"UT\">UT Utah</option><option value=\"VT\">VT Vermont</option><option value=\"VA\">VA Virginia</option><option value=\"WA\">WA Washington</option><option value=\"WV\">WV West Virginia</option><option value=\"WI\">WI Wisconsin</option><option value=\"WY\">WY Wyoming</option>", 50)];
-//#endregion
-//#region src/comps/StateLocator.vue
-var StateLocator_default = /* @__PURE__ */ defineComponent({
-	__name: "StateLocator",
-	props: {
-		"modelValue": {},
-		"modelModifiers": {}
-	},
-	emits: ["update:modelValue"],
-	setup(__props) {
-		const state = useModel(__props, "modelValue");
-		glib.vue.onMounted(async () => {
-			console.log(state.value);
-		});
-		return (_ctx, _cache) => {
-			return openBlock(), createElementBlock("div", null, [withDirectives(createBaseVNode("select", { "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => state.value = $event) }, _hoisted_51, 512), [[vModelSelect, state.value]])]);
-		};
-	}
-});
-//#endregion
-//#region src/pages/ReviewBills.vue?vue&type=script&setup=true&lang.ts
-var _hoisted_1$4 = /* @__PURE__ */ createBaseVNode("h2", null, "Review Bills", -1);
-var _hoisted_2$4 = { class: "w-[300px]" };
-var _hoisted_3$3 = ["src"];
-var _hoisted_4$3 = { key: 0 };
-var _hoisted_5$3 = {
-	key: 0,
-	class: "my-2 p-2 bg-[#eeeeff]"
-};
-var _hoisted_6$2 = /* @__PURE__ */ createBaseVNode("p", null, "We experienced an issue from the AI. You can keyin the fields instead.", -1);
-var _hoisted_7 = /* @__PURE__ */ createBaseVNode("h2", null, "Unit", -1);
-var _hoisted_8 = { class: "my-2 p-2 bg-[#eeeeff]" };
-var _hoisted_9 = /* @__PURE__ */ createBaseVNode("div", null, "Address: ", -1);
-var _hoisted_10 = /* @__PURE__ */ createBaseVNode("div", null, "Town: ", -1);
-var _hoisted_11 = /* @__PURE__ */ createBaseVNode("div", null, "State: ", -1);
-var _hoisted_12 = /* @__PURE__ */ createBaseVNode("div", null, "ZIP: ", -1);
-var _hoisted_13 = /* @__PURE__ */ createBaseVNode("div", null, "Match existing unit", -1);
-var _hoisted_14 = { class: "flex" };
-var _hoisted_15 = { key: 0 };
-var _hoisted_16 = /* @__PURE__ */ createBaseVNode("h2", null, "Provider", -1);
-var _hoisted_17 = { class: "my-2 p-2 bg-[#eeeeff]" };
-var _hoisted_18 = /* @__PURE__ */ createBaseVNode("div", null, "Category", -1);
-var _hoisted_19 = ["value"];
-var _hoisted_20 = ["value"];
-var _hoisted_21 = /* @__PURE__ */ createBaseVNode("h2", null, "Account", -1);
-var _hoisted_22 = { class: "my-2 p-2 bg-[#eeeeff]" };
-var _hoisted_23 = /* @__PURE__ */ createBaseVNode("div", null, "Account Number: ", -1);
-var _hoisted_24 = /* @__PURE__ */ createBaseVNode("div", null, "Account Name: ", -1);
-var _hoisted_25 = /* @__PURE__ */ createBaseVNode("div", null, "Match existing account", -1);
-var _hoisted_26 = /* @__PURE__ */ createBaseVNode("div", null, [/* @__PURE__ */ createBaseVNode("button", null, "Add New Account")], -1);
-var _hoisted_27 = /* @__PURE__ */ createBaseVNode("div", null, "Bill Data: ", -1);
-var _hoisted_28 = /* @__PURE__ */ createBaseVNode("div", null, "Amount: ", -1);
-var _hoisted_29 = { key: 1 };
-//#endregion
-//#region src/pages/ReviewBills.vue
-var ReviewBills_default = /* @__PURE__ */ defineComponent({
-	__name: "ReviewBills",
-	setup(__props) {
-		const s = glib.vue.reactive({
-			fids: [],
-			rep: {},
-			showUnitAdded: false,
-			ucatproviders: [],
-			uproviders: [],
-			rt: runtime
-		});
-		glib.vue.onMounted(async () => {
-			loader("/api/public/providers", {}, (rep) => {
-				s.ucatproviders = [];
-				rep.data.forEach((e) => {
-					s.ucatproviders.push({
-						ucat: e.ucat,
-						uproviders: e.providers
-					});
-				});
-			});
-			try {
-				let json = "" + sessionStorage.getItem("fids");
-				s.fids = JSON.parse(json);
-			} catch (e) {}
-			sessionStorage.setItem("fids", JSON.stringify([]));
-			loader("/api/eu/review-bill-files", { fids: s.fids }, (rep) => {
-				s.rep = rep;
-				onChangeCat();
-			});
-		});
-		const onClickNewUnit = () => {
-			loader("/api/eu/my-units", {
-				data: {
-					addr: s.rep.data.bill.p.ShownAddr,
-					town: s.rep.data.bill.p.ShownTown,
-					state: s.rep.data.bill.p.ShownState,
-					zip: s.rep.data.bill.p.ShownZip
-				},
-				act: "create"
-			}, (rep) => {
-				s.showUnitAdded = true;
-			});
-		};
-		const unit__key = (unit) => {
-			return unit.id;
-		};
-		const unit__text = (unit) => {
-			return unit.p.Address + ", " + unit.p.Town + ", " + unit.p.State + unit.p.Zip;
-		};
-		const onSelectUnit = (unit) => {
-			s.rep.data.bill.id = unit.id;
-			s.rep.data.bill.p.ShownAddr = unit.p.Address;
-			s.rep.data.bill.p.ShownTown = unit.p.Town;
-			s.rep.data.bill.p.ShownState = unit.p.State;
-			s.rep.data.bill.p.ShownZip = unit.p.Zip;
-		};
-		const onChangeCat = () => {
-			let found = s.ucatproviders.find((e) => e.ucat.id == s.rep.data.bill.p.Cat);
-			if (found) s.uproviders = found.uproviders;
-			else s.uproviders = [];
-		};
-		const confirm = () => {
-			loader("/api/eu/submit-bill", { data: s.rep.data }, (rep) => {
-				router.push("/");
-			});
-		};
-		return (_ctx, _cache) => {
-			return openBlock(), createElementBlock(Fragment, null, [
-				_hoisted_1$4,
-				(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).fids, (fid) => {
-					return openBlock(), createElementBlock("div", null, [createBaseVNode("div", _hoisted_2$4, [createBaseVNode("img", { src: "/thumbnail/" + fid }, null, 8, _hoisted_3$3)])]);
-				}), 256)),
-				unref(s).rep.Er == "OK" ? (openBlock(), createElementBlock("div", _hoisted_4$3, [
-					unref(s).rep.Ex != "" ? (openBlock(), createElementBlock("div", _hoisted_5$3, [_hoisted_6$2, createBaseVNode("p", null, toDisplayString(unref(s).rep.Ex), 1)])) : createCommentVNode("", true),
-					_hoisted_7,
-					createBaseVNode("div", _hoisted_8, [
-						_hoisted_9,
-						createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => unref(s).rep.data.bill.p.ShownAddr = $event) }, null, 512), [[vModelText, unref(s).rep.data.bill.p.ShownAddr]])]),
-						_hoisted_10,
-						createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => unref(s).rep.data.bill.p.ShownTown = $event) }, null, 512), [[vModelText, unref(s).rep.data.bill.p.ShownTown]])]),
-						_hoisted_11,
-						createVNode(StateLocator_default, {
-							modelValue: unref(s).rep.data.bill.p.ShownState,
-							"onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => unref(s).rep.data.bill.p.ShownState = $event)
-						}, null, 8, ["modelValue"]),
-						_hoisted_12,
-						createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[3] || (_cache[3] = ($event) => unref(s).rep.data.bill.p.ShownZip = $event) }, null, 512), [[vModelText, unref(s).rep.data.bill.p.ShownZip]])]),
-						_hoisted_13,
-						createBaseVNode("div", null, [createVNode(SearchField_default, {
-							api: "/api/eu/my-units",
-							item__key: unit__key,
-							item__text: unit__text,
-							onSelect: onSelectUnit
-						})]),
-						createBaseVNode("div", _hoisted_14, [createBaseVNode("button", { onClick: onClickNewUnit }, "Add as a New Unit"), unref(s).showUnitAdded ? (openBlock(), createElementBlock("div", _hoisted_15, "New Unit Added")) : createCommentVNode("", true)])
-					]),
-					_hoisted_16,
-					createBaseVNode("div", _hoisted_17, [
-						_hoisted_18,
-						createBaseVNode("div", null, [withDirectives(createBaseVNode("select", {
-							onChange: onChangeCat,
-							"onUpdate:modelValue": _cache[4] || (_cache[4] = ($event) => unref(s).rep.data.bill.p.Cat = $event)
-						}, [(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).ucatproviders, (item) => {
-							return openBlock(), createElementBlock("option", { value: item.ucat.id }, toDisplayString(item.ucat.p.Caption), 9, _hoisted_19);
-						}), 256))], 544), [[vModelSelect, unref(s).rep.data.bill.p.Cat]])]),
-						createBaseVNode("div", null, "Provider: " + toDisplayString(unref(s).rep.data.bill.p.ShownProvider), 1),
-						createBaseVNode("div", null, [withDirectives(createBaseVNode("select", { "onUpdate:modelValue": _cache[5] || (_cache[5] = ($event) => unref(s).rep.data.bill.p.Provider = $event) }, [(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).uproviders, (item) => {
-							return openBlock(), createElementBlock("option", { value: item.id }, toDisplayString(item.p.Caption), 9, _hoisted_20);
-						}), 256))], 512), [[vModelSelect, unref(s).rep.data.bill.p.Provider]])])
-					]),
-					_hoisted_21,
-					createBaseVNode("div", _hoisted_22, [
-						_hoisted_23,
-						createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[6] || (_cache[6] = ($event) => unref(s).rep.data.bill.p.ShownAcctNum = $event) }, null, 512), [[vModelText, unref(s).rep.data.bill.p.ShownAcctNum]])]),
-						_hoisted_24,
-						createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[7] || (_cache[7] = ($event) => unref(s).rep.data.bill.p.ShownAcctName = $event) }, null, 512), [[vModelText, unref(s).rep.data.bill.p.ShownAcctName]])]),
-						_hoisted_25,
-						createBaseVNode("div", null, [createVNode(SearchField_default)]),
-						_hoisted_26
-					]),
-					_hoisted_27,
-					createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[8] || (_cache[8] = ($event) => unref(s).rep.data.bill.p.BillDate = $event) }, null, 512), [[vModelText, unref(s).rep.data.bill.p.BillDate]])]),
-					_hoisted_28,
-					createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[9] || (_cache[9] = ($event) => unref(s).rep.data.bill.p.Amt = $event) }, null, 512), [[vModelText, unref(s).rep.data.bill.p.Amt]])]),
-					createBaseVNode("div", { class: "flex" }, [createBaseVNode("button", { onClick: confirm }, "Confirm"), createTextVNode(" the details and submit to our professional team. ")])
-				])) : (openBlock(), createElementBlock("div", _hoisted_29, "AI processing ... 20 seconds expected"))
-			], 64);
-		};
-	}
-});
-//#endregion
-//#region src/pages/HomeCustomer.vue?vue&type=script&setup=true&lang.ts
-var _hoisted_1$3 = /* @__PURE__ */ createBaseVNode("div", { class: "card" }, [/* @__PURE__ */ createBaseVNode("div", null, "Welcome"), /* @__PURE__ */ createBaseVNode("div", null, "https://whatsyourideal.com/")], -1);
-var _hoisted_2$3 = { class: "mt-[20px] card" };
-//#endregion
-//#region src/pages/HomeCustomer.vue
-var HomeCustomer_default = /* @__PURE__ */ defineComponent({
-	__name: "HomeCustomer",
-	setup(__props) {
-		const s = glib.vue.reactive({
-			providers: [],
-			rt: runtime
-		});
-		glib.vue.onMounted(async () => {
-			loader("/api/public/providers", {}, (rep) => {
-				s.providers = [];
-				rep.data.forEach((e) => {
-					let ucat = e.ucat;
-					let providers = [];
-					e.providers.forEach((p) => {
-						providers.push(p.p.Caption);
-					});
-					s.providers.push({
-						ucat: ucat.p.Caption,
-						uproviders: providers
-					});
-				});
-			});
-		});
-		return (_ctx, _cache) => {
-			return openBlock(), createElementBlock(Fragment, null, [_hoisted_1$3, createBaseVNode("div", _hoisted_2$3, [(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).providers, (item, index) => {
-				return openBlock(), createElementBlock("div", null, [createBaseVNode("div", null, [createBaseVNode("b", null, toDisplayString(item.ucat), 1), (openBlock(true), createElementBlock(Fragment, null, renderList(item.uproviders, (ii) => {
-					return openBlock(), createElementBlock("span", null, " | " + toDisplayString(ii), 1);
-				}), 256))])]);
-			}), 256))])], 64);
-		};
-	}
-});
-//#endregion
-//#region src/pages/Admin.vue?vue&type=script&setup=true&lang.ts
-var _hoisted_1$2 = { class: "flex justify-center" };
-var _hoisted_2$2 = { class: "hor-range" };
-var _hoisted_3$2 = { class: "card" };
-var _hoisted_4$2 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Users", -1);
-var _hoisted_5$2 = /* @__PURE__ */ createBaseVNode("div", { class: "flex justify-center" }, [/* @__PURE__ */ createBaseVNode("div", { class: "hor-range" })], -1);
-//#endregion
-//#region src/pages/Admin.vue
-var Admin_default = /* @__PURE__ */ defineComponent({
-	__name: "Admin",
-	setup(__props) {
-		const s = glib.vue.reactive({
-			users: [],
-			rt: runtime
-		});
-		const user__key = (eu) => {
-			return eu.id;
-		};
-		const user__text = (eu) => {
-			return eu.p.Caption + " " + eu.p.Username + " " + eu.p.Email;
-		};
-		const onSelectUser = (eu) => {};
-		glib.vue.onMounted(async () => {
-			loader("/api/admin/users", { act: "ls" }, (rep) => {
-				s.users = rep.data;
-			});
-		});
-		return (_ctx, _cache) => {
-			return openBlock(), createElementBlock(Fragment, null, [createBaseVNode("div", _hoisted_1$2, [createBaseVNode("div", _hoisted_2$2, [createBaseVNode("div", _hoisted_3$2, [
-				_hoisted_4$2,
-				createBaseVNode("div", null, [createVNode(SearchField_default, {
-					api: "/api/admin/users",
-					item__key: user__key,
-					item__text: user__text,
-					onSelect: onSelectUser
-				})]),
-				(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).users, (i) => {
-					return openBlock(), createElementBlock("div", null, toDisplayString(i.p.Email), 1);
-				}), 256))
-			])])]), _hoisted_5$2], 64);
-		};
-	}
-});
-//#endregion
-//#region src/lib/mod/route.ts
-var route_exports = /* @__PURE__ */ __exportAll({
-	incomingRoute: () => incomingRoute,
-	navigate: () => navigate,
-	router: () => router
-});
-var routes = [
-	{
-		path: "/",
-		component: HomeCustomer_default
-	},
-	{
-		path: "/UploadBills",
-		component: UploadBills_default
-	},
-	{
-		path: "/ReviewBills",
-		component: ReviewBills_default
-	},
-	{
-		path: "/admin",
-		component: Admin_default
-	}
-];
-var router = createRouter({
-	history: createMemoryHistory(),
-	routes
-});
-var navigate = (href, name, id) => {
-	let url = href;
-	if (url.indexOf("/zh/") > 0) {
-		runtime.lang = "zh";
-		localStorage.setItem("runtime.lang", runtime.lang);
-		url = url.replace("/zh/", "/");
-	}
-	if (url.indexOf("/en/") > 0) {
-		runtime.lang = "en";
-		localStorage.setItem("runtime.lang", runtime.lang);
-		url = url.replace("/en/", "/");
-	}
-	window.location.href = url;
-	if (id != 0) router.push({
-		name,
-		params: { id }
-	});
-	else router.push(name);
-};
-var pages = [];
-var incomingRoute = () => {
-	let path = window.location.pathname;
-	let hit = false;
-	pages.forEach((page) => {
-		let pattern = "/" + page + "/";
-		if (path.startsWith(pattern)) {
-			hit = true;
-			let id = path.substring(pattern.length);
-			router.push({
-				name: page,
-				params: { id }
-			});
-		}
-	});
-	if (hit == false) if (path.startsWith("/admin")) router.push("/admin");
-	else router.push("/");
-};
-//#endregion
-//#region src/lib/mod/panel.ts
-var panel_exports = /* @__PURE__ */ __exportAll({ tglPanel: () => tglPanel });
-var tglPanel = () => {
-	globalThis.panelrt.showpanel = !globalThis.panelrt.showpanel;
-};
-//#endregion
-//#region src/lib/store/host.ts
-var host_exports = /* @__PURE__ */ __exportAll({
-	checkDomain: () => checkDomain,
-	initHost: () => initHost
-});
-var checkDomain = (domain) => {
-	return [domain].includes(window.location.hostname);
-};
-var initHost = () => {
-	const hostname = window.location.hostname;
-	const host = {
-		hostname,
-		api: `${window.location.protocol}//${hostname}`,
-		wsurl: `wss://${hostname}/ws/`,
-		discordAPPID: "1254790111913181274",
-		discordRedirect: `${window.location.protocol}//${window.location.host}/redirect/DISCORD`
-	};
-	switch (host.hostname) {
-		case "localhost":
-			host.hostname = "localhost";
-			host.api = "https://localhost";
-			host.wsurl = "wss://localhost/";
-			break;
-		case "127.0.0.1":
-			host.hostname = "127.0.0.1";
-			host.api = "http://localhost";
-			host.wsurl = "wss://localhost/";
-			break;
-	}
-	console.log("host.hostname: " + host.hostname);
-	console.log("host.api: " + host.api);
-	console.log("host.wsurl: " + host.wsurl);
-	return host;
-};
-//#endregion
-//#region src/lib/store/init.ts
-var wsOnOpen = (runtime) => (event) => {
-	console.log("WebSocket connected");
-};
-var wsOnClose = (runtime) => (event) => {
-	console.log("WebSocket closed");
-};
-var wsOnError = (runtime) => (event) => {
-	console.log(event);
-};
-var wsOnMsg = (runtime) => (event) => {
-	let msg = event.data;
-	switch (msg.e) {
-		case MsgEnum.ApiResponse:
-			console.log(msg.val);
-			break;
-	}
-};
-var initRuntime = (runtime) => {
-	runtime.host = initHost();
-	let ws = new WebSocket(runtime.host.wsurl);
-	ws.onopen = wsOnOpen(runtime);
-	ws.onclose = wsOnClose(runtime);
-	ws.onerror = wsOnError(runtime);
-	ws.onmessage = wsOnMsg(runtime);
-	runtime.wsctx.ws = ws;
-};
-//#endregion
-//#region src/lib/store/runtime.ts
-var runtime_exports = /* @__PURE__ */ __exportAll({
-	createGlobalWatcher: () => createGlobalWatcher,
-	getRT: () => getRT,
-	loadLS: () => loadLS,
-	prepRuntime: () => prepRuntime,
-	prstLS: () => prstLS,
-	setNested: () => setNested,
-	setRT: () => setRT
-});
-var loadLS = (key, defaultv = "{}") => {
-	const v = window.localStorage.getItem(key);
-	if (v != void 0) try {
-		return JSON.parse(v);
-	} catch {
-		if (v) return v;
-		else return defaultv;
-	}
-	return defaultv;
-};
-var prstLS = (key, value) => {
-	window.localStorage.setItem(key, JSON.stringify(value));
-};
-var initWebSocketMeta = () => {
-	return {
-		ws: {},
-		ping: null,
-		autoping: true,
-		pinginterval: 7e3,
-		sent: 0,
-		sentsize: 0,
-		rec: 0,
-		recsize: 0
-	};
-};
-var prepRuntime = () => {
-	let runtime = {
-		host: {},
-		wsctx: initWebSocketMeta(),
-		router: glib.route.router,
-		session: loadLS("session", ""),
-		user: {},
-		data: ClientRuntime_empty()
-	};
-	initRuntime(runtime);
-	return runtime;
-};
-var getRT = (key, obj = runtime) => {
-	return key.split(".").reduce((acc, curr) => acc?.[curr], obj);
-};
-var setNested = (key, value, f_map = (value) => {
-	return value;
-}, obj = runtime) => {
-	const keys = key.split(".");
-	const lastKey = keys.pop();
-	if (!lastKey) return;
-	const parent = keys.reduce((acc, curr) => acc?.[curr] ?? (acc[curr] = {}), obj);
-	parent[lastKey] = f_map(value);
-};
-var setRT = setNested;
-var createGlobalWatcher = () => {
-	const createwatch = (rtkeys) => {
-		for (const rtkey of rtkeys);
-	};
-	createwatch(["session", "devmode"]);
-};
-//#endregion
-//#region src/lib/glib.ts
-var glib = {
-	vue: vue_runtime_esm_bundler_exports,
-	check: check_exports,
-	ws: ws_exports,
-	bin: bin_exports,
-	markdown: markdown_exports,
-	g: graphics_exports,
-	misc: misc_exports,
-	auth: auth_exports,
-	notify: notify_exports,
-	route: route_exports,
-	panel: panel_exports,
-	host: host_exports,
-	runtime: runtime_exports,
-	Mor: { studio: {
-		...CustomMor_exports,
-		...OrmMor_exports
-	} },
-	post,
-	get,
-	send: trySend,
-	setRT,
-	getRT,
-	sleep: sleep$1
-};
-//#endregion
 //#region node_modules/@clerk/shared/dist/runtime/clerkRuntimeError-DqAmLuLY.mjs
 /**
 * Creates a type guard function for any error class.
@@ -10772,7 +8993,7 @@ var ClerkRuntimeError = class ClerkRuntimeError extends ClerkError {
 };
 createErrorTypeGuard(ClerkRuntimeError);
 //#endregion
-//#region node_modules/@clerk/shared/dist/runtime/error-D-ayZ5nL.mjs
+//#region node_modules/@clerk/shared/dist/runtime/error-NXMTfCAv.mjs
 /**
 * This error contains the specific error message, code, and any additional metadata that was returned by the Clerk API.
 */
@@ -11481,7 +9702,7 @@ function addClerkPrefix(str) {
 	return `clerk.${str.replace(regex, "")}`;
 }
 //#endregion
-//#region node_modules/@clerk/shared/dist/runtime/versionSelector-Cx1-K89P.mjs
+//#region node_modules/@clerk/shared/dist/runtime/versionSelector-I9tt_lXz.mjs
 /**
 * This version selector is a bit complicated, so here is the flow:
 * 1. Use the clerkJSVersion prop on the provider
@@ -11493,7 +9714,7 @@ function addClerkPrefix(str) {
 * @param packageVersion - The version of `@clerk/clerk-js` that will be used if an explicit version is not provided
 * @returns The npm tag, version or major version to use
 */
-var versionSelector = (clerkJSVersion, packageVersion = "6.3.2") => {
+var versionSelector = (clerkJSVersion, packageVersion = "6.6.0") => {
 	if (clerkJSVersion) return clerkJSVersion;
 	const prereleaseTag = getPrereleaseTag(packageVersion);
 	if (prereleaseTag) {
@@ -11640,7 +9861,7 @@ var clerkUIScriptUrl = (opts) => {
 		publishableKey,
 		proxyUrl,
 		domain
-	})}/npm/@clerk/ui@${versionSelector(__internal_clerkUIVersion, "1.2.3")}/dist/ui.browser.js`;
+	})}/npm/@clerk/ui@${versionSelector(__internal_clerkUIVersion, "1.5.0")}/dist/ui.browser.js`;
 };
 var buildClerkJSScriptAttributes = (options) => {
 	const obj = {};
@@ -12793,7 +11014,7 @@ function _sfc_render14(_ctx, _cache, $props, $setup, $data, $options) {
 var SignInButton_default = /* @__PURE__ */ export_helper_default(_sfc_main14, [["render", _sfc_render14], ["__file", "/home/runner/work/javascript/javascript/packages/vue/src/components/SignInButton.vue"]]);
 var SDK_METADATA = {
 	name: "@clerk/vue",
-	version: "2.0.7",
+	version: "2.0.11",
 	environment: "production"
 };
 var clerkPlugin = { install(app, pluginOptions) {
@@ -12875,22 +11096,43 @@ var clerkPlugin = { install(app, pluginOptions) {
 setErrorThrowerOptions({ packageName: "@clerk/vue" });
 setClerkJSLoadingErrorPackageName("@clerk/vue");
 //#endregion
+//#region src/lib/store/common.ts
+var loader = async (url, post, h, ex = () => {}) => {
+	post.session = runtime.session;
+	let rep = await glib.post(url, post);
+	if (rep.Er == "OK") h(rep);
+	else ex(rep);
+};
+//#endregion
 //#region src/comps/UserAuth.vue?vue&type=script&setup=true&lang.ts
-var _hoisted_1$1 = {
+var _hoisted_1$29 = {
 	key: 0,
 	class: "flex items-center"
 };
-var _hoisted_2$1 = {
-	key: 0,
+var _hoisted_2$23 = { key: 0 };
+var _hoisted_3$19 = ["src"];
+var _hoisted_4$16 = {
+	key: 1,
 	class: "p-[15px]"
 };
-var _hoisted_3$1 = {
+var _hoisted_5$12 = {
 	key: 1,
 	class: "flex items-center"
 };
-var _hoisted_4$1 = /* @__PURE__ */ createBaseVNode("button", { class: "px-2 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-sm shadow-md transition-all flex items-center gap-1" }, [/* @__PURE__ */ createBaseVNode("i", { class: "ri-login-box-line" }), /* @__PURE__ */ createBaseVNode("span", null, "Sign In")], -1);
-var _hoisted_5$1 = /* @__PURE__ */ createBaseVNode("div", { class: "px-2" }, "with", -1);
-var _hoisted_6$1 = /* @__PURE__ */ createBaseVNode("img", { src: "https://img.clerk.com/static/google.svg?width=160" }, null, -1);
+var _hoisted_6$9 = /* @__PURE__ */ createBaseVNode("button", { class: "px-2 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-sm shadow-md transition-all flex items-center gap-1" }, [/* @__PURE__ */ createBaseVNode("i", { class: "ri-login-box-line" }), /* @__PURE__ */ createBaseVNode("span", null, "Sign In")], -1);
+var _hoisted_7$8 = /* @__PURE__ */ createBaseVNode("div", { class: "px-2" }, "with", -1);
+var _hoisted_8$8 = /* @__PURE__ */ createBaseVNode("img", {
+	class: "img-oauth",
+	src: "https://img.clerk.com/static/google.svg"
+}, null, -1);
+var _hoisted_9$7 = /* @__PURE__ */ createBaseVNode("img", {
+	class: "img-oauth",
+	src: "https://img.clerk.com/static/apple.svg"
+}, null, -1);
+var _hoisted_10$6 = /* @__PURE__ */ createBaseVNode("img", {
+	class: "img-oauth",
+	src: "https://img.clerk.com/static/microsoft.svg"
+}, null, -1);
 //#endregion
 //#region src/comps/UserAuth.vue
 var UserAuth_default = /* @__PURE__ */ defineComponent({
@@ -12901,76 +11143,1720 @@ var UserAuth_default = /* @__PURE__ */ defineComponent({
 		const s = glib.vue.reactive({ rt: runtime });
 		glib.vue.onMounted(async () => {});
 		watch(isSignedIn, async (newVal) => {
-			if (newVal === true) {
-				console.log("🚀 登录成功，准备联调后端...");
-				try {
-					const { Er, session, eux } = await post("/api/public/auth", {
-						clerkId: user?.value?.id,
-						email: user?.value?.primaryEmailAddress?.emailAddress,
-						caption: user?.value?.fullName || user?.value?.username,
-						avatar: user?.value?.imageUrl
-					});
-					if (Er === "OK") {
-						s.rt.user = eux;
-						s.rt.session = session;
-					}
-				} catch (err) {
-					console.error("❌ 请求后端失败，请检查终端日志或 C# 断面:", err);
+			if (newVal === true) try {
+				const { Er, session, eux } = await post("/api/public/auth", {
+					oauthProvider: user?.value?.externalAccounts?.[0]?.provider || "",
+					clerkId: user?.value?.id,
+					email: user?.value?.primaryEmailAddress?.emailAddress,
+					caption: user?.value?.fullName || user?.value?.username,
+					avatar: user?.value?.imageUrl
+				});
+				if (Er === "OK") {
+					s.rt.user = eux;
+					s.rt.session = session;
 				}
-			}
+			} catch (err) {}
 		});
 		return (_ctx, _cache) => {
-			const _component_router_link = resolveComponent("router-link");
-			return unref(s).rt.user && unref(s).rt.user.eu.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_1$1, [
+			return unref(s).rt.user && unref(s).rt.user.eu.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_1$29, [
 				createVNode(unref(UserButton)),
 				createBaseVNode("div", null, toDisplayString(unref(s).rt.user.eu.p.Email), 1),
-				unref(s).rt.user.eu.p.AuthType == 2 ? (openBlock(), createElementBlock("div", _hoisted_2$1, [createVNode(_component_router_link, { to: "/Admin" }, {
-					default: withCtx(() => [createTextVNode("Admin")]),
-					_: 1
-				})])) : createCommentVNode("", true)
-			])) : (openBlock(), createElementBlock("div", _hoisted_3$1, [
+				unref(s).rt.user.eu.p.OAuthProvider != "" ? (openBlock(), createElementBlock("div", _hoisted_2$23, [createBaseVNode("img", {
+					class: "img-oauth",
+					src: "https://img.clerk.com/static/" + unref(s).rt.user.eu.p.OAuthProvider + ".svg"
+				}, null, 8, _hoisted_3$19)])) : createCommentVNode("", true),
+				unref(s).rt.user.eu.p.AuthType == 2 ? (openBlock(), createElementBlock("div", _hoisted_4$16, [createBaseVNode("button", {
+					class: "button-small",
+					onClick: _cache[0] || (_cache[0] = ($event) => unref(router).push("/Admin/Home"))
+				}, "Admin Console")])) : createCommentVNode("", true)
+			])) : (openBlock(), createElementBlock("div", _hoisted_5$12, [
 				createVNode(unref(SignInButton_default), { asChild: "" }, {
-					default: withCtx(() => [_hoisted_4$1]),
+					default: withCtx(() => [_hoisted_6$9]),
 					_: 1
 				}),
-				_hoisted_5$1,
-				_hoisted_6$1
+				_hoisted_7$8,
+				_hoisted_8$8,
+				_hoisted_9$7,
+				_hoisted_10$6
 			]));
 		};
 	}
 });
 //#endregion
-//#region src/App.vue
-var _hoisted_1 = { class: "flex" };
-var _hoisted_2 = { class: "lg:w-[1200px] m-[10px]" };
-var _hoisted_3 = { class: "main-color w-screen" };
-var _hoisted_4 = { class: "w-full flex bg-[#9999ff] px-3 py-1 gap-5" };
-var _hoisted_5 = /* @__PURE__ */ createBaseVNode("div", { class: "hor" }, null, -1);
-var _hoisted_6 = /* @__PURE__ */ createBaseVNode("div", { class: "flex justify-center" }, [/* @__PURE__ */ createBaseVNode("div", { class: "hor-range" }, [/* @__PURE__ */ createBaseVNode("div", { class: "pt-2 pb-5" }, [/* @__PURE__ */ createBaseVNode("br"), /* @__PURE__ */ createTextVNode("© 2026 WYI ")])])], -1);
-var _sfc_main = {
-	__name: "App",
+//#region src/pages/Eu.vue
+var _hoisted_1$28 = { class: "lg:w-[1200px] m-[10px]" };
+var _hoisted_2$22 = { class: "main-color w-screen" };
+var _hoisted_3$18 = { class: "w-full flex bg-[#9999ff] px-3 py-1 gap-5" };
+var _sfc_main$3 = {
+	__name: "Eu",
 	setup(__props) {
-		glib.vue.reactive({ rt: runtime });
+		const s = glib.vue.reactive({ rt: runtime });
+		const check = () => {
+			if (s.rt.user == null) return false;
+			if (s.rt.user.eu.id == 0) return false;
+			else return true;
+		};
 		return (_ctx, _cache) => {
 			const _component_router_link = resolveComponent("router-link");
 			const _component_router_view = resolveComponent("router-view");
-			return openBlock(), createElementBlock(Fragment, null, [createBaseVNode("div", _hoisted_1, [createVNode(UserAuth_default, { onChanged: _ctx.onAuthChanged }, null, 8, ["onChanged"])]), createBaseVNode("div", _hoisted_2, [createBaseVNode("div", _hoisted_3, [
-				createBaseVNode("div", _hoisted_4, [createVNode(_component_router_link, {
+			return openBlock(), createElementBlock("div", _hoisted_1$28, [createBaseVNode("div", _hoisted_2$22, [createBaseVNode("div", _hoisted_3$18, [
+				createVNode(_component_router_link, {
 					to: "/",
 					class: "text-white hover:text-gray-400"
 				}, {
 					default: withCtx(() => [createTextVNode("Home")]),
 					_: 1
-				}), createVNode(_component_router_link, {
-					to: "/UploadBills",
+				}),
+				check() ? (openBlock(), createBlock(_component_router_link, {
+					key: 0,
+					to: "/eu/uploadBill",
 					class: "text-white hover:text-gray-400"
 				}, {
-					default: withCtx(() => [createTextVNode("Upload Bills")]),
+					default: withCtx(() => [createTextVNode(" Upload Bills")]),
 					_: 1
-				})]),
+				})) : createCommentVNode("", true),
+				check() ? (openBlock(), createBlock(_component_router_link, {
+					key: 1,
+					to: "/eu/MyBills",
+					class: "text-white hover:text-gray-400"
+				}, {
+					default: withCtx(() => [createTextVNode(" My Bills")]),
+					_: 1
+				})) : createCommentVNode("", true),
+				check() ? (openBlock(), createBlock(_component_router_link, {
+					key: 2,
+					to: "/eu/myUnits",
+					class: "text-white hover:text-gray-400"
+				}, {
+					default: withCtx(() => [createTextVNode(" My Units")]),
+					_: 1
+				})) : createCommentVNode("", true),
+				check() ? (openBlock(), createBlock(_component_router_link, {
+					key: 3,
+					to: "/eu/myAcctxs",
+					class: "text-white hover:text-gray-400"
+				}, {
+					default: withCtx(() => [createTextVNode(" My Accounts")]),
+					_: 1
+				})) : createCommentVNode("", true)
+			]), createVNode(_component_router_view, { class: "min-h-[600px]" })])]);
+		};
+	}
+};
+//#endregion
+//#region src/pages/Admin.vue
+var _hoisted_1$27 = { class: "lg:w-[1200px] m-[10px]" };
+var _hoisted_2$21 = { class: "main-color w-screen" };
+var _hoisted_3$17 = { class: "w-full flex bg-[#ffcc99] px-3 py-1 gap-5" };
+var _sfc_main$2 = {
+	__name: "Admin",
+	setup(__props) {
+		const s = glib.vue.reactive({ rt: runtime });
+		glib.vue.onMounted(async () => {
+			if (s.rt.user == null) s.rt.router.push("/");
+			if (s.rt.user.eu.id == 0) s.rt.router.push("/");
+			if (s.rt.user.eu.p.AuthType != 2) s.rt.router.push("/");
+		});
+		return (_ctx, _cache) => {
+			const _component_router_link = resolveComponent("router-link");
+			const _component_router_view = resolveComponent("router-view");
+			return openBlock(), createElementBlock("div", _hoisted_1$27, [createBaseVNode("div", _hoisted_2$21, [createBaseVNode("div", _hoisted_3$17, [
+				createVNode(_component_router_link, {
+					to: "/eu/home",
+					class: "bg-white px-2 text-[#ffcc99] hover:text-gray-400"
+				}, {
+					default: withCtx(() => [createTextVNode(" User View ")]),
+					_: 1
+				}),
+				createVNode(_component_router_link, {
+					to: "/",
+					class: "text-white hover:text-gray-400"
+				}, {
+					default: withCtx(() => [createTextVNode(" Home ")]),
+					_: 1
+				}),
+				createVNode(_component_router_link, {
+					to: "/admin/users",
+					class: "text-white hover:text-gray-400"
+				}, {
+					default: withCtx(() => [createTextVNode(" Users ")]),
+					_: 1
+				}),
+				createVNode(_component_router_link, {
+					to: "/admin/providers",
+					class: "text-white hover:text-gray-400"
+				}, {
+					default: withCtx(() => [createTextVNode(" Providers ")]),
+					_: 1
+				}),
+				createVNode(_component_router_link, {
+					to: "/admin/bills",
+					class: "text-white hover:text-gray-400"
+				}, {
+					default: withCtx(() => [createTextVNode(" Bills ")]),
+					_: 1
+				}),
+				createVNode(_component_router_link, {
+					to: "/admin/sys",
+					class: "text-white hover:text-gray-400"
+				}, {
+					default: withCtx(() => [createTextVNode(" System ")]),
+					_: 1
+				})
+			]), createVNode(_component_router_view, { class: "min-h-[600px]" })])]);
+		};
+	}
+};
+//#endregion
+//#region \0vite/preload-helper.js
+var scriptRel = "modulepreload";
+var assetsURL = function(dep) {
+	return "/" + dep;
+};
+var seen = {};
+var __vitePreload = function preload(baseModule, deps, importerUrl) {
+	let promise = Promise.resolve();
+	if (deps && deps.length > 0) {
+		let allSettled = function(promises) {
+			return Promise.all(promises.map((p) => Promise.resolve(p).then((value) => ({
+				status: "fulfilled",
+				value
+			}), (reason) => ({
+				status: "rejected",
+				reason
+			}))));
+		};
+		const links = document.getElementsByTagName("link"), cspNonceMeta = document.querySelector("meta[property=csp-nonce]"), cspNonce = cspNonceMeta?.nonce || cspNonceMeta?.getAttribute("nonce");
+		promise = allSettled(deps.map((dep) => {
+			dep = assetsURL(dep, importerUrl);
+			if (dep in seen) return;
+			seen[dep] = !0;
+			const isCss = dep.endsWith(".css"), cssSelector = isCss ? "[rel=\"stylesheet\"]" : "";
+			if (importerUrl) for (let i = links.length - 1; i >= 0; i--) {
+				const link = links[i];
+				if (link.href === dep && (!isCss || link.rel === "stylesheet")) return;
+			}
+			else if (document.querySelector(`link[href="${dep}"]${cssSelector}`)) return;
+			const link = document.createElement("link");
+			link.rel = isCss ? "stylesheet" : scriptRel;
+			if (!isCss) link.as = "script";
+			link.crossOrigin = "";
+			link.href = dep;
+			if (cspNonce) link.setAttribute("nonce", cspNonce);
+			document.head.appendChild(link);
+			if (isCss) return new Promise((res, rej) => {
+				link.addEventListener("load", res);
+				link.addEventListener("error", () => rej(Error(`Unable to preload CSS for ${dep}`)));
+			});
+		}));
+	}
+	function handlePreloadError(err) {
+		const e = new Event("vite:preloadError", { cancelable: !0 });
+		e.payload = err;
+		window.dispatchEvent(e);
+		if (!e.defaultPrevented) throw err;
+	}
+	return promise.then((res) => {
+		for (const item of res || []) {
+			if (item.status !== "rejected") continue;
+			handlePreloadError(item.reason);
+		}
+		return baseModule().catch(handlePreloadError);
+	});
+};
+//#endregion
+//#region src/lib/mod/route.ts
+var route_exports = /* @__PURE__ */ __exportAll({
+	incomingRoute: () => incomingRoute,
+	navigate: () => navigate,
+	router: () => router
+});
+var routes = [
+	{
+		path: "/eu",
+		component: _sfc_main$3,
+		children: [
+			{
+				path: "home",
+				component: () => __vitePreload(() => Promise.resolve().then(() => Home_exports), void 0)
+			},
+			{
+				path: "uploadBill",
+				component: () => __vitePreload(() => Promise.resolve().then(() => UploadBill_exports), void 0)
+			},
+			{
+				path: "reviewBill",
+				component: () => __vitePreload(() => Promise.resolve().then(() => ReviewBill_exports), void 0)
+			},
+			{
+				path: "myUnits",
+				component: () => __vitePreload(() => Promise.resolve().then(() => MyUnits_exports), void 0)
+			},
+			{
+				path: "myBills",
+				component: () => __vitePreload(() => Promise.resolve().then(() => MyBills_exports), void 0)
+			},
+			{
+				path: "myAcctxs",
+				component: () => __vitePreload(() => Promise.resolve().then(() => MyAcctxs_exports), void 0)
+			}
+		]
+	},
+	{
+		path: "/admin",
+		component: _sfc_main$2,
+		children: [
+			{
+				path: "home",
+				component: () => __vitePreload(() => Promise.resolve().then(() => Home_exports$1), void 0)
+			},
+			{
+				path: "sys",
+				component: () => __vitePreload(() => Promise.resolve().then(() => Sys_exports), void 0)
+			},
+			{
+				path: "providers",
+				component: () => __vitePreload(() => Promise.resolve().then(() => Providers_exports), void 0)
+			},
+			{
+				path: "provider/:cat/:provider",
+				component: () => __vitePreload(() => Promise.resolve().then(() => Provider_exports), void 0),
+				props: true
+			},
+			{
+				path: "users",
+				component: () => __vitePreload(() => Promise.resolve().then(() => Users_exports), void 0)
+			},
+			{
+				path: "bills",
+				component: () => __vitePreload(() => Promise.resolve().then(() => Bills_exports), void 0)
+			}
+		]
+	},
+	{
+		path: "/",
+		redirect: "/eu/home"
+	}
+];
+var router = createRouter({
+	history: createMemoryHistory(),
+	routes
+});
+var navigate = (href, name, id) => {
+	let url = href;
+	if (url.indexOf("/zh/") > 0) {
+		runtime.lang = "zh";
+		localStorage.setItem("runtime.lang", runtime.lang);
+		url = url.replace("/zh/", "/");
+	}
+	if (url.indexOf("/en/") > 0) {
+		runtime.lang = "en";
+		localStorage.setItem("runtime.lang", runtime.lang);
+		url = url.replace("/en/", "/");
+	}
+	window.location.href = url;
+	if (id != 0) router.push({
+		name,
+		params: { id }
+	});
+	else router.push(name);
+};
+var pages = [];
+var incomingRoute = () => {
+	let path = window.location.pathname;
+	let hit = false;
+	pages.forEach((page) => {
+		let pattern = "/" + page + "/";
+		if (path.startsWith(pattern)) {
+			hit = true;
+			let id = path.substring(pattern.length);
+			router.push({
+				name: page,
+				params: { id }
+			});
+		}
+	});
+	if (hit == false) if (path.startsWith("/admin")) router.push("/admin");
+	else router.push("/");
+};
+//#endregion
+//#region src/lib/mod/panel.ts
+var panel_exports = /* @__PURE__ */ __exportAll({ tglPanel: () => tglPanel });
+var tglPanel = () => {
+	globalThis.panelrt.showpanel = !globalThis.panelrt.showpanel;
+};
+//#endregion
+//#region src/lib/store/host.ts
+var host_exports = /* @__PURE__ */ __exportAll({
+	checkDomain: () => checkDomain,
+	initHost: () => initHost
+});
+var checkDomain = (domain) => {
+	return [domain].includes(window.location.hostname);
+};
+var initHost = () => {
+	const hostname = window.location.hostname;
+	const host = {
+		hostname,
+		api: `${window.location.protocol}//${hostname}`,
+		wsurl: `wss://${hostname}/ws/`,
+		discordAPPID: "1254790111913181274",
+		discordRedirect: `${window.location.protocol}//${window.location.host}/redirect/DISCORD`
+	};
+	switch (host.hostname) {
+		case "localhost":
+			host.hostname = "localhost";
+			host.api = "https://localhost";
+			host.wsurl = "wss://localhost/";
+			break;
+		case "127.0.0.1":
+			host.hostname = "127.0.0.1";
+			host.api = "http://localhost";
+			host.wsurl = "wss://localhost/";
+			break;
+	}
+	console.log("host.hostname: " + host.hostname);
+	console.log("host.api: " + host.api);
+	console.log("host.wsurl: " + host.wsurl);
+	return host;
+};
+//#endregion
+//#region src/lib/shared/OrmMor.ts
+var OrmMor_exports = /* @__PURE__ */ __exportAll({
+	CONFIG__bin: () => CONFIG__bin,
+	CONFIG_empty: () => CONFIG_empty,
+	EU__bin: () => EU__bin,
+	EU_empty: () => EU_empty,
+	FBIND__bin: () => FBIND__bin,
+	FBIND_empty: () => FBIND_empty,
+	FILE__bin: () => FILE__bin,
+	FILE_empty: () => FILE_empty,
+	KUCP__bin: () => KUCP__bin,
+	KUCP_empty: () => KUCP_empty,
+	LOG__bin: () => LOG__bin,
+	LOG_empty: () => LOG_empty,
+	MOMENT__bin: () => MOMENT__bin,
+	MOMENT_empty: () => MOMENT_empty,
+	PLOG__bin: () => PLOG__bin,
+	PLOG_empty: () => PLOG_empty,
+	POOL__bin: () => POOL__bin,
+	POOL_empty: () => POOL_empty,
+	UACCT__bin: () => UACCT__bin,
+	UACCT_empty: () => UACCT_empty,
+	UBILL__bin: () => UBILL__bin,
+	UBILL_empty: () => UBILL_empty,
+	UCAT__bin: () => UCAT__bin,
+	UCAT_empty: () => UCAT_empty,
+	UNIT__bin: () => UNIT__bin,
+	UNIT_empty: () => UNIT_empty,
+	UPROVIDER__bin: () => UPROVIDER__bin,
+	UPROVIDER_empty: () => UPROVIDER_empty,
+	bin__CONFIG: () => bin__CONFIG,
+	bin__EU: () => bin__EU,
+	bin__FBIND: () => bin__FBIND,
+	bin__FILE: () => bin__FILE,
+	bin__KUCP: () => bin__KUCP,
+	bin__LOG: () => bin__LOG,
+	bin__MOMENT: () => bin__MOMENT,
+	bin__PLOG: () => bin__PLOG,
+	bin__POOL: () => bin__POOL,
+	bin__UACCT: () => bin__UACCT,
+	bin__UBILL: () => bin__UBILL,
+	bin__UCAT: () => bin__UCAT,
+	bin__UNIT: () => bin__UNIT,
+	bin__UPROVIDER: () => bin__UPROVIDER,
+	bin__pCONFIG: () => bin__pCONFIG,
+	bin__pEU: () => bin__pEU,
+	bin__pFBIND: () => bin__pFBIND,
+	bin__pFILE: () => bin__pFILE,
+	bin__pKUCP: () => bin__pKUCP,
+	bin__pLOG: () => bin__pLOG,
+	bin__pMOMENT: () => bin__pMOMENT,
+	bin__pPLOG: () => bin__pPLOG,
+	bin__pPOOL: () => bin__pPOOL,
+	bin__pUACCT: () => bin__pUACCT,
+	bin__pUBILL: () => bin__pUBILL,
+	bin__pUCAT: () => bin__pUCAT,
+	bin__pUNIT: () => bin__pUNIT,
+	bin__pUPROVIDER: () => bin__pUPROVIDER,
+	euAuthTypeEnum_Admin: () => 2,
+	euAuthTypeEnum_Authorized: () => 1,
+	euAuthTypeEnum_Normal: () => 0,
+	fileStateEnum_Failed: () => 1,
+	fileStateEnum_Normal: () => 0,
+	momentMediaTypeEnum_Audio: () => 2,
+	momentMediaTypeEnum_None: () => 0,
+	momentMediaTypeEnum_Video: () => 1,
+	momentStateEnum_Deleted: () => 1,
+	momentStateEnum_Normal: () => 0,
+	momentStateEnum_Scratch: () => 2,
+	momentTypeEnum_Answer: () => 5,
+	momentTypeEnum_BookmarkList: () => 6,
+	momentTypeEnum_Dict: () => 9,
+	momentTypeEnum_Forum: () => 3,
+	momentTypeEnum_MediaFile: () => 11,
+	momentTypeEnum_Miles: () => 8,
+	momentTypeEnum_Original: () => 0,
+	momentTypeEnum_Poll: () => 7,
+	momentTypeEnum_Question: () => 4,
+	momentTypeEnum_Repost: () => 1,
+	momentTypeEnum_Thread: () => 2,
+	momentTypeEnum_WebPage: () => 10,
+	pCONFIG__bin: () => pCONFIG__bin,
+	pCONFIG_empty: () => pCONFIG_empty,
+	pEU__bin: () => pEU__bin,
+	pEU_empty: () => pEU_empty,
+	pFBIND__bin: () => pFBIND__bin,
+	pFBIND_empty: () => pFBIND_empty,
+	pFILE__bin: () => pFILE__bin,
+	pFILE_empty: () => pFILE_empty,
+	pKUCP__bin: () => pKUCP__bin,
+	pKUCP_empty: () => pKUCP_empty,
+	pLOG__bin: () => pLOG__bin,
+	pLOG_empty: () => pLOG_empty,
+	pMOMENT__bin: () => pMOMENT__bin,
+	pMOMENT_empty: () => pMOMENT_empty,
+	pPLOG__bin: () => pPLOG__bin,
+	pPLOG_empty: () => pPLOG_empty,
+	pPOOL__bin: () => pPOOL__bin,
+	pPOOL_empty: () => pPOOL_empty,
+	pUACCT__bin: () => pUACCT__bin,
+	pUACCT_empty: () => pUACCT_empty,
+	pUBILL__bin: () => pUBILL__bin,
+	pUBILL_empty: () => pUBILL_empty,
+	pUCAT__bin: () => pUCAT__bin,
+	pUCAT_empty: () => pUCAT_empty,
+	pUNIT__bin: () => pUNIT__bin,
+	pUNIT_empty: () => pUNIT_empty,
+	pUPROVIDER__bin: () => pUPROVIDER__bin,
+	pUPROVIDER_empty: () => pUPROVIDER_empty,
+	poolStateEnum_Closed: () => 2,
+	poolStateEnum_Draft: () => 0,
+	poolStateEnum_OnGoing: () => 1,
+	ubillStateEnum_Accepted: () => 2,
+	ubillStateEnum_Closed: () => 3,
+	ubillStateEnum_Declined: () => 1,
+	ubillStateEnum_Submitted: () => 0
+});
+var marshall$1 = { ...bin_exports };
+var pEU__bin = (bb) => (p) => {
+	marshall$1.str__bin(bb)(p.Caption);
+	marshall$1.str__bin(bb)(p.Username);
+	marshall$1.str__bin(bb)(p.Email);
+	marshall$1.str__bin(bb)(p.Avatar);
+	marshall$1.str__bin(bb)(p.OAuthProvider);
+	marshall$1.str__bin(bb)(p.ClerkUserID);
+	marshall$1.str__bin(bb)(p.Pwd);
+	marshall$1.int32__bin(bb)(p.AuthType);
+};
+var EU__bin = (bb) => (v) => {
+	marshall$1.int64__bin(bb)(v.id);
+	marshall$1.int64__bin(bb)(v.sort);
+	marshall$1.DateTime__bin(bb)(v.createdat);
+	marshall$1.DateTime__bin(bb)(v.updatedat);
+	pEU__bin(bb)(v.p);
+};
+var bin__pEU = (bi) => {
+	let p = pEU_empty();
+	p.Caption = marshall$1.bin__str(bi);
+	p.Username = marshall$1.bin__str(bi);
+	p.Email = marshall$1.bin__str(bi);
+	p.Avatar = marshall$1.bin__str(bi);
+	p.OAuthProvider = marshall$1.bin__str(bi);
+	p.ClerkUserID = marshall$1.bin__str(bi);
+	p.Pwd = marshall$1.bin__str(bi);
+	p.AuthType = marshall$1.bin__int32(bi);
+	return p;
+};
+var bin__EU = (bi) => {
+	return {
+		id: marshall$1.bin__int64(bi),
+		sort: marshall$1.bin__int64(bi),
+		createdat: marshall$1.bin__DateTime(bi),
+		updatedat: marshall$1.bin__DateTime(bi),
+		p: bin__pEU(bi)
+	};
+};
+var pFILE__bin = (bb) => (p) => {
+	marshall$1.str__bin(bb)(p.Caption);
+	marshall$1.str__bin(bb)(p.Path);
+	marshall$1.int32__bin(bb)(p.State);
+	marshall$1.str__bin(bb)(p.ContentType);
+	marshall$1.str__bin(bb)(p.Suffix);
+	marshall$1.int64__bin(bb)(p.Size);
+	marshall$1.int32__bin(bb)(p.Thumbnail.length);
+	bb.append(p.Thumbnail);
+	marshall$1.int64__bin(bb)(p.Owner);
+	marshall$1.int64__bin(bb)(p.Cat);
+	marshall$1.int64__bin(bb)(p.Provider);
+	marshall$1.int64__bin(bb)(p.Unit);
+	marshall$1.int64__bin(bb)(p.Bill);
+};
+var FILE__bin = (bb) => (v) => {
+	marshall$1.int64__bin(bb)(v.id);
+	marshall$1.int64__bin(bb)(v.sort);
+	marshall$1.DateTime__bin(bb)(v.createdat);
+	marshall$1.DateTime__bin(bb)(v.updatedat);
+	pFILE__bin(bb)(v.p);
+};
+var bin__pFILE = (bi) => {
+	let p = pFILE_empty();
+	p.Caption = marshall$1.bin__str(bi);
+	p.Path = marshall$1.bin__str(bi);
+	p.State = marshall$1.bin__int32(bi);
+	p.ContentType = marshall$1.bin__str(bi);
+	p.Suffix = marshall$1.bin__str(bi);
+	p.Size = marshall$1.bin__int64(bi);
+	let lengthThumbnail = bin__int32(bi);
+	p.Thumbnail = bi.bin.slice(bi.index, lengthThumbnail);
+	bi.index += lengthThumbnail;
+	p.Owner = marshall$1.bin__int64(bi);
+	p.Cat = marshall$1.bin__int64(bi);
+	p.Provider = marshall$1.bin__int64(bi);
+	p.Unit = marshall$1.bin__int64(bi);
+	p.Bill = marshall$1.bin__int64(bi);
+	return p;
+};
+var bin__FILE = (bi) => {
+	return {
+		id: marshall$1.bin__int64(bi),
+		sort: marshall$1.bin__int64(bi),
+		createdat: marshall$1.bin__DateTime(bi),
+		updatedat: marshall$1.bin__DateTime(bi),
+		p: bin__pFILE(bi)
+	};
+};
+var pPOOL__bin = (bb) => (p) => {
+	marshall$1.int64__bin(bb)(p.Cat);
+	marshall$1.int64__bin(bb)(p.Provider);
+	marshall$1.int64__bin(bb)(p.Manager);
+	marshall$1.int32__bin(bb)(p.State);
+	marshall$1.str__bin(bb)(p.Notes);
+	marshall$1.float__bin(bb)(p.Amt);
+	marshall$1.float__bin(bb)(p.AmtReduction);
+	marshall$1.float__bin(bb)(p.AmtReturn);
+};
+var POOL__bin = (bb) => (v) => {
+	marshall$1.int64__bin(bb)(v.id);
+	marshall$1.int64__bin(bb)(v.sort);
+	marshall$1.DateTime__bin(bb)(v.createdat);
+	marshall$1.DateTime__bin(bb)(v.updatedat);
+	pPOOL__bin(bb)(v.p);
+};
+var bin__pPOOL = (bi) => {
+	let p = pPOOL_empty();
+	p.Cat = marshall$1.bin__int64(bi);
+	p.Provider = marshall$1.bin__int64(bi);
+	p.Manager = marshall$1.bin__int64(bi);
+	p.State = marshall$1.bin__int32(bi);
+	p.Notes = marshall$1.bin__str(bi);
+	p.Amt = marshall$1.bin__float(bi);
+	p.AmtReduction = marshall$1.bin__float(bi);
+	p.AmtReturn = marshall$1.bin__float(bi);
+	return p;
+};
+var bin__POOL = (bi) => {
+	return {
+		id: marshall$1.bin__int64(bi),
+		sort: marshall$1.bin__int64(bi),
+		createdat: marshall$1.bin__DateTime(bi),
+		updatedat: marshall$1.bin__DateTime(bi),
+		p: bin__pPOOL(bi)
+	};
+};
+var pUNIT__bin = (bb) => (p) => {
+	marshall$1.str__bin(bb)(p.Caption);
+	marshall$1.int64__bin(bb)(p.Owner);
+	marshall$1.str__bin(bb)(p.UnitNum);
+	marshall$1.str__bin(bb)(p.AcctNum);
+	marshall$1.str__bin(bb)(p.Address);
+	marshall$1.str__bin(bb)(p.Town);
+	marshall$1.str__bin(bb)(p.State);
+	marshall$1.str__bin(bb)(p.Zip);
+};
+var UNIT__bin = (bb) => (v) => {
+	marshall$1.int64__bin(bb)(v.id);
+	marshall$1.int64__bin(bb)(v.sort);
+	marshall$1.DateTime__bin(bb)(v.createdat);
+	marshall$1.DateTime__bin(bb)(v.updatedat);
+	pUNIT__bin(bb)(v.p);
+};
+var bin__pUNIT = (bi) => {
+	let p = pUNIT_empty();
+	p.Caption = marshall$1.bin__str(bi);
+	p.Owner = marshall$1.bin__int64(bi);
+	p.UnitNum = marshall$1.bin__str(bi);
+	p.AcctNum = marshall$1.bin__str(bi);
+	p.Address = marshall$1.bin__str(bi);
+	p.Town = marshall$1.bin__str(bi);
+	p.State = marshall$1.bin__str(bi);
+	p.Zip = marshall$1.bin__str(bi);
+	return p;
+};
+var bin__UNIT = (bi) => {
+	return {
+		id: marshall$1.bin__int64(bi),
+		sort: marshall$1.bin__int64(bi),
+		createdat: marshall$1.bin__DateTime(bi),
+		updatedat: marshall$1.bin__DateTime(bi),
+		p: bin__pUNIT(bi)
+	};
+};
+var pUACCT__bin = (bb) => (p) => {
+	marshall$1.int64__bin(bb)(p.Cat);
+	marshall$1.int64__bin(bb)(p.Provider);
+	marshall$1.int64__bin(bb)(p.Owner);
+	marshall$1.int64__bin(bb)(p.Unit);
+	marshall$1.str__bin(bb)(p.AcctName);
+	marshall$1.str__bin(bb)(p.AcctNum);
+};
+var UACCT__bin = (bb) => (v) => {
+	marshall$1.int64__bin(bb)(v.id);
+	marshall$1.int64__bin(bb)(v.sort);
+	marshall$1.DateTime__bin(bb)(v.createdat);
+	marshall$1.DateTime__bin(bb)(v.updatedat);
+	pUACCT__bin(bb)(v.p);
+};
+var bin__pUACCT = (bi) => {
+	let p = pUACCT_empty();
+	p.Cat = marshall$1.bin__int64(bi);
+	p.Provider = marshall$1.bin__int64(bi);
+	p.Owner = marshall$1.bin__int64(bi);
+	p.Unit = marshall$1.bin__int64(bi);
+	p.AcctName = marshall$1.bin__str(bi);
+	p.AcctNum = marshall$1.bin__str(bi);
+	return p;
+};
+var bin__UACCT = (bi) => {
+	return {
+		id: marshall$1.bin__int64(bi),
+		sort: marshall$1.bin__int64(bi),
+		createdat: marshall$1.bin__DateTime(bi),
+		updatedat: marshall$1.bin__DateTime(bi),
+		p: bin__pUACCT(bi)
+	};
+};
+var pUBILL__bin = (bb) => (p) => {
+	marshall$1.int64__bin(bb)(p.Cat);
+	marshall$1.int64__bin(bb)(p.Provider);
+	marshall$1.int64__bin(bb)(p.Owner);
+	marshall$1.int64__bin(bb)(p.Representative);
+	marshall$1.int64__bin(bb)(p.Unit);
+	marshall$1.int32__bin(bb)(p.State);
+	marshall$1.int64__bin(bb)(p.UAcct);
+	marshall$1.int64__bin(bb)(p.Pool);
+	marshall$1.str__bin(bb)(p.YYYYMMDD);
+	marshall$1.float__bin(bb)(p.Amt);
+	marshall$1.float__bin(bb)(p.AmtReduction);
+	marshall$1.float__bin(bb)(p.AmtReturn);
+};
+var UBILL__bin = (bb) => (v) => {
+	marshall$1.int64__bin(bb)(v.id);
+	marshall$1.int64__bin(bb)(v.sort);
+	marshall$1.DateTime__bin(bb)(v.createdat);
+	marshall$1.DateTime__bin(bb)(v.updatedat);
+	pUBILL__bin(bb)(v.p);
+};
+var bin__pUBILL = (bi) => {
+	let p = pUBILL_empty();
+	p.Cat = marshall$1.bin__int64(bi);
+	p.Provider = marshall$1.bin__int64(bi);
+	p.Owner = marshall$1.bin__int64(bi);
+	p.Representative = marshall$1.bin__int64(bi);
+	p.Unit = marshall$1.bin__int64(bi);
+	p.State = marshall$1.bin__int32(bi);
+	p.UAcct = marshall$1.bin__int64(bi);
+	p.Pool = marshall$1.bin__int64(bi);
+	p.YYYYMMDD = marshall$1.bin__str(bi);
+	p.Amt = marshall$1.bin__float(bi);
+	p.AmtReduction = marshall$1.bin__float(bi);
+	p.AmtReturn = marshall$1.bin__float(bi);
+	return p;
+};
+var bin__UBILL = (bi) => {
+	return {
+		id: marshall$1.bin__int64(bi),
+		sort: marshall$1.bin__int64(bi),
+		createdat: marshall$1.bin__DateTime(bi),
+		updatedat: marshall$1.bin__DateTime(bi),
+		p: bin__pUBILL(bi)
+	};
+};
+var pUCAT__bin = (bb) => (p) => {
+	marshall$1.str__bin(bb)(p.Caption);
+};
+var UCAT__bin = (bb) => (v) => {
+	marshall$1.int64__bin(bb)(v.id);
+	marshall$1.int64__bin(bb)(v.sort);
+	marshall$1.DateTime__bin(bb)(v.createdat);
+	marshall$1.DateTime__bin(bb)(v.updatedat);
+	pUCAT__bin(bb)(v.p);
+};
+var bin__pUCAT = (bi) => {
+	let p = pUCAT_empty();
+	p.Caption = marshall$1.bin__str(bi);
+	return p;
+};
+var bin__UCAT = (bi) => {
+	return {
+		id: marshall$1.bin__int64(bi),
+		sort: marshall$1.bin__int64(bi),
+		createdat: marshall$1.bin__DateTime(bi),
+		updatedat: marshall$1.bin__DateTime(bi),
+		p: bin__pUCAT(bi)
+	};
+};
+var pKUCP__bin = (bb) => (p) => {
+	marshall$1.int64__bin(bb)(p.Cat);
+	marshall$1.int64__bin(bb)(p.Provider);
+};
+var KUCP__bin = (bb) => (v) => {
+	marshall$1.int64__bin(bb)(v.id);
+	marshall$1.int64__bin(bb)(v.sort);
+	marshall$1.DateTime__bin(bb)(v.createdat);
+	marshall$1.DateTime__bin(bb)(v.updatedat);
+	pKUCP__bin(bb)(v.p);
+};
+var bin__pKUCP = (bi) => {
+	let p = pKUCP_empty();
+	p.Cat = marshall$1.bin__int64(bi);
+	p.Provider = marshall$1.bin__int64(bi);
+	return p;
+};
+var bin__KUCP = (bi) => {
+	return {
+		id: marshall$1.bin__int64(bi),
+		sort: marshall$1.bin__int64(bi),
+		createdat: marshall$1.bin__DateTime(bi),
+		updatedat: marshall$1.bin__DateTime(bi),
+		p: bin__pKUCP(bi)
+	};
+};
+var pUPROVIDER__bin = (bb) => (p) => {
+	marshall$1.str__bin(bb)(p.Caption);
+	marshall$1.str__bin(bb)(p.Logo);
+	marshall$1.str__bin(bb)(p.Icon);
+	marshall$1.int64__bin(bb)(p.Cat);
+};
+var UPROVIDER__bin = (bb) => (v) => {
+	marshall$1.int64__bin(bb)(v.id);
+	marshall$1.int64__bin(bb)(v.sort);
+	marshall$1.DateTime__bin(bb)(v.createdat);
+	marshall$1.DateTime__bin(bb)(v.updatedat);
+	pUPROVIDER__bin(bb)(v.p);
+};
+var bin__pUPROVIDER = (bi) => {
+	let p = pUPROVIDER_empty();
+	p.Caption = marshall$1.bin__str(bi);
+	p.Logo = marshall$1.bin__str(bi);
+	p.Icon = marshall$1.bin__str(bi);
+	p.Cat = marshall$1.bin__int64(bi);
+	return p;
+};
+var bin__UPROVIDER = (bi) => {
+	return {
+		id: marshall$1.bin__int64(bi),
+		sort: marshall$1.bin__int64(bi),
+		createdat: marshall$1.bin__DateTime(bi),
+		updatedat: marshall$1.bin__DateTime(bi),
+		p: bin__pUPROVIDER(bi)
+	};
+};
+var pFBIND__bin = (bb) => (p) => {
+	marshall$1.int64__bin(bb)(p.File);
+	marshall$1.int64__bin(bb)(p.Moment);
+	marshall$1.str__bin(bb)(p.Desc);
+};
+var FBIND__bin = (bb) => (v) => {
+	marshall$1.int64__bin(bb)(v.id);
+	marshall$1.int64__bin(bb)(v.sort);
+	marshall$1.DateTime__bin(bb)(v.createdat);
+	marshall$1.DateTime__bin(bb)(v.updatedat);
+	pFBIND__bin(bb)(v.p);
+};
+var bin__pFBIND = (bi) => {
+	let p = pFBIND_empty();
+	p.File = marshall$1.bin__int64(bi);
+	p.Moment = marshall$1.bin__int64(bi);
+	p.Desc = marshall$1.bin__str(bi);
+	return p;
+};
+var bin__FBIND = (bi) => {
+	return {
+		id: marshall$1.bin__int64(bi),
+		sort: marshall$1.bin__int64(bi),
+		createdat: marshall$1.bin__DateTime(bi),
+		updatedat: marshall$1.bin__DateTime(bi),
+		p: bin__pFBIND(bi)
+	};
+};
+var pMOMENT__bin = (bb) => (p) => {
+	marshall$1.str__bin(bb)(p.Title);
+	marshall$1.str__bin(bb)(p.Summary);
+	marshall$1.str__bin(bb)(p.FullText);
+	marshall$1.str__bin(bb)(p.PreviewImgUrl);
+	marshall$1.str__bin(bb)(p.Link);
+	marshall$1.int32__bin(bb)(p.Type);
+	marshall$1.int32__bin(bb)(p.State);
+	marshall$1.int32__bin(bb)(p.MediaType);
+};
+var MOMENT__bin = (bb) => (v) => {
+	marshall$1.int64__bin(bb)(v.id);
+	marshall$1.int64__bin(bb)(v.sort);
+	marshall$1.DateTime__bin(bb)(v.createdat);
+	marshall$1.DateTime__bin(bb)(v.updatedat);
+	pMOMENT__bin(bb)(v.p);
+};
+var bin__pMOMENT = (bi) => {
+	let p = pMOMENT_empty();
+	p.Title = marshall$1.bin__str(bi);
+	p.Summary = marshall$1.bin__str(bi);
+	p.FullText = marshall$1.bin__str(bi);
+	p.PreviewImgUrl = marshall$1.bin__str(bi);
+	p.Link = marshall$1.bin__str(bi);
+	p.Type = marshall$1.bin__int32(bi);
+	p.State = marshall$1.bin__int32(bi);
+	p.MediaType = marshall$1.bin__int32(bi);
+	return p;
+};
+var bin__MOMENT = (bi) => {
+	return {
+		id: marshall$1.bin__int64(bi),
+		sort: marshall$1.bin__int64(bi),
+		createdat: marshall$1.bin__DateTime(bi),
+		updatedat: marshall$1.bin__DateTime(bi),
+		p: bin__pMOMENT(bi)
+	};
+};
+var pCONFIG__bin = (bb) => (p) => {
+	marshall$1.str__bin(bb)(p.Key);
+	marshall$1.str__bin(bb)(p.Val);
+};
+var CONFIG__bin = (bb) => (v) => {
+	marshall$1.int64__bin(bb)(v.id);
+	marshall$1.int64__bin(bb)(v.sort);
+	marshall$1.DateTime__bin(bb)(v.createdat);
+	marshall$1.DateTime__bin(bb)(v.updatedat);
+	pCONFIG__bin(bb)(v.p);
+};
+var bin__pCONFIG = (bi) => {
+	let p = pCONFIG_empty();
+	p.Key = marshall$1.bin__str(bi);
+	p.Val = marshall$1.bin__str(bi);
+	return p;
+};
+var bin__CONFIG = (bi) => {
+	return {
+		id: marshall$1.bin__int64(bi),
+		sort: marshall$1.bin__int64(bi),
+		createdat: marshall$1.bin__DateTime(bi),
+		updatedat: marshall$1.bin__DateTime(bi),
+		p: bin__pCONFIG(bi)
+	};
+};
+var pLOG__bin = (bb) => (p) => {
+	marshall$1.str__bin(bb)(p.Location);
+	marshall$1.str__bin(bb)(p.Content);
+	marshall$1.str__bin(bb)(p.Sql);
+};
+var LOG__bin = (bb) => (v) => {
+	marshall$1.int64__bin(bb)(v.id);
+	marshall$1.int64__bin(bb)(v.sort);
+	marshall$1.DateTime__bin(bb)(v.createdat);
+	marshall$1.DateTime__bin(bb)(v.updatedat);
+	pLOG__bin(bb)(v.p);
+};
+var bin__pLOG = (bi) => {
+	let p = pLOG_empty();
+	p.Location = marshall$1.bin__str(bi);
+	p.Content = marshall$1.bin__str(bi);
+	p.Sql = marshall$1.bin__str(bi);
+	return p;
+};
+var bin__LOG = (bi) => {
+	return {
+		id: marshall$1.bin__int64(bi),
+		sort: marshall$1.bin__int64(bi),
+		createdat: marshall$1.bin__DateTime(bi),
+		updatedat: marshall$1.bin__DateTime(bi),
+		p: bin__pLOG(bi)
+	};
+};
+var pPLOG__bin = (bb) => (p) => {
+	marshall$1.str__bin(bb)(p.Ip);
+	marshall$1.str__bin(bb)(p.Request);
+};
+var PLOG__bin = (bb) => (v) => {
+	marshall$1.int64__bin(bb)(v.id);
+	marshall$1.int64__bin(bb)(v.sort);
+	marshall$1.DateTime__bin(bb)(v.createdat);
+	marshall$1.DateTime__bin(bb)(v.updatedat);
+	pPLOG__bin(bb)(v.p);
+};
+var bin__pPLOG = (bi) => {
+	let p = pPLOG_empty();
+	p.Ip = marshall$1.bin__str(bi);
+	p.Request = marshall$1.bin__str(bi);
+	return p;
+};
+var bin__PLOG = (bi) => {
+	return {
+		id: marshall$1.bin__int64(bi),
+		sort: marshall$1.bin__int64(bi),
+		createdat: marshall$1.bin__DateTime(bi),
+		updatedat: marshall$1.bin__DateTime(bi),
+		p: bin__pPLOG(bi)
+	};
+};
+var pEU_empty = () => {
+	return {
+		Caption: "",
+		Username: "",
+		Email: "",
+		Avatar: "",
+		OAuthProvider: "",
+		ClerkUserID: "",
+		Pwd: "",
+		AuthType: 0
+	};
+};
+var EU_empty = () => {
+	return {
+		id: 0,
+		createdat: /* @__PURE__ */ new Date(),
+		updatedat: /* @__PURE__ */ new Date(),
+		sort: 0,
+		p: pEU_empty()
+	};
+};
+var pFILE_empty = () => {
+	return {
+		Caption: "",
+		Path: "",
+		State: 0,
+		ContentType: "",
+		Suffix: "",
+		Size: 0,
+		Thumbnail: [],
+		Owner: 0,
+		Cat: 0,
+		Provider: 0,
+		Unit: 0,
+		Bill: 0
+	};
+};
+var FILE_empty = () => {
+	return {
+		id: 0,
+		createdat: /* @__PURE__ */ new Date(),
+		updatedat: /* @__PURE__ */ new Date(),
+		sort: 0,
+		p: pFILE_empty()
+	};
+};
+var pPOOL_empty = () => {
+	return {
+		Cat: 0,
+		Provider: 0,
+		Manager: 0,
+		State: 0,
+		Notes: "",
+		Amt: 0,
+		AmtReduction: 0,
+		AmtReturn: 0
+	};
+};
+var POOL_empty = () => {
+	return {
+		id: 0,
+		createdat: /* @__PURE__ */ new Date(),
+		updatedat: /* @__PURE__ */ new Date(),
+		sort: 0,
+		p: pPOOL_empty()
+	};
+};
+var pUNIT_empty = () => {
+	return {
+		Caption: "",
+		Owner: 0,
+		UnitNum: "",
+		AcctNum: "",
+		Address: "",
+		Town: "",
+		State: "",
+		Zip: ""
+	};
+};
+var UNIT_empty = () => {
+	return {
+		id: 0,
+		createdat: /* @__PURE__ */ new Date(),
+		updatedat: /* @__PURE__ */ new Date(),
+		sort: 0,
+		p: pUNIT_empty()
+	};
+};
+var pUACCT_empty = () => {
+	return {
+		Cat: 0,
+		Provider: 0,
+		Owner: 0,
+		Unit: 0,
+		AcctName: "",
+		AcctNum: ""
+	};
+};
+var UACCT_empty = () => {
+	return {
+		id: 0,
+		createdat: /* @__PURE__ */ new Date(),
+		updatedat: /* @__PURE__ */ new Date(),
+		sort: 0,
+		p: pUACCT_empty()
+	};
+};
+var pUBILL_empty = () => {
+	return {
+		Cat: 0,
+		Provider: 0,
+		Owner: 0,
+		Representative: 0,
+		Unit: 0,
+		State: 0,
+		UAcct: 0,
+		Pool: 0,
+		YYYYMMDD: "",
+		Amt: 0,
+		AmtReduction: 0,
+		AmtReturn: 0
+	};
+};
+var UBILL_empty = () => {
+	return {
+		id: 0,
+		createdat: /* @__PURE__ */ new Date(),
+		updatedat: /* @__PURE__ */ new Date(),
+		sort: 0,
+		p: pUBILL_empty()
+	};
+};
+var pUCAT_empty = () => {
+	return { Caption: "" };
+};
+var UCAT_empty = () => {
+	return {
+		id: 0,
+		createdat: /* @__PURE__ */ new Date(),
+		updatedat: /* @__PURE__ */ new Date(),
+		sort: 0,
+		p: pUCAT_empty()
+	};
+};
+var pKUCP_empty = () => {
+	return {
+		Cat: 0,
+		Provider: 0
+	};
+};
+var KUCP_empty = () => {
+	return {
+		id: 0,
+		createdat: /* @__PURE__ */ new Date(),
+		updatedat: /* @__PURE__ */ new Date(),
+		sort: 0,
+		p: pKUCP_empty()
+	};
+};
+var pUPROVIDER_empty = () => {
+	return {
+		Caption: "",
+		Logo: "",
+		Icon: "",
+		Cat: 0
+	};
+};
+var UPROVIDER_empty = () => {
+	return {
+		id: 0,
+		createdat: /* @__PURE__ */ new Date(),
+		updatedat: /* @__PURE__ */ new Date(),
+		sort: 0,
+		p: pUPROVIDER_empty()
+	};
+};
+var pFBIND_empty = () => {
+	return {
+		File: 0,
+		Moment: 0,
+		Desc: ""
+	};
+};
+var FBIND_empty = () => {
+	return {
+		id: 0,
+		createdat: /* @__PURE__ */ new Date(),
+		updatedat: /* @__PURE__ */ new Date(),
+		sort: 0,
+		p: pFBIND_empty()
+	};
+};
+var pMOMENT_empty = () => {
+	return {
+		Title: "",
+		Summary: "",
+		FullText: "",
+		PreviewImgUrl: "",
+		Link: "",
+		Type: 0,
+		State: 0,
+		MediaType: 0
+	};
+};
+var MOMENT_empty = () => {
+	return {
+		id: 0,
+		createdat: /* @__PURE__ */ new Date(),
+		updatedat: /* @__PURE__ */ new Date(),
+		sort: 0,
+		p: pMOMENT_empty()
+	};
+};
+var pCONFIG_empty = () => {
+	return {
+		Key: "",
+		Val: ""
+	};
+};
+var CONFIG_empty = () => {
+	return {
+		id: 0,
+		createdat: /* @__PURE__ */ new Date(),
+		updatedat: /* @__PURE__ */ new Date(),
+		sort: 0,
+		p: pCONFIG_empty()
+	};
+};
+var pLOG_empty = () => {
+	return {
+		Location: "",
+		Content: "",
+		Sql: ""
+	};
+};
+var LOG_empty = () => {
+	return {
+		id: 0,
+		createdat: /* @__PURE__ */ new Date(),
+		updatedat: /* @__PURE__ */ new Date(),
+		sort: 0,
+		p: pLOG_empty()
+	};
+};
+var pPLOG_empty = () => {
+	return {
+		Ip: "",
+		Request: ""
+	};
+};
+var PLOG_empty = () => {
+	return {
+		id: 0,
+		createdat: /* @__PURE__ */ new Date(),
+		updatedat: /* @__PURE__ */ new Date(),
+		sort: 0,
+		p: pPLOG_empty()
+	};
+};
+//#endregion
+//#region src/lib/shared/CustomMor.ts
+var CustomMor_exports = /* @__PURE__ */ __exportAll({
+	AcctComplex__bin: () => AcctComplex__bin,
+	AcctComplex_empty: () => AcctComplex_empty,
+	BillComplex__bin: () => BillComplex__bin,
+	BillComplex_empty: () => BillComplex_empty,
+	ClientRuntime__bin: () => ClientRuntime__bin,
+	ClientRuntime_empty: () => ClientRuntime_empty,
+	ErEnum: () => ErEnum,
+	Er__bin: () => Er__bin,
+	Er_empty: () => Er_empty,
+	EuComplex__bin: () => EuComplex__bin,
+	EuComplex_empty: () => EuComplex_empty,
+	MomentComplex__bin: () => MomentComplex__bin,
+	MomentComplex_empty: () => MomentComplex_empty,
+	MsgEnum: () => MsgEnum,
+	Msg__bin: () => Msg__bin,
+	Msg_empty: () => Msg_empty,
+	PoolComplex__bin: () => PoolComplex__bin,
+	PoolComplex_empty: () => PoolComplex_empty,
+	ProviderView__bin: () => ProviderView__bin,
+	ProviderView_empty: () => ProviderView_empty,
+	RuntimeData__bin: () => RuntimeData__bin,
+	RuntimeData_empty: () => RuntimeData_empty,
+	bin__AcctComplex: () => bin__AcctComplex,
+	bin__BillComplex: () => bin__BillComplex,
+	bin__ClientRuntime: () => bin__ClientRuntime,
+	bin__Er: () => bin__Er,
+	bin__EuComplex: () => bin__EuComplex,
+	bin__MomentComplex: () => bin__MomentComplex,
+	bin__Msg: () => bin__Msg,
+	bin__PoolComplex: () => bin__PoolComplex,
+	bin__ProviderView: () => bin__ProviderView,
+	bin__RuntimeData: () => bin__RuntimeData
+});
+var marshall = {
+	...bin_exports,
+	...OrmMor_exports
+};
+var MsgEnum = /* @__PURE__ */ function(MsgEnum) {
+	MsgEnum[MsgEnum["Heartbeat"] = 0] = "Heartbeat";
+	MsgEnum[MsgEnum["ApiRequest"] = 1] = "ApiRequest";
+	MsgEnum[MsgEnum["ApiResponse"] = 2] = "ApiResponse";
+	return MsgEnum;
+}({});
+var ErEnum = /* @__PURE__ */ function(ErEnum) {
+	ErEnum[ErEnum["ApiNotExists"] = 0] = "ApiNotExists";
+	ErEnum[ErEnum["InvalideParameter"] = 1] = "InvalideParameter";
+	ErEnum[ErEnum["Unauthorized"] = 2] = "Unauthorized";
+	ErEnum[ErEnum["NotAvailable"] = 3] = "NotAvailable";
+	ErEnum[ErEnum["Internal"] = 4] = "Internal";
+	ErEnum[ErEnum["API3rdParty"] = 5] = "API3rdParty";
+	return ErEnum;
+}({});
+var AcctComplex_empty = () => {
+	return {
+		cato: null,
+		providero: null,
+		owner: {
+			id: 0,
+			sort: 0,
+			createdat: /* @__PURE__ */ new Date(),
+			updatedat: /* @__PURE__ */ new Date(),
+			p: marshall.pEU_empty()
+		},
+		unito: null,
+		acct: {
+			id: 0,
+			sort: 0,
+			createdat: /* @__PURE__ */ new Date(),
+			updatedat: /* @__PURE__ */ new Date(),
+			p: marshall.pUACCT_empty()
+		}
+	};
+};
+var AcctComplex__bin = (bb) => (v) => {
+	marshall.option__bin(marshall.UCAT__bin)(bb)(v.cato);
+	marshall.option__bin(marshall.UPROVIDER__bin)(bb)(v.providero);
+	marshall.EU__bin(bb)(v.owner);
+	marshall.option__bin(marshall.UNIT__bin)(bb)(v.unito);
+	marshall.UACCT__bin(bb)(v.acct);
+};
+var bin__AcctComplex = (bi) => {
+	return {
+		cato: marshall.bin__option(marshall.bin__UCAT)(bi),
+		providero: marshall.bin__option(marshall.bin__UPROVIDER)(bi),
+		owner: marshall.bin__EU(bi),
+		unito: marshall.bin__option(marshall.bin__UNIT)(bi),
+		acct: marshall.bin__UACCT(bi)
+	};
+};
+var BillComplex_empty = () => {
+	return {
+		cato: null,
+		providero: null,
+		owner: {
+			id: 0,
+			sort: 0,
+			createdat: /* @__PURE__ */ new Date(),
+			updatedat: /* @__PURE__ */ new Date(),
+			p: marshall.pEU_empty()
+		},
+		unito: null,
+		accto: null,
+		files: [],
+		bill: {
+			id: 0,
+			sort: 0,
+			createdat: /* @__PURE__ */ new Date(),
+			updatedat: /* @__PURE__ */ new Date(),
+			p: marshall.pUBILL_empty()
+		}
+	};
+};
+var BillComplex__bin = (bb) => (v) => {
+	marshall.option__bin(marshall.UCAT__bin)(bb)(v.cato);
+	marshall.option__bin(marshall.UPROVIDER__bin)(bb)(v.providero);
+	marshall.EU__bin(bb)(v.owner);
+	marshall.option__bin(marshall.UNIT__bin)(bb)(v.unito);
+	marshall.option__bin(marshall.UACCT__bin)(bb)(v.accto);
+	marshall.array__bin(marshall.FILE__bin)(bb)(v.files);
+	marshall.UBILL__bin(bb)(v.bill);
+};
+var bin__BillComplex = (bi) => {
+	return {
+		cato: marshall.bin__option(marshall.bin__UCAT)(bi),
+		providero: marshall.bin__option(marshall.bin__UPROVIDER)(bi),
+		owner: marshall.bin__EU(bi),
+		unito: marshall.bin__option(marshall.bin__UNIT)(bi),
+		accto: marshall.bin__option(marshall.bin__UACCT)(bi),
+		files: marshall.bin__array(marshall.bin__FILE)(bi),
+		bill: marshall.bin__UBILL(bi)
+	};
+};
+var PoolComplex_empty = () => {
+	return {
+		providero: null,
+		manager: {
+			id: 0,
+			sort: 0,
+			createdat: /* @__PURE__ */ new Date(),
+			updatedat: /* @__PURE__ */ new Date(),
+			p: marshall.pEU_empty()
+		},
+		billxs: {},
+		pool: {
+			id: 0,
+			sort: 0,
+			createdat: /* @__PURE__ */ new Date(),
+			updatedat: /* @__PURE__ */ new Date(),
+			p: marshall.pPOOL_empty()
+		}
+	};
+};
+var PoolComplex__bin = (bb) => (v) => {
+	marshall.option__bin(marshall.UPROVIDER__bin)(bb)(v.providero);
+	marshall.EU__bin(bb)(v.manager);
+	marshall.dict__bin(marshall.int64__bin)(BillComplex__bin)(bb)(v.billxs);
+	marshall.POOL__bin(bb)(v.pool);
+};
+var bin__PoolComplex = (bi) => {
+	return {
+		providero: marshall.bin__option(marshall.bin__UPROVIDER)(bi),
+		manager: marshall.bin__EU(bi),
+		billxs: marshall.bin__dict(marshall.bin__int64)(bin__BillComplex)(bi),
+		pool: marshall.bin__POOL(bi)
+	};
+};
+var EuComplex_empty = () => {
+	return {
+		units: {},
+		acctxs: {},
+		billxs: {},
+		eu: {
+			id: 0,
+			sort: 0,
+			createdat: /* @__PURE__ */ new Date(),
+			updatedat: /* @__PURE__ */ new Date(),
+			p: marshall.pEU_empty()
+		}
+	};
+};
+var EuComplex__bin = (bb) => (v) => {
+	marshall.dict__bin(marshall.int64__bin)(marshall.UNIT__bin)(bb)(v.units);
+	marshall.dict__bin(marshall.int64__bin)(AcctComplex__bin)(bb)(v.acctxs);
+	marshall.dict__bin(marshall.int64__bin)(BillComplex__bin)(bb)(v.billxs);
+	marshall.EU__bin(bb)(v.eu);
+};
+var bin__EuComplex = (bi) => {
+	return {
+		units: marshall.bin__dict(marshall.bin__int64)(marshall.bin__UNIT)(bi),
+		acctxs: marshall.bin__dict(marshall.bin__int64)(bin__AcctComplex)(bi),
+		billxs: marshall.bin__dict(marshall.bin__int64)(bin__BillComplex)(bi),
+		eu: marshall.bin__EU(bi)
+	};
+};
+var MomentComplex_empty = () => {
+	return { m: {
+		id: 0,
+		sort: 0,
+		createdat: /* @__PURE__ */ new Date(),
+		updatedat: /* @__PURE__ */ new Date(),
+		p: marshall.pMOMENT_empty()
+	} };
+};
+var MomentComplex__bin = (bb) => (v) => {
+	marshall.MOMENT__bin(bb)(v.m);
+};
+var bin__MomentComplex = (bi) => {
+	return { m: marshall.bin__MOMENT(bi) };
+};
+var RuntimeData_empty = () => {
+	return {
+		apiKeyGemini: "",
+		aiModel: "",
+		cats: {},
+		providers: {},
+		poolxs: {},
+		catproviders: []
+	};
+};
+var RuntimeData__bin = (bb) => (v) => {
+	marshall.str__bin(bb)(v.apiKeyGemini);
+	marshall.str__bin(bb)(v.aiModel);
+	marshall.dict__bin(marshall.int64__bin)(marshall.UCAT__bin)(bb)(v.cats);
+	marshall.dict__bin(marshall.int64__bin)(marshall.UPROVIDER__bin)(bb)(v.providers);
+	marshall.dict__bin(marshall.int64__bin)(PoolComplex__bin)(bb)(v.poolxs);
+	marshall.array__bin(marshall.KUCP__bin)(bb)(v.catproviders);
+};
+var bin__RuntimeData = (bi) => {
+	return {
+		apiKeyGemini: marshall.bin__str(bi),
+		aiModel: marshall.bin__str(bi),
+		cats: marshall.bin__dict(marshall.bin__int64)(marshall.bin__UCAT)(bi),
+		providers: marshall.bin__dict(marshall.bin__int64)(marshall.bin__UPROVIDER)(bi),
+		poolxs: marshall.bin__dict(marshall.bin__int64)(bin__PoolComplex)(bi),
+		catproviders: marshall.bin__array(marshall.bin__KUCP)(bi)
+	};
+};
+var ClientRuntime_empty = () => {
+	return { version: 0 };
+};
+var ClientRuntime__bin = (bb) => (v) => {
+	marshall.int32__bin(bb)(v.version);
+};
+var bin__ClientRuntime = (bi) => {
+	return { version: marshall.bin__int32(bi) };
+};
+var ProviderView_empty = () => {
+	return {
+		cat: {
+			id: 0,
+			sort: 0,
+			createdat: /* @__PURE__ */ new Date(),
+			updatedat: /* @__PURE__ */ new Date(),
+			p: marshall.pUCAT_empty()
+		},
+		billxs: [],
+		pools: [],
+		uprovider: {
+			id: 0,
+			sort: 0,
+			createdat: /* @__PURE__ */ new Date(),
+			updatedat: /* @__PURE__ */ new Date(),
+			p: marshall.pUPROVIDER_empty()
+		}
+	};
+};
+var ProviderView__bin = (bb) => (v) => {
+	marshall.UCAT__bin(bb)(v.cat);
+	marshall.array__bin(BillComplex__bin)(bb)(v.billxs);
+	marshall.array__bin(marshall.POOL__bin)(bb)(v.pools);
+	marshall.UPROVIDER__bin(bb)(v.uprovider);
+};
+var bin__ProviderView = (bi) => {
+	return {
+		cat: marshall.bin__UCAT(bi),
+		billxs: marshall.bin__array(bin__BillComplex)(bi),
+		pools: marshall.bin__array(marshall.bin__POOL)(bi),
+		uprovider: marshall.bin__UPROVIDER(bi)
+	};
+};
+var Msg_empty = () => {
+	return {
+		e: 0,
+		val: {}
+	};
+};
+var Msg__bin = (bb) => (v) => {
+	marshall.int32__bin(bb)(v.e);
+	switch (v.e) {
+		case 0: break;
+		case 1:
+			marshall.Json__bin(bb)(v.val);
+			break;
+		case 2:
+			marshall.Json__bin(bb)(v.val);
+			break;
+	}
+};
+var bin__Msg = (bi) => {
+	let v = {
+		e: 0,
+		val: {}
+	};
+	v.e = marshall.bin__int32(bi);
+	switch (v.e) {
+		case 2:
+			v.val = marshall.bin__Json(bi);
+			break;
+		case 1:
+			v.val = marshall.bin__Json(bi);
+			break;
+		case 0: break;
+	}
+	return v;
+};
+var Er_empty = () => {
+	return {
+		e: 0,
+		val: {}
+	};
+};
+var Er__bin = (bb) => (v) => {
+	marshall.int32__bin(bb)(v.e);
+	switch (v.e) {
+		case 0: break;
+		case 1: break;
+		case 2: break;
+		case 3: break;
+		case 4: break;
+		case 5: break;
+	}
+};
+var bin__Er = (bi) => {
+	let v = {
+		e: 0,
+		val: {}
+	};
+	v.e = marshall.bin__int32(bi);
+	switch (v.e) {
+		case 5: break;
+		case 4: break;
+		case 3: break;
+		case 2: break;
+		case 1: break;
+		case 0: break;
+	}
+	return v;
+};
+//#endregion
+//#region src/lib/store/init.ts
+var wsOnOpen = (runtime) => (event) => {
+	console.log("WebSocket connected");
+};
+var wsOnClose = (runtime) => (event) => {
+	console.log("WebSocket closed");
+};
+var wsOnError = (runtime) => (event) => {
+	console.log(event);
+};
+var wsOnMsg = (runtime) => (event) => {
+	let msg = event.data;
+	switch (msg.e) {
+		case MsgEnum.ApiResponse:
+			console.log(msg.val);
+			break;
+	}
+};
+var initRuntime = (runtime) => {
+	runtime.host = initHost();
+	let ws = new WebSocket(runtime.host.wsurl);
+	ws.onopen = wsOnOpen(runtime);
+	ws.onclose = wsOnClose(runtime);
+	ws.onerror = wsOnError(runtime);
+	ws.onmessage = wsOnMsg(runtime);
+	runtime.wsctx.ws = ws;
+};
+//#endregion
+//#region src/lib/store/runtime.ts
+var runtime_exports = /* @__PURE__ */ __exportAll({
+	createGlobalWatcher: () => createGlobalWatcher,
+	getRT: () => getRT,
+	loadLS: () => loadLS,
+	prepRuntime: () => prepRuntime,
+	prstLS: () => prstLS,
+	setNested: () => setNested,
+	setRT: () => setRT
+});
+var loadLS = (key, defaultv = "{}") => {
+	const v = window.localStorage.getItem(key);
+	if (v != void 0) try {
+		return JSON.parse(v);
+	} catch {
+		if (v) return v;
+		else return defaultv;
+	}
+	return defaultv;
+};
+var prstLS = (key, value) => {
+	window.localStorage.setItem(key, JSON.stringify(value));
+};
+var initWebSocketMeta = () => {
+	return {
+		ws: {},
+		ping: null,
+		autoping: true,
+		pinginterval: 7e3,
+		sent: 0,
+		sentsize: 0,
+		rec: 0,
+		recsize: 0
+	};
+};
+var prepRuntime = () => {
+	let runtime = {
+		host: {},
+		wsctx: initWebSocketMeta(),
+		router: glib.route.router,
+		session: loadLS("session", ""),
+		user: {},
+		data: ClientRuntime_empty()
+	};
+	initRuntime(runtime);
+	return runtime;
+};
+var getRT = (key, obj = runtime) => {
+	return key.split(".").reduce((acc, curr) => acc?.[curr], obj);
+};
+var setNested = (key, value, f_map = (value) => {
+	return value;
+}, obj = runtime) => {
+	const keys = key.split(".");
+	const lastKey = keys.pop();
+	if (!lastKey) return;
+	const parent = keys.reduce((acc, curr) => acc?.[curr] ?? (acc[curr] = {}), obj);
+	parent[lastKey] = f_map(value);
+};
+var setRT = setNested;
+var createGlobalWatcher = () => {
+	const createwatch = (rtkeys) => {
+		for (const rtkey of rtkeys);
+	};
+	createwatch(["session", "devmode"]);
+};
+//#endregion
+//#region src/lib/glib.ts
+var glib = {
+	vue: vue_runtime_esm_bundler_exports,
+	check: check_exports,
+	ws: ws_exports,
+	bin: bin_exports,
+	markdown: markdown_exports,
+	g: graphics_exports,
+	misc: misc_exports,
+	auth: auth_exports,
+	notify: notify_exports,
+	route: route_exports,
+	panel: panel_exports,
+	host: host_exports,
+	runtime: runtime_exports,
+	Mor: { studio: {
+		...CustomMor_exports,
+		...OrmMor_exports
+	} },
+	post,
+	get,
+	send: trySend,
+	setRT,
+	getRT,
+	sleep: sleep$1
+};
+//#endregion
+//#region src/App.vue
+var _hoisted_1$26 = { class: "flex" };
+var _hoisted_2$20 = { class: "lg:w-[1200px] m-[10px]" };
+var _hoisted_3$16 = { class: "main-color w-screen" };
+var _hoisted_4$15 = /* @__PURE__ */ createBaseVNode("div", { class: "hor" }, null, -1);
+var _hoisted_5$11 = /* @__PURE__ */ createBaseVNode("div", { class: "flex justify-center" }, [/* @__PURE__ */ createBaseVNode("div", { class: "hor-range" }, [/* @__PURE__ */ createBaseVNode("div", { class: "pt-2 pb-5" }, [/* @__PURE__ */ createBaseVNode("br"), /* @__PURE__ */ createTextVNode("© 2026 WYI ")])])], -1);
+var _sfc_main$1 = {
+	__name: "App",
+	setup(__props) {
+		glib.vue.reactive({ rt: runtime });
+		return (_ctx, _cache) => {
+			const _component_router_view = resolveComponent("router-view");
+			return openBlock(), createElementBlock(Fragment, null, [createBaseVNode("div", _hoisted_1$26, [createVNode(UserAuth_default, { onChanged: _ctx.onAuthChanged }, null, 8, ["onChanged"])]), createBaseVNode("div", _hoisted_2$20, [createBaseVNode("div", _hoisted_3$16, [
 				createVNode(_component_router_view, { class: "min-h-[600px]" }),
-				_hoisted_5,
-				_hoisted_6
+				_hoisted_4$15,
+				_hoisted_5$11
 			])])], 64);
 		};
 	}
@@ -12991,9 +12877,1512 @@ if (localUser) runtime.user = JSON.parse(localUser);
 else runtime.user = glib.Mor.studio.EuComplex_empty();
 glib.runtime.createGlobalWatcher();
 glib.notify.init();
-var app = glib.vue.createApp(_sfc_main);
+var app = glib.vue.createApp(_sfc_main$1);
 app.use(clerkPlugin, { publishableKey: PUBLISHABLE_KEY });
 app.use(runtime.router).mount("#app");
 if (!runtime.domainname) runtime.domainname = window.location.host;
 incomingRoute();
+//#endregion
+//#region src/comps/BillState.vue?vue&type=script&setup=true&lang.ts
+var _hoisted_1$25 = {
+	key: 0,
+	class: "state-clickable bill-state-Submitted"
+};
+var _hoisted_2$19 = {
+	key: 1,
+	class: "state-clickable bill-state-Declined"
+};
+var _hoisted_3$15 = {
+	key: 2,
+	class: "state-clickable bill-state-Accepted"
+};
+var _hoisted_4$14 = {
+	key: 3,
+	class: "state-clickable bill-state-Closed"
+};
+//#endregion
+//#region src/comps/BillState.vue
+var BillState_default = /* @__PURE__ */ defineComponent({
+	__name: "BillState",
+	props: ["state"],
+	setup(__props) {
+		const props = __props;
+		props.state;
+		return (_ctx, _cache) => {
+			return props.state == 0 ? (openBlock(), createElementBlock("span", _hoisted_1$25, " Submitted ")) : props.state == 1 ? (openBlock(), createElementBlock("span", _hoisted_2$19, " Declined ")) : props.state == 2 ? (openBlock(), createElementBlock("span", _hoisted_3$15, " Accepted ")) : (openBlock(), createElementBlock("span", _hoisted_4$14, " Closed "));
+		};
+	}
+});
+//#endregion
+//#region src/comps/Provider.vue?vue&type=script&setup=true&lang.ts
+var _hoisted_1$24 = { class: "ml-[20px] px-2 inline-block" };
+var _hoisted_2$18 = ["src"];
+var _hoisted_3$14 = { key: 0 };
+var _hoisted_4$13 = { class: "selected" };
+var _hoisted_5$10 = { key: 2 };
+var _hoisted_6$8 = { key: 1 };
+var _hoisted_7$7 = { key: 0 };
+var _hoisted_8$7 = { class: "selected" };
+var _hoisted_9$6 = { key: 1 };
+var _hoisted_10$5 = { key: 2 };
+//#endregion
+//#region src/comps/Provider.vue
+var Provider_default$1 = /* @__PURE__ */ defineComponent({
+	__name: "Provider",
+	props: [
+		"ucat",
+		"uprovider",
+		"highlight",
+		"route"
+	],
+	setup(__props) {
+		const props = __props;
+		props.ucat;
+		props.uprovider;
+		props.highlight;
+		props.route;
+		glib.vue.reactive({ rt: runtime });
+		const routing = () => {
+			if (props.route) return props.route + props.ucat.id + "/" + props.uprovider.id;
+			else return props.route;
+		};
+		return (_ctx, _cache) => {
+			const _component_router_link = resolveComponent("router-link");
+			return openBlock(), createElementBlock("span", _hoisted_1$24, [createBaseVNode("img", {
+				class: "image-inline",
+				src: props.uprovider.p.Logo
+			}, null, 8, _hoisted_2$18), props.route ? (openBlock(), createElementBlock("span", _hoisted_3$14, [props.highlight ? (openBlock(), createBlock(_component_router_link, {
+				key: 0,
+				to: routing()
+			}, {
+				default: withCtx(() => [createBaseVNode("b", _hoisted_4$13, toDisplayString(props.uprovider.p.Caption), 1)]),
+				_: 1
+			}, 8, ["to"])) : (openBlock(), createBlock(_component_router_link, {
+				key: 1,
+				to: routing()
+			}, {
+				default: withCtx(() => [createTextVNode(toDisplayString(props.uprovider.p.Caption), 1)]),
+				_: 1
+			}, 8, ["to"])), props.ucat ? (openBlock(), createElementBlock("span", _hoisted_5$10, " (" + toDisplayString(props.ucat.p.Caption) + ") ", 1)) : createCommentVNode("", true)])) : (openBlock(), createElementBlock("span", _hoisted_6$8, [props.highlight ? (openBlock(), createElementBlock("span", _hoisted_7$7, [createBaseVNode("b", _hoisted_8$7, toDisplayString(props.uprovider.p.Caption), 1)])) : (openBlock(), createElementBlock("span", _hoisted_9$6, toDisplayString(props.uprovider.p.Caption), 1)), props.ucat ? (openBlock(), createElementBlock("span", _hoisted_10$5, " (" + toDisplayString(props.ucat.p.Caption) + ") ", 1)) : createCommentVNode("", true)]))]);
+		};
+	}
+});
+//#endregion
+//#region src/comps/Unit.vue?vue&type=script&setup=true&lang.ts
+var _hoisted_1$23 = { class: "card" };
+var _hoisted_2$17 = { key: 0 };
+var _hoisted_3$13 = { key: 1 };
+//#endregion
+//#region src/comps/Unit.vue
+var Unit_default = /* @__PURE__ */ defineComponent({
+	__name: "Unit",
+	props: ["unit", "mode"],
+	setup(__props) {
+		const props = __props;
+		props.unit;
+		props.mode;
+		glib.vue.reactive({ rt: runtime });
+		glib.vue.onMounted(async () => {});
+		return (_ctx, _cache) => {
+			return openBlock(), createElementBlock("div", _hoisted_1$23, [props.mode == 0 ? (openBlock(), createElementBlock("div", _hoisted_2$17, toDisplayString(props.unit.p.Address) + " " + toDisplayString(props.unit.p.Town) + " " + toDisplayString(props.unit.p.State) + " " + toDisplayString(props.unit.p.Zip), 1)) : createCommentVNode("", true), props.mode == 1 ? (openBlock(), createElementBlock("div", _hoisted_3$13, [
+				createBaseVNode("div", null, toDisplayString(props.unit.p.Address), 1),
+				createBaseVNode("div", null, toDisplayString(props.unit.p.Town), 1),
+				createBaseVNode("div", null, toDisplayString(props.unit.p.State) + " " + toDisplayString(props.unit.p.Zip), 1)
+			])) : createCommentVNode("", true)]);
+		};
+	}
+});
+//#endregion
+//#region src/comps/Acctx.vue?vue&type=script&setup=true&lang.ts
+var _hoisted_1$22 = { class: "card" };
+var _hoisted_2$16 = { key: 0 };
+var _hoisted_3$12 = { key: 0 };
+var _hoisted_4$12 = { key: 1 };
+var _hoisted_5$9 = { key: 1 };
+//#endregion
+//#region src/comps/Acctx.vue
+var Acctx_default = /* @__PURE__ */ defineComponent({
+	__name: "Acctx",
+	props: ["acctx", "mode"],
+	setup(__props) {
+		const props = __props;
+		props.acctx;
+		props.mode;
+		glib.vue.reactive({ rt: runtime });
+		glib.vue.onMounted(async () => {});
+		return (_ctx, _cache) => {
+			return openBlock(), createElementBlock("div", _hoisted_1$22, [props.mode == 0 ? (openBlock(), createElementBlock("div", _hoisted_2$16, [
+				props.acctx.cato != null && props.acctx.providero != null ? (openBlock(), createElementBlock("div", _hoisted_3$12, toDisplayString(props.acctx.providero.p.Caption) + " (" + toDisplayString(props.acctx.cato.p.Caption) + ") ", 1)) : createCommentVNode("", true),
+				props.acctx.unito != null ? (openBlock(), createElementBlock("div", _hoisted_4$12, toDisplayString(props.acctx.unito.p.Address) + " \xA0 " + toDisplayString(props.acctx.unito.p.Town) + " \xA0 " + toDisplayString(props.acctx.unito.p.State) + " " + toDisplayString(props.acctx.unito.p.Zip), 1)) : createCommentVNode("", true),
+				createBaseVNode("div", null, toDisplayString(props.acctx.acct.p.AcctName) + " " + toDisplayString(props.acctx.acct.p.AcctNum), 1)
+			])) : createCommentVNode("", true), props.mode == 1 ? (openBlock(), createElementBlock("div", _hoisted_5$9, [
+				props.acctx.cato && props.acctx.providero ? (openBlock(), createBlock(Provider_default$1, {
+					key: 0,
+					ucat: props.acctx.cato,
+					uprovider: props.acctx.providero
+				}, null, 8, ["ucat", "uprovider"])) : createCommentVNode("", true),
+				props.acctx.unito ? (openBlock(), createBlock(Unit_default, {
+					key: 1,
+					unit: props.acctx.unito,
+					mode: 1
+				}, null, 8, ["unit"])) : createCommentVNode("", true),
+				createBaseVNode("div", null, " A/C Name: " + toDisplayString(props.acctx.acct.p.AcctName), 1),
+				createBaseVNode("div", null, " A/C Num: " + toDisplayString(props.acctx.acct.p.AcctNum), 1)
+			])) : createCommentVNode("", true)]);
+		};
+	}
+});
+//#endregion
+//#region src/comps/Billx.vue?vue&type=script&setup=true&lang.ts
+var _hoisted_1$21 = { class: "card" };
+var _hoisted_2$15 = {
+	key: 0,
+	class: "flex"
+};
+var _hoisted_3$11 = { key: 0 };
+var _hoisted_4$11 = { key: 3 };
+var _hoisted_5$8 = { key: 1 };
+var _hoisted_6$7 = { class: "flex" };
+var _hoisted_7$6 = {
+	key: 0,
+	class: "button-small"
+};
+var _hoisted_8$6 = {
+	key: 1,
+	class: "button-small"
+};
+var _hoisted_9$5 = {
+	key: 0,
+	class: "card-caption"
+};
+var _hoisted_10$4 = { key: 1 };
+var _hoisted_11$4 = {
+	key: 2,
+	class: "card-caption"
+};
+var _hoisted_12$4 = {
+	key: 4,
+	class: "card-caption"
+};
+var _hoisted_13$4 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, " Billing Info ", -1);
+var _hoisted_14$3 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, " Files ", -1);
+var _hoisted_15$3 = { class: "flex" };
+var _hoisted_16$1 = ["href"];
+var _hoisted_17$1 = ["src"];
+//#endregion
+//#region src/comps/Billx.vue
+var Billx_default = /* @__PURE__ */ defineComponent({
+	__name: "Billx",
+	props: ["billx", "mode"],
+	setup(__props) {
+		const props = __props;
+		props.billx;
+		props.mode;
+		const s = glib.vue.reactive({ rt: runtime });
+		glib.vue.onMounted(async () => {});
+		return (_ctx, _cache) => {
+			return openBlock(), createElementBlock("div", _hoisted_1$21, [props.mode == 0 ? (openBlock(), createElementBlock("div", _hoisted_2$15, [createBaseVNode("div", null, [createVNode(BillState_default, { state: props.billx.bill.p.State }, null, 8, ["state"])]), createBaseVNode("div", null, [
+				props.billx.cato && props.billx.providero ? (openBlock(), createElementBlock("div", _hoisted_3$11, [createVNode(Provider_default$1, {
+					ucat: props.billx.cato,
+					uprovider: props.billx.providero
+				}, null, 8, ["ucat", "uprovider"])])) : createCommentVNode("", true),
+				props.billx.unito ? (openBlock(), createBlock(Unit_default, {
+					key: 1,
+					unit: props.billx.unito
+				}, null, 8, ["unit"])) : createCommentVNode("", true),
+				props.billx.acctxo ? (openBlock(), createBlock(Acctx_default, {
+					key: 2,
+					acctx: props.billx.acctxo
+				}, null, 8, ["acctx"])) : createCommentVNode("", true),
+				props.billx.cato && props.billx.providero ? (openBlock(), createElementBlock("div", _hoisted_4$11, " Amount: $" + toDisplayString(props.billx.bill.p.Amt), 1)) : createCommentVNode("", true)
+			])])) : createCommentVNode("", true), props.mode == 1 ? (openBlock(), createElementBlock("div", _hoisted_5$8, [
+				createBaseVNode("div", _hoisted_6$7, [
+					createVNode(BillState_default, { state: props.billx.bill.p.State }, null, 8, ["state"]),
+					unref(s).rt.user.eu.p.AuthType == 2 ? (openBlock(), createElementBlock("button", _hoisted_7$6, " Accept ")) : createCommentVNode("", true),
+					unref(s).rt.user.eu.p.AuthType == 2 ? (openBlock(), createElementBlock("button", _hoisted_8$6, " Decline ")) : createCommentVNode("", true)
+				]),
+				createBaseVNode("div", null, [
+					props.billx.cato && props.billx.providero ? (openBlock(), createElementBlock("div", _hoisted_9$5, " Bill Details ")) : createCommentVNode("", true),
+					props.billx.cato && props.billx.providero ? (openBlock(), createElementBlock("div", _hoisted_10$4, [createVNode(Provider_default$1, {
+						ucat: props.billx.cato,
+						uprovider: props.billx.providero
+					}, null, 8, ["ucat", "uprovider"])])) : createCommentVNode("", true),
+					props.billx.unito ? (openBlock(), createElementBlock("div", _hoisted_11$4, " Unit ")) : createCommentVNode("", true),
+					props.billx.unito ? (openBlock(), createBlock(Unit_default, {
+						key: 3,
+						unit: props.billx.unito,
+						mode: 1
+					}, null, 8, ["unit"])) : createCommentVNode("", true),
+					props.billx.acctxo ? (openBlock(), createElementBlock("div", _hoisted_12$4, " Acct ")) : createCommentVNode("", true),
+					props.billx.acctxo ? (openBlock(), createBlock(Acctx_default, {
+						key: 5,
+						acctx: props.billx.acctxo,
+						mode: 1
+					}, null, 8, ["acctx"])) : createCommentVNode("", true),
+					_hoisted_13$4,
+					createBaseVNode("div", null, " Bill Date: $" + toDisplayString(props.billx.bill.p.YYYYMMDD), 1),
+					createBaseVNode("div", null, " Amount: $" + toDisplayString(props.billx.bill.p.Amt), 1)
+				]),
+				_hoisted_14$3,
+				createBaseVNode("div", _hoisted_15$3, [(openBlock(true), createElementBlock(Fragment, null, renderList(props.billx.files, (i) => {
+					return openBlock(), createElementBlock("a", {
+						target: "_blank",
+						href: "/file/" + i.id
+					}, [createBaseVNode("img", { src: "/thumbnail/" + i.id }, null, 8, _hoisted_17$1)], 8, _hoisted_16$1);
+				}), 256))])
+			])) : createCommentVNode("", true)]);
+		};
+	}
+});
+//#endregion
+//#region src/comps/BillStates.vue?vue&type=script&setup=true&lang.ts
+var _hoisted_1$20 = { class: "flex" };
+//#endregion
+//#region src/comps/BillStates.vue
+var BillStates_default = /* @__PURE__ */ defineComponent({
+	__name: "BillStates",
+	setup(__props) {
+		return (_ctx, _cache) => {
+			return openBlock(), createElementBlock("div", _hoisted_1$20, [
+				createVNode(BillState_default, { state: 0 }),
+				createVNode(BillState_default, { state: 1 }),
+				createVNode(BillState_default, { state: 2 }),
+				createVNode(BillState_default, { state: 3 })
+			]);
+		};
+	}
+});
+//#endregion
+//#region src/comps/PoolState.vue?vue&type=script&setup=true&lang.ts
+var _hoisted_1$19 = {
+	key: 0,
+	class: "state-clickable pool-state-Draft"
+};
+var _hoisted_2$14 = {
+	key: 1,
+	class: "state-clickable pool-state-OnGoing"
+};
+var _hoisted_3$10 = {
+	key: 2,
+	class: "state-clickable pool-state-Closed"
+};
+//#endregion
+//#region src/comps/PoolState.vue
+var PoolState_default = /* @__PURE__ */ defineComponent({
+	__name: "PoolState",
+	props: ["state"],
+	setup(__props) {
+		const props = __props;
+		props.state;
+		return (_ctx, _cache) => {
+			return props.state == 0 ? (openBlock(), createElementBlock("span", _hoisted_1$19, " Draft ")) : props.state == 1 ? (openBlock(), createElementBlock("span", _hoisted_2$14, " On Going ")) : (openBlock(), createElementBlock("span", _hoisted_3$10, " Closed "));
+		};
+	}
+});
+//#endregion
+//#region src/comps/Pool.vue?vue&type=script&setup=true&lang.ts
+var _hoisted_1$18 = { class: "caption" };
+var _hoisted_2$13 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, " Provider ", -1);
+//#endregion
+//#region src/comps/Pool.vue
+var Pool_default = /* @__PURE__ */ defineComponent({
+	__name: "Pool",
+	props: ["pool"],
+	setup(__props) {
+		const props = __props;
+		props.pool;
+		return (_ctx, _cache) => {
+			return openBlock(), createElementBlock("div", _hoisted_1$18, [createVNode(PoolState_default, { state: props.pool.p.State }, null, 8, ["state"]), _hoisted_2$13]);
+		};
+	}
+});
+//#endregion
+//#region src/comps/PoolStates.vue?vue&type=script&setup=true&lang.ts
+var _hoisted_1$17 = { class: "flex" };
+//#endregion
+//#region src/comps/PoolStates.vue
+var PoolStates_default = /* @__PURE__ */ defineComponent({
+	__name: "PoolStates",
+	setup(__props) {
+		return (_ctx, _cache) => {
+			return openBlock(), createElementBlock("div", _hoisted_1$17, [
+				createVNode(PoolState_default, { state: 0 }),
+				createVNode(PoolState_default, { state: 1 }),
+				createVNode(PoolState_default, { state: 2 })
+			]);
+		};
+	}
+});
+//#endregion
+//#region src/pages/Admin/Bills.vue?vue&type=script&setup=true&lang.ts
+var _hoisted_1$16 = { class: "card" };
+var _hoisted_2$12 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, " Bill Pools ", -1);
+var _hoisted_3$9 = { class: "card" };
+var _hoisted_4$10 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, " Bills ", -1);
+var Bills_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */ defineComponent({
+	__name: "Bills",
+	setup(__props) {
+		const s = glib.vue.reactive({
+			users: [],
+			pools: [],
+			billxs: [],
+			rt: runtime
+		});
+		glib.vue.onMounted(async () => {
+			loader("/api/admin/pools", { act: "ls" }, (rep) => {
+				s.pools = rep.data;
+			});
+			loader("/api/admin/billxs", { act: "ls" }, (rep) => {
+				s.billxs = rep.data;
+			});
+		});
+		return (_ctx, _cache) => {
+			return openBlock(), createElementBlock(Fragment, null, [
+				createBaseVNode("div", _hoisted_1$16, [_hoisted_2$12, createVNode(PoolStates_default)]),
+				(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).pools, (i) => {
+					return openBlock(), createBlock(Pool_default, { pool: i }, null, 8, ["pool"]);
+				}), 256)),
+				createBaseVNode("div", _hoisted_3$9, [_hoisted_4$10, createVNode(BillStates_default)]),
+				(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).billxs, (i) => {
+					return openBlock(), createBlock(Billx_default, {
+						billx: i,
+						mode: 1
+					}, null, 8, ["billx"]);
+				}), 256))
+			], 64);
+		};
+	}
+});
+//#endregion
+//#region src/pages/Admin/Bills.vue
+var Bills_exports = /* @__PURE__ */ __exportAll({ default: () => Bills_default });
+var Bills_default = Bills_vue_vue_type_script_setup_true_lang_default;
+//#endregion
+//#region src/pages/Admin/Home.vue?vue&type=script&setup=true&lang.ts
+var Home_vue_vue_type_script_setup_true_lang_default$1 = /* @__PURE__ */ defineComponent({
+	__name: "Home",
+	setup(__props) {
+		const s = glib.vue.reactive({
+			billxs: [],
+			rt: runtime
+		});
+		glib.vue.onMounted(async () => {
+			loader("/api/admin/billxs", { act: "ls" }, (rep) => {
+				s.billxs = rep.data;
+			});
+		});
+		return (_ctx, _cache) => {
+			return null;
+		};
+	}
+});
+//#endregion
+//#region src/pages/Admin/Home.vue
+var Home_exports$1 = /* @__PURE__ */ __exportAll({ default: () => Home_default$1 });
+var Home_default$1 = Home_vue_vue_type_script_setup_true_lang_default$1;
+//#endregion
+//#region src/pages/Admin/Provider.vue?vue&type=script&setup=true&lang.ts
+var _hoisted_1$15 = { class: "card" };
+var _hoisted_2$11 = {
+	key: 0,
+	class: "card-caption"
+};
+var _hoisted_3$8 = { class: "card" };
+var _hoisted_4$9 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, " Bill Pools ", -1);
+var _hoisted_5$7 = {
+	key: 0,
+	class: "card"
+};
+var _hoisted_6$6 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, " Bills ", -1);
+var Provider_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */ defineComponent({
+	__name: "Provider",
+	props: ["cat", "provider"],
+	setup(__props) {
+		const props = __props;
+		props.cat;
+		props.provider;
+		const s = glib.vue.reactive({
+			ucat: UCAT_empty(),
+			view: ProviderView_empty(),
+			rt: runtime
+		});
+		const createPool = () => {
+			loader("/api/admin/pools", {
+				data: { provider: s.view.uprovider.id },
+				act: "create"
+			}, (rep) => {
+				let pool = rep.data;
+				s.view.pools.push(pool);
+			});
+		};
+		glib.vue.onMounted(async () => {
+			loader("/api/admin/providers", {
+				cat: props.cat,
+				provider: props.provider,
+				act: "load"
+			}, (rep) => {
+				s.view = rep.data;
+			});
+		});
+		return (_ctx, _cache) => {
+			const _component_Poolx = resolveComponent("Poolx");
+			return openBlock(), createElementBlock(Fragment, null, [
+				createBaseVNode("div", _hoisted_1$15, [unref(s).ucat.id > 0 && unref(s).view.uprovider.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_2$11, toDisplayString(unref(s).view.uprovider.p.Caption) + " (" + toDisplayString(unref(s).ucat.p.Caption) + ") ", 1)) : createCommentVNode("", true)]),
+				createBaseVNode("div", _hoisted_3$8, [
+					_hoisted_4$9,
+					createVNode(PoolStates_default),
+					createBaseVNode("button", { onClick: _cache[0] || (_cache[0] = ($event) => createPool()) }, "Create Bill Pool")
+				]),
+				(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).view.pools, (i) => {
+					return openBlock(), createBlock(_component_Poolx, { poolx: i }, null, 8, ["poolx"]);
+				}), 256)),
+				unref(s).view.billxs.length > 0 ? (openBlock(), createElementBlock("div", _hoisted_5$7, [
+					_hoisted_6$6,
+					createVNode(BillStates_default),
+					(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).view.billxs, (i) => {
+						return openBlock(), createBlock(Billx_default, {
+							billx: i,
+							mode: 1
+						}, null, 8, ["billx"]);
+					}), 256))
+				])) : createCommentVNode("", true)
+			], 64);
+		};
+	}
+});
+//#endregion
+//#region src/pages/Admin/Provider.vue
+var Provider_exports = /* @__PURE__ */ __exportAll({ default: () => Provider_default });
+var Provider_default = Provider_vue_vue_type_script_setup_true_lang_default;
+//#endregion
+//#region src/comps/ProviderList.vue?vue&type=script&setup=true&lang.ts
+var _hoisted_1$14 = { class: "card" };
+var _hoisted_2$10 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Our Business Scope", -1);
+var _hoisted_3$7 = { class: "pt-1" };
+var _hoisted_4$8 = { class: "text-xs uppercase tracking-wider text-gray-400 leading-tight mt-3" };
+//#endregion
+//#region src/comps/ProviderList.vue
+var ProviderList_default = /* @__PURE__ */ defineComponent({
+	__name: "ProviderList",
+	props: ["route"],
+	setup(__props) {
+		const props = __props;
+		props.route;
+		const s = glib.vue.reactive({
+			cat__providers: {},
+			rt: runtime
+		});
+		glib.vue.onMounted(async () => {
+			loader("/api/public/providers", {}, (rep) => {
+				s.cat__providers = {};
+				rep.data.forEach((e) => {
+					let ucat = e.ucat;
+					let item = {
+						ucat,
+						uproviders: e.providers
+					};
+					s.cat__providers[ucat.id] = item;
+				});
+			});
+		});
+		return (_ctx, _cache) => {
+			return openBlock(), createElementBlock("div", _hoisted_1$14, [_hoisted_2$10, (openBlock(true), createElementBlock(Fragment, null, renderList(Object.entries(unref(s).cat__providers), ([k, v]) => {
+				return openBlock(), createElementBlock("div", { key: k }, [createBaseVNode("div", _hoisted_3$7, [createBaseVNode("b", _hoisted_4$8, toDisplayString(v.ucat.p.Caption), 1)]), (openBlock(true), createElementBlock(Fragment, null, renderList(v.uproviders, (ii) => {
+					return openBlock(), createBlock(Provider_default$1, {
+						route: props.route,
+						ucat: v.ucat,
+						uprovider: ii
+					}, null, 8, [
+						"route",
+						"ucat",
+						"uprovider"
+					]);
+				}), 256))]);
+			}), 128))]);
+		};
+	}
+});
+//#endregion
+//#region src/pages/Admin/Providers.vue?vue&type=script&setup=true&lang.ts
+var Providers_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */ defineComponent({
+	__name: "Providers",
+	setup(__props) {
+		return (_ctx, _cache) => {
+			return openBlock(), createBlock(ProviderList_default, { route: "/admin/provider/" });
+		};
+	}
+});
+//#endregion
+//#region src/pages/Admin/Providers.vue
+var Providers_exports = /* @__PURE__ */ __exportAll({ default: () => Providers_default });
+var Providers_default = Providers_vue_vue_type_script_setup_true_lang_default;
+//#endregion
+//#region \0plugin-vue:export-helper
+var _plugin_vue_export_helper_default = (sfc, props) => {
+	const target = sfc.__vccOpts || sfc;
+	for (const [key, val] of props) target[key] = val;
+	return target;
+};
+//#endregion
+//#region src/pages/Admin/Sys.vue
+var Sys_exports = /* @__PURE__ */ __exportAll({ default: () => Sys_default });
+var _sfc_main = {};
+var _hoisted_1$13 = { class: "card" };
+var _hoisted_4$7 = [/* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, " Deploy ", -1), /* @__PURE__ */ createBaseVNode("div", null, [/* @__PURE__ */ createBaseVNode("button", null, " Clear Test Data ")], -1)];
+function _sfc_render(_ctx, _cache) {
+	return openBlock(), createElementBlock("div", _hoisted_1$13, _hoisted_4$7);
+}
+var Sys_default = /* @__PURE__ */ _plugin_vue_export_helper_default(_sfc_main, [["render", _sfc_render]]);
+//#endregion
+//#region src/comps/SearchField.vue?vue&type=script&setup=true&lang.ts
+var _hoisted_1$12 = { class: "relative w-[200px]" };
+var _hoisted_2$9 = {
+	key: 0,
+	class: "absolute z-10 w-full bg-white border rounded shadow-lg mt-1 max-h-48 overflow-y-auto"
+};
+var _hoisted_3$6 = ["onClick", "value"];
+//#endregion
+//#region src/comps/SearchField.vue
+var SearchField_default = /* @__PURE__ */ defineComponent({
+	__name: "SearchField",
+	props: [
+		"api",
+		"item__key",
+		"item__text"
+	],
+	emits: ["select"],
+	setup(__props, { emit: __emit }) {
+		const props = __props;
+		props.api;
+		props.item__key;
+		props.item__text;
+		const s = glib.vue.reactive({ opts: [] });
+		const emits = __emit;
+		const searchText = ref("");
+		const isDropdownVisible = ref(false);
+		const onInput = () => {
+			if (!searchText.value) return;
+			loader(props.api, {
+				term: searchText.value,
+				act: "search"
+			}, (rep) => {
+				s.opts = rep.data;
+				console.log(s.opts);
+			}, () => {});
+		};
+		const selectOption = (opt) => {
+			searchText.value = props.item__key(opt);
+			isDropdownVisible.value = false;
+			emits("select", opt);
+		};
+		const onBlur = () => {
+			setTimeout(() => isDropdownVisible.value = false, 200);
+		};
+		return (_ctx, _cache) => {
+			return openBlock(), createElementBlock("div", _hoisted_1$12, [withDirectives(createBaseVNode("input", {
+				type: "text",
+				"onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => searchText.value = $event),
+				onFocus: _cache[1] || (_cache[1] = ($event) => isDropdownVisible.value = true),
+				onBlur,
+				onInput,
+				placeholder: "Start typing...",
+				class: "w-full border rounded px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
+			}, null, 544), [[vModelText, searchText.value]]), isDropdownVisible.value && unref(s).opts.length > 0 ? (openBlock(), createElementBlock("ul", _hoisted_2$9, [(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).opts, (opt) => {
+				return openBlock(), createElementBlock("li", {
+					onClick: ($event) => selectOption(opt),
+					value: props.item__key(opt),
+					class: "px-3 py-2 hover:bg-blue-50 cursor-pointer text-sm"
+				}, toDisplayString(props.item__text(opt)), 9, _hoisted_3$6);
+			}), 256))])) : createCommentVNode("", true)]);
+		};
+	}
+});
+//#endregion
+//#region src/comps/User.vue?vue&type=script&setup=true&lang.ts
+var _hoisted_1$11 = {
+	key: 0,
+	class: "eu-AuthType-Admin"
+};
+var _hoisted_2$8 = { key: 1 };
+var _hoisted_3$5 = ["src"];
+//#endregion
+//#region src/comps/User.vue
+var User_default = /* @__PURE__ */ defineComponent({
+	__name: "User",
+	props: ["eu"],
+	setup(__props) {
+		const props = __props;
+		props.eu;
+		return (_ctx, _cache) => {
+			return openBlock(), createElementBlock(Fragment, null, [
+				props.eu.p.AuthType == 2 ? (openBlock(), createElementBlock("span", _hoisted_1$11, " Admin ")) : createCommentVNode("", true),
+				props.eu.p.OAuthProvider != "" ? (openBlock(), createElementBlock("span", _hoisted_2$8, [createTextVNode(toDisplayString(props.eu.p.Email) + " ", 1), createBaseVNode("img", {
+					class: "img-oauth",
+					src: "https://img.clerk.com/static/" + __props.eu.p.OAuthProvider + ".svg"
+				}, null, 8, _hoisted_3$5)])) : createCommentVNode("", true),
+				createBaseVNode("span", null, toDisplayString(props.eu.p.Username), 1)
+			], 64);
+		};
+	}
+});
+//#endregion
+//#region src/pages/Admin/Users.vue?vue&type=script&setup=true&lang.ts
+var _hoisted_1$10 = { class: "card" };
+var _hoisted_2$7 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Users", -1);
+var Users_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */ defineComponent({
+	__name: "Users",
+	setup(__props) {
+		const s = glib.vue.reactive({
+			eus: [],
+			rt: runtime
+		});
+		const onSelectUser = (eu) => {};
+		glib.vue.onMounted(async () => {
+			loader("/api/admin/users", { act: "ls" }, (rep) => {
+				s.eus = rep.data;
+			});
+		});
+		return (_ctx, _cache) => {
+			return openBlock(), createElementBlock("div", _hoisted_1$10, [
+				_hoisted_2$7,
+				createBaseVNode("div", null, [createVNode(SearchField_default, {
+					api: "/api/admin/users",
+					item__key: (eu) => eu.id,
+					item__text: (eu) => eu.p.Caption + " " + eu.p.Username + " " + eu.p.Email,
+					onSelect: onSelectUser
+				}, null, 8, ["item__key", "item__text"])]),
+				(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).eus, (i) => {
+					return openBlock(), createElementBlock("div", null, [createVNode(User_default, { eu: i }, null, 8, ["eu"])]);
+				}), 256))
+			]);
+		};
+	}
+});
+//#endregion
+//#region src/pages/Admin/Users.vue
+var Users_exports = /* @__PURE__ */ __exportAll({ default: () => Users_default });
+var Users_default = Users_vue_vue_type_script_setup_true_lang_default;
+//#endregion
+//#region src/pages/Eu/Home.vue?vue&type=script&setup=true&lang.ts
+var _hoisted_1$9 = /* @__PURE__ */ createStaticVNode("<div class=\"card\"><div class=\"card-caption\"> Demo Summary </div><div>Current Website: <a href=\"https://whatsyourideal.com/\" target=\"_blank\">https://whatsyourideal.com/</a></div><div>Demo: <a href=\"https://5.78.201.21/\" target=\"_blank\">https://5.78.201.21/</a></div><div> Documentation: <a href=\"https://docs.google.com/document/d/1ST0W7PcwX-jppBmm4fPdORJHrkoe5yqgPvA7SfTSq0s/edit?usp=sharing\" target=\"_blank\"> Run through the demo </a> | <a href=\"https://docs.google.com/spreadsheets/d/1rkHsUWFX-SugM9SB1gLJkAjO8h9c9DkfOzWGyKeG4DE/edit?usp=sharing\" target=\"_blank\"> Trace issues </a></div><div> Clerk SSO: <a href=\"https://clerk.com/docs/guides/configure/auth-strategies/social-connections/overview\" target=\"_blank\"> Supported social providers </a> | <a href=\"https://dashboard.clerk.com/apps/app_3BUWqG9rLal8U7qrP2MCA4jEvFX/instances/ins_3BUWqB8zkyGOBoUQ9BfsugqEBAv/user-authentication/sso-connections\" target=\"_blank\"> Config </a></div><div> Gemini AI: <a href=\"https://aistudio.google.com/app/projects\" target=\"_blank\"> API key </a> | <a href=\"https://aistudio.google.com/app/billing?billing=0162F4-BB3466-5E8B6E\" target=\"_blank\"> Billing </a></div><div> Updated: Apr 14, 2026 </div></div>", 1);
+var _hoisted_2$6 = {
+	key: 0,
+	class: "card"
+};
+var _hoisted_3$4 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Upload and Review Your Bill", -1);
+var _hoisted_4$6 = {
+	key: 1,
+	class: "card"
+};
+var _hoisted_5$6 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Sign In and Review Your Bill", -1);
+var Home_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */ defineComponent({
+	__name: "Home",
+	setup(__props) {
+		const s = glib.vue.reactive({ rt: runtime });
+		return (_ctx, _cache) => {
+			return openBlock(), createElementBlock(Fragment, null, [
+				_hoisted_1$9,
+				unref(s).rt.user != null && unref(s).rt.user.eu.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_2$6, [_hoisted_3$4, createBaseVNode("div", null, [createBaseVNode("button", { onClick: _cache[0] || (_cache[0] = ($event) => unref(s).rt.router.push("/UploadBill")) }, "GO")])])) : (openBlock(), createElementBlock("div", _hoisted_4$6, [_hoisted_5$6, createBaseVNode("div", null, [createVNode(UserAuth_default)])])),
+				createVNode(ProviderList_default)
+			], 64);
+		};
+	}
+});
+//#endregion
+//#region src/pages/Eu/Home.vue
+var Home_exports = /* @__PURE__ */ __exportAll({ default: () => Home_default });
+var Home_default = Home_vue_vue_type_script_setup_true_lang_default;
+//#endregion
+//#region src/pages/Eu/MyAcctxs.vue?vue&type=script&setup=true&lang.ts
+var _hoisted_1$8 = /* @__PURE__ */ createBaseVNode("div", { class: "card" }, [/* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, " My Accounts ")], -1);
+var MyAcctxs_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */ defineComponent({
+	__name: "MyAcctxs",
+	setup(__props) {
+		const s = glib.vue.reactive({
+			users: [],
+			acctxs: [],
+			toggleCreate: false,
+			pUnit: pUNIT_empty(),
+			rt: runtime
+		});
+		glib.vue.onMounted(async () => {
+			loader("/api/eu/my-acctxs", { act: "ls" }, (rep) => {
+				s.acctxs = rep.data;
+			});
+		});
+		return (_ctx, _cache) => {
+			return openBlock(), createElementBlock(Fragment, null, [_hoisted_1$8, (openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).acctxs, (i) => {
+				return openBlock(), createBlock(Acctx_default, {
+					acctx: i,
+					mode: 1
+				}, null, 8, ["acctx"]);
+			}), 256))], 64);
+		};
+	}
+});
+//#endregion
+//#region src/pages/Eu/MyAcctxs.vue
+var MyAcctxs_exports = /* @__PURE__ */ __exportAll({ default: () => MyAcctxs_default });
+var MyAcctxs_default = MyAcctxs_vue_vue_type_script_setup_true_lang_default;
+//#endregion
+//#region src/pages/Eu/MyBills.vue?vue&type=script&setup=true&lang.ts
+var _hoisted_1$7 = /* @__PURE__ */ createBaseVNode("div", { class: "card" }, [/* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, " My Bills ")], -1);
+var MyBills_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */ defineComponent({
+	__name: "MyBills",
+	setup(__props) {
+		const s = glib.vue.reactive({
+			users: [],
+			billxs: [],
+			rt: runtime
+		});
+		glib.vue.onMounted(async () => {
+			loader("/api/eu/my-billxs", { act: "ls" }, (rep) => {
+				s.billxs = rep.data;
+			});
+		});
+		return (_ctx, _cache) => {
+			return openBlock(), createElementBlock(Fragment, null, [
+				_hoisted_1$7,
+				createVNode(BillStates_default),
+				(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).billxs, (i) => {
+					return openBlock(), createBlock(Billx_default, {
+						billx: i,
+						mode: 0
+					}, null, 8, ["billx"]);
+				}), 256))
+			], 64);
+		};
+	}
+});
+//#endregion
+//#region src/pages/Eu/MyBills.vue
+var MyBills_exports = /* @__PURE__ */ __exportAll({ default: () => MyBills_default });
+var MyBills_default = MyBills_vue_vue_type_script_setup_true_lang_default;
+//#endregion
+//#region src/pages/Eu/MyUnits.vue?vue&type=script&setup=true&lang.ts
+var _hoisted_1$6 = /* @__PURE__ */ createBaseVNode("div", { class: "card" }, [/* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, " My Units ")], -1);
+var MyUnits_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */ defineComponent({
+	__name: "MyUnits",
+	setup(__props) {
+		const s = glib.vue.reactive({
+			users: [],
+			units: [],
+			toggleCreate: false,
+			pUnit: pUNIT_empty(),
+			rt: runtime
+		});
+		glib.vue.onMounted(async () => {
+			loader("/api/eu/my-units", { act: "ls" }, (rep) => {
+				s.units = rep.data;
+			});
+		});
+		return (_ctx, _cache) => {
+			return openBlock(), createElementBlock(Fragment, null, [_hoisted_1$6, (openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).units, (i) => {
+				return openBlock(), createBlock(Unit_default, {
+					unit: i,
+					mode: 1
+				}, null, 8, ["unit"]);
+			}), 256))], 64);
+		};
+	}
+});
+//#endregion
+//#region src/pages/Eu/MyUnits.vue
+var MyUnits_exports = /* @__PURE__ */ __exportAll({ default: () => MyUnits_default });
+var MyUnits_default = MyUnits_vue_vue_type_script_setup_true_lang_default;
+//#endregion
+//#region src/comps/StateLocator.vue?vue&type=script&setup=true&lang.ts
+var _hoisted_51 = [/* @__PURE__ */ createStaticVNode("<option value=\"AL\">AL Alabama</option><option value=\"AK\">AK Alaska</option><option value=\"AZ\">AZ Arizona</option><option value=\"AR\">AR Arkansas</option><option value=\"CA\">CA California</option><option value=\"CO\">CO Colorado</option><option value=\"CT\">CT Connecticut</option><option value=\"DE\">DE Delaware</option><option value=\"FL\">FL Florida</option><option value=\"GA\">GA Georgia</option><option value=\"HI\">HI Hawaii</option><option value=\"ID\">ID Idaho</option><option value=\"IL\">IL Illinois</option><option value=\"IN\">IN Indiana</option><option value=\"IA\">IA Iowa</option><option value=\"KS\">KS Kansas</option><option value=\"KY\">KY Kentucky</option><option value=\"LA\">LA Louisiana</option><option value=\"ME\">ME Maine</option><option value=\"MD\">MD Maryland</option><option value=\"MA\">MA Massachusetts</option><option value=\"MI\">MI Michigan</option><option value=\"MN\">MN Minnesota</option><option value=\"MS\">MS Mississippi</option><option value=\"MO\">MO Missouri</option><option value=\"MT\">MT Montana</option><option value=\"NE\">NE Nebraska</option><option value=\"NV\">NV Nevada</option><option value=\"NH\">NH New Hampshire</option><option value=\"NJ\">NJ New Jersey</option><option value=\"NM\">NM New Mexico</option><option value=\"NY\">NY New York</option><option value=\"NC\">NC North Carolina</option><option value=\"ND\">ND North Dakota</option><option value=\"OH\">OH Ohio</option><option value=\"OK\">OK Oklahoma</option><option value=\"OR\">OR Oregon</option><option value=\"PA\">PA Pennsylvania</option><option value=\"RI\">RI Rhode Island</option><option value=\"SC\">SC South Carolina</option><option value=\"SD\">SD South Dakota</option><option value=\"TN\">TN Tennessee</option><option value=\"TX\">TX Texas</option><option value=\"UT\">UT Utah</option><option value=\"VT\">VT Vermont</option><option value=\"VA\">VA Virginia</option><option value=\"WA\">WA Washington</option><option value=\"WV\">WV West Virginia</option><option value=\"WI\">WI Wisconsin</option><option value=\"WY\">WY Wyoming</option>", 50)];
+//#endregion
+//#region src/comps/StateLocator.vue
+var StateLocator_default = /* @__PURE__ */ defineComponent({
+	__name: "StateLocator",
+	props: {
+		"modelValue": {},
+		"modelModifiers": {}
+	},
+	emits: ["update:modelValue"],
+	setup(__props) {
+		const state = useModel(__props, "modelValue");
+		glib.vue.onMounted(async () => {});
+		return (_ctx, _cache) => {
+			return openBlock(), createElementBlock("div", null, [withDirectives(createBaseVNode("select", { "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => state.value = $event) }, _hoisted_51, 512), [[vModelSelect, state.value]])]);
+		};
+	}
+});
+//#endregion
+//#region src/comps/LocateUnit.vue?vue&type=script&setup=true&lang.ts
+var _hoisted_1$5 = { class: "card-double-col" };
+var _hoisted_2$5 = {
+	key: 0,
+	class: "card-double-col-span"
+};
+var _hoisted_4$5 = [/* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Your Business/Residential Unit", -1)];
+var _hoisted_5$5 = {
+	key: 1,
+	class: "card-double-col-1"
+};
+var _hoisted_6$5 = {
+	key: 2,
+	class: "card-double-col-2"
+};
+var _hoisted_7$5 = { class: "form" };
+var _hoisted_8$5 = /* @__PURE__ */ createBaseVNode("div", null, "Address: ", -1);
+var _hoisted_9$4 = /* @__PURE__ */ createBaseVNode("div", null, "Town: ", -1);
+var _hoisted_10$3 = /* @__PURE__ */ createBaseVNode("div", null, "State: ", -1);
+var _hoisted_11$3 = /* @__PURE__ */ createBaseVNode("div", null, "ZIP: ", -1);
+var _hoisted_12$3 = { class: "flex" };
+var _hoisted_13$3 = { key: 0 };
+var _hoisted_14$2 = {
+	key: 3,
+	class: "card-double-col-span"
+};
+var _hoisted_15$2 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Selected Unit", -1);
+//#endregion
+//#region src/comps/LocateUnit.vue
+var LocateUnit_default = /* @__PURE__ */ defineComponent({
+	__name: "LocateUnit",
+	props: ["api", "unit"],
+	setup(__props) {
+		const props = __props;
+		props.api;
+		props.unit;
+		const s = glib.vue.reactive({
+			showAdded: false,
+			showDetails: true,
+			items: [],
+			selected: UNIT_empty(),
+			rt: runtime
+		});
+		glib.vue.onMounted(async () => {
+			s.selected = props.unit;
+			loader(props.api, { act: "ls" }, (rep) => {
+				s.items = rep.data;
+			});
+		});
+		const onClickNew = () => {
+			loader(props.api, {
+				data: {
+					addr: s.selected.p.Address,
+					town: s.selected.p.Town,
+					state: s.selected.p.State,
+					zip: s.selected.p.Zip
+				},
+				act: "create"
+			}, (rep) => {
+				let item = rep.data;
+				s.items.push(item);
+				s.selected = item;
+				s.showAdded = true;
+			});
+		};
+		const item__text = (item) => {
+			return item.p.Address + ", " + item.p.Town + ", " + item.p.State + item.p.Zip;
+		};
+		const onSelect = (selected) => {
+			s.selected = selected;
+			if (s.selected.id > 0) s.showDetails = false;
+		};
+		return (_ctx, _cache) => {
+			return openBlock(), createElementBlock("div", _hoisted_1$5, [
+				unref(s).showDetails ? (openBlock(), createElementBlock("div", _hoisted_2$5, _hoisted_4$5)) : createCommentVNode("", true),
+				unref(s).showDetails ? (openBlock(), createElementBlock("div", _hoisted_5$5, [createBaseVNode("div", null, [createVNode(SearchField_default, {
+					api: "/api/eu/my-units",
+					item__key: (i) => i.id,
+					item__text,
+					onSelect
+				}, null, 8, ["item__key"])]), (openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).items, (i) => {
+					return openBlock(), createBlock(Unit_default, {
+						class: normalizeClass(["card-clickable", { "selected": unref(s).selected.id == i.id }]),
+						onClick: ($event) => onSelect(i),
+						unit: i,
+						mode: 0
+					}, null, 8, [
+						"class",
+						"onClick",
+						"unit"
+					]);
+				}), 256))])) : createCommentVNode("", true),
+				unref(s).showDetails ? (openBlock(), createElementBlock("div", _hoisted_6$5, [createBaseVNode("div", _hoisted_7$5, [
+					_hoisted_8$5,
+					createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => unref(s).selected.p.Address = $event) }, null, 512), [[vModelText, unref(s).selected.p.Address]])]),
+					_hoisted_9$4,
+					createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => unref(s).selected.p.Town = $event) }, null, 512), [[vModelText, unref(s).selected.p.Town]])]),
+					_hoisted_10$3,
+					createVNode(StateLocator_default, {
+						modelValue: unref(s).selected.p.State,
+						"onUpdate:modelValue": _cache[2] || (_cache[2] = ($event) => unref(s).selected.p.State = $event)
+					}, null, 8, ["modelValue"]),
+					_hoisted_11$3,
+					createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[3] || (_cache[3] = ($event) => unref(s).selected.p.Zip = $event) }, null, 512), [[vModelText, unref(s).selected.p.Zip]])])
+				]), createBaseVNode("div", _hoisted_12$3, [createBaseVNode("button", { onClick: onClickNew }, "Add as a New Unit"), unref(s).showAdded ? (openBlock(), createElementBlock("div", _hoisted_13$3, "New Unit Added")) : createCommentVNode("", true)])])) : createCommentVNode("", true),
+				unref(s).selected.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_14$2, [
+					_hoisted_15$2,
+					createVNode(Unit_default, {
+						unit: unref(s).selected,
+						mode: 1
+					}, null, 8, ["unit"]),
+					createBaseVNode("button", { onClick: _cache[4] || (_cache[4] = ($event) => unref(s).showDetails = true) }, "Reselect")
+				])) : createCommentVNode("", true)
+			]);
+		};
+	}
+});
+//#endregion
+//#region src/comps/LocateAcctx.vue?vue&type=script&setup=true&lang.ts
+var _hoisted_1$4 = { class: "card-double-col" };
+var _hoisted_2$4 = {
+	key: 0,
+	class: "card-double-col-span"
+};
+var _hoisted_4$4 = [/* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Your Service Account", -1)];
+var _hoisted_5$4 = {
+	key: 1,
+	class: "card-double-col-1"
+};
+var _hoisted_6$4 = {
+	key: 2,
+	class: "card-double-col-2"
+};
+var _hoisted_7$4 = { class: "form" };
+var _hoisted_8$4 = /* @__PURE__ */ createBaseVNode("div", null, "Provider", -1);
+var _hoisted_9$3 = /* @__PURE__ */ createBaseVNode("div", null, "Unit", -1);
+var _hoisted_10$2 = /* @__PURE__ */ createBaseVNode("div", null, "Account Number: ", -1);
+var _hoisted_11$2 = /* @__PURE__ */ createBaseVNode("div", null, "Account Name: ", -1);
+var _hoisted_12$2 = { class: "flex" };
+var _hoisted_13$2 = { key: 0 };
+var _hoisted_14$1 = {
+	key: 3,
+	class: "card-double-col-span"
+};
+var _hoisted_15$1 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Selected Account", -1);
+//#endregion
+//#region src/comps/LocateAcctx.vue
+var LocateAcctx_default = /* @__PURE__ */ defineComponent({
+	__name: "LocateAcctx",
+	props: [
+		"api",
+		"acctx",
+		"ucat",
+		"uprovider",
+		"unit"
+	],
+	setup(__props) {
+		const props = __props;
+		props.api;
+		props.acctx;
+		props.ucat;
+		props.uprovider;
+		props.unit;
+		const s = glib.vue.reactive({
+			showAdded: false,
+			showDetails: true,
+			items: [],
+			selected: AcctComplex_empty(),
+			rt: runtime
+		});
+		watch(() => props.ucat, (newP, oldP) => {
+			s.selected.cato = newP;
+		});
+		watch(() => props.uprovider, (newP, oldP) => {
+			s.selected.providero = newP;
+		});
+		watch(() => props.unit, (newP, oldP) => {
+			s.selected.unito = newP;
+		});
+		glib.vue.onMounted(async () => {
+			s.selected = props.acctx;
+			if (props.ucat != null) s.selected.cato = props.ucat;
+			if (props.uprovider != null) s.selected.providero = props.uprovider;
+			if (props.unit != null) s.selected.unito = props.unit;
+			loader(props.api, { act: "ls" }, (rep) => {
+				s.items = rep.data;
+			});
+		});
+		const onClickNew = () => {
+			if (s.selected.unito != null) s.selected.acct.p.Unit = s.selected.unito.id;
+			if (s.selected.cato != null) s.selected.acct.p.Cat = s.selected.cato.id;
+			if (s.selected.providero != null) s.selected.acct.p.Provider = s.selected.providero.id;
+			loader(props.api, {
+				data: {
+					unit: s.selected.acct.p.Unit,
+					cat: s.selected.acct.p.Cat,
+					provider: s.selected.acct.p.Provider,
+					acctname: s.selected.acct.p.AcctName,
+					acctnum: s.selected.acct.p.AcctNum
+				},
+				act: "create"
+			}, (rep) => {
+				let item = rep.data;
+				s.items.push(item);
+				s.selected = item;
+				s.showAdded = true;
+			});
+		};
+		const item__text = (item) => {
+			return item.acct.p.AcctName + " " + item.acct.p.AcctNum;
+		};
+		const onSelect = (selected) => {
+			s.selected = selected;
+			if (s.selected.acct.id > 0) s.showDetails = false;
+		};
+		return (_ctx, _cache) => {
+			return openBlock(), createElementBlock("div", _hoisted_1$4, [
+				unref(s).showDetails ? (openBlock(), createElementBlock("div", _hoisted_2$4, _hoisted_4$4)) : createCommentVNode("", true),
+				unref(s).showDetails ? (openBlock(), createElementBlock("div", _hoisted_5$4, [createBaseVNode("div", null, [createVNode(SearchField_default, {
+					api: "/api/eu/my-acctx",
+					item__key: (i) => i.acct.id,
+					item__text,
+					onSelect
+				}, null, 8, ["item__key"])]), (openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).items, (i) => {
+					return openBlock(), createBlock(Acctx_default, {
+						class: normalizeClass(["card-clickable", { "selected": unref(s).selected.acct.id == i.acct.id }]),
+						onClick: ($event) => onSelect(i),
+						acctx: i,
+						mode: 0
+					}, null, 8, [
+						"class",
+						"onClick",
+						"acctx"
+					]);
+				}), 256))])) : createCommentVNode("", true),
+				unref(s).showDetails ? (openBlock(), createElementBlock("div", _hoisted_6$4, [createBaseVNode("div", _hoisted_7$4, [
+					_hoisted_8$4,
+					createBaseVNode("div", null, [createVNode(Provider_default$1, { uprovider: props.uprovider }, null, 8, ["uprovider"])]),
+					_hoisted_9$3,
+					createVNode(Unit_default, {
+						unit: props.unit,
+						mode: 1
+					}, null, 8, ["unit"]),
+					_hoisted_10$2,
+					createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => unref(s).selected.acct.p.AcctNum = $event) }, null, 512), [[vModelText, unref(s).selected.acct.p.AcctNum]])]),
+					_hoisted_11$2,
+					createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => unref(s).selected.acct.p.AcctName = $event) }, null, 512), [[vModelText, unref(s).selected.acct.p.AcctName]])])
+				]), createBaseVNode("div", _hoisted_12$2, [createBaseVNode("button", { onClick: onClickNew }, "Add as a New Account"), unref(s).showAdded ? (openBlock(), createElementBlock("div", _hoisted_13$2, "New Account Added")) : createCommentVNode("", true)])])) : createCommentVNode("", true),
+				unref(s).selected.acct.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_14$1, [
+					_hoisted_15$1,
+					createVNode(Acctx_default, {
+						acctx: unref(s).selected,
+						mode: 1
+					}, null, 8, ["acctx"]),
+					createBaseVNode("button", { onClick: _cache[2] || (_cache[2] = ($event) => unref(s).showDetails = true) }, "Reselect")
+				])) : createCommentVNode("", true)
+			]);
+		};
+	}
+});
+//#endregion
+//#region src/comps/LocateProvider.vue?vue&type=script&setup=true&lang.ts
+var _hoisted_1$3 = { class: "card-double-col" };
+var _hoisted_2$3 = { class: "card-double-col-span" };
+var _hoisted_3$3 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Service Provider", -1);
+var _hoisted_4$3 = { class: "border-blue-300 m-3" };
+var _hoisted_5$3 = ["onClick"];
+var _hoisted_6$3 = { key: 0 };
+var _hoisted_7$3 = { class: "selected" };
+var _hoisted_8$3 = { key: 1 };
+var _hoisted_9$2 = {
+	key: 0,
+	class: "border-blue-300 m-3"
+};
+//#endregion
+//#region src/comps/LocateProvider.vue
+var LocateProvider_default = /* @__PURE__ */ defineComponent({
+	__name: "LocateProvider",
+	props: ["ucat", "uprovider"],
+	setup(__props) {
+		const props = __props;
+		props.ucat;
+		props.uprovider;
+		const s = glib.vue.reactive({
+			cat__providers: {},
+			selectedCat: UCAT_empty(),
+			selectedProvider: UPROVIDER_empty(),
+			rt: runtime
+		});
+		glib.vue.onMounted(async () => {
+			s.selectedCat = props.ucat;
+			s.selectedProvider = props.uprovider;
+			loader("/api/public/providers", {}, (rep) => {
+				s.cat__providers = {};
+				rep.data.forEach((e) => {
+					let ucat = e.ucat;
+					let item = {
+						ucat,
+						uproviders: e.providers
+					};
+					s.cat__providers[ucat.id] = item;
+				});
+			});
+		});
+		return (_ctx, _cache) => {
+			return openBlock(), createElementBlock("div", _hoisted_1$3, [createBaseVNode("div", _hoisted_2$3, [
+				_hoisted_3$3,
+				createBaseVNode("div", _hoisted_4$3, [(openBlock(true), createElementBlock(Fragment, null, renderList(Object.entries(unref(s).cat__providers), ([k, v]) => {
+					return openBlock(), createElementBlock("span", {
+						class: "card-clickable m-3",
+						onClick: ($event) => unref(s).selectedCat = v.ucat
+					}, [unref(s).selectedCat.id == v.ucat.id ? (openBlock(), createElementBlock("span", _hoisted_6$3, [createBaseVNode("b", _hoisted_7$3, toDisplayString(v.ucat.p.Caption), 1)])) : (openBlock(), createElementBlock("span", _hoisted_8$3, toDisplayString(v.ucat.p.Caption), 1))], 8, _hoisted_5$3);
+				}), 256))]),
+				unref(s).cat__providers[unref(s).selectedCat.id] ? (openBlock(), createElementBlock("div", _hoisted_9$2, [(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).cat__providers[unref(s).selectedCat.id].uproviders, (ii) => {
+					return openBlock(), createBlock(Provider_default$1, {
+						class: "card-clickable m-3",
+						onClick: ($event) => unref(s).selectedProvider = ii,
+						uprovider: ii,
+						highlight: unref(s).selectedProvider.id == ii.id
+					}, null, 8, [
+						"onClick",
+						"uprovider",
+						"highlight"
+					]);
+				}), 256))])) : createCommentVNode("", true)
+			])]);
+		};
+	}
+});
+//#endregion
+//#region src/pages/Eu/ReviewBill.vue?vue&type=script&setup=true&lang.ts
+var _hoisted_1$2 = { class: "card" };
+var _hoisted_2$2 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Review Your Bill", -1);
+var _hoisted_3$2 = { class: "flex" };
+var _hoisted_4$2 = ["href"];
+var _hoisted_5$2 = ["src"];
+var _hoisted_6$2 = {
+	key: 0,
+	class: "card-double-col-container"
+};
+var _hoisted_7$2 = { class: "card-double-col" };
+var _hoisted_8$2 = {
+	key: 0,
+	class: "card"
+};
+var _hoisted_9$1 = /* @__PURE__ */ createBaseVNode("p", null, "We experienced an issue from the AI. You can keyin the fields instead.", -1);
+var _hoisted_10$1 = { class: "card-double-col" };
+var _hoisted_11$1 = /* @__PURE__ */ createBaseVNode("div", { class: "card-double-col-span" }, [/* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Billing")], -1);
+var _hoisted_12$1 = /* @__PURE__ */ createBaseVNode("div", { class: "card-double-col-1" }, null, -1);
+var _hoisted_13$1 = { class: "card-double-col-2" };
+var _hoisted_14 = /* @__PURE__ */ createBaseVNode("div", null, "Bill Date: ", -1);
+var _hoisted_15 = /* @__PURE__ */ createBaseVNode("div", null, "Amount: ", -1);
+var _hoisted_16 = { class: "card-double-col" };
+var _hoisted_17 = { class: "card-double-col-span" };
+var _hoisted_18 = {
+	key: 1,
+	class: "card"
+};
+var _hoisted_19 = /* @__PURE__ */ createBaseVNode("img", { src: "https://media.tenor.com/P6OWWkfES0YAAAAm/loading-gif-loading.webp" }, null, -1);
+var ReviewBill_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */ defineComponent({
+	__name: "ReviewBill",
+	setup(__props) {
+		const s = glib.vue.reactive({
+			fids: [],
+			er: "",
+			ex: "",
+			msg: "",
+			ucat: UCAT_empty(),
+			uprovider: UPROVIDER_empty(),
+			unit: UNIT_empty(),
+			acctx: AcctComplex_empty(),
+			bill: UBILL_empty(),
+			rt: runtime
+		});
+		glib.vue.onMounted(async () => {
+			try {
+				let json = "" + sessionStorage.getItem("fids");
+				s.fids = JSON.parse(json);
+			} catch (e) {}
+			sessionStorage.setItem("fids", JSON.stringify([]));
+			loader("/api/eu/review-bill-files", { fids: s.fids }, (rep) => {
+				s.er = rep.Er;
+				if (rep.ex) s.ex = "" + rep.ex;
+				else s.ex = "";
+				if (rep.ucat) s.ucat = rep.ucat;
+				if (rep.uprovider) s.uprovider = rep.uprovider;
+				if (rep.unit) s.unit = rep.unit;
+				if (rep.acctx) s.acctx = rep.acctx;
+				s.unit.p = rep.pUnit;
+				s.acctx.acct.p = rep.pAcct;
+				s.bill.p = rep.pBill;
+			});
+		});
+		const confirm = () => {
+			s.msg = "";
+			if (s.ucat.id == 0) {
+				s.msg = "Please select service provider.";
+				return;
+			}
+			if (s.uprovider.id == 0) {
+				s.msg = "Please select service provider.";
+				return;
+			}
+			if (s.unit.id == 0) {
+				s.msg = "Please select unit.";
+				return;
+			}
+			if (s.acctx.acct.id == 0) {
+				s.msg = "Please select service account.";
+				return;
+			}
+			s.bill.p.Cat = s.ucat.id;
+			s.bill.p.Provider = s.uprovider.id;
+			s.bill.p.Unit = s.unit.id;
+			s.bill.p.UAcct = s.acctx.acct.id;
+			loader("/api/eu/submit-bill", {
+				fids: s.fids,
+				p: s.bill.p
+			}, (rep) => {
+				router.push("/eu/myBills");
+			});
+		};
+		return (_ctx, _cache) => {
+			return openBlock(), createElementBlock(Fragment, null, [createBaseVNode("div", _hoisted_1$2, [_hoisted_2$2, createBaseVNode("div", _hoisted_3$2, [(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).fids, (fid) => {
+				return openBlock(), createElementBlock("a", {
+					target: "_blank",
+					href: "/file/" + fid
+				}, [createBaseVNode("img", { src: "/thumbnail/" + fid }, null, 8, _hoisted_5$2)], 8, _hoisted_4$2);
+			}), 256))])]), unref(s).er == "OK" ? (openBlock(), createElementBlock("div", _hoisted_6$2, [
+				createBaseVNode("div", _hoisted_7$2, [unref(s).ex != "" ? (openBlock(), createElementBlock("div", _hoisted_8$2, [_hoisted_9$1, createBaseVNode("p", null, toDisplayString(unref(s).ex), 1)])) : createCommentVNode("", true)]),
+				createVNode(LocateProvider_default, {
+					ucat: unref(s).ucat,
+					uprovider: unref(s).uprovider
+				}, null, 8, ["ucat", "uprovider"]),
+				createVNode(LocateUnit_default, {
+					unit: unref(s).unit,
+					api: "/api/eu/my-units"
+				}, null, 8, ["unit"]),
+				createVNode(LocateAcctx_default, {
+					ucat: unref(s).ucat,
+					uprovider: unref(s).uprovider,
+					unit: unref(s).unit,
+					acctx: unref(s).acctx,
+					api: "/api/eu/my-acctxs"
+				}, null, 8, [
+					"ucat",
+					"uprovider",
+					"unit",
+					"acctx"
+				]),
+				createBaseVNode("div", _hoisted_10$1, [
+					_hoisted_11$1,
+					_hoisted_12$1,
+					createBaseVNode("div", _hoisted_13$1, [
+						_hoisted_14,
+						createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => unref(s).bill.p.YYYYMMDD = $event) }, null, 512), [[vModelText, unref(s).bill.p.YYYYMMDD]])]),
+						_hoisted_15,
+						createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[1] || (_cache[1] = ($event) => unref(s).bill.p.Amt = $event) }, null, 512), [[vModelText, unref(s).bill.p.Amt]])])
+					])
+				]),
+				createBaseVNode("div", _hoisted_16, [createBaseVNode("div", _hoisted_17, [createBaseVNode("div", { class: "flex" }, [createBaseVNode("button", { onClick: confirm }, "Confirm")]), createBaseVNode("div", null, toDisplayString(unref(s).msg), 1)])])
+			])) : (openBlock(), createElementBlock("div", _hoisted_18, [_hoisted_19, createTextVNode(" AI processing ... 20 seconds expected ")]))], 64);
+		};
+	}
+});
+//#endregion
+//#region src/pages/Eu/ReviewBill.vue
+var ReviewBill_exports = /* @__PURE__ */ __exportAll({ default: () => ReviewBill_default });
+var ReviewBill_default = ReviewBill_vue_vue_type_script_setup_true_lang_default;
+//#endregion
+//#region src/comps/BillFile.vue?vue&type=script&setup=true&lang.ts
+var _hoisted_1$1 = { class: "h-full w-full flex flex-col p-3" };
+var _hoisted_2$1 = {
+	key: 0,
+	class: "w-[300px]"
+};
+var _hoisted_3$1 = ["href"];
+var _hoisted_4$1 = ["src"];
+var _hoisted_5$1 = { key: 1 };
+var _hoisted_6$1 = { key: 0 };
+var _hoisted_7$1 = { key: 1 };
+var _hoisted_8$1 = { key: 2 };
+var _hoisted_9 = { key: 3 };
+var _hoisted_10 = { key: 4 };
+var _hoisted_11 = { class: "progress-container" };
+var _hoisted_12 = { class: "status-row" };
+var _hoisted_13 = {
+	key: 0,
+	class: "error-detail"
+};
+//#endregion
+//#region src/comps/BillFile.vue
+var BillFile_default = /* @__PURE__ */ _plugin_vue_export_helper_default(/* @__PURE__ */ defineComponent({
+	__name: "BillFile",
+	props: ["filex"],
+	setup(__props) {
+		const props = __props;
+		props.filex;
+		const s = glib.vue.reactive({
+			billx: BillComplex_empty(),
+			rt: runtime
+		});
+		const getStatusText = (task) => {
+			switch (task.status) {
+				case "uploading": return "Uploading ...";
+				case "success": return "Succeeded";
+				case "error": return "Failed";
+				default: return "Pending ...";
+			}
+		};
+		const executeUpload = async (task) => {
+			task.status = "uploading";
+			task.progress = 0;
+			const token = await window.Clerk?.session?.getToken();
+			const formData = new FormData();
+			formData.append("file", task.file);
+			formData.append("session", s.rt.session);
+			return new Promise((resolve, reject) => {
+				const xhr = new XMLHttpRequest();
+				xhr.upload.onprogress = (event) => {
+					if (event.lengthComputable) {
+						const percent = Math.round(event.loaded * 100 / event.total);
+						task.progress = Math.min(percent, 99);
+					}
+				};
+				xhr.onload = () => {
+					if (xhr.status >= 200 && xhr.status < 300) try {
+						let rep = JSON.parse(xhr.responseText);
+						if (rep.Er == "OK") {
+							props.filex.rcd = rep.file;
+							s.billx = rep.billx;
+						}
+						task.status = "success";
+						task.progress = 100;
+						resolve(rep);
+					} catch (e) {
+						task.status = "error";
+						task.message = "Invalid JSON response";
+						reject("Invalid JSON");
+					}
+					else {
+						task.status = "error";
+						task.message = `Server Error: ${xhr.status}`;
+						reject(xhr.status);
+					}
+				};
+				xhr.onerror = () => {
+					task.status = "error";
+					task.message = "Network error or file too large";
+					console.error("Upload failed");
+					reject("Network error");
+				};
+				xhr.open("POST", "/api/public/upload");
+				if (token) xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+				xhr.send(formData);
+			});
+		};
+		glib.vue.onMounted(async () => {
+			executeUpload(props.filex.uploadTask);
+		});
+		return (_ctx, _cache) => {
+			return openBlock(), createElementBlock("div", _hoisted_1$1, [
+				props.filex.rcd.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_2$1, [createBaseVNode("a", {
+					target: "_blank",
+					href: "/file/" + props.filex.rcd.id
+				}, [createBaseVNode("img", { src: "/thumbnail/" + props.filex.rcd.id }, null, 8, _hoisted_4$1)], 8, _hoisted_3$1)])) : createCommentVNode("", true),
+				props.filex.rcd.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_5$1, [
+					unref(s).billx.cato ? (openBlock(), createElementBlock("div", _hoisted_6$1, "Cat: " + toDisplayString(unref(s).billx.cato?.p.Caption), 1)) : createCommentVNode("", true),
+					unref(s).billx.providero ? (openBlock(), createElementBlock("div", _hoisted_7$1, "Provider: " + toDisplayString(unref(s).billx.providero?.p.Caption), 1)) : createCommentVNode("", true),
+					unref(s).billx.unito ? (openBlock(), createElementBlock("div", _hoisted_8$1, "Unit: " + toDisplayString(unref(s).billx.unito?.p.Caption), 1)) : createCommentVNode("", true),
+					unref(s).billx.accto ? (openBlock(), createElementBlock("div", _hoisted_9, "Acct Number: " + toDisplayString(unref(s).billx.accto?.p.AcctNum), 1)) : createCommentVNode("", true),
+					unref(s).billx.bill.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_10, "Amount: " + toDisplayString(unref(s).billx.bill.p.Amout), 1)) : createCommentVNode("", true),
+					createBaseVNode("div", null, "File Name: " + toDisplayString(props.filex.file.name), 1),
+					createBaseVNode("div", null, "File Size: " + toDisplayString((props.filex.file.size / 1024 / 1024).toFixed(2)) + " MB", 1)
+				])) : createCommentVNode("", true),
+				createBaseVNode("div", _hoisted_11, [createBaseVNode("div", {
+					class: normalizeClass(["progress-fill", __props.filex.uploadTask.status]),
+					style: normalizeStyle({ width: props.filex.uploadTask.progress + "%" })
+				}, null, 6)]),
+				createBaseVNode("div", _hoisted_12, [createBaseVNode("span", { class: normalizeClass(["status-label", props.filex.uploadTask.status]) }, toDisplayString(getStatusText(props.filex.uploadTask)), 3), props.filex.uploadTask.message ? (openBlock(), createElementBlock("span", _hoisted_13, " - " + toDisplayString(props.filex.uploadTask.message), 1)) : createCommentVNode("", true)])
+			]);
+		};
+	}
+}), [["__scopeId", "data-v-bc56a0ec"]]);
+//#endregion
+//#region src/pages/Eu/UploadBill.vue?vue&type=script&setup=true&lang.ts
+var _withScopeId = (n) => (pushScopeId("data-v-f5d8ad54"), n = n(), popScopeId(), n);
+var _hoisted_1 = { class: "upload-page" };
+var _hoisted_2 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", { class: "card" }, [/* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, " Upload bill files: one bill a time ")], -1));
+var _hoisted_3 = { class: "card" };
+var _hoisted_4 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", null, [/* @__PURE__ */ createBaseVNode("p", null, "Drop your files here or click the file icon"), /* @__PURE__ */ createBaseVNode("small", null, "Images (.jpg, .png, .bmp, ...) or PDFs, Max. 10GB")], -1));
+var _hoisted_5 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", { class: "icon" }, "📄", -1));
+var _hoisted_6 = {
+	key: 0,
+	class: "card"
+};
+var _hoisted_7 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "File list", -1));
+var _hoisted_8 = { class: "flex flex-wrap gap-4 p-4" };
+var UploadBill_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */ defineComponent({
+	__name: "UploadBill",
+	setup(__props) {
+		const s = glib.vue.reactive({
+			filexs: [],
+			rep: {},
+			rt: runtime
+		});
+		const isDragging = ref(false);
+		const fileInput = ref(null);
+		const triggerSelect = () => fileInput.value?.click();
+		const onFileSelect = (e) => {
+			const files = e.target.files;
+			handleFiles(files);
+		};
+		const onDrop = (e) => {
+			isDragging.value = false;
+			handleFiles(e.dataTransfer?.files || null);
+		};
+		const handleFiles = (fileList) => {
+			if (!fileList) return;
+			Array.from(fileList).forEach((file) => {
+				let filex = {
+					uploadTask: {},
+					rcd: FILE_empty(),
+					file
+				};
+				filex.uploadTask = {
+					id: Math.random().toString(36).slice(2),
+					file,
+					progress: 0,
+					status: "pending"
+				};
+				s.filexs.push(filex);
+			});
+		};
+		const upload = async () => {
+			let fids = s.filexs.map((filex) => filex.rcd.id);
+			sessionStorage.setItem("fids", JSON.stringify(fids));
+			await router.push("/eu/reviewBill");
+		};
+		return (_ctx, _cache) => {
+			return openBlock(), createElementBlock("div", _hoisted_1, [
+				_hoisted_2,
+				createBaseVNode("div", _hoisted_3, [_hoisted_4, createBaseVNode("div", {
+					class: normalizeClass(["drop-zone", { "is-dragging": isDragging.value }]),
+					onDragover: _cache[0] || (_cache[0] = withModifiers(($event) => isDragging.value = true, ["prevent"])),
+					onDragleave: _cache[1] || (_cache[1] = withModifiers(($event) => isDragging.value = false, ["prevent"])),
+					onDrop: withModifiers(onDrop, ["prevent"]),
+					onClick: triggerSelect
+				}, [createBaseVNode("input", {
+					type: "file",
+					multiple: "",
+					ref_key: "fileInput",
+					ref: fileInput,
+					onChange: onFileSelect,
+					hidden: ""
+				}, null, 544), _hoisted_5], 34)]),
+				unref(s).filexs.length > 0 ? (openBlock(), createElementBlock("div", _hoisted_6, [
+					_hoisted_7,
+					createBaseVNode("div", _hoisted_8, [(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).filexs, (filex) => {
+						return openBlock(), createBlock(BillFile_default, {
+							class: "w-48 h-32 bg-slate-100 border-2 border-dashed border-slate-300 rounded-lg flex",
+							filex
+						}, null, 8, ["filex"]);
+					}), 256))]),
+					createBaseVNode("div", null, [createBaseVNode("button", { onClick: upload }, "Upload")])
+				])) : createCommentVNode("", true)
+			]);
+		};
+	}
+});
+//#endregion
+//#region src/pages/Eu/UploadBill.vue
+var UploadBill_exports = /* @__PURE__ */ __exportAll({ default: () => UploadBill_default });
+var UploadBill_default = /* @__PURE__ */ _plugin_vue_export_helper_default(UploadBill_vue_vue_type_script_setup_true_lang_default, [["__scopeId", "data-v-f5d8ad54"]]);
 //#endregion
