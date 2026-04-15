@@ -8,6 +8,11 @@
     Provider
   </div>
 
+  <div class="card-caption">
+    Caption: {{ props.pool.p.Caption }}
+  </div>
+  
+
   <!--div v-if="props.poolx.cato && props.poolx.providero">
     <Provider :ucat="props.poolx.cato" :uprovider="props.poolx.providero" />
   </div>
@@ -24,7 +29,7 @@
 
   <Billx v-for="(k, v) in Object.entries(props.pool.bills)" :billx="v" />
 -->
-  
+
 </div>
 
 </template>

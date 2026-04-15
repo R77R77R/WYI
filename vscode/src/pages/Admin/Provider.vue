@@ -14,9 +14,9 @@
     </div>
 
     <PoolStates />
-
+    {{ s.pool }}
     <div class="flex">
-      Caption: <input v-model="s.item.p" />
+      Caption: <input v-model="s.pool.p.Caption" />
       <button @click="createPool()">Create Bill Pool</button>
     </div>
 
@@ -42,7 +42,7 @@
 
 import Provider from '~/comps/Provider.vue';
 import { glib } from '~/lib/glib'
-import { pPOOL_empty, UCAT_empty, UPROVIDER_empty } from '~/lib/shared/OrmMor';
+import { POOL_empty, pPOOL_empty, UCAT_empty, UPROVIDER_empty } from '~/lib/shared/OrmMor';
 import * as Common from '~/lib/store/common'
 import Pool from '~/comps/Pool.vue'
 import PoolStates from '~/comps/PoolStates.vue'
@@ -57,20 +57,20 @@ props.provider as string
 const s = glib.vue.reactive({
   ucat: UCAT_empty(),
   view: ProviderView_empty(),
-  item: pPOOL_empty(),
+  pool: POOL_empty(),
   rt: runtime
 })
 
 const createPool = () => {
 
-  s.item.p.Provider = s.view.uprovider.id
+  s.pool.p.Provider = s.view.uprovider.id
   Common.loader('/api/admin/pools', {
-    p: s.item.p,
+    p: s.pool.p,
     act: "create"
   }, (rep: any) => {
     let pool = rep.data as wyi.POOL
     s.view.pools.push(pool)
-    s.item = pPOOL_empty()
+    s.pool = POOL_empty()
   })
 }
 

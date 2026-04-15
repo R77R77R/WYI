@@ -93,13 +93,14 @@ let pools eux (x:X) =
             | None -> None
 
         match po with
-        | Some p -> 
+        | Some incoming -> 
             let providero = 
-                p.Provider
+                incoming.Provider
                 |> runtime.data.providers.TryGet
 
             match 
                 (fun (p:pPOOL) ->
+                    p.Caption <- incoming.Caption
                     p.Provider <- 
                         match providero with
                         | Some v -> v.ID
