@@ -16,7 +16,7 @@
     <PoolStates />
 
     <div class="flex">
-      <input v-model="s.pPOOL" />
+      Caption: <input v-model="s.item.p" />
       <button @click="createPool()">Create Bill Pool</button>
     </div>
 
@@ -57,22 +57,20 @@ props.provider as string
 const s = glib.vue.reactive({
   ucat: UCAT_empty(),
   view: ProviderView_empty(),
-  pPOOL: pPOOL_empty(),
+  item: pPOOL_empty(),
   rt: runtime
 })
 
 const createPool = () => {
 
+  s.item.p.Provider = s.view.uprovider.id
   Common.loader('/api/admin/pools', {
-    data: {
-      provider: s.view.uprovider.id,
-      p: s.pPOOL
-    },
+    p: s.item.p,
     act: "create"
   }, (rep: any) => {
     let pool = rep.data as wyi.POOL
     s.view.pools.push(pool)
-    s.pPOOL = pPOOL_empty()
+    s.item = pPOOL_empty()
   })
 }
 
