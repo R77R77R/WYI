@@ -65,10 +65,12 @@ let branching (euxo:EuComplex option) (x:X) =
         | "submit-bill" -> submitBill eux |> bindx
         | _ -> Fail(Er.ApiNotExists,x)
     | "admin" -> 
+        let eux = euxo.Value
         match x.Struct.api with
         | "providers" -> bindx providers
         | "users" -> bindx users
         | "billxs" -> bindx billxs
+        | "poolxs" -> poolxs eux |> bindx
         //| "plogs" -> (fun x -> 
         //    let metadata = PLOG_metadata
         //    match "ORDER BY ID DESC" |> loadall conn (metadata.table,metadata.fieldorders(),metadata.db__rcd) with

@@ -35,8 +35,6 @@ bill:UBILL
 
 // [PoolComplex]
 export type PoolComplex = {
-cato:UCAT | null,
-
 providero:UPROVIDER | null,
 
 manager:EU,

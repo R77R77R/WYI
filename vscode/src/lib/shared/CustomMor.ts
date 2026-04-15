@@ -95,7 +95,6 @@ export const bin__BillComplex = (bi:BinIndexed):wyi.BillComplex => {
 
 export const PoolComplex_empty = (): wyi.PoolComplex => { 
     return {
-        cato: null,
         providero: null,
         manager: { id: 0, sort: 0, createdat: new Date(), updatedat: new Date(), p: marshall.pEU_empty() },
         billxs: {},
@@ -105,7 +104,6 @@ export const PoolComplex_empty = (): wyi.PoolComplex => {
 
 export const PoolComplex__bin = (bb:BytesBuilder) => (v:any) => {
 
-    marshall.option__bin (marshall.UCAT__bin) (bb) (v.cato)
     marshall.option__bin (marshall.UPROVIDER__bin) (bb) (v.providero)
     marshall.EU__bin (bb) (v.manager)
     
@@ -116,7 +114,6 @@ export const PoolComplex__bin = (bb:BytesBuilder) => (v:any) => {
 export const bin__PoolComplex = (bi:BinIndexed):wyi.PoolComplex => {
 
     return {
-        cato: marshall.bin__option (marshall.bin__UCAT) (bi),
         providero: marshall.bin__option (marshall.bin__UPROVIDER) (bi),
         manager: marshall.bin__EU (bi),
         billxs: marshall.bin__dict(marshall.bin__int64)(bin__BillComplex) (bi),

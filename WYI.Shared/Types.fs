@@ -30,7 +30,6 @@ mutable files: FILE[]
 bill: UBILL }
 
 type PoolComplex = {
-mutable cato: UCAT option
 mutable providero: UPROVIDER option
 mutable manager: EU
 mutable billxs: ModDictInt64<BillComplex>

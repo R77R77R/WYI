@@ -80,25 +80,58 @@ let billxs (x:X) =
         |> wrapOk "data"
     | _ -> er Er.InvalideParameter
 
-let poolxs (x:X) = 
+let poolxs eux (x:X) = 
+    let json = x.Json
     match
-        x.Json
+        json
         |> tryFindStrByAtt "act" with
+    | "create" ->
+        match
+            json
+            |> tryFindByAtt "data" with
+        | Some (s,data) -> 
+            let providero = 
+                tryFindNumByAtt "provider" data 
+                |> parse_int64
+                |> runtime.data.providers.TryGet
+
+            match 
+                (fun (p:pPOOL) ->
+                    p.Provider <- 
+                        match providero with
+                        | Some v -> v.ID
+                        | None -> 0L
+                    p.Manager <- eux.eu.ID) 
+                |> creator POOL_metadata with
+            | Some rcd -> 
+                let poolx = {
+                    providero = providero
+                    manager = eux.eu
+                    billxs = createModDictInt64 4
+                    pool = rcd }
+                runtime.data.poolxs[rcd.ID] <- poolx
+                poolx
+                |> PoolComplex__json
+                |> wrapOk "data"
+            | None -> er Er.Internal
+        | None -> er Er.InvalideParameter
     | "ls" -> 
-        runtime.users.Values
-        |> Array.map(fun i -> i.eu |> EU__json)
-        |> Json.Ary
-        |> wrapOk "data"
-    | "search" ->
-        let term = (x.Json |> tryFindStrByAtt "term").ToLower()
-        runtime.users.Values
+        let provider =
+            match
+                x.Json
+                |> tryFindNumByAtt "provider"
+                |> parse_int64
+                |> id__UPROVIDERo with
+            | Some v -> v.ID
+            | None -> 0L
+
+        runtime.data.poolxs.Values
         |> Array.filter(fun i ->
-            let mutable hit = false
-            if i.eu.p.Email.ToLower().Contains term then hit <- true
-            if i.eu.p.Caption.ToLower().Contains term then hit <- true
-            if i.eu.p.Username.ToLower().Contains term then hit <- true
-            hit)
-        |> Array.map(fun i -> i.eu |> EU__json)
+            if provider > 0L then
+                i.pool.ID = provider
+            else
+                true)
+        |> Array.map PoolComplex__json
         |> Json.Ary
         |> wrapOk "data"
     | _ -> er Er.InvalideParameter
