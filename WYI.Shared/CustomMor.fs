@@ -877,7 +877,7 @@ let ProviderView_empty(): ProviderView =
     {
         cat = { ID = 0L; Sort = 0L; Createdat = DateTime.MinValue; Updatedat = DateTime.MinValue; p = pUCAT_empty() }
         billxs = [| |]
-        pool = [| |]
+        pools = [| |]
         uprovider = { ID = 0L; Sort = 0L; Createdat = DateTime.MinValue; Updatedat = DateTime.MinValue; p = pUPROVIDER_empty() }
     }
 
@@ -887,7 +887,7 @@ let ProviderView__bin (bb:BytesBuilder) (v:ProviderView) =
     
     array__bin (BillComplex__bin) bb v.billxs
     
-    array__bin (PoolComplex__bin) bb v.pool
+    array__bin (POOL__bin) bb v.pools
     UPROVIDER__bin bb v.uprovider
     ()
 
@@ -901,9 +901,9 @@ let bin__ProviderView (bi:BinIndexed):ProviderView =
         billxs = 
             bi
             |> bin__array (bin__BillComplex)
-        pool = 
+        pools = 
             bi
-            |> bin__array (bin__PoolComplex)
+            |> bin__array (bin__POOL)
         uprovider = 
             bi
             |> bin__UPROVIDER
@@ -913,7 +913,7 @@ let ProviderView__json (v:ProviderView) =
 
     [|  ("cat",UCAT__json v.cat)
         ("billxs",array__json (BillComplex__json) v.billxs)
-        ("pool",array__json (PoolComplex__json) v.pool)
+        ("pools",array__json (POOL__json) v.pools)
         ("uprovider",UPROVIDER__json v.uprovider)
          |]
     |> Json.Braket
@@ -954,13 +954,13 @@ let json__ProviderViewo (json:Json):ProviderView option =
                 passOptions <- false
                 None
 
-    let poolo =
-        match json__tryFindByName json "pool" with
+    let poolso =
+        match json__tryFindByName json "pools" with
         | None ->
             passOptions <- false
             None
         | Some v -> 
-            match v |> json__arrayo (json__PoolComplexo) with
+            match v |> json__arrayo (json__POOLo) with
             | Some res -> Some res
             | None ->
                 passOptions <- false
@@ -982,7 +982,7 @@ let json__ProviderViewo (json:Json):ProviderView option =
         ({
             cat = cato.Value
             billxs = billxso.Value
-            pool = poolo.Value
+            pools = poolso.Value
             uprovider = uprovidero.Value }:ProviderView) |> Some
     else
         None

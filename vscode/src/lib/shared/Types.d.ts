@@ -86,7 +86,7 @@ cat:UCAT,
 
 billxs:BillComplex[],
 
-pool:PoolComplex[],
+pools:POOL[],
 
 uprovider:UPROVIDER
 }

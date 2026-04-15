@@ -58,7 +58,7 @@ mutable version: int }
 type ProviderView = {
 cat: UCAT
 billxs: BillComplex[]
-pool: PoolComplex[]
+pools: POOL[]
 uprovider: UPROVIDER }
 
 type Msg = 

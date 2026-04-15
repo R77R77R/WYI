@@ -238,7 +238,7 @@ export const ProviderView_empty = (): wyi.ProviderView => {
     return {
         cat: { id: 0, sort: 0, createdat: new Date(), updatedat: new Date(), p: marshall.pUCAT_empty() },
         billxs: [],
-        pool: [],
+        pools: [],
         uprovider: { id: 0, sort: 0, createdat: new Date(), updatedat: new Date(), p: marshall.pUPROVIDER_empty() },
     } as wyi.ProviderView
 }
@@ -249,7 +249,7 @@ export const ProviderView__bin = (bb:BytesBuilder) => (v:any) => {
     
     marshall.array__bin (BillComplex__bin) (bb) (v.billxs)
     
-    marshall.array__bin (PoolComplex__bin) (bb) (v.pool)
+    marshall.array__bin (marshall.POOL__bin) (bb) (v.pools)
     marshall.UPROVIDER__bin (bb) (v.uprovider)
 }
 
@@ -258,7 +258,7 @@ export const bin__ProviderView = (bi:BinIndexed):wyi.ProviderView => {
     return {
         cat: marshall.bin__UCAT (bi),
         billxs: marshall.bin__array (bin__BillComplex) (bi),
-        pool: marshall.bin__array (bin__PoolComplex) (bi),
+        pools: marshall.bin__array (marshall.bin__POOL) (bi),
         uprovider: marshall.bin__UPROVIDER (bi),
     }
 }

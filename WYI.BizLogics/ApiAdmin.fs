@@ -180,7 +180,7 @@ let providers (x:X) =
                         |> Array.concat
                         |> Array.filter(fun billx -> billx.providero.IsSome)
                         |> Array.filter(fun billx -> billx.providero.Value.ID = provider.ID)
-                    pool = [| |]
+                    pools = [| |]
                     uprovider = provider }
                 |> ProviderView__json
                 |> wrapOk "data"
