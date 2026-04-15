@@ -192,7 +192,10 @@ let providers (x:X) =
                         |> Array.concat
                         |> Array.filter(fun billx -> billx.providero.IsSome)
                         |> Array.filter(fun billx -> billx.providero.Value.ID = provider.ID)
-                    pools = [| |]
+                    pools = 
+                        runtime.data.poolxs.Values
+                        |> Array.map(fun poolx -> poolx.pool)
+                        |> Array.filter(fun pool -> pool.p.Provider = i.ID)
                     uprovider = provider }
                 |> ProviderView__json
                 |> wrapOk "data"

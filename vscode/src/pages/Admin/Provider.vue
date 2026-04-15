@@ -19,7 +19,7 @@
 
   </div>
 
-  <Poolx v-for="i in s.view.pools" :poolx="i" />
+  <Pool v-for="i in s.view.pools" :poolx="i" />
 
   <div class="card" v-if="s.view.billxs.length > 0">
     <div class="card-caption">
