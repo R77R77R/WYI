@@ -1,8 +1,9 @@
 <template>
 
   <div class="card">
-    <div class="card-caption" v-if="s.ucat.id > 0 && s.uprovider.id > 0">
-      {{ s.uprovider.p.Caption }}
+    <div class="card-caption" 
+      v-if="s.ucat.id > 0 && s.view.uprovider.id > 0">
+      {{ s.view.uprovider.p.Caption }}
       ({{ s.ucat.p.Caption }})
     </div>
   </div>
@@ -18,16 +19,16 @@
 
   </div>
 
-  <Poolx v-for="i in s.poolxs" :poolx="i" />
+  <Poolx v-for="i in s.view.pools" :poolx="i" />
 
-  <div class="card" v-if="s.billxs.length > 0">
+  <div class="card" v-if="s.view.billxs.length > 0">
     <div class="card-caption">
       Bills
     </div>
 
     <BillStates />
 
-    <Billx v-for="i in s.billxs" :billx="i" :mode="1" />
+    <Billx v-for="i in s.view.billxs" :billx="i" :mode="1" />
 
   </div>
 
@@ -40,34 +41,32 @@ import Provider from '~/comps/Provider.vue';
 import { glib } from '~/lib/glib'
 import { UCAT_empty, UPROVIDER_empty } from '~/lib/shared/OrmMor';
 import * as Common from '~/lib/store/common'
-import Poolx from '~/comps/Poolx.vue'
+import Pool from '~/comps/Pool.vue'
 import PoolStates from '~/comps/PoolStates.vue'
 import BillStates from '~/comps/BillStates.vue'
 import Billx from '~/comps/Billx.vue'
+import { ProviderView_empty } from '~/lib/shared/CustomMor';
 
-const props = defineProps({
-  cat: String,
-  provider: String
-})
+const props = defineProps(['cat','provider'])
+props.cat as string
+props.provider as string
 
 const s = glib.vue.reactive({
   ucat: UCAT_empty(),
-  uprovider: UPROVIDER_empty(),
-  billxs: [] as wyi.BillComplex[],
-  poolxs: [] as wyi.PoolComplex[],
+  view: ProviderView_empty(),
   rt: runtime
 })
 
 const createPool = () => {
 
-  Common.loader('/api/admin/poolxs', {
+  Common.loader('/api/admin/pools', {
     data: {
-      provider: s.uprovider.id
+      provider: s.view.uprovider.id
     },
     act: "create"
   }, (rep: any) => {
-    let poolx = rep.data as wyi.PoolComplex
-    s.poolxs.push(poolx)
+    let pool = rep.data as wyi.POOL
+    s.view.pools.push(pool)
   })
 }
 
@@ -80,16 +79,8 @@ glib.vue.onMounted(async () => {
     act: 'load'
   }, (rep: any) => {
     //s.ucat = rep.cat
-    s.uprovider = rep.provider,
-      s.billxs = rep.billxs
+    s.view = rep.data as wyi.ProviderView
   })
-
-  Common.loader('/api/admin/poolxs', {
-    act: "ls"
-  }, (rep: any) => {
-    s.poolxs = rep.data as wyi.PoolComplex[]
-  })
-
 
 })
 

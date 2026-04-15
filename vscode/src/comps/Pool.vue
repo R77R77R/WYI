@@ -2,13 +2,13 @@
 
 <div class="caption">
 
-  <PoolState :state="props.poolx.p.State" />
+  <PoolState :state="props.pool.p.State" />
 
   <div class="card-caption">
     Provider
   </div>
 
-  <div v-if="props.poolx.cato && props.poolx.providero">
+  <!--div v-if="props.poolx.cato && props.poolx.providero">
     <Provider :ucat="props.poolx.cato" :uprovider="props.poolx.providero" />
   </div>
 
@@ -22,8 +22,9 @@
     Bills
   </div>
 
-  <Billx v-for="(k, v) in Object.entries(props.poolx.bills)" :billx="v" />
-
+  <Billx v-for="(k, v) in Object.entries(props.pool.bills)" :billx="v" />
+-->
+  
 </div>
 
 </template>
@@ -38,7 +39,7 @@ import Provider from '~/comps/Provider.vue'
 import User from '~/comps/User.vue'
 import Billx from '~/comps/Billx.vue'
 
-const props = defineProps(['poolx'])
-props.poolx as wyi.PoolComplex
+const props = defineProps(['pool'])
+props.pool as wyi.POOL
 
 </script>

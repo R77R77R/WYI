@@ -80,7 +80,7 @@ let billxs (x:X) =
         |> wrapOk "data"
     | _ -> er Er.InvalideParameter
 
-let poolxs eux (x:X) = 
+let pools eux (x:X) = 
     let json = x.Json
     match
         json
@@ -110,10 +110,21 @@ let poolxs eux (x:X) =
                     billxs = createModDictInt64 4
                     pool = rcd }
                 runtime.data.poolxs[rcd.ID] <- poolx
-                poolx
-                |> PoolComplex__json
+                poolx.pool
+                |> POOL__json
                 |> wrapOk "data"
             | None -> er Er.Internal
+        | None -> er Er.InvalideParameter
+    | "load" ->
+        match
+            json 
+            |> tryFindStrByAtt "id" 
+            |> parse_int64
+            |> runtime.data.poolxs.TryGet with
+        | Some poolx -> 
+            poolx
+            |> PoolComplex__json
+            |> wrapOk "data"
         | None -> er Er.InvalideParameter
     | "ls" -> 
         let provider =
@@ -131,7 +142,8 @@ let poolxs eux (x:X) =
                 i.pool.ID = provider
             else
                 true)
-        |> Array.map PoolComplex__json
+        |> Array.map(fun i -> i.pool)
+        |> Array.map POOL__json
         |> Json.Ary
         |> wrapOk "data"
     | _ -> er Er.InvalideParameter
@@ -157,12 +169,12 @@ let providers (x:X) =
             json 
             |> tryFindStrByAtt "cat" 
             |> parse_int64
-            |> id__UCATo
+            |> runtime.data.cats.TryGet
         let providero = 
             json 
             |> tryFindStrByAtt "provider" 
             |> parse_int64
-            |> id__UPROVIDERo
+            |> runtime.data.providers.TryGet
 
         if cato.IsNone || providero.IsNone then
             er Er.InvalideParameter
