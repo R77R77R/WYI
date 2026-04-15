@@ -1,11 +1,7 @@
 <template>
 
   <div class="card">
-    <div class="card-caption" 
-      v-if="s.ucat.id > 0 && s.view.uprovider.id > 0">
-      {{ s.view.uprovider.p.Caption }}
-      ({{ s.ucat.p.Caption }})
-    </div>
+    <Provider :uprovider="s.view.uprovider" />
   </div>
 
   <div class="card">
@@ -14,23 +10,23 @@
     </div>
 
     <PoolStates />
-    
+
     <div class="form">
       <div>Caption:</div>
       <div>
-       <input v-model="s.pool.p.Caption" />
+        <input v-model="s.pool.p.Caption" />
       </div>
       <div v-if="s.pool.id == 0">
-       <button @click="createPool()">Create</button>
+        <button @click="createPool()">Create</button>
       </div>
       <div v-else>
-       <button @click="createPool()">Edit</button>
+        <button @click="createPool()">Edit</button>
       </div>
     </div>
 
   </div>
 
-  <Pool v-for="i in s.view.pools" :pool="i" />
+  <Pool v-for="i in s.view.pools" :pool="i" :mode="0" />
 
   <div class="card" v-if="s.view.billxs.length > 0">
     <div class="card-caption">
@@ -48,17 +44,17 @@
 
 <script setup lang="ts">
 
-import Provider from '~/comps/Provider.vue';
 import { glib } from '~/lib/glib'
 import { POOL_empty, pPOOL_empty, UCAT_empty, UPROVIDER_empty } from '~/lib/shared/OrmMor';
 import * as Common from '~/lib/store/common'
 import Pool from '~/comps/Pool.vue'
+import Provider from '~/comps/Provider.vue'
 import PoolStates from '~/comps/PoolStates.vue'
 import BillStates from '~/comps/BillStates.vue'
 import Billx from '~/comps/Billx.vue'
 import { ProviderView_empty } from '~/lib/shared/CustomMor';
 
-const props = defineProps(['cat','provider'])
+const props = defineProps(['cat', 'provider'])
 props.cat as string
 props.provider as string
 
@@ -90,8 +86,6 @@ glib.vue.onMounted(async () => {
     provider: props.provider,
     act: 'load'
   }, (rep: any) => {
-    //s.ucat = rep.cat
-    console.log(rep)
     s.view = rep.data as wyi.ProviderView
   })
 
