@@ -643,7 +643,8 @@ BEGIN
         ,[Createdat] BIGINT NOT NULL
         ,[Updatedat] BIGINT NOT NULL
         ,[Sort] BIGINT NOT NULL,
-        [Cat] BIGINT
+        [Caption] NVARCHAR(MAX)
+        ,[Cat] BIGINT
         ,[Provider] BIGINT
         ,[Manager] BIGINT
         ,[State] INT
@@ -658,7 +659,7 @@ END
 -- Dropping obsolete fields -----------
 DECLARE @name_kernel_pool NVARCHAR(64)
 DECLARE cursor_kernel_pool CURSOR FOR 
-    SELECT name FROM SYSCOLUMNS WHERE id=object_id('kernel_pool') AND (name NOT IN ('ID','Createdat','Updatedat','Sort','Cat','Provider','Manager','State','Notes','Amt','AmtReduction','AmtReturn'))
+    SELECT name FROM SYSCOLUMNS WHERE id=object_id('kernel_pool') AND (name NOT IN ('ID','Createdat','Updatedat','Sort','Caption','Cat','Provider','Manager','State','Notes','Amt','AmtReduction','AmtReturn'))
 
 OPEN cursor_kernel_pool
 FETCH NEXT FROM cursor_kernel_pool INTO @name_kernel_pool
@@ -678,6 +679,33 @@ END
 CLOSE cursor_kernel_pool;
 DEALLOCATE cursor_kernel_pool;
 
+
+-- [kernel_pool.Caption] -------------
+
+
+-- [kernel_pool.Caption] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('kernel_pool') AND name='Caption')
+    BEGIN
+     ALTER TABLE kernel_pool ALTER COLUMN [Caption] NVARCHAR(MAX)
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_kernel_pool_Caption NVARCHAR(MAX);
+    SET @sql_add_kernel_pool_Caption = 'ALTER TABLE kernel_pool ADD [Caption] NVARCHAR(MAX)'
+    EXEC sp_executesql @sql_add_kernel_pool_Caption
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_poolCaption')
+    BEGIN
+    ALTER TABLE kernel_pool DROP  CONSTRAINT [Constraint_kernel_poolCaption]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_poolCaption')
+    BEGIN
+    ALTER TABLE kernel_pool DROP  CONSTRAINT [UniqueNonclustered_kernel_poolCaption]
+    END
 
 -- [kernel_pool.Cat] -------------
 

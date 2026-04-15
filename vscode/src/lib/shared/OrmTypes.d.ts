@@ -57,6 +57,7 @@ p:pFILE
 
 export type pPOOL = {
 [key:string]: any
+    Caption: string
     Cat: number
     Provider: number
     Manager: number

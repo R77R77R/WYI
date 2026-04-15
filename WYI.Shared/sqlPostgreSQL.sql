@@ -408,6 +408,7 @@ BEGIN
             ,createdat BIGINT NOT NULL
             ,updatedat BIGINT NOT NULL
             ,sort BIGINT NOT NULL
+            ,"caption" TEXT
             ,"cat" BIGINT
             ,"provider" BIGINT
             ,"manager" BIGINT
@@ -432,7 +433,7 @@ BEGIN
         FROM information_schema.columns 
         WHERE table_name = 'kernel_pool' 
           AND table_schema = 'public' 
-          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'cat', 'provider', 'manager', 'state', 'notes', 'amt', 'amtreduction', 'amtreturn'])
+          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'caption', 'cat', 'provider', 'manager', 'state', 'notes', 'amt', 'amtreduction', 'amtreturn'])
     LOOP
         -- 对应 PRINT 'Dropping ' + @tname + '.' + @fn
         
@@ -441,6 +442,20 @@ BEGIN
     END LOOP;
 END $$;
 
+
+-- [kernel_pool.Caption] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_pool' AND column_name='caption'));
+
+    IF not condition THEN
+        ALTER TABLE kernel_pool ADD "caption" text;
+    END IF;
+END $$;
 
 -- [kernel_pool.Cat] -------------
 

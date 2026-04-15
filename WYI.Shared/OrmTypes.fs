@@ -281,6 +281,7 @@ let poolStateEnum__caption e =
     | _ -> ""
 
 type pPOOL = {
+mutable Caption: Text
 mutable Cat: FK
 mutable Provider: FK
 mutable Manager: FK
@@ -296,11 +297,12 @@ type POOL = Rcd<pPOOL>
 let POOL_fieldorders() =
     match rdbms with
     | Rdbms.SqlServer ->
-        "[ID],[Createdat],[Updatedat],[Sort],[Cat],[Provider],[Manager],[State],[Notes],[Amt],[AmtReduction],[AmtReturn]"
+        "[ID],[Createdat],[Updatedat],[Sort],[Caption],[Cat],[Provider],[Manager],[State],[Notes],[Amt],[AmtReduction],[AmtReturn]"
     | Rdbms.PostgreSql ->
-        $""" "id","createdat","updatedat","sort", "cat","provider","manager","state","notes","amt","amtreduction","amtreturn" """
+        $""" "id","createdat","updatedat","sort", "caption","cat","provider","manager","state","notes","amt","amtreduction","amtreturn" """
 
 let pPOOL_fieldordersArray = [|
+    "Caption"
     "Cat"
     "Provider"
     "Manager"
@@ -312,13 +314,14 @@ let pPOOL_fieldordersArray = [|
 
 let POOL_sql_update() =
     match rdbms with
-    | Rdbms.SqlServer -> "[Cat]=@Cat,[Provider]=@Provider,[Manager]=@Manager,[State]=@State,[Notes]=@Notes,[Amt]=@Amt,[AmtReduction]=@AmtReduction,[AmtReturn]=@AmtReturn"
-    | Rdbms.PostgreSql -> "cat=@cat,provider=@provider,manager=@manager,state=@state,notes=@notes,amt=@amt,amtreduction=@amtreduction,amtreturn=@amtreturn"
+    | Rdbms.SqlServer -> "[Caption]=@Caption,[Cat]=@Cat,[Provider]=@Provider,[Manager]=@Manager,[State]=@State,[Notes]=@Notes,[Amt]=@Amt,[AmtReduction]=@AmtReduction,[AmtReturn]=@AmtReturn"
+    | Rdbms.PostgreSql -> "caption=@caption,cat=@cat,provider=@provider,manager=@manager,state=@state,notes=@notes,amt=@amt,amtreduction=@amtreduction,amtreturn=@amtreturn"
 
 let pPOOL_fields() =
     match rdbms with
     | Rdbms.SqlServer ->
         [|
+            Text("Caption")
             FK("Cat")
             FK("Provider")
             FK("Manager")
@@ -329,6 +332,7 @@ let pPOOL_fields() =
             Float("AmtReturn") |]
     | Rdbms.PostgreSql ->
         [|
+            Text("caption")
             FK("cat")
             FK("provider")
             FK("manager")
@@ -339,6 +343,7 @@ let pPOOL_fields() =
             Float("amtreturn") |]
 
 let pPOOL_empty(): pPOOL = {
+    Caption = ""
     Cat = 0L
     Provider = 0L
     Manager = 0L

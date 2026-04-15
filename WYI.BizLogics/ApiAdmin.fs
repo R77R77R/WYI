@@ -86,13 +86,16 @@ let pools eux (x:X) =
         json
         |> tryFindStrByAtt "act" with
     | "create" ->
-        match
-            json
-            |> tryFindByAtt "data" with
-        | Some (s,data) -> 
+
+        let po = 
+            match tryFindByAtt "p" json with
+            | Some (s,j) -> j |> json__pPOOLo
+            | None -> None
+
+        match po with
+        | Some p -> 
             let providero = 
-                tryFindNumByAtt "provider" data 
-                |> parse_int64
+                p.Provider
                 |> runtime.data.providers.TryGet
 
             match 

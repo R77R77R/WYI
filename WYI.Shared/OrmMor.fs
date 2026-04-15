@@ -451,6 +451,10 @@ let FILE_clone src =
 let pPOOL__bin (bb:BytesBuilder) (p:pPOOL) =
 
     
+    let binCaption = p.Caption |> Encoding.UTF8.GetBytes
+    binCaption.Length |> BitConverter.GetBytes |> bb.append
+    binCaption |> bb.append
+    
     p.Cat |> BitConverter.GetBytes |> bb.append
     
     p.Provider |> BitConverter.GetBytes |> bb.append
@@ -482,6 +486,11 @@ let bin__pPOOL (bi:BinIndexed):pPOOL =
     let bin,index = bi
 
     let p = pPOOL_empty()
+    
+    let count_Caption = BitConverter.ToInt32(bin,index.Value)
+    index.Value <- index.Value + 4
+    p.Caption <- Encoding.UTF8.GetString(bin,index.Value,count_Caption)
+    index.Value <- index.Value + count_Caption
     
     p.Cat <- BitConverter.ToInt64(bin,index.Value)
     index.Value <- index.Value + 8
@@ -534,6 +543,7 @@ let bin__POOL (bi:BinIndexed):POOL =
 let pPOOL__json (p:pPOOL) =
 
     [|
+        ("Caption",p.Caption |> Json.Str)
         ("Cat",p.Cat.ToString() |> Json.Num)
         ("Provider",p.Provider.ToString() |> Json.Num)
         ("Manager",p.Manager.ToString() |> Json.Num)
@@ -566,6 +576,8 @@ let json__pPOOLo (json:Json):pPOOL option =
     let fields = json |> json__items
 
     let p = pPOOL_empty()
+    
+    p.Caption <- checkfield fields "Caption"
     
     p.Cat <- checkfield fields "Cat" |> parse_int64
     
@@ -2568,14 +2580,15 @@ let FILETxSqlServer =
 let db__pPOOL(line:Object[]): pPOOL =
     let p = pPOOL_empty()
 
-    p.Cat <- if Convert.IsDBNull(line[4]) then 0L else line[4] :?> int64
-    p.Provider <- if Convert.IsDBNull(line[5]) then 0L else line[5] :?> int64
-    p.Manager <- if Convert.IsDBNull(line[6]) then 0L else line[6] :?> int64
-    p.State <- EnumOfValue(if Convert.IsDBNull(line[7]) then 0 else line[7] :?> int)
-    p.Notes <- string(line[8]).TrimEnd()
-    p.Amt <- if Convert.IsDBNull(line[9]) then 0.0 else line[9] :?> float
-    p.AmtReduction <- if Convert.IsDBNull(line[10]) then 0.0 else line[10] :?> float
-    p.AmtReturn <- if Convert.IsDBNull(line[11]) then 0.0 else line[11] :?> float
+    p.Caption <- string(line[4]).TrimEnd()
+    p.Cat <- if Convert.IsDBNull(line[5]) then 0L else line[5] :?> int64
+    p.Provider <- if Convert.IsDBNull(line[6]) then 0L else line[6] :?> int64
+    p.Manager <- if Convert.IsDBNull(line[7]) then 0L else line[7] :?> int64
+    p.State <- EnumOfValue(if Convert.IsDBNull(line[8]) then 0 else line[8] :?> int)
+    p.Notes <- string(line[9]).TrimEnd()
+    p.Amt <- if Convert.IsDBNull(line[10]) then 0.0 else line[10] :?> float
+    p.AmtReduction <- if Convert.IsDBNull(line[11]) then 0.0 else line[11] :?> float
+    p.AmtReturn <- if Convert.IsDBNull(line[12]) then 0.0 else line[12] :?> float
 
     p
 
@@ -2583,6 +2596,7 @@ let pPOOL__sps (p:pPOOL) =
     match rdbms with
     | Rdbms.SqlServer ->
         [|
+            ("Caption", p.Caption) |> kvp__sqlparam
             ("Cat", p.Cat) |> kvp__sqlparam
             ("Provider", p.Provider) |> kvp__sqlparam
             ("Manager", p.Manager) |> kvp__sqlparam
@@ -2593,6 +2607,7 @@ let pPOOL__sps (p:pPOOL) =
             ("AmtReturn", p.AmtReturn) |> kvp__sqlparam |]
     | Rdbms.PostgreSql ->
         [|
+            ("caption", p.Caption) |> kvp__sqlparam
             ("cat", p.Cat) |> kvp__sqlparam
             ("provider", p.Provider) |> kvp__sqlparam
             ("manager", p.Manager) |> kvp__sqlparam
@@ -2609,6 +2624,7 @@ let POOL_wrapper item: POOL =
     { ID = i; Createdat = c; Updatedat = u; Sort = s; p = p }
 
 let pPOOL_clone (p:pPOOL): pPOOL = {
+    Caption = p.Caption
     Cat = p.Cat
     Provider = p.Provider
     Manager = p.Manager
@@ -2680,6 +2696,7 @@ let POOLTxSqlServer =
     ,[Createdat] BIGINT NOT NULL
     ,[Updatedat] BIGINT NOT NULL
     ,[Sort] BIGINT NOT NULL,
+    ,[Caption]
     ,[Cat]
     ,[Provider]
     ,[Manager]

@@ -155,6 +155,8 @@ export const bin__FILE = (bi:BinIndexed):wyi.FILE => {
 export const pPOOL__bin = (bb:BytesBuilder) => (p:wyi.pPOOL) => {
 
     
+    marshall.str__bin (bb) (p.Caption)
+    
     marshall.int64__bin (bb) (p.Cat)
     
     marshall.int64__bin (bb) (p.Provider)
@@ -184,6 +186,7 @@ export const POOL__bin = (bb:BytesBuilder) => (v:wyi.POOL) => {
 export const bin__pPOOL = (bi:BinIndexed):wyi.pPOOL => {
 
     let p = pPOOL_empty()
+    p.Caption = marshall.bin__str (bi)
     p.Cat = marshall.bin__int64 (bi)
     p.Provider = marshall.bin__int64 (bi)
     p.Manager = marshall.bin__int64 (bi)
@@ -864,6 +867,7 @@ export const poolStateEnum_Closed = 2 // Closed
 
 export const pPOOL_empty = (): wyi.pPOOL => {
     return {
+        Caption: "",
         Cat: 0,
         Provider: 0,
         Manager: 0,

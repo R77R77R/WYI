@@ -15,11 +15,14 @@
 
     <PoolStates />
 
-    <button @click="createPool()">Create Bill Pool</button>
+    <div class="flex">
+      <input v-model="s.pPOOL" />
+      <button @click="createPool()">Create Bill Pool</button>
+    </div>
 
   </div>
 
-  <Pool v-for="i in s.view.pools" :poolx="i" />
+  <Pool v-for="i in s.view.pools" :pool="i" />
 
   <div class="card" v-if="s.view.billxs.length > 0">
     <div class="card-caption">
@@ -39,7 +42,7 @@
 
 import Provider from '~/comps/Provider.vue';
 import { glib } from '~/lib/glib'
-import { UCAT_empty, UPROVIDER_empty } from '~/lib/shared/OrmMor';
+import { pPOOL_empty, UCAT_empty, UPROVIDER_empty } from '~/lib/shared/OrmMor';
 import * as Common from '~/lib/store/common'
 import Pool from '~/comps/Pool.vue'
 import PoolStates from '~/comps/PoolStates.vue'
@@ -54,6 +57,7 @@ props.provider as string
 const s = glib.vue.reactive({
   ucat: UCAT_empty(),
   view: ProviderView_empty(),
+  pPOOL: pPOOL_empty(),
   rt: runtime
 })
 
@@ -61,12 +65,14 @@ const createPool = () => {
 
   Common.loader('/api/admin/pools', {
     data: {
-      provider: s.view.uprovider.id
+      provider: s.view.uprovider.id,
+      p: s.pPOOL
     },
     act: "create"
   }, (rep: any) => {
     let pool = rep.data as wyi.POOL
     s.view.pools.push(pool)
+    s.pPOOL = pPOOL_empty()
   })
 }
 

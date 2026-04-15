@@ -1,214 +1,219 @@
 ﻿[
 
-  {
-    "name": "Kernel_UtilCat",
-    "shorthand": "ucat",
-    "id": 6461,
-    "fields": [
-      {
-        "enum": "Text",
-        "name": "Caption"
-      }
-    ]
-  },
-
-  {
-    "name": "Kernel_UtilProvider",
-    "shorthand": "uprovider",
-    "id": 254261,
-    "fields": [
-      {
-        "enum": "Text",
-        "name": "Caption"
-      },
-      {
-        "enum": "Text",
-        "name": "Logo"
-      },
-      {
-        "enum": "Text",
-        "name": "Icon"
-      },
-      {
-        "enum": "FK",
-        "ref": "Kernel_UtilCat",
-        "name": "Cat"
-      }
-    ]
-  },
-
-
-  {
-    "name": "Kernel_UtilCatProvider",
-    "id": 254261,
-    "fields": [
-      {
-        "enum": "FK",
-        "ref": "Kernel_UtilCat",
-        "name": "Cat"
-      },
-      {
-        "enum": "FK",
-        "ref": "Kernel_UtilProvider",
-        "name": "Provider"
-      }
-    ]
-  },
-
-  {
-    "name": "Kernel_Unit",
-    "shorthand": "unit",
-    "id": 29554261,
-    "fields": [
-      {
-        "enum": "Text",
-        "name": "Caption"
-      },
-      {
-        "enum": "FK",
-        "ref": "Ca_EndUser",
-        "name": "Owner"
-      },
-      {
-        "enum": "Chars",
-        "length": 5,
-        "name": "UnitNum"
-      },
-      {
-        "enum": "Text",
-        "name": "AcctNum"
-      },
-      {
-        "enum": "Text",
-        "name": "Address"
-      },
-      {
-        "enum": "Text",
-        "name": "Town"
-      },
-      {
-        "enum": "Chars",
-        "length": 2,
-        "name": "State"
-      },
-      {
-        "enum": "Chars",
-        "length": 10,
-        "name": "Zip"
-      }
-    ]
-  },
-
-  {
-    "name": "Kernel_UtilAcct",
-    "shorthand": "uacct",
-    "id": 54229561,
-    "fields": [
-      {
-        "enum": "FK",
-        "ref": "Kernel_UtilCat",
-        "name": "Cat"
-      },
-      {
-        "enum": "FK",
-        "ref": "Kernel_UtilProvider",
-        "name": "Provider"
-      },
-      {
-        "enum": "FK",
-        "ref": "Kernel_Client",
-        "name": "Owner"
-      },
-      {
-        "enum": "FK",
-        "ref": "Kernel_Unit",
-        "name": "Unit"
-      },
-      {
-        "enum": "Text",
-        "name": "AcctName"
-      },
-      {
-        "enum": "Text",
-        "name": "AcctNum"
-      }
-    ]
-  },
-
-  {
-    "name": "Kernel_UtilBill",
-    "shorthand": "ubill",
-    "id": 4426561,
-    "fields": [
-      {
-        "enum": "FK",
-        "ref": "Kernel_UtilCat",
-        "name": "Cat"
-      },
-      {
-        "enum": "FK",
-        "ref": "Kernel_UtilProvider",
-        "name": "Provider"
-      },
-      {
-        "enum": "FK",
-        "ref": "Ca_EndUser",
-        "name": "Owner"
-      },
-      {
-        "enum": "FK",
-        "ref": "Ca_EndUser",
-        "name": "Representative"
-      },
-      {
-        "enum": "FK",
-        "ref": "Kernel_Unit",
-        "name": "Unit"
-      },
-
-      {
-        "enum": "SelectLines",
-        "lines": "Submitted//Submitted///Declined//Declined///Accepted//Accepted///Closed//Closed",
-        "name": "State"
-      },
-
-      {
-        "enum": "FK",
-        "ref": "Kernel_UnitAcct",
-        "name": "UAcct"
-      },
-
-      {
-        "enum": "FK",
-        "ref": "Kernel_Pool",
-        "name": "Pool"
-      },
-
-      {
-        "enum": "Chars",
-        "length": 8,
-        "name": "YYYYMMDD"
-      },
-      {
-        "enum": "Float",
-        "name": "Amt"
-      },
-      {
-        "enum": "Float",
-        "name": "AmtReduction"
-      },
-      {
-        "enum": "Float",
-        "name": "AmtReturn"
-      }
-    ]
-  },
+    {
+        "name": "Kernel_UtilCat",
+        "shorthand": "ucat",
+        "id": 6461,
+        "fields": [
+            {
+                "enum": "Text",
+                "name": "Caption"
+            }
+        ]
+    },
 
     {
-    "name": "Kernel_Pool",
-    "shorthand": "pool",
-    "id": 6544261,
+        "name": "Kernel_UtilProvider",
+        "shorthand": "uprovider",
+        "id": 254261,
         "fields": [
+            {
+                "enum": "Text",
+                "name": "Caption"
+            },
+            {
+                "enum": "Text",
+                "name": "Logo"
+            },
+            {
+                "enum": "Text",
+                "name": "Icon"
+            },
+            {
+                "enum": "FK",
+                "ref": "Kernel_UtilCat",
+                "name": "Cat"
+            }
+        ]
+    },
+
+
+    {
+        "name": "Kernel_UtilCatProvider",
+        "id": 254261,
+        "fields": [
+            {
+                "enum": "FK",
+                "ref": "Kernel_UtilCat",
+                "name": "Cat"
+            },
+            {
+                "enum": "FK",
+                "ref": "Kernel_UtilProvider",
+                "name": "Provider"
+            }
+        ]
+    },
+
+    {
+        "name": "Kernel_Unit",
+        "shorthand": "unit",
+        "id": 29554261,
+        "fields": [
+            {
+                "enum": "Text",
+                "name": "Caption"
+            },
+            {
+                "enum": "FK",
+                "ref": "Ca_EndUser",
+                "name": "Owner"
+            },
+            {
+                "enum": "Chars",
+                "length": 5,
+                "name": "UnitNum"
+            },
+            {
+                "enum": "Text",
+                "name": "AcctNum"
+            },
+            {
+                "enum": "Text",
+                "name": "Address"
+            },
+            {
+                "enum": "Text",
+                "name": "Town"
+            },
+            {
+                "enum": "Chars",
+                "length": 2,
+                "name": "State"
+            },
+            {
+                "enum": "Chars",
+                "length": 10,
+                "name": "Zip"
+            }
+        ]
+    },
+
+    {
+        "name": "Kernel_UtilAcct",
+        "shorthand": "uacct",
+        "id": 54229561,
+        "fields": [
+            {
+                "enum": "FK",
+                "ref": "Kernel_UtilCat",
+                "name": "Cat"
+            },
+            {
+                "enum": "FK",
+                "ref": "Kernel_UtilProvider",
+                "name": "Provider"
+            },
+            {
+                "enum": "FK",
+                "ref": "Kernel_Client",
+                "name": "Owner"
+            },
+            {
+                "enum": "FK",
+                "ref": "Kernel_Unit",
+                "name": "Unit"
+            },
+            {
+                "enum": "Text",
+                "name": "AcctName"
+            },
+            {
+                "enum": "Text",
+                "name": "AcctNum"
+            }
+        ]
+    },
+
+    {
+        "name": "Kernel_UtilBill",
+        "shorthand": "ubill",
+        "id": 4426561,
+        "fields": [
+            {
+                "enum": "FK",
+                "ref": "Kernel_UtilCat",
+                "name": "Cat"
+            },
+            {
+                "enum": "FK",
+                "ref": "Kernel_UtilProvider",
+                "name": "Provider"
+            },
+            {
+                "enum": "FK",
+                "ref": "Ca_EndUser",
+                "name": "Owner"
+            },
+            {
+                "enum": "FK",
+                "ref": "Ca_EndUser",
+                "name": "Representative"
+            },
+            {
+                "enum": "FK",
+                "ref": "Kernel_Unit",
+                "name": "Unit"
+            },
+
+            {
+                "enum": "SelectLines",
+                "lines": "Submitted//Submitted///Declined//Declined///Accepted//Accepted///Closed//Closed",
+                "name": "State"
+            },
+
+            {
+                "enum": "FK",
+                "ref": "Kernel_UnitAcct",
+                "name": "UAcct"
+            },
+
+            {
+                "enum": "FK",
+                "ref": "Kernel_Pool",
+                "name": "Pool"
+            },
+
+            {
+                "enum": "Chars",
+                "length": 8,
+                "name": "YYYYMMDD"
+            },
+            {
+                "enum": "Float",
+                "name": "Amt"
+            },
+            {
+                "enum": "Float",
+                "name": "AmtReduction"
+            },
+            {
+                "enum": "Float",
+                "name": "AmtReturn"
+            }
+        ]
+    },
+
+    {
+        "name": "Kernel_Pool",
+        "shorthand": "pool",
+        "id": 6544261,
+        "fields": [
+            {
+                "enum": "Text",
+                "name": "Caption"
+            },
+
             {
                 "enum": "FK",
                 "ref": "Kernel_UtilCat",
@@ -249,6 +254,6 @@
                 "name": "AmtReturn"
             }
         ]
-  }
+    }
 
 ]
