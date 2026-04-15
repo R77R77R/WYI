@@ -173,18 +173,17 @@ let providers (x:X) =
                 |> Array.tryFind(fun i -> 
                     i.p.Cat = cat.ID && i.p.Provider = provider.ID) with
             | Some i -> 
-                let billxs = 
-                    runtime.users.Values
-                    |> Array.map(fun eux -> eux.billxs.Values)
-                    |> Array.concat
-                    |> Array.filter(fun billx -> billx.providero.IsSome)
-                    |> Array.filter(fun billx -> billx.providero.Value.ID = provider.ID)
-                    |> Array.map BillComplex__json
-                    |> Json.Ary
-                [|  ("cat",cat |> UCAT__json)
-                    ("provider",provider |> UPROVIDER__json)
-                    ("billxs",billxs)
-                    ok |]
+                {   cat = cat
+                    billxs = 
+                        runtime.users.Values
+                        |> Array.map(fun eux -> eux.billxs.Values)
+                        |> Array.concat
+                        |> Array.filter(fun billx -> billx.providero.IsSome)
+                        |> Array.filter(fun billx -> billx.providero.Value.ID = provider.ID)
+                    pool = [| |]
+                    uprovider = provider }
+                |> ProviderView__json
+                |> wrapOk "data"
             | None -> er Er.InvalideParameter
     | "ls" -> 
         runtime.data.providers.Values
