@@ -163,6 +163,8 @@ export const pPOOL__bin = (bb:BytesBuilder) => (p:wyi.pPOOL) => {
     
     marshall.int32__bin (bb) (p.State)
     
+    marshall.str__bin (bb) (p.Notes)
+    
     marshall.float__bin (bb) (p.Amt)
     
     marshall.float__bin (bb) (p.AmtReduction)
@@ -186,6 +188,7 @@ export const bin__pPOOL = (bi:BinIndexed):wyi.pPOOL => {
     p.Provider = marshall.bin__int64 (bi)
     p.Manager = marshall.bin__int64 (bi)
     p.State = marshall.bin__int32 (bi)
+    p.Notes = marshall.bin__str (bi)
     p.Amt = marshall.bin__float (bi)
     p.AmtReduction = marshall.bin__float (bi)
     p.AmtReturn = marshall.bin__float (bi)
@@ -865,6 +868,7 @@ export const pPOOL_empty = (): wyi.pPOOL => {
         Provider: 0,
         Manager: 0,
         State: 0,
+        Notes: "",
         Amt: 0.0,
         AmtReduction: 0.0,
         AmtReturn: 0.0 }

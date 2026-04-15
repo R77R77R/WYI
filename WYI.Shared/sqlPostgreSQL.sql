@@ -412,6 +412,7 @@ BEGIN
             ,"provider" BIGINT
             ,"manager" BIGINT
             ,"state" INT
+            ,"notes" TEXT
             ,"amt" FLOAT
             ,"amtreduction" FLOAT
             ,"amtreturn" FLOAT
@@ -431,7 +432,7 @@ BEGIN
         FROM information_schema.columns 
         WHERE table_name = 'kernel_pool' 
           AND table_schema = 'public' 
-          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'cat', 'provider', 'manager', 'state', 'amt', 'amtreduction', 'amtreturn'])
+          AND column_name <> ALL(ARRAY['id', 'createdat', 'updatedat', 'sort', 'cat', 'provider', 'manager', 'state', 'notes', 'amt', 'amtreduction', 'amtreturn'])
     LOOP
         -- 对应 PRINT 'Dropping ' + @tname + '.' + @fn
         
@@ -494,6 +495,20 @@ BEGIN
 
     IF not condition THEN
         ALTER TABLE kernel_pool ADD "state" int;
+    END IF;
+END $$;
+
+-- [kernel_pool.Notes] -------------
+
+
+DO $$
+DECLARE
+    condition boolean;
+BEGIN
+    condition := (SELECT EXISTS(SELECT column_name FROM information_schema.columns WHERE table_name='kernel_pool' AND column_name='notes'));
+
+    IF not condition THEN
+        ALTER TABLE kernel_pool ADD "notes" text;
     END IF;
 END $$;
 

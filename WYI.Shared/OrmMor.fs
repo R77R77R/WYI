@@ -459,6 +459,10 @@ let pPOOL__bin (bb:BytesBuilder) (p:pPOOL) =
     
     p.State |> EnumToValue |> BitConverter.GetBytes |> bb.append
     
+    let binNotes = p.Notes |> Encoding.UTF8.GetBytes
+    binNotes.Length |> BitConverter.GetBytes |> bb.append
+    binNotes |> bb.append
+    
     p.Amt |> BitConverter.GetBytes |> bb.append
     
     p.AmtReduction |> BitConverter.GetBytes |> bb.append
@@ -490,6 +494,11 @@ let bin__pPOOL (bi:BinIndexed):pPOOL =
     
     p.State <- BitConverter.ToInt32(bin,index.Value) |> EnumOfValue
     index.Value <- index.Value + 4
+    
+    let count_Notes = BitConverter.ToInt32(bin,index.Value)
+    index.Value <- index.Value + 4
+    p.Notes <- Encoding.UTF8.GetString(bin,index.Value,count_Notes)
+    index.Value <- index.Value + count_Notes
     
     p.Amt <- BitConverter.ToDouble(bin,index.Value)
     index.Value <- index.Value + 8
@@ -529,6 +538,7 @@ let pPOOL__json (p:pPOOL) =
         ("Provider",p.Provider.ToString() |> Json.Num)
         ("Manager",p.Manager.ToString() |> Json.Num)
         ("State",(p.State |> EnumToValue).ToString() |> Json.Num)
+        ("Notes",p.Notes |> Json.Str)
         ("Amt",p.Amt.ToString() |> Json.Num)
         ("AmtReduction",p.AmtReduction.ToString() |> Json.Num)
         ("AmtReturn",p.AmtReturn.ToString() |> Json.Num) |]
@@ -564,6 +574,8 @@ let json__pPOOLo (json:Json):pPOOL option =
     p.Manager <- checkfield fields "Manager" |> parse_int64
     
     p.State <- checkfield fields "State" |> parse_int32 |> EnumOfValue
+    
+    p.Notes <- checkfield fields "Notes"
     
     p.Amt <- checkfield fields "Amt" |> parse_float
     
@@ -2560,9 +2572,10 @@ let db__pPOOL(line:Object[]): pPOOL =
     p.Provider <- if Convert.IsDBNull(line[5]) then 0L else line[5] :?> int64
     p.Manager <- if Convert.IsDBNull(line[6]) then 0L else line[6] :?> int64
     p.State <- EnumOfValue(if Convert.IsDBNull(line[7]) then 0 else line[7] :?> int)
-    p.Amt <- if Convert.IsDBNull(line[8]) then 0.0 else line[8] :?> float
-    p.AmtReduction <- if Convert.IsDBNull(line[9]) then 0.0 else line[9] :?> float
-    p.AmtReturn <- if Convert.IsDBNull(line[10]) then 0.0 else line[10] :?> float
+    p.Notes <- string(line[8]).TrimEnd()
+    p.Amt <- if Convert.IsDBNull(line[9]) then 0.0 else line[9] :?> float
+    p.AmtReduction <- if Convert.IsDBNull(line[10]) then 0.0 else line[10] :?> float
+    p.AmtReturn <- if Convert.IsDBNull(line[11]) then 0.0 else line[11] :?> float
 
     p
 
@@ -2574,6 +2587,7 @@ let pPOOL__sps (p:pPOOL) =
             ("Provider", p.Provider) |> kvp__sqlparam
             ("Manager", p.Manager) |> kvp__sqlparam
             ("State", EnumToValue p.State) |> kvp__sqlparam
+            ("Notes", p.Notes) |> kvp__sqlparam
             ("Amt", p.Amt) |> kvp__sqlparam
             ("AmtReduction", p.AmtReduction) |> kvp__sqlparam
             ("AmtReturn", p.AmtReturn) |> kvp__sqlparam |]
@@ -2583,6 +2597,7 @@ let pPOOL__sps (p:pPOOL) =
             ("provider", p.Provider) |> kvp__sqlparam
             ("manager", p.Manager) |> kvp__sqlparam
             ("state", EnumToValue p.State) |> kvp__sqlparam
+            ("notes", p.Notes) |> kvp__sqlparam
             ("amt", p.Amt) |> kvp__sqlparam
             ("amtreduction", p.AmtReduction) |> kvp__sqlparam
             ("amtreturn", p.AmtReturn) |> kvp__sqlparam |]
@@ -2598,6 +2613,7 @@ let pPOOL_clone (p:pPOOL): pPOOL = {
     Provider = p.Provider
     Manager = p.Manager
     State = p.State
+    Notes = p.Notes
     Amt = p.Amt
     AmtReduction = p.AmtReduction
     AmtReturn = p.AmtReturn }
@@ -2668,6 +2684,7 @@ let POOLTxSqlServer =
     ,[Provider]
     ,[Manager]
     ,[State]
+    ,[Notes]
     ,[Amt]
     ,[AmtReduction]
     ,[AmtReturn])

@@ -208,42 +208,47 @@
     "name": "Kernel_Pool",
     "shorthand": "pool",
     "id": 6544261,
-    "fields": [
-      {
-        "enum": "FK",
-        "ref": "Kernel_UtilCat",
-        "name": "Cat"
-      },
-      {
-        "enum": "FK",
-        "ref": "Kernel_UtilProvider",
-        "name": "Provider"
-      },
+        "fields": [
+            {
+                "enum": "FK",
+                "ref": "Kernel_UtilCat",
+                "name": "Cat"
+            },
+            {
+                "enum": "FK",
+                "ref": "Kernel_UtilProvider",
+                "name": "Provider"
+            },
 
-      {
-        "enum": "FK",
-        "ref": "Ca_EndUser",
-        "name": "Manager"
-      },
-      {
-        "enum": "SelectLines",
-        "lines": "Draft//Draft///OnGoing//OnGoing///Closed//Closed",
-        "name": "State"
-      },
+            {
+                "enum": "FK",
+                "ref": "Ca_EndUser",
+                "name": "Manager"
+            },
+            {
+                "enum": "SelectLines",
+                "lines": "Draft//Draft///OnGoing//OnGoing///Closed//Closed",
+                "name": "State"
+            },
 
-      {
-        "enum": "Float",
-        "name": "Amt"
-      },
-      {
-        "enum": "Float",
-        "name": "AmtReduction"
-      },
-      {
-        "enum": "Float",
-        "name": "AmtReturn"
-      }
-    ]
+            {
+                "enum": "Text",
+                "name": "Notes"
+            },
+
+            {
+                "enum": "Float",
+                "name": "Amt"
+            },
+            {
+                "enum": "Float",
+                "name": "AmtReduction"
+            },
+            {
+                "enum": "Float",
+                "name": "AmtReturn"
+            }
+        ]
   }
 
 ]

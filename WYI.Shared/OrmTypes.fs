@@ -285,6 +285,7 @@ mutable Cat: FK
 mutable Provider: FK
 mutable Manager: FK
 mutable State: poolStateEnum
+mutable Notes: Text
 mutable Amt: Float
 mutable AmtReduction: Float
 mutable AmtReturn: Float}
@@ -295,23 +296,24 @@ type POOL = Rcd<pPOOL>
 let POOL_fieldorders() =
     match rdbms with
     | Rdbms.SqlServer ->
-        "[ID],[Createdat],[Updatedat],[Sort],[Cat],[Provider],[Manager],[State],[Amt],[AmtReduction],[AmtReturn]"
+        "[ID],[Createdat],[Updatedat],[Sort],[Cat],[Provider],[Manager],[State],[Notes],[Amt],[AmtReduction],[AmtReturn]"
     | Rdbms.PostgreSql ->
-        $""" "id","createdat","updatedat","sort", "cat","provider","manager","state","amt","amtreduction","amtreturn" """
+        $""" "id","createdat","updatedat","sort", "cat","provider","manager","state","notes","amt","amtreduction","amtreturn" """
 
 let pPOOL_fieldordersArray = [|
     "Cat"
     "Provider"
     "Manager"
     "State"
+    "Notes"
     "Amt"
     "AmtReduction"
     "AmtReturn" |]
 
 let POOL_sql_update() =
     match rdbms with
-    | Rdbms.SqlServer -> "[Cat]=@Cat,[Provider]=@Provider,[Manager]=@Manager,[State]=@State,[Amt]=@Amt,[AmtReduction]=@AmtReduction,[AmtReturn]=@AmtReturn"
-    | Rdbms.PostgreSql -> "cat=@cat,provider=@provider,manager=@manager,state=@state,amt=@amt,amtreduction=@amtreduction,amtreturn=@amtreturn"
+    | Rdbms.SqlServer -> "[Cat]=@Cat,[Provider]=@Provider,[Manager]=@Manager,[State]=@State,[Notes]=@Notes,[Amt]=@Amt,[AmtReduction]=@AmtReduction,[AmtReturn]=@AmtReturn"
+    | Rdbms.PostgreSql -> "cat=@cat,provider=@provider,manager=@manager,state=@state,notes=@notes,amt=@amt,amtreduction=@amtreduction,amtreturn=@amtreturn"
 
 let pPOOL_fields() =
     match rdbms with
@@ -321,6 +323,7 @@ let pPOOL_fields() =
             FK("Provider")
             FK("Manager")
             SelectLines("State", [| ("Draft","Draft");("OnGoing","OnGoing");("Closed","Closed") |])
+            Text("Notes")
             Float("Amt")
             Float("AmtReduction")
             Float("AmtReturn") |]
@@ -330,6 +333,7 @@ let pPOOL_fields() =
             FK("provider")
             FK("manager")
             SelectLines("state", [| ("Draft","Draft");("OnGoing","OnGoing");("Closed","Closed") |])
+            Text("notes")
             Float("amt")
             Float("amtreduction")
             Float("amtreturn") |]
@@ -339,6 +343,7 @@ let pPOOL_empty(): pPOOL = {
     Provider = 0L
     Manager = 0L
     State = EnumOfValue 0
+    Notes = ""
     Amt = 0.0
     AmtReduction = 0.0
     AmtReturn = 0.0 }

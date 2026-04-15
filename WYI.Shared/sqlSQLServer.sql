@@ -647,6 +647,7 @@ BEGIN
         ,[Provider] BIGINT
         ,[Manager] BIGINT
         ,[State] INT
+        ,[Notes] NVARCHAR(MAX)
         ,[Amt] FLOAT
         ,[AmtReduction] FLOAT
         ,[AmtReturn] FLOAT
@@ -657,7 +658,7 @@ END
 -- Dropping obsolete fields -----------
 DECLARE @name_kernel_pool NVARCHAR(64)
 DECLARE cursor_kernel_pool CURSOR FOR 
-    SELECT name FROM SYSCOLUMNS WHERE id=object_id('kernel_pool') AND (name NOT IN ('ID','Createdat','Updatedat','Sort','Cat','Provider','Manager','State','Amt','AmtReduction','AmtReturn'))
+    SELECT name FROM SYSCOLUMNS WHERE id=object_id('kernel_pool') AND (name NOT IN ('ID','Createdat','Updatedat','Sort','Cat','Provider','Manager','State','Notes','Amt','AmtReduction','AmtReturn'))
 
 OPEN cursor_kernel_pool
 FETCH NEXT FROM cursor_kernel_pool INTO @name_kernel_pool
@@ -784,6 +785,33 @@ IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_po
 IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_poolState')
     BEGIN
     ALTER TABLE kernel_pool DROP  CONSTRAINT [UniqueNonclustered_kernel_poolState]
+    END
+
+-- [kernel_pool.Notes] -------------
+
+
+-- [kernel_pool.Notes] -------------
+
+IF EXISTS(SELECT * FROM SYSCOLUMNS WHERE id=object_id('kernel_pool') AND name='Notes')
+    BEGIN
+     ALTER TABLE kernel_pool ALTER COLUMN [Notes] NVARCHAR(MAX)
+    END
+ELSE
+    BEGIN
+    DECLARE @sql_add_kernel_pool_Notes NVARCHAR(MAX);
+    SET @sql_add_kernel_pool_Notes = 'ALTER TABLE kernel_pool ADD [Notes] NVARCHAR(MAX)'
+    EXEC sp_executesql @sql_add_kernel_pool_Notes
+    END
+
+
+IF EXISTS(SELECT object_id FROM [sys].[objects] WHERE name='Constraint_kernel_poolNotes')
+    BEGIN
+    ALTER TABLE kernel_pool DROP  CONSTRAINT [Constraint_kernel_poolNotes]
+    END
+
+IF EXISTS(SELECT * FROM SYSINDEXES WHERE name='UniqueNonclustered_kernel_poolNotes')
+    BEGIN
+    ALTER TABLE kernel_pool DROP  CONSTRAINT [UniqueNonclustered_kernel_poolNotes]
     END
 
 -- [kernel_pool.Amt] -------------

@@ -63,6 +63,18 @@ import { RouteRecordRaw } from 'vue-router';
       }]
     },
     {
+      path: '/Admin/Users',
+      component: ()=>import ( "/src/layouts/blank.vue" ),
+      meta: {"layout":"blank"},
+      children: [{
+        path: "",
+        name: 'Admin-Users',
+        component:()=> import("~/pages/Admin/Users.vue"),
+        meta: {"layout":"blank"},
+        props: true
+      }]
+    },
+    {
       path: '//Admin',
       component: ()=>import ( "/src/layouts/blank.vue" ),
       meta: {"layout":"blank"},

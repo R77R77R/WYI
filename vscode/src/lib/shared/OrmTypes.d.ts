@@ -61,6 +61,7 @@ export type pPOOL = {
     Provider: number
     Manager: number
     State: number
+    Notes: string
     Amt: number
     AmtReduction: number
     AmtReturn: number
