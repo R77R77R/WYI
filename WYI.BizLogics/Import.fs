@@ -59,6 +59,7 @@ let clearData() =
     //"DELETE FROM public.kernel_utilbill" |> tx
     //"DELETE FROM public.kernel_utilacct" |> tx
     //"DELETE FROM public.kernel_unit" |> tx
+    //"DELETE FROM public.Kernel_Pool" |> tx
 
     ()
 

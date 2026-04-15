@@ -14,10 +14,18 @@
     </div>
 
     <PoolStates />
-    {{ s.pool }}
-    <div class="flex">
-      Caption: <input v-model="s.pool.p.Caption" />
-      <button @click="createPool()">Create Bill Pool</button>
+    
+    <div class="form">
+      <div>Caption:</div>
+      <div>
+       <input v-model="s.pool.p.Caption" />
+      </div>
+      <div v-if="s.pool.id == 0">
+       <button @click="createPool()">Create</button>
+      </div>
+      <div v-else>
+       <button @click="createPool()">Edit</button>
+      </div>
     </div>
 
   </div>
