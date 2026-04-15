@@ -53,6 +53,7 @@ let runtime =
         aiModel = "gemini-2.5-flash"
         cats = createModDictInt64 8
         providers = createModDictInt64 8
+        poolxs = createModDictInt64 8
         catproviders = [||] }
     |> empty__Runtime<EuComplex,unit,HostData,RuntimeData> "WYI" h
 

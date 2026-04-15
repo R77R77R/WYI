@@ -6,36 +6,6 @@
     </div>
   </div>
 
-  <div class="card">
-    <div class="card-caption">
-      <button class="button-small" @click="s.toggleCreate = true">
-        Add New Unit
-      </button>
-    </div>
-
-    <div v-if="s.toggleCreate">
-
-      <div>Address</div>
-      <div><input v-model="s.pUnit.Address" /></div>
-
-      <div>Town</div>
-      <div><input v-model="s.pUnit.Town" /></div>
-
-      <div>State</div>
-      <div>
-        <StateLocator v-model="s.pUnit.State" />
-      </div>
-
-      <div>ZIP</div>
-      <div><input v-model="s.pUnit.Zip" /></div>
-
-      <div>
-        <button>OK</button>
-      </div>
-    </div>
-
-  </div>
-
   <Unit v-for="i in s.units" :unit="i" :mode="1" />
 
 </template>

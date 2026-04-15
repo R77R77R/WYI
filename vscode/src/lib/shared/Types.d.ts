@@ -72,6 +72,8 @@ cats:{[key:number]: UCAT},
 
 providers:{[key:number]: UPROVIDER},
 
+poolxs:{[key:number]: PoolComplex},
+
 catproviders:KUCP[]
 }
 

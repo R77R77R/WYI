@@ -80,7 +80,7 @@ let billxs (x:X) =
         |> wrapOk "data"
     | _ -> er Er.InvalideParameter
 
-let userss (x:X) = 
+let poolxs (x:X) = 
     match
         x.Json
         |> tryFindStrByAtt "act" with
