@@ -246,3 +246,7 @@ h1{
   @apply bg-[#999999] text-white px-2 py-1 mx-2
 }
 
+
+.eu-AuthType-Admin{
+  @apply bg-[#d44005] text-white px-2 py-1 mx-2
+}

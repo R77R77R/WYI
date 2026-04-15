@@ -11,15 +11,8 @@
             :item__text='(eu: wyi.EU) => eu.p.Caption + " " + eu.p.Username + " " + eu.p.Email'
             @select="onSelectUser" />
         </div>
-        <div v-for="i in s.users">
-          <span v-if="i.p.OAuthProvider != ''">
-            {{ i.p.Email }}
-            <img class="img-oauth"
-              :src="'https://img.clerk.com/static/' + i.p.OAuthProvider + '.svg'" />
-          </span>
-          <span v-else>
-            {{ i.p.Username }}
-          </span>
+        <div v-for="i in s.eus">
+          <User :eu="i" />
         </div>
       </div>
 
@@ -60,9 +53,10 @@ import { glib } from '~/lib/glib'
 import * as Common from '~/lib/store/common'
 import SearchField from '~/comps/SearchField.vue'
 import Billx from '~/comps/Billx.vue'
+import User from '~/comps/User.vue'
 
 const s = glib.vue.reactive({
-  users: [] as wyi.EU[],
+  eus: [] as wyi.EU[],
   billxs: [] as wyi.BillComplex[],
   rt: runtime
 })
@@ -99,7 +93,7 @@ glib.vue.onMounted(async () => {
   Common.loader('/api/admin/users', {
     act: "ls"
   }, (rep: any) => {
-    s.users = rep.data as wyi.EU[]
+    s.eus = rep.data as wyi.EU[]
   })
 
   Common.loader('/api/admin/billxs', {
