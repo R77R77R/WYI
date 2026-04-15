@@ -55,6 +55,12 @@ mutable catproviders: KUCP[] }
 type ClientRuntime = {
 mutable version: int }
 
+type ProviderView = {
+cat: UCAT
+billxs: BillComplex[]
+pool: PoolComplex[]
+uprovider: UPROVIDER }
+
 type Msg = 
 | Heartbeat
 | ApiRequest of Json

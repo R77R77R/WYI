@@ -80,6 +80,17 @@ export type ClientRuntime = {
 version:number
 }
 
+// [ProviderView]
+export type ProviderView = {
+cat:UCAT,
+
+billxs:BillComplex[],
+
+pool:PoolComplex[],
+
+uprovider:UPROVIDER
+}
+
 // [Msg]
 export type Msg = {
 e: number,

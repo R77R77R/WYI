@@ -871,6 +871,127 @@ let ClientRuntime_clone src =
     ClientRuntime__bin bb src
     bin__ClientRuntime (bb.bytes(),ref 0)
 
+// [ProviderView] Structure
+
+let ProviderView_empty(): ProviderView =
+    {
+        cat = { ID = 0L; Sort = 0L; Createdat = DateTime.MinValue; Updatedat = DateTime.MinValue; p = pUCAT_empty() }
+        billxs = [| |]
+        pool = [| |]
+        uprovider = { ID = 0L; Sort = 0L; Createdat = DateTime.MinValue; Updatedat = DateTime.MinValue; p = pUPROVIDER_empty() }
+    }
+
+let ProviderView__bin (bb:BytesBuilder) (v:ProviderView) =
+
+    UCAT__bin bb v.cat
+    
+    array__bin (BillComplex__bin) bb v.billxs
+    
+    array__bin (PoolComplex__bin) bb v.pool
+    UPROVIDER__bin bb v.uprovider
+    ()
+
+let bin__ProviderView (bi:BinIndexed):ProviderView =
+    let bin,index = bi
+
+    {
+        cat = 
+            bi
+            |> bin__UCAT
+        billxs = 
+            bi
+            |> bin__array (bin__BillComplex)
+        pool = 
+            bi
+            |> bin__array (bin__PoolComplex)
+        uprovider = 
+            bi
+            |> bin__UPROVIDER
+    }
+
+let ProviderView__json (v:ProviderView) =
+
+    [|  ("cat",UCAT__json v.cat)
+        ("billxs",array__json (BillComplex__json) v.billxs)
+        ("pool",array__json (PoolComplex__json) v.pool)
+        ("uprovider",UPROVIDER__json v.uprovider)
+         |]
+    |> Json.Braket
+
+let ProviderView__jsonTbw (w:TextBlockWriter) (v:ProviderView) =
+    json__str w (ProviderView__json v)
+
+let ProviderView__jsonStr (v:ProviderView) =
+    (ProviderView__json v) |> json__strFinal
+
+
+let json__ProviderViewo (json:Json):ProviderView option =
+    let fields = json |> json__items
+
+    let mutable passOptions = true
+
+    let cato =
+        match json__tryFindByName json "cat" with
+        | None ->
+            passOptions <- false
+            None
+        | Some v -> 
+            match v |> json__UCATo with
+            | Some res -> Some res
+            | None ->
+                passOptions <- false
+                None
+
+    let billxso =
+        match json__tryFindByName json "billxs" with
+        | None ->
+            passOptions <- false
+            None
+        | Some v -> 
+            match v |> json__arrayo (json__BillComplexo) with
+            | Some res -> Some res
+            | None ->
+                passOptions <- false
+                None
+
+    let poolo =
+        match json__tryFindByName json "pool" with
+        | None ->
+            passOptions <- false
+            None
+        | Some v -> 
+            match v |> json__arrayo (json__PoolComplexo) with
+            | Some res -> Some res
+            | None ->
+                passOptions <- false
+                None
+
+    let uprovidero =
+        match json__tryFindByName json "uprovider" with
+        | None ->
+            passOptions <- false
+            None
+        | Some v -> 
+            match v |> json__UPROVIDERo with
+            | Some res -> Some res
+            | None ->
+                passOptions <- false
+                None
+
+    if passOptions then
+        ({
+            cat = cato.Value
+            billxs = billxso.Value
+            pool = poolo.Value
+            uprovider = uprovidero.Value }:ProviderView) |> Some
+    else
+        None
+
+let ProviderView_clone src =
+    let bb = new BytesBuilder()
+    ProviderView__bin bb src
+    bin__ProviderView (bb.bytes(),ref 0)
+
 // [Msg] Structure
 
 let Msg_empty(): Msg =Msg.Heartbeat

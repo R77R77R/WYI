@@ -161,7 +161,7 @@ let myAcctxs eux (x:X) =
         |> wrapOk "data"
     | _ -> er Er.InvalideParameter
 
-let myBillxs eux (x:X) = 
+let myBillxs (eux:EuComplex) (x:X) = 
 
     match
         x.Json
