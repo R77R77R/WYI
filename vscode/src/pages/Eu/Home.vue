@@ -7,7 +7,7 @@
     <div>Current Website: <a href="https://whatsyourideal.com/" target="_blank">https://whatsyourideal.com/</a></div>
     <div>Demo: <a href="https://5.78.201.21/" target="_blank">https://5.78.201.21/</a></div>
     <div>
-      Documentation
+      Documentation:
       <a href="https://docs.google.com/document/d/1ST0W7PcwX-jppBmm4fPdORJHrkoe5yqgPvA7SfTSq0s/edit?usp=sharing" target="_blank">
         Run through the demo
       </a>
@@ -16,7 +16,7 @@
       </a>
     </div>
     <div>
-      Clerk SSO 
+      Clerk SSO:
       <a href="https://clerk.com/docs/guides/configure/auth-strategies/social-connections/overview" target="_blank">
         Supported social providers
       </a>
@@ -25,13 +25,16 @@
       </a>
     </div>
     <div>
-      Gemini AI
+      Gemini AI:
       <a href="https://aistudio.google.com/app/projects" target="_blank">
         API key
       </a>
       | <a href="https://aistudio.google.com/app/billing?billing=0162F4-BB3466-5E8B6E" target="_blank">
         Billing
       </a>
+    </div>
+    <div>
+      Updated: Apr 14, 2026
     </div>
   </div>
   <div class="card" v-if="s.rt.user != null && s.rt.user.eu.id > 0">
