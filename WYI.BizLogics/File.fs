@@ -119,7 +119,7 @@ let incomingFile httpx (formfile:IFormFile) =
     | None -> return er Er.Internal |> Json.Braket
     }
     
-let fileid__bin output id = 
+let fileid__bin id = 
     
     match
         id
@@ -129,8 +129,6 @@ let fileid__bin output id =
         let er,bin = 
             Path.Combine(runtime.host.fsDir,file.p.Path)
             |> Util.FileSys.try_read_bin
-        if er.Length > 0 then
-            er |> output
         bin,file.p.Path |> Util.FileSys.filename__mime output
     | None -> [||],""
 
