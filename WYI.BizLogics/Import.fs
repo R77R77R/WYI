@@ -44,16 +44,6 @@ let tx sql =
 
 let clearData0() = 
 
-    "DELETE FROM public.kernel_utilcat" |> tx
-    "DELETE FROM public.kernel_utilprovider" |> tx
-    "DELETE FROM public.kernel_utilcatprovider" |> tx
-
-    runtime.data.catproviders <- [| |]
-    runtime.data.providers.Clear()
-    runtime.data.cats.Clear()
-
-let clearData1() = 
-
     "DELETE FROM public.ca_file" |> tx
 
     runtime.host.fsDir
@@ -78,7 +68,18 @@ let clearData1() =
         i.acctxs.Clear()
         i.units.Clear())
 
+let clearData1() = 
+
     clearData0()
+
+    "DELETE FROM public.kernel_utilcat" |> tx
+    "DELETE FROM public.kernel_utilprovider" |> tx
+    "DELETE FROM public.kernel_utilcatprovider" |> tx
+
+    runtime.data.catproviders <- [| |]
+    runtime.data.providers.Clear()
+    runtime.data.cats.Clear()
+
 
 let importUtilProviders () = 
 
