@@ -10,7 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-	  <PackageReference Include="FSharp.Core" Version="10.1.201" />
 	  <None Include="aspnetapp.pfx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
