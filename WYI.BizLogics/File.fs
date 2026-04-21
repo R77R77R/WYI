@@ -106,6 +106,8 @@ let incomingFile httpx (formfile:IFormFile) =
                     ("billx",BillComplex_empty() |> BillComplex__json) |]
                 |> Json.Braket
 
+            rcd.p.ToString() |> runtime.output
+
             return rep
         else
             return er Er.Internal |> Json.Braket
