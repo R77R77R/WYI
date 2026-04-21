@@ -66,7 +66,7 @@ let main argv =
             Server.Deploy.Bash
                 output 
                 deployHost
-                (devRoot,"Dev/WYI")
+                (devRoot,"Dev/WYI",fsRoot)
                 ("R","siduochen@hotmail.com")
         } |> Async.Start // 立即在线程池开始执行
 

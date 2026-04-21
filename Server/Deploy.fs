@@ -7,7 +7,7 @@ open System.Runtime.InteropServices
 open Util.Bash
 
 let Bash output server 
-    (devDir, deployDir) 
+    (devDir, deployDir, fsRoot) 
     (gitName, gitEmail) = 
 
     output (cyan $">>> 开始部署至 {server}...")
@@ -27,8 +27,7 @@ let Bash output server
     let remoteCommands = 
 
         if true then
-            [|
-                $"cd ~/{deployDir}"
+            [|  $"cd ~/{deployDir}"
                 "git fetch --all"
                 "git reset --hard origin/main"
                 "sudo killall -9 dotnet || true"
