@@ -77,7 +77,7 @@ let main argv =
     runServer 
         runtime
         vueDistPath 
-        (incomingFile,fileid__bin,id__thumbnail)
+        (incomingFile,fileid__bin runtime.output,id__thumbnail)
         (cert,certpwd)
         WYI.BizLogics.Branch.branch
         (80,443)
