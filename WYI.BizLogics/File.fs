@@ -90,6 +90,8 @@ let incomingFile httpx (formfile:IFormFile) =
             do! formfile.CopyToAsync(stream) |> Async.AwaitTask
         } 
 
+        $"File ID = {FILE_id.Value}" |> output
+
         if
             rcd
             |> updateRcd "" conn FILE_metadata None (fun p -> 
@@ -107,7 +109,7 @@ let incomingFile httpx (formfile:IFormFile) =
                 |> Json.Braket
 
             rcd.p.ContentType |> runtime.output
-            rcd.p.Path |> runtime.output
+            path |> runtime.output
             rcd.p.Thumbnail.Length.ToString() + " bytes Thumbnail" |> runtime.output
 
             return rep
