@@ -106,7 +106,9 @@ let incomingFile httpx (formfile:IFormFile) =
                     ("billx",BillComplex_empty() |> BillComplex__json) |]
                 |> Json.Braket
 
-            rcd.p.ToString() |> runtime.output
+            rcd.p.ContentType |> runtime.output
+            rcd.p.Path |> runtime.output
+            rcd.p.Thumbnail.Length.ToString() + " bytes Thumbnail" |> runtime.output
 
             return rep
         else
