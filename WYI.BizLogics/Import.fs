@@ -42,26 +42,43 @@ let tx sql =
     | Fail(dte,ctx) -> 
         halt runtime.output "" ""
 
-let clearData() = 
+let clearData0() = 
 
-    //"DELETE FROM public.kernel_utilcat" |> tx
-    //"DELETE FROM public.kernel_utilprovider" |> tx
-    //"DELETE FROM public.kernel_utilcatprovider" |> tx
+    "DELETE FROM public.kernel_utilcat" |> tx
+    "DELETE FROM public.kernel_utilprovider" |> tx
+    "DELETE FROM public.kernel_utilcatprovider" |> tx
 
-    //"DELETE FROM public.ca_file" |> tx
+    runtime.data.catproviders <- [| |]
+    runtime.data.providers.Clear()
+    runtime.data.cats.Clear()
 
-    //runtime.host.fsDir
-    //|> Directory.GetFiles
-    //|> Array.iter(fun f -> 
-    //    File.Delete f
-    //    "Deleted: " + f |> output)
+let clearData1() = 
 
-    //"DELETE FROM public.kernel_utilbill" |> tx
-    //"DELETE FROM public.kernel_utilacct" |> tx
-    //"DELETE FROM public.kernel_unit" |> tx
-    //"DELETE FROM public.Kernel_Pool" |> tx
+    "DELETE FROM public.ca_file" |> tx
 
-    ()
+    runtime.host.fsDir
+    |> Directory.GetFiles
+    |> Array.iter(fun f -> 
+        File.Delete f
+        "Deleted: " + f |> output)
+
+    "DELETE FROM public.kernel_utilbill" |> tx
+    "DELETE FROM public.kernel_utilacct" |> tx
+    "DELETE FROM public.kernel_unit" |> tx
+    "DELETE FROM public.Kernel_Pool" |> tx
+
+    runtime.data.poolxs.Values
+    |> Array.iter(fun i -> i.billxs.Clear())
+
+    runtime.data.poolxs.Clear()
+
+    runtime.users.Values
+    |> Array.iter(fun i -> 
+        i.billxs.Clear()
+        i.acctxs.Clear()
+        i.units.Clear())
+
+    clearData0()
 
 let importUtilProviders () = 
 

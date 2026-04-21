@@ -71,6 +71,14 @@ let branching (euxo:EuComplex option) (x:X) =
         | "users" -> bindx users
         | "billxs" -> bindx billxs
         | "pools" -> pools eux |> bindx
+        | "clear-data-0" -> 
+            (fun x -> 
+                Import.clearData0()
+                [| ok |]) |> bindx
+        | "clear-data-1" -> 
+            (fun x -> 
+                Import.clearData1()
+                [| ok |]) |> bindx
         //| "plogs" -> (fun x -> 
         //    let metadata = PLOG_metadata
         //    match "ORDER BY ID DESC" |> loadall conn (metadata.table,metadata.fieldorders(),metadata.db__rcd) with
