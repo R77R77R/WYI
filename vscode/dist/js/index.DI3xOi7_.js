@@ -11110,22 +11110,22 @@ var _hoisted_1$29 = {
 	class: "flex items-center"
 };
 var _hoisted_2$23 = { key: 0 };
-var _hoisted_3$19 = ["src"];
-var _hoisted_4$16 = {
+var _hoisted_3$20 = ["src"];
+var _hoisted_4$17 = {
 	key: 1,
 	class: "p-[15px]"
 };
-var _hoisted_5$12 = {
+var _hoisted_5$13 = {
 	key: 1,
 	class: "flex items-center"
 };
-var _hoisted_6$9 = /* @__PURE__ */ createBaseVNode("button", { class: "px-2 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-sm shadow-md transition-all flex items-center gap-1" }, [/* @__PURE__ */ createBaseVNode("i", { class: "ri-login-box-line" }), /* @__PURE__ */ createBaseVNode("span", null, "Sign In")], -1);
-var _hoisted_7$8 = /* @__PURE__ */ createBaseVNode("div", { class: "px-2" }, "with", -1);
-var _hoisted_8$8 = /* @__PURE__ */ createBaseVNode("img", {
+var _hoisted_6$10 = /* @__PURE__ */ createBaseVNode("button", { class: "px-2 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-sm shadow-md transition-all flex items-center gap-1" }, [/* @__PURE__ */ createBaseVNode("i", { class: "ri-login-box-line" }), /* @__PURE__ */ createBaseVNode("span", null, "Sign In")], -1);
+var _hoisted_7$10 = /* @__PURE__ */ createBaseVNode("div", { class: "px-2" }, "with", -1);
+var _hoisted_8$10 = /* @__PURE__ */ createBaseVNode("img", {
 	class: "img-oauth",
 	src: "https://img.clerk.com/static/google.svg"
 }, null, -1);
-var _hoisted_9$7 = /* @__PURE__ */ createBaseVNode("img", {
+var _hoisted_9$8 = /* @__PURE__ */ createBaseVNode("img", {
 	class: "img-oauth",
 	src: "https://img.clerk.com/static/apple.svg"
 }, null, -1);
@@ -11164,19 +11164,19 @@ var UserAuth_default = /* @__PURE__ */ defineComponent({
 				unref(s).rt.user.eu.p.OAuthProvider != "" ? (openBlock(), createElementBlock("div", _hoisted_2$23, [createBaseVNode("img", {
 					class: "img-oauth",
 					src: "https://img.clerk.com/static/" + unref(s).rt.user.eu.p.OAuthProvider + ".svg"
-				}, null, 8, _hoisted_3$19)])) : createCommentVNode("", true),
-				unref(s).rt.user.eu.p.AuthType == 2 ? (openBlock(), createElementBlock("div", _hoisted_4$16, [createBaseVNode("button", {
+				}, null, 8, _hoisted_3$20)])) : createCommentVNode("", true),
+				unref(s).rt.user.eu.p.AuthType == 2 ? (openBlock(), createElementBlock("div", _hoisted_4$17, [createBaseVNode("button", {
 					class: "button-small",
 					onClick: _cache[0] || (_cache[0] = ($event) => unref(router).push("/Admin/Home"))
 				}, "Admin Console")])) : createCommentVNode("", true)
-			])) : (openBlock(), createElementBlock("div", _hoisted_5$12, [
+			])) : (openBlock(), createElementBlock("div", _hoisted_5$13, [
 				createVNode(unref(SignInButton_default), { asChild: "" }, {
-					default: withCtx(() => [_hoisted_6$9]),
+					default: withCtx(() => [_hoisted_6$10]),
 					_: 1
 				}),
-				_hoisted_7$8,
-				_hoisted_8$8,
-				_hoisted_9$7,
+				_hoisted_7$10,
+				_hoisted_8$10,
+				_hoisted_9$8,
 				_hoisted_10$6
 			]));
 		};
@@ -11186,7 +11186,7 @@ var UserAuth_default = /* @__PURE__ */ defineComponent({
 //#region src/pages/Eu.vue
 var _hoisted_1$28 = { class: "lg:w-[1200px] m-[10px]" };
 var _hoisted_2$22 = { class: "main-color w-screen" };
-var _hoisted_3$18 = { class: "w-full flex bg-[#9999ff] px-3 py-1 gap-5" };
+var _hoisted_3$19 = { class: "w-full flex bg-[#9999ff] px-3 py-1 gap-5" };
 var _sfc_main$3 = {
 	__name: "Eu",
 	setup(__props) {
@@ -11199,7 +11199,7 @@ var _sfc_main$3 = {
 		return (_ctx, _cache) => {
 			const _component_router_link = resolveComponent("router-link");
 			const _component_router_view = resolveComponent("router-view");
-			return openBlock(), createElementBlock("div", _hoisted_1$28, [createBaseVNode("div", _hoisted_2$22, [createBaseVNode("div", _hoisted_3$18, [
+			return openBlock(), createElementBlock("div", _hoisted_1$28, [createBaseVNode("div", _hoisted_2$22, [createBaseVNode("div", _hoisted_3$19, [
 				createVNode(_component_router_link, {
 					to: "/",
 					class: "text-white hover:text-gray-400"
@@ -11247,7 +11247,7 @@ var _sfc_main$3 = {
 //#region src/pages/Admin.vue
 var _hoisted_1$27 = { class: "lg:w-[1200px] m-[10px]" };
 var _hoisted_2$21 = { class: "main-color w-screen" };
-var _hoisted_3$17 = { class: "w-full flex bg-[#ffcc99] px-3 py-1 gap-5" };
+var _hoisted_3$18 = { class: "w-full flex bg-[#ffcc99] px-3 py-1 gap-5" };
 var _sfc_main$2 = {
 	__name: "Admin",
 	setup(__props) {
@@ -11260,7 +11260,7 @@ var _sfc_main$2 = {
 		return (_ctx, _cache) => {
 			const _component_router_link = resolveComponent("router-link");
 			const _component_router_view = resolveComponent("router-view");
-			return openBlock(), createElementBlock("div", _hoisted_1$27, [createBaseVNode("div", _hoisted_2$21, [createBaseVNode("div", _hoisted_3$17, [
+			return openBlock(), createElementBlock("div", _hoisted_1$27, [createBaseVNode("div", _hoisted_2$21, [createBaseVNode("div", _hoisted_3$18, [
 				createVNode(_component_router_link, {
 					to: "/eu/home",
 					class: "bg-white px-2 text-[#ffcc99] hover:text-gray-400"
@@ -11727,6 +11727,7 @@ var bin__FILE = (bi) => {
 	};
 };
 var pPOOL__bin = (bb) => (p) => {
+	marshall$1.str__bin(bb)(p.Caption);
 	marshall$1.int64__bin(bb)(p.Cat);
 	marshall$1.int64__bin(bb)(p.Provider);
 	marshall$1.int64__bin(bb)(p.Manager);
@@ -11745,6 +11746,7 @@ var POOL__bin = (bb) => (v) => {
 };
 var bin__pPOOL = (bi) => {
 	let p = pPOOL_empty();
+	p.Caption = marshall$1.bin__str(bi);
 	p.Cat = marshall$1.bin__int64(bi);
 	p.Provider = marshall$1.bin__int64(bi);
 	p.Manager = marshall$1.bin__int64(bi);
@@ -12156,6 +12158,7 @@ var FILE_empty = () => {
 };
 var pPOOL_empty = () => {
 	return {
+		Caption: "",
 		Cat: 0,
 		Provider: 0,
 		Manager: 0,
@@ -12844,19 +12847,19 @@ var glib = {
 //#region src/App.vue
 var _hoisted_1$26 = { class: "flex" };
 var _hoisted_2$20 = { class: "lg:w-[1200px] m-[10px]" };
-var _hoisted_3$16 = { class: "main-color w-screen" };
-var _hoisted_4$15 = /* @__PURE__ */ createBaseVNode("div", { class: "hor" }, null, -1);
-var _hoisted_5$11 = /* @__PURE__ */ createBaseVNode("div", { class: "flex justify-center" }, [/* @__PURE__ */ createBaseVNode("div", { class: "hor-range" }, [/* @__PURE__ */ createBaseVNode("div", { class: "pt-2 pb-5" }, [/* @__PURE__ */ createBaseVNode("br"), /* @__PURE__ */ createTextVNode("© 2026 WYI ")])])], -1);
+var _hoisted_3$17 = { class: "main-color w-screen" };
+var _hoisted_4$16 = /* @__PURE__ */ createBaseVNode("div", { class: "hor" }, null, -1);
+var _hoisted_5$12 = /* @__PURE__ */ createBaseVNode("div", { class: "flex justify-center" }, [/* @__PURE__ */ createBaseVNode("div", { class: "hor-range" }, [/* @__PURE__ */ createBaseVNode("div", { class: "pt-2 pb-5" }, [/* @__PURE__ */ createBaseVNode("br"), /* @__PURE__ */ createTextVNode("© 2026 WYI ")])])], -1);
 var _sfc_main$1 = {
 	__name: "App",
 	setup(__props) {
 		glib.vue.reactive({ rt: runtime });
 		return (_ctx, _cache) => {
 			const _component_router_view = resolveComponent("router-view");
-			return openBlock(), createElementBlock(Fragment, null, [createBaseVNode("div", _hoisted_1$26, [createVNode(UserAuth_default, { onChanged: _ctx.onAuthChanged }, null, 8, ["onChanged"])]), createBaseVNode("div", _hoisted_2$20, [createBaseVNode("div", _hoisted_3$16, [
+			return openBlock(), createElementBlock(Fragment, null, [createBaseVNode("div", _hoisted_1$26, [createVNode(UserAuth_default, { onChanged: _ctx.onAuthChanged }, null, 8, ["onChanged"])]), createBaseVNode("div", _hoisted_2$20, [createBaseVNode("div", _hoisted_3$17, [
 				createVNode(_component_router_view, { class: "min-h-[600px]" }),
-				_hoisted_4$15,
-				_hoisted_5$11
+				_hoisted_4$16,
+				_hoisted_5$12
 			])])], 64);
 		};
 	}
@@ -12892,11 +12895,11 @@ var _hoisted_2$19 = {
 	key: 1,
 	class: "state-clickable bill-state-Declined"
 };
-var _hoisted_3$15 = {
+var _hoisted_3$16 = {
 	key: 2,
 	class: "state-clickable bill-state-Accepted"
 };
-var _hoisted_4$14 = {
+var _hoisted_4$15 = {
 	key: 3,
 	class: "state-clickable bill-state-Closed"
 };
@@ -12909,7 +12912,7 @@ var BillState_default = /* @__PURE__ */ defineComponent({
 		const props = __props;
 		props.state;
 		return (_ctx, _cache) => {
-			return props.state == 0 ? (openBlock(), createElementBlock("span", _hoisted_1$25, " Submitted ")) : props.state == 1 ? (openBlock(), createElementBlock("span", _hoisted_2$19, " Declined ")) : props.state == 2 ? (openBlock(), createElementBlock("span", _hoisted_3$15, " Accepted ")) : (openBlock(), createElementBlock("span", _hoisted_4$14, " Closed "));
+			return props.state == 0 ? (openBlock(), createElementBlock("span", _hoisted_1$25, " Submitted ")) : props.state == 1 ? (openBlock(), createElementBlock("span", _hoisted_2$19, " Declined ")) : props.state == 2 ? (openBlock(), createElementBlock("span", _hoisted_3$16, " Accepted ")) : (openBlock(), createElementBlock("span", _hoisted_4$15, " Closed "));
 		};
 	}
 });
@@ -12917,13 +12920,13 @@ var BillState_default = /* @__PURE__ */ defineComponent({
 //#region src/comps/Provider.vue?vue&type=script&setup=true&lang.ts
 var _hoisted_1$24 = { class: "ml-[20px] px-2 inline-block" };
 var _hoisted_2$18 = ["src"];
-var _hoisted_3$14 = { key: 0 };
-var _hoisted_4$13 = { class: "selected" };
-var _hoisted_5$10 = { key: 2 };
-var _hoisted_6$8 = { key: 1 };
-var _hoisted_7$7 = { key: 0 };
-var _hoisted_8$7 = { class: "selected" };
-var _hoisted_9$6 = { key: 1 };
+var _hoisted_3$15 = { key: 0 };
+var _hoisted_4$14 = { class: "selected" };
+var _hoisted_5$11 = { key: 2 };
+var _hoisted_6$9 = { key: 1 };
+var _hoisted_7$9 = { key: 0 };
+var _hoisted_8$9 = { class: "selected" };
+var _hoisted_9$7 = { key: 1 };
 var _hoisted_10$5 = { key: 2 };
 //#endregion
 //#region src/comps/Provider.vue
@@ -12951,11 +12954,11 @@ var Provider_default$1 = /* @__PURE__ */ defineComponent({
 			return openBlock(), createElementBlock("span", _hoisted_1$24, [createBaseVNode("img", {
 				class: "image-inline",
 				src: props.uprovider.p.Logo
-			}, null, 8, _hoisted_2$18), props.route ? (openBlock(), createElementBlock("span", _hoisted_3$14, [props.highlight ? (openBlock(), createBlock(_component_router_link, {
+			}, null, 8, _hoisted_2$18), props.route ? (openBlock(), createElementBlock("span", _hoisted_3$15, [props.highlight ? (openBlock(), createBlock(_component_router_link, {
 				key: 0,
 				to: routing()
 			}, {
-				default: withCtx(() => [createBaseVNode("b", _hoisted_4$13, toDisplayString(props.uprovider.p.Caption), 1)]),
+				default: withCtx(() => [createBaseVNode("b", _hoisted_4$14, toDisplayString(props.uprovider.p.Caption), 1)]),
 				_: 1
 			}, 8, ["to"])) : (openBlock(), createBlock(_component_router_link, {
 				key: 1,
@@ -12963,7 +12966,7 @@ var Provider_default$1 = /* @__PURE__ */ defineComponent({
 			}, {
 				default: withCtx(() => [createTextVNode(toDisplayString(props.uprovider.p.Caption), 1)]),
 				_: 1
-			}, 8, ["to"])), props.ucat ? (openBlock(), createElementBlock("span", _hoisted_5$10, " (" + toDisplayString(props.ucat.p.Caption) + ") ", 1)) : createCommentVNode("", true)])) : (openBlock(), createElementBlock("span", _hoisted_6$8, [props.highlight ? (openBlock(), createElementBlock("span", _hoisted_7$7, [createBaseVNode("b", _hoisted_8$7, toDisplayString(props.uprovider.p.Caption), 1)])) : (openBlock(), createElementBlock("span", _hoisted_9$6, toDisplayString(props.uprovider.p.Caption), 1)), props.ucat ? (openBlock(), createElementBlock("span", _hoisted_10$5, " (" + toDisplayString(props.ucat.p.Caption) + ") ", 1)) : createCommentVNode("", true)]))]);
+			}, 8, ["to"])), props.ucat ? (openBlock(), createElementBlock("span", _hoisted_5$11, " (" + toDisplayString(props.ucat.p.Caption) + ") ", 1)) : createCommentVNode("", true)])) : (openBlock(), createElementBlock("span", _hoisted_6$9, [props.highlight ? (openBlock(), createElementBlock("span", _hoisted_7$9, [createBaseVNode("b", _hoisted_8$9, toDisplayString(props.uprovider.p.Caption), 1)])) : (openBlock(), createElementBlock("span", _hoisted_9$7, toDisplayString(props.uprovider.p.Caption), 1)), props.ucat ? (openBlock(), createElementBlock("span", _hoisted_10$5, " (" + toDisplayString(props.ucat.p.Caption) + ") ", 1)) : createCommentVNode("", true)]))]);
 		};
 	}
 });
@@ -12971,7 +12974,7 @@ var Provider_default$1 = /* @__PURE__ */ defineComponent({
 //#region src/comps/Unit.vue?vue&type=script&setup=true&lang.ts
 var _hoisted_1$23 = { class: "card" };
 var _hoisted_2$17 = { key: 0 };
-var _hoisted_3$13 = { key: 1 };
+var _hoisted_3$14 = { key: 1 };
 //#endregion
 //#region src/comps/Unit.vue
 var Unit_default = /* @__PURE__ */ defineComponent({
@@ -12984,7 +12987,7 @@ var Unit_default = /* @__PURE__ */ defineComponent({
 		glib.vue.reactive({ rt: runtime });
 		glib.vue.onMounted(async () => {});
 		return (_ctx, _cache) => {
-			return openBlock(), createElementBlock("div", _hoisted_1$23, [props.mode == 0 ? (openBlock(), createElementBlock("div", _hoisted_2$17, toDisplayString(props.unit.p.Address) + " " + toDisplayString(props.unit.p.Town) + " " + toDisplayString(props.unit.p.State) + " " + toDisplayString(props.unit.p.Zip), 1)) : createCommentVNode("", true), props.mode == 1 ? (openBlock(), createElementBlock("div", _hoisted_3$13, [
+			return openBlock(), createElementBlock("div", _hoisted_1$23, [props.mode == 0 ? (openBlock(), createElementBlock("div", _hoisted_2$17, toDisplayString(props.unit.p.Address) + " " + toDisplayString(props.unit.p.Town) + " " + toDisplayString(props.unit.p.State) + " " + toDisplayString(props.unit.p.Zip), 1)) : createCommentVNode("", true), props.mode == 1 ? (openBlock(), createElementBlock("div", _hoisted_3$14, [
 				createBaseVNode("div", null, toDisplayString(props.unit.p.Address), 1),
 				createBaseVNode("div", null, toDisplayString(props.unit.p.Town), 1),
 				createBaseVNode("div", null, toDisplayString(props.unit.p.State) + " " + toDisplayString(props.unit.p.Zip), 1)
@@ -12996,9 +12999,9 @@ var Unit_default = /* @__PURE__ */ defineComponent({
 //#region src/comps/Acctx.vue?vue&type=script&setup=true&lang.ts
 var _hoisted_1$22 = { class: "card" };
 var _hoisted_2$16 = { key: 0 };
-var _hoisted_3$12 = { key: 0 };
-var _hoisted_4$12 = { key: 1 };
-var _hoisted_5$9 = { key: 1 };
+var _hoisted_3$13 = { key: 0 };
+var _hoisted_4$13 = { key: 1 };
+var _hoisted_5$10 = { key: 1 };
 //#endregion
 //#region src/comps/Acctx.vue
 var Acctx_default = /* @__PURE__ */ defineComponent({
@@ -13012,10 +13015,10 @@ var Acctx_default = /* @__PURE__ */ defineComponent({
 		glib.vue.onMounted(async () => {});
 		return (_ctx, _cache) => {
 			return openBlock(), createElementBlock("div", _hoisted_1$22, [props.mode == 0 ? (openBlock(), createElementBlock("div", _hoisted_2$16, [
-				props.acctx.cato != null && props.acctx.providero != null ? (openBlock(), createElementBlock("div", _hoisted_3$12, toDisplayString(props.acctx.providero.p.Caption) + " (" + toDisplayString(props.acctx.cato.p.Caption) + ") ", 1)) : createCommentVNode("", true),
-				props.acctx.unito != null ? (openBlock(), createElementBlock("div", _hoisted_4$12, toDisplayString(props.acctx.unito.p.Address) + " \xA0 " + toDisplayString(props.acctx.unito.p.Town) + " \xA0 " + toDisplayString(props.acctx.unito.p.State) + " " + toDisplayString(props.acctx.unito.p.Zip), 1)) : createCommentVNode("", true),
+				props.acctx.cato != null && props.acctx.providero != null ? (openBlock(), createElementBlock("div", _hoisted_3$13, toDisplayString(props.acctx.providero.p.Caption) + " (" + toDisplayString(props.acctx.cato.p.Caption) + ") ", 1)) : createCommentVNode("", true),
+				props.acctx.unito != null ? (openBlock(), createElementBlock("div", _hoisted_4$13, toDisplayString(props.acctx.unito.p.Address) + " \xA0 " + toDisplayString(props.acctx.unito.p.Town) + " \xA0 " + toDisplayString(props.acctx.unito.p.State) + " " + toDisplayString(props.acctx.unito.p.Zip), 1)) : createCommentVNode("", true),
 				createBaseVNode("div", null, toDisplayString(props.acctx.acct.p.AcctName) + " " + toDisplayString(props.acctx.acct.p.AcctNum), 1)
-			])) : createCommentVNode("", true), props.mode == 1 ? (openBlock(), createElementBlock("div", _hoisted_5$9, [
+			])) : createCommentVNode("", true), props.mode == 1 ? (openBlock(), createElementBlock("div", _hoisted_5$10, [
 				props.acctx.cato && props.acctx.providero ? (openBlock(), createBlock(Provider_default$1, {
 					key: 0,
 					ucat: props.acctx.cato,
@@ -13039,19 +13042,19 @@ var _hoisted_2$15 = {
 	key: 0,
 	class: "flex"
 };
-var _hoisted_3$11 = { key: 0 };
-var _hoisted_4$11 = { key: 3 };
-var _hoisted_5$8 = { key: 1 };
-var _hoisted_6$7 = { class: "flex" };
-var _hoisted_7$6 = {
+var _hoisted_3$12 = { key: 0 };
+var _hoisted_4$12 = { key: 3 };
+var _hoisted_5$9 = { key: 1 };
+var _hoisted_6$8 = { class: "flex" };
+var _hoisted_7$8 = {
 	key: 0,
 	class: "button-small"
 };
-var _hoisted_8$6 = {
+var _hoisted_8$8 = {
 	key: 1,
 	class: "button-small"
 };
-var _hoisted_9$5 = {
+var _hoisted_9$6 = {
 	key: 0,
 	class: "card-caption"
 };
@@ -13082,7 +13085,7 @@ var Billx_default = /* @__PURE__ */ defineComponent({
 		glib.vue.onMounted(async () => {});
 		return (_ctx, _cache) => {
 			return openBlock(), createElementBlock("div", _hoisted_1$21, [props.mode == 0 ? (openBlock(), createElementBlock("div", _hoisted_2$15, [createBaseVNode("div", null, [createVNode(BillState_default, { state: props.billx.bill.p.State }, null, 8, ["state"])]), createBaseVNode("div", null, [
-				props.billx.cato && props.billx.providero ? (openBlock(), createElementBlock("div", _hoisted_3$11, [createVNode(Provider_default$1, {
+				props.billx.cato && props.billx.providero ? (openBlock(), createElementBlock("div", _hoisted_3$12, [createVNode(Provider_default$1, {
 					ucat: props.billx.cato,
 					uprovider: props.billx.providero
 				}, null, 8, ["ucat", "uprovider"])])) : createCommentVNode("", true),
@@ -13094,15 +13097,15 @@ var Billx_default = /* @__PURE__ */ defineComponent({
 					key: 2,
 					acctx: props.billx.acctxo
 				}, null, 8, ["acctx"])) : createCommentVNode("", true),
-				props.billx.cato && props.billx.providero ? (openBlock(), createElementBlock("div", _hoisted_4$11, " Amount: $" + toDisplayString(props.billx.bill.p.Amt), 1)) : createCommentVNode("", true)
-			])])) : createCommentVNode("", true), props.mode == 1 ? (openBlock(), createElementBlock("div", _hoisted_5$8, [
-				createBaseVNode("div", _hoisted_6$7, [
+				props.billx.cato && props.billx.providero ? (openBlock(), createElementBlock("div", _hoisted_4$12, " Amount: $" + toDisplayString(props.billx.bill.p.Amt), 1)) : createCommentVNode("", true)
+			])])) : createCommentVNode("", true), props.mode == 1 ? (openBlock(), createElementBlock("div", _hoisted_5$9, [
+				createBaseVNode("div", _hoisted_6$8, [
 					createVNode(BillState_default, { state: props.billx.bill.p.State }, null, 8, ["state"]),
-					unref(s).rt.user.eu.p.AuthType == 2 ? (openBlock(), createElementBlock("button", _hoisted_7$6, " Accept ")) : createCommentVNode("", true),
-					unref(s).rt.user.eu.p.AuthType == 2 ? (openBlock(), createElementBlock("button", _hoisted_8$6, " Decline ")) : createCommentVNode("", true)
+					unref(s).rt.user.eu.p.AuthType == 2 ? (openBlock(), createElementBlock("button", _hoisted_7$8, " Accept ")) : createCommentVNode("", true),
+					unref(s).rt.user.eu.p.AuthType == 2 ? (openBlock(), createElementBlock("button", _hoisted_8$8, " Decline ")) : createCommentVNode("", true)
 				]),
 				createBaseVNode("div", null, [
-					props.billx.cato && props.billx.providero ? (openBlock(), createElementBlock("div", _hoisted_9$5, " Bill Details ")) : createCommentVNode("", true),
+					props.billx.cato && props.billx.providero ? (openBlock(), createElementBlock("div", _hoisted_9$6, " Bill Details ")) : createCommentVNode("", true),
 					props.billx.cato && props.billx.providero ? (openBlock(), createElementBlock("div", _hoisted_10$4, [createVNode(Provider_default$1, {
 						ucat: props.billx.cato,
 						uprovider: props.billx.providero
@@ -13162,7 +13165,7 @@ var _hoisted_2$14 = {
 	key: 1,
 	class: "state-clickable pool-state-OnGoing"
 };
-var _hoisted_3$10 = {
+var _hoisted_3$11 = {
 	key: 2,
 	class: "state-clickable pool-state-Closed"
 };
@@ -13175,37 +13178,93 @@ var PoolState_default = /* @__PURE__ */ defineComponent({
 		const props = __props;
 		props.state;
 		return (_ctx, _cache) => {
-			return props.state == 0 ? (openBlock(), createElementBlock("span", _hoisted_1$19, " Draft ")) : props.state == 1 ? (openBlock(), createElementBlock("span", _hoisted_2$14, " On Going ")) : (openBlock(), createElementBlock("span", _hoisted_3$10, " Closed "));
+			return props.state == 0 ? (openBlock(), createElementBlock("span", _hoisted_1$19, " Draft ")) : props.state == 1 ? (openBlock(), createElementBlock("span", _hoisted_2$14, " On Going ")) : (openBlock(), createElementBlock("span", _hoisted_3$11, " Closed "));
+		};
+	}
+});
+//#endregion
+//#region src/comps/User.vue?vue&type=script&setup=true&lang.ts
+var _hoisted_1$18 = {
+	key: 0,
+	class: "eu-AuthType-Admin"
+};
+var _hoisted_2$13 = { key: 1 };
+var _hoisted_3$10 = ["src"];
+//#endregion
+//#region src/comps/User.vue
+var User_default = /* @__PURE__ */ defineComponent({
+	__name: "User",
+	props: ["eu"],
+	setup(__props) {
+		const props = __props;
+		props.eu;
+		return (_ctx, _cache) => {
+			return openBlock(), createElementBlock(Fragment, null, [
+				props.eu.p.AuthType == 2 ? (openBlock(), createElementBlock("span", _hoisted_1$18, " Admin ")) : createCommentVNode("", true),
+				props.eu.p.OAuthProvider != "" ? (openBlock(), createElementBlock("span", _hoisted_2$13, [createTextVNode(toDisplayString(props.eu.p.Email) + " ", 1), createBaseVNode("img", {
+					class: "img-oauth",
+					src: "https://img.clerk.com/static/" + __props.eu.p.OAuthProvider + ".svg"
+				}, null, 8, _hoisted_3$10)])) : createCommentVNode("", true),
+				createBaseVNode("span", null, toDisplayString(props.eu.p.Username), 1)
+			], 64);
 		};
 	}
 });
 //#endregion
 //#region src/comps/Pool.vue?vue&type=script&setup=true&lang.ts
-var _hoisted_1$18 = { class: "caption" };
-var _hoisted_2$13 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, " Provider ", -1);
+var _hoisted_1$17 = { key: 0 };
+var _hoisted_2$12 = { class: "card" };
+var _hoisted_3$9 = { key: 1 };
+var _hoisted_4$11 = { class: "card" };
+var _hoisted_5$8 = { class: "card" };
+var _hoisted_6$7 = { class: "card-caption" };
+var _hoisted_7$7 = {
+	key: 0,
+	class: "card-caption"
+};
+var _hoisted_8$7 = /* @__PURE__ */ createBaseVNode("div", { class: "card" }, [/* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, " Bills ")], -1);
 //#endregion
 //#region src/comps/Pool.vue
 var Pool_default = /* @__PURE__ */ defineComponent({
 	__name: "Pool",
-	props: ["pool"],
+	props: ["pool", "mode"],
 	setup(__props) {
 		const props = __props;
 		props.pool;
+		props.mode;
+		const s = glib.vue.reactive({
+			poolx: PoolComplex_empty(),
+			rt: runtime
+		});
 		return (_ctx, _cache) => {
-			return openBlock(), createElementBlock("div", _hoisted_1$18, [createVNode(PoolState_default, { state: props.pool.p.State }, null, 8, ["state"]), _hoisted_2$13]);
+			return props.mode == 0 ? (openBlock(), createElementBlock("div", _hoisted_1$17, [createBaseVNode("div", _hoisted_2$12, [createVNode(PoolState_default, { state: props.pool.p.State }, null, 8, ["state"]), createTextVNode(" Caption: " + toDisplayString(props.pool.p.Caption), 1)])])) : (openBlock(), createElementBlock("div", _hoisted_3$9, [
+				createBaseVNode("div", _hoisted_4$11, [createVNode(Provider_default$1, { uprovider: unref(s).poolx.providero }, null, 8, ["uprovider"])]),
+				createBaseVNode("div", _hoisted_5$8, [
+					createBaseVNode("div", _hoisted_6$7, " Caption: " + toDisplayString(props.pool.p.Caption), 1),
+					unref(s).poolx.manager.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_7$7, " Manager ")) : createCommentVNode("", true),
+					unref(s).poolx.manager.id > 0 ? (openBlock(), createBlock(User_default, {
+						key: 1,
+						eu: unref(s).poolx.manager
+					}, null, 8, ["eu"])) : createCommentVNode("", true)
+				]),
+				_hoisted_8$7,
+				(openBlock(true), createElementBlock(Fragment, null, renderList(Object.entries(unref(s).poolx.billxs), (k, v) => {
+					return openBlock(), createBlock(Billx_default, { billx: v }, null, 8, ["billx"]);
+				}), 256))
+			]));
 		};
 	}
 });
 //#endregion
 //#region src/comps/PoolStates.vue?vue&type=script&setup=true&lang.ts
-var _hoisted_1$17 = { class: "flex" };
+var _hoisted_1$16 = { class: "flex" };
 //#endregion
 //#region src/comps/PoolStates.vue
 var PoolStates_default = /* @__PURE__ */ defineComponent({
 	__name: "PoolStates",
 	setup(__props) {
 		return (_ctx, _cache) => {
-			return openBlock(), createElementBlock("div", _hoisted_1$17, [
+			return openBlock(), createElementBlock("div", _hoisted_1$16, [
 				createVNode(PoolState_default, { state: 0 }),
 				createVNode(PoolState_default, { state: 1 }),
 				createVNode(PoolState_default, { state: 2 })
@@ -13215,9 +13274,9 @@ var PoolStates_default = /* @__PURE__ */ defineComponent({
 });
 //#endregion
 //#region src/pages/Admin/Bills.vue?vue&type=script&setup=true&lang.ts
-var _hoisted_1$16 = { class: "card" };
-var _hoisted_2$12 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, " Bill Pools ", -1);
-var _hoisted_3$9 = { class: "card" };
+var _hoisted_1$15 = { class: "card" };
+var _hoisted_2$11 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, " Bill Pools ", -1);
+var _hoisted_3$8 = { class: "card" };
 var _hoisted_4$10 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, " Bills ", -1);
 var Bills_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */ defineComponent({
 	__name: "Bills",
@@ -13238,11 +13297,11 @@ var Bills_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */ defineCo
 		});
 		return (_ctx, _cache) => {
 			return openBlock(), createElementBlock(Fragment, null, [
-				createBaseVNode("div", _hoisted_1$16, [_hoisted_2$12, createVNode(PoolStates_default)]),
+				createBaseVNode("div", _hoisted_1$15, [_hoisted_2$11, createVNode(PoolStates_default)]),
 				(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).pools, (i) => {
 					return openBlock(), createBlock(Pool_default, { pool: i }, null, 8, ["pool"]);
 				}), 256)),
-				createBaseVNode("div", _hoisted_3$9, [_hoisted_4$10, createVNode(BillStates_default)]),
+				createBaseVNode("div", _hoisted_3$8, [_hoisted_4$10, createVNode(BillStates_default)]),
 				(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).billxs, (i) => {
 					return openBlock(), createBlock(Billx_default, {
 						billx: i,
@@ -13282,18 +13341,18 @@ var Home_exports$1 = /* @__PURE__ */ __exportAll({ default: () => Home_default$1
 var Home_default$1 = Home_vue_vue_type_script_setup_true_lang_default$1;
 //#endregion
 //#region src/pages/Admin/Provider.vue?vue&type=script&setup=true&lang.ts
-var _hoisted_1$15 = { class: "card" };
-var _hoisted_2$11 = {
-	key: 0,
-	class: "card-caption"
-};
-var _hoisted_3$8 = { class: "card" };
-var _hoisted_4$9 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, " Bill Pools ", -1);
-var _hoisted_5$7 = {
+var _hoisted_1$14 = { class: "card" };
+var _hoisted_2$10 = { class: "card" };
+var _hoisted_3$7 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, " Bill Pools ", -1);
+var _hoisted_4$9 = { class: "form" };
+var _hoisted_5$7 = /* @__PURE__ */ createBaseVNode("div", null, "Caption:", -1);
+var _hoisted_6$6 = { key: 0 };
+var _hoisted_7$6 = { key: 1 };
+var _hoisted_8$6 = {
 	key: 0,
 	class: "card"
 };
-var _hoisted_6$6 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, " Bills ", -1);
+var _hoisted_9$5 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, " Bills ", -1);
 var Provider_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */ defineComponent({
 	__name: "Provider",
 	props: ["cat", "provider"],
@@ -13304,15 +13363,18 @@ var Provider_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */ defin
 		const s = glib.vue.reactive({
 			ucat: UCAT_empty(),
 			view: ProviderView_empty(),
+			pool: POOL_empty(),
 			rt: runtime
 		});
 		const createPool = () => {
+			s.pool.p.Provider = s.view.uprovider.id;
 			loader("/api/admin/pools", {
-				data: { provider: s.view.uprovider.id },
+				p: s.pool.p,
 				act: "create"
 			}, (rep) => {
 				let pool = rep.data;
 				s.view.pools.push(pool);
+				s.pool = POOL_empty();
 			});
 		};
 		glib.vue.onMounted(async () => {
@@ -13325,19 +13387,25 @@ var Provider_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */ defin
 			});
 		});
 		return (_ctx, _cache) => {
-			const _component_Poolx = resolveComponent("Poolx");
 			return openBlock(), createElementBlock(Fragment, null, [
-				createBaseVNode("div", _hoisted_1$15, [unref(s).ucat.id > 0 && unref(s).view.uprovider.id > 0 ? (openBlock(), createElementBlock("div", _hoisted_2$11, toDisplayString(unref(s).view.uprovider.p.Caption) + " (" + toDisplayString(unref(s).ucat.p.Caption) + ") ", 1)) : createCommentVNode("", true)]),
-				createBaseVNode("div", _hoisted_3$8, [
-					_hoisted_4$9,
+				createBaseVNode("div", _hoisted_1$14, [createVNode(Provider_default$1, { uprovider: unref(s).view.uprovider }, null, 8, ["uprovider"])]),
+				createBaseVNode("div", _hoisted_2$10, [
+					_hoisted_3$7,
 					createVNode(PoolStates_default),
-					createBaseVNode("button", { onClick: _cache[0] || (_cache[0] = ($event) => createPool()) }, "Create Bill Pool")
+					createBaseVNode("div", _hoisted_4$9, [
+						_hoisted_5$7,
+						createBaseVNode("div", null, [withDirectives(createBaseVNode("input", { "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => unref(s).pool.p.Caption = $event) }, null, 512), [[vModelText, unref(s).pool.p.Caption]])]),
+						unref(s).pool.id == 0 ? (openBlock(), createElementBlock("div", _hoisted_6$6, [createBaseVNode("button", { onClick: _cache[1] || (_cache[1] = ($event) => createPool()) }, "Create")])) : (openBlock(), createElementBlock("div", _hoisted_7$6, [createBaseVNode("button", { onClick: _cache[2] || (_cache[2] = ($event) => createPool()) }, "Edit")]))
+					])
 				]),
 				(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).view.pools, (i) => {
-					return openBlock(), createBlock(_component_Poolx, { poolx: i }, null, 8, ["poolx"]);
+					return openBlock(), createBlock(Pool_default, {
+						pool: i,
+						mode: 0
+					}, null, 8, ["pool"]);
 				}), 256)),
-				unref(s).view.billxs.length > 0 ? (openBlock(), createElementBlock("div", _hoisted_5$7, [
-					_hoisted_6$6,
+				unref(s).view.billxs.length > 0 ? (openBlock(), createElementBlock("div", _hoisted_8$6, [
+					_hoisted_9$5,
 					createVNode(BillStates_default),
 					(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).view.billxs, (i) => {
 						return openBlock(), createBlock(Billx_default, {
@@ -13356,9 +13424,9 @@ var Provider_exports = /* @__PURE__ */ __exportAll({ default: () => Provider_def
 var Provider_default = Provider_vue_vue_type_script_setup_true_lang_default;
 //#endregion
 //#region src/comps/ProviderList.vue?vue&type=script&setup=true&lang.ts
-var _hoisted_1$14 = { class: "card" };
-var _hoisted_2$10 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Our Business Scope", -1);
-var _hoisted_3$7 = { class: "pt-1" };
+var _hoisted_1$13 = { class: "card" };
+var _hoisted_2$9 = /* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, "Our Business Scope", -1);
+var _hoisted_3$6 = { class: "pt-1" };
 var _hoisted_4$8 = { class: "text-xs uppercase tracking-wider text-gray-400 leading-tight mt-3" };
 //#endregion
 //#region src/comps/ProviderList.vue
@@ -13386,8 +13454,8 @@ var ProviderList_default = /* @__PURE__ */ defineComponent({
 			});
 		});
 		return (_ctx, _cache) => {
-			return openBlock(), createElementBlock("div", _hoisted_1$14, [_hoisted_2$10, (openBlock(true), createElementBlock(Fragment, null, renderList(Object.entries(unref(s).cat__providers), ([k, v]) => {
-				return openBlock(), createElementBlock("div", { key: k }, [createBaseVNode("div", _hoisted_3$7, [createBaseVNode("b", _hoisted_4$8, toDisplayString(v.ucat.p.Caption), 1)]), (openBlock(true), createElementBlock(Fragment, null, renderList(v.uproviders, (ii) => {
+			return openBlock(), createElementBlock("div", _hoisted_1$13, [_hoisted_2$9, (openBlock(true), createElementBlock(Fragment, null, renderList(Object.entries(unref(s).cat__providers), ([k, v]) => {
+				return openBlock(), createElementBlock("div", { key: k }, [createBaseVNode("div", _hoisted_3$6, [createBaseVNode("b", _hoisted_4$8, toDisplayString(v.ucat.p.Caption), 1)]), (openBlock(true), createElementBlock(Fragment, null, renderList(v.uproviders, (ii) => {
 					return openBlock(), createBlock(Provider_default$1, {
 						route: props.route,
 						ucat: v.ucat,
@@ -13427,20 +13495,20 @@ var _plugin_vue_export_helper_default = (sfc, props) => {
 //#region src/pages/Admin/Sys.vue
 var Sys_exports = /* @__PURE__ */ __exportAll({ default: () => Sys_default });
 var _sfc_main = {};
-var _hoisted_1$13 = { class: "card" };
+var _hoisted_1$12 = { class: "card" };
 var _hoisted_4$7 = [/* @__PURE__ */ createBaseVNode("div", { class: "card-caption" }, " Deploy ", -1), /* @__PURE__ */ createBaseVNode("div", null, [/* @__PURE__ */ createBaseVNode("button", null, " Clear Test Data ")], -1)];
 function _sfc_render(_ctx, _cache) {
-	return openBlock(), createElementBlock("div", _hoisted_1$13, _hoisted_4$7);
+	return openBlock(), createElementBlock("div", _hoisted_1$12, _hoisted_4$7);
 }
 var Sys_default = /* @__PURE__ */ _plugin_vue_export_helper_default(_sfc_main, [["render", _sfc_render]]);
 //#endregion
 //#region src/comps/SearchField.vue?vue&type=script&setup=true&lang.ts
-var _hoisted_1$12 = { class: "relative w-[200px]" };
-var _hoisted_2$9 = {
+var _hoisted_1$11 = { class: "relative w-[200px]" };
+var _hoisted_2$8 = {
 	key: 0,
 	class: "absolute z-10 w-full bg-white border rounded shadow-lg mt-1 max-h-48 overflow-y-auto"
 };
-var _hoisted_3$6 = ["onClick", "value"];
+var _hoisted_3$5 = ["onClick", "value"];
 //#endregion
 //#region src/comps/SearchField.vue
 var SearchField_default = /* @__PURE__ */ defineComponent({
@@ -13479,7 +13547,7 @@ var SearchField_default = /* @__PURE__ */ defineComponent({
 			setTimeout(() => isDropdownVisible.value = false, 200);
 		};
 		return (_ctx, _cache) => {
-			return openBlock(), createElementBlock("div", _hoisted_1$12, [withDirectives(createBaseVNode("input", {
+			return openBlock(), createElementBlock("div", _hoisted_1$11, [withDirectives(createBaseVNode("input", {
 				type: "text",
 				"onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => searchText.value = $event),
 				onFocus: _cache[1] || (_cache[1] = ($event) => isDropdownVisible.value = true),
@@ -13487,41 +13555,13 @@ var SearchField_default = /* @__PURE__ */ defineComponent({
 				onInput,
 				placeholder: "Start typing...",
 				class: "w-full border rounded px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
-			}, null, 544), [[vModelText, searchText.value]]), isDropdownVisible.value && unref(s).opts.length > 0 ? (openBlock(), createElementBlock("ul", _hoisted_2$9, [(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).opts, (opt) => {
+			}, null, 544), [[vModelText, searchText.value]]), isDropdownVisible.value && unref(s).opts.length > 0 ? (openBlock(), createElementBlock("ul", _hoisted_2$8, [(openBlock(true), createElementBlock(Fragment, null, renderList(unref(s).opts, (opt) => {
 				return openBlock(), createElementBlock("li", {
 					onClick: ($event) => selectOption(opt),
 					value: props.item__key(opt),
 					class: "px-3 py-2 hover:bg-blue-50 cursor-pointer text-sm"
-				}, toDisplayString(props.item__text(opt)), 9, _hoisted_3$6);
+				}, toDisplayString(props.item__text(opt)), 9, _hoisted_3$5);
 			}), 256))])) : createCommentVNode("", true)]);
-		};
-	}
-});
-//#endregion
-//#region src/comps/User.vue?vue&type=script&setup=true&lang.ts
-var _hoisted_1$11 = {
-	key: 0,
-	class: "eu-AuthType-Admin"
-};
-var _hoisted_2$8 = { key: 1 };
-var _hoisted_3$5 = ["src"];
-//#endregion
-//#region src/comps/User.vue
-var User_default = /* @__PURE__ */ defineComponent({
-	__name: "User",
-	props: ["eu"],
-	setup(__props) {
-		const props = __props;
-		props.eu;
-		return (_ctx, _cache) => {
-			return openBlock(), createElementBlock(Fragment, null, [
-				props.eu.p.AuthType == 2 ? (openBlock(), createElementBlock("span", _hoisted_1$11, " Admin ")) : createCommentVNode("", true),
-				props.eu.p.OAuthProvider != "" ? (openBlock(), createElementBlock("span", _hoisted_2$8, [createTextVNode(toDisplayString(props.eu.p.Email) + " ", 1), createBaseVNode("img", {
-					class: "img-oauth",
-					src: "https://img.clerk.com/static/" + __props.eu.p.OAuthProvider + ".svg"
-				}, null, 8, _hoisted_3$5)])) : createCommentVNode("", true),
-				createBaseVNode("span", null, toDisplayString(props.eu.p.Username), 1)
-			], 64);
 		};
 	}
 });
