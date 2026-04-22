@@ -158,6 +158,7 @@ const item__text = (item: wyi.AcctComplex) => {
 }
 
 const onSelect = (selected: wyi.AcctComplex) => {
+  console.log(selected)
   s.selected = selected
   if(s.selected.acct.id > 0){
     emits('changed',s.selected)

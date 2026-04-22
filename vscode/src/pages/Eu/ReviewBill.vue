@@ -24,11 +24,11 @@
       :ucat="s.ucat" :uprovider="s.uprovider" />
 
     <LocateUnit 
-      @changed="onChangeUnit"
+      @changed="onChangedUnit"d
       :unit="s.unit" api="/api/eu/my-units" />
 
     <LocateAcctx 
-      @changed="onChangeAcctx"
+      @changed="onChangedAcctx"
       :ucat="s.ucat" :uprovider="s.uprovider" :unit="s.unit" :acctx="s.acctx" api="/api/eu/my-acctxs" />
 
     <div class="card-double-col">
@@ -55,15 +55,30 @@
       <div class="card-double-col-span">
 
         <div v-if="s.ucat.id > 0 && s.uprovider.id > 0">
-          Selected Provider: <Provider :ucat="s.ucat" :uprovider="s.uprovider" />
+          <div class="card-caption">
+            Provider:
+          </div>
+          <div>
+            <Provider :ucat="s.ucat" :uprovider="s.uprovider" />
+          </div>
         </div>
 
         <div v-if="s.unit.id > 0">
-          Selected Unit: <Unit :unit="s.unit" />
+          <div class="card-caption">
+            Unit:
+          </div>
+          <div>
+            <Unit :unit="s.unit" :mode="0" />
+          </div>
         </div>
-
+s
         <div v-if="s.acctx.acct.id > 0">
-          Selected Acct: <Acctx :acctx="s.acctx" />
+          <div class="card-caption">
+            Acccount:
+          </div>
+          <div>
+            <Acctx :acctx="s.acctx" :mode="0" />
+          </div>
         </div>
 
         <div class="flex">
