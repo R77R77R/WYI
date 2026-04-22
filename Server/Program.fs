@@ -5,6 +5,8 @@ open System.Text
 open System.IO
 open System.Diagnostics
 
+open Util.Bash
+
 open UtilKestrel.Types
 open UtilKestrel.Common
 open UtilKestrel.Server
@@ -70,6 +72,9 @@ let main argv =
                 ("R","siduochen@hotmail.com")
         } |> Async.Start // 立即在线程池开始执行
 
+        "ACCOMPLISHED: Deployment"
+        |> green |> runtime.output
+
 
     // https://5.78.201.21
     // https://localhost/api/public/ping
@@ -79,10 +84,14 @@ let main argv =
         vueDistPath 
         (incomingFile,fileid__bin,id__thumbnail)
         (cert,certpwd)
-        WYI.BizLogics.Branch.branch
+        (WYI.BizLogics.Branch.branch,WYI.BizLogics.Branch.wsEngine |> Some)
         (80,443)
         output
         [||]
+
+
+    "SERVER STARTED"
+    |> green |> runtime.output
 
     Util.Runtime.halt output "" ""
 

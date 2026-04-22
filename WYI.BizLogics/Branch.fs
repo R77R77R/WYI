@@ -5,6 +5,7 @@ open System.Text
 open System.Collections.Generic
 open System.Threading
 
+open System.Net.WebSockets
 open Microsoft.AspNetCore.Http
 
 open Util.Cat
@@ -134,4 +135,8 @@ let branch (x:X) =
             er Er.Unauthorized
         |> Braket
         |> json__strFinal
-        |> Encoding.UTF8.GetBytes
+        |> Encoding.UTF8.GetBytes 
+
+let wsEngine (webSocket: WebSocket) : Async<unit> =
+    async{
+    }

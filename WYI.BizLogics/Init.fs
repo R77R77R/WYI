@@ -6,6 +6,7 @@ open System.Collections.Generic
 open System.Collections.Concurrent
 open System.Threading
 
+open Util.Bash
 open Util.Runtime
 open Util.Cat
 open Util.Concurrent
@@ -183,7 +184,8 @@ let init (runtime:Runtime) =
             pool = i })
     |> loadAll runtime.output conn POOL_metadata
 
-
+    "ACCOMPLISHED: WYI.BizLogics.Init.init (runtime:Runtime)"
+    |> green |> runtime.output
 
 
 

@@ -5,7 +5,7 @@ open System.Text
 open System.IO
 open System.Diagnostics
 
-open Util.Cat
+open Util.Bash
 open Util.Perf
 open Util.Runtime
 open Util.Json
