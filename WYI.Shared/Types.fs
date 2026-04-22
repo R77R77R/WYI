@@ -27,6 +27,7 @@ mutable owner: EU
 mutable unito: UNIT option
 mutable accto: UACCT option
 mutable files: FILE[]
+mutable poolo: POOL option
 bill: UBILL }
 
 type PoolComplex = {

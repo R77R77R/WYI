@@ -71,7 +71,7 @@
             <Unit :unit="s.unit" :mode="0" />
           </div>
         </div>
-s
+
         <div v-if="s.acctx.acct.id > 0">
           <div class="card-caption">
             Acccount:

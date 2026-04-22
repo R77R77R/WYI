@@ -177,6 +177,7 @@ let BillComplex_empty(): BillComplex =
         unito = None
         accto = None
         files = [| |]
+        poolo = None
         bill = { ID = 0L; Sort = 0L; Createdat = DateTime.MinValue; Updatedat = DateTime.MinValue; p = pUBILL_empty() }
     }
 
@@ -189,6 +190,7 @@ let BillComplex__bin (bb:BytesBuilder) (v:BillComplex) =
     Option__bin (UACCT__bin) bb v.accto
     
     array__bin (FILE__bin) bb v.files
+    Option__bin (POOL__bin) bb v.poolo
     UBILL__bin bb v.bill
     ()
 
@@ -214,6 +216,9 @@ let bin__BillComplex (bi:BinIndexed):BillComplex =
         files = 
             bi
             |> bin__array (bin__FILE)
+        poolo = 
+            bi
+            |> bin__Option (bin__POOL)
         bill = 
             bi
             |> bin__UBILL
@@ -227,6 +232,7 @@ let BillComplex__json (v:BillComplex) =
         ("unito",Option__json (UNIT__json) v.unito)
         ("accto",Option__json (UACCT__json) v.accto)
         ("files",array__json (FILE__json) v.files)
+        ("poolo",Option__json (POOL__json) v.poolo)
         ("bill",UBILL__json v.bill)
          |]
     |> Json.Braket
@@ -315,6 +321,18 @@ let json__BillComplexo (json:Json):BillComplex option =
                 passOptions <- false
                 None
 
+    let pooloo =
+        match json__tryFindByName json "poolo" with
+        | None ->
+            passOptions <- false
+            None
+        | Some v -> 
+            match v |> json__Optiono (json__POOLo) with
+            | Some res -> Some res
+            | None ->
+                passOptions <- false
+                None
+
     let billo =
         match json__tryFindByName json "bill" with
         | None ->
@@ -335,6 +353,7 @@ let json__BillComplexo (json:Json):BillComplex option =
             unito = unitoo.Value
             accto = acctoo.Value
             files = fileso.Value
+            poolo = pooloo.Value
             bill = billo.Value }:BillComplex) |> Some
     else
         None

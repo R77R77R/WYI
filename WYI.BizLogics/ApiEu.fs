@@ -244,6 +244,7 @@ let submitBill eux (x:X) =
                     unito = p.Unit |> id__UNITo
                     accto = p.UAcct |> id__UACCTo
                     files = files
+                    poolo = None
                     bill = rcd }
                 eux.billxs[rcd.ID] <- billx
 

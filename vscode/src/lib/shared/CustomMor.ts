@@ -62,6 +62,7 @@ export const BillComplex_empty = (): wyi.BillComplex => {
         unito: null,
         accto: null,
         files: [],
+        poolo: null,
         bill: { id: 0, sort: 0, createdat: new Date(), updatedat: new Date(), p: marshall.pUBILL_empty() },
     } as wyi.BillComplex
 }
@@ -75,6 +76,7 @@ export const BillComplex__bin = (bb:BytesBuilder) => (v:any) => {
     marshall.option__bin (marshall.UACCT__bin) (bb) (v.accto)
     
     marshall.array__bin (marshall.FILE__bin) (bb) (v.files)
+    marshall.option__bin (marshall.POOL__bin) (bb) (v.poolo)
     marshall.UBILL__bin (bb) (v.bill)
 }
 
@@ -87,6 +89,7 @@ export const bin__BillComplex = (bi:BinIndexed):wyi.BillComplex => {
         unito: marshall.bin__option (marshall.bin__UNIT) (bi),
         accto: marshall.bin__option (marshall.bin__UACCT) (bi),
         files: marshall.bin__array (marshall.bin__FILE) (bi),
+        poolo: marshall.bin__option (marshall.bin__POOL) (bi),
         bill: marshall.bin__UBILL (bi),
     }
 }

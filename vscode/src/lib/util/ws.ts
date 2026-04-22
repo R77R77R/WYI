@@ -56,7 +56,6 @@ export const disconnect = (ws: WsCtx = glib.runtime.wsctx) => {
 }
 
 export const trySend = (x: WsCtx) => (e: number) => (msg: Record<string, any > | Object) => {
-    let rt:Runtime = glib.runtime
     
     if (!x) {
         x = glib.runtime.wsctx
@@ -72,7 +71,7 @@ export const trySend = (x: WsCtx) => (e: number) => (msg: Record<string, any > |
 }
 
 export const trySendx = (e: number) => (msg: Record<string, any> | Object) => {
-    trySend(rtxx.wsctx) (e) (msg)
+    trySend(glib.runtime.wsctx) (e) (msg)
 }
 
 export const tryApiRequest = async (req: any,rep:Function) => {

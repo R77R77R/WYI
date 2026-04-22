@@ -144,6 +144,7 @@ let init (runtime:Runtime) =
             unito = eux.units.TryGet ubill.p.Unit
             accto = None
             files = files[ubill.ID].ToArray()
+            poolo = None
             bill = ubill })
     |> loadAll runtime.output conn UBILL_metadata
 

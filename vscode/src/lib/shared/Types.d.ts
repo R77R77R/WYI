@@ -30,6 +30,8 @@ accto:UACCT | null,
 
 files:FILE[],
 
+poolo:POOL | null,
+
 bill:UBILL
 }
 
