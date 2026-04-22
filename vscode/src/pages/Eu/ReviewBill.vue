@@ -47,6 +47,19 @@
 
     <div class="card-double-col">
       <div class="card-double-col-span">
+
+        <div v-if="s.ucat.id > 0 && s.uprovider.id > 0">
+          Selected Provider: <Provider :ucat="s.ucat" :uprovider="s.uprovider" />
+        </div>
+
+        <div v-if="s.unit.id > 0">
+          Selected Unit: <Unit :unit="s.unit" />
+        </div>
+
+        <div v-if="s.acctx.acct.id > 0">
+          Selected Acct: <Acctx :acctx="s.acctx" />
+        </div>
+
         <div class="flex">
           <button @click="confirm">Confirm</button>
         </div>
@@ -78,6 +91,9 @@ import { AcctComplex_empty } from '~/lib/shared/CustomMor'
 import LocateUnit from '~/comps/LocateUnit.vue'
 import LocateAcctx from '~/comps/LocateAcctx.vue'
 import LocateProvider from '~/comps/LocateProvider.vue'
+import Provider from '~/comps/Provider.vue'
+import Unit from '~/comps/Unit.vue'
+import Acctx from '~/comps/Acctx.vue'
 
 const s = glib.vue.reactive({
   fids: [] as number[],
