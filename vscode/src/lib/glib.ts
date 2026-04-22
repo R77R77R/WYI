@@ -35,7 +35,7 @@ export const glib = {
   panel: panel,
 
   host: host,
-  runtime: runtime,
+  runtime: globalThis.runtime,
 
   Mor: {
     studio: { ...cm, ...om }

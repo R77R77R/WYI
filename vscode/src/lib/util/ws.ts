@@ -49,16 +49,17 @@ const createWebSocket_base = (wsbinHandler: Function, wsjsonHandler: Function) =
 export const createWebSocket = createWebSocket_base(wsbinHandler, wsjsonHandler)
 
 
-export const disconnect = (ws: WsCtx = rtxx.wsctx) => {
+export const disconnect = (ws: WsCtx = glib.runtime.wsctx) => {
   if (ws.ws && ws.ws.readyState === WebSocket.OPEN) {
     ws.ws.close()
   }
 }
 
 export const trySend = (x: WsCtx) => (e: number) => (msg: Record<string, any > | Object) => {
-
+    let rt:Runtime = glib.runtime
+    
     if (!x) {
-        x = rtxx.wsctx
+        x = glib.runtime.wsctx
     }
 
     if (x && x.ws.readyState === WebSocket.OPEN) {

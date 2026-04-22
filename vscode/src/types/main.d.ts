@@ -6,7 +6,7 @@ declare global {
     }
     namespace globalThis {
         var host: Host
-        var clientRuntime: studio.ClientRuntime
+        var clientRuntime: wyi.ClientRuntime
         var runtime: Runtime
         var panelrt: { showpanel: boolean }
     }
