@@ -180,7 +180,9 @@ let init (runtime:Runtime) =
             manager = runtime.users[i.p.Manager].eu
             billxs = 
                 billxs 
-                |> Array.filter(fun billx -> billx.bill.p.Provider = i.p.Provider)
+                |> Array.filter(fun billx -> 
+                    billx.poolo <- Some i
+                    billx.bill.p.Provider = i.p.Provider)
                 |> array__ModDictInt64 4 (fun billx -> billx.bill.ID)
             pool = i })
     |> loadAll runtime.output conn POOL_metadata

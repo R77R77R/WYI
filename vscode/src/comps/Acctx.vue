@@ -17,6 +17,7 @@
     {{ props.acctx.acct.p.AcctName }}
     {{ props.acctx.acct.p.AcctNum }}
   </div>
+  
 </div>
 
 <div v-if="props.mode == 1"> 
