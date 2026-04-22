@@ -84,6 +84,8 @@ props.ucat as wyi.UCAT
 props.uprovider as wyi.UPROVIDER
 props.unit as wyi.UNIT
 
+const emits = defineEmits(['changed']) 
+
 const s = glib.vue.reactive({
   showAdded: false,
   showDetails: true,
@@ -143,6 +145,9 @@ const onClickNew = () => {
     let item = rep.data as wyi.AcctComplex
     s.items.push(item)
     s.selected = item
+
+    emits('changed',s.selected)
+
     s.showAdded = true
   })
 }
@@ -154,8 +159,10 @@ const item__text = (item: wyi.AcctComplex) => {
 
 const onSelect = (selected: wyi.AcctComplex) => {
   s.selected = selected
-  if(s.selected.acct.id > 0)
+  if(s.selected.acct.id > 0){
+    emits('changed',s.selected)
     s.showDetails = false
+  }
 }
 
 

@@ -90,9 +90,6 @@ let main argv =
         [||]
 
 
-    "SERVER STARTED"
-    |> green |> runtime.output
-
     Util.Runtime.halt output "" ""
 
     0

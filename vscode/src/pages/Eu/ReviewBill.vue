@@ -19,11 +19,17 @@
       </div>
     </div>
 
-    <LocateProvider :ucat="s.ucat" :uprovider="s.uprovider" />
+    <LocateProvider 
+      @changed="onChangedProvider"
+      :ucat="s.ucat" :uprovider="s.uprovider" />
 
-    <LocateUnit :unit="s.unit" api="/api/eu/my-units" />
+    <LocateUnit 
+      @changed="onChangeUnit"
+      :unit="s.unit" api="/api/eu/my-units" />
 
-    <LocateAcctx :ucat="s.ucat" :uprovider="s.uprovider" :unit="s.unit" :acctx="s.acctx" api="/api/eu/my-acctxs" />
+    <LocateAcctx 
+      @changed="onChangeAcctx"
+      :ucat="s.ucat" :uprovider="s.uprovider" :unit="s.unit" :acctx="s.acctx" api="/api/eu/my-acctxs" />
 
     <div class="card-double-col">
 
@@ -108,6 +114,15 @@ const s = glib.vue.reactive({
   rt: runtime
 })
 
+const onChangedProvider = (ucat:wyi.UCAT,uprovider:wyi.UPROVIDER) => {
+  s.uprovider = uprovider
+}
+const onChangedUnit = (unit:wyi.UNIT) => {
+  s.unit = unit
+}
+const onChangedAcctx = (acctx:wyi.AcctComplex) => {
+  s.acctx = acctx
+}
 
 glib.vue.onMounted(async () => {
 

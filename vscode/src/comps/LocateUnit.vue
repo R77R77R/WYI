@@ -78,6 +78,8 @@ const props = defineProps(['api', 'unit'])
 props.api as string
 props.unit as wyi.UNIT
 
+const emits = defineEmits(['changed']) 
+
 const s = glib.vue.reactive({
   showAdded: false,
   showDetails: true,
@@ -110,6 +112,9 @@ const onClickNew = () => {
     let item = rep.data as wyi.UNIT
     s.items.push(item)
     s.selected = item
+  
+    emits('changed',s.selected)
+
     s.showAdded = true
   })
 }
@@ -123,8 +128,10 @@ const item__text = (item: wyi.UNIT) => {
 
 const onSelect = (selected: wyi.UNIT) => {
   s.selected = selected
-  if(s.selected.id > 0)
+  if(s.selected.id > 0){
+    emits('changed',s.selected)
     s.showDetails = false
+  }
 }
 
 

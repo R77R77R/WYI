@@ -9,7 +9,7 @@
       <div class="border-blue-300 m-3">
         <span class="card-clickable m-3"
           v-for="[k,v] in Object.entries(s.cat__providers)"
-          @click="s.selectedCat = v.ucat">
+          @click="onClickCat(v)">
             <span v-if="s.selectedCat.id == v.ucat.id">
               <b class="selected">{{ v.ucat.p.Caption }}</b>
             </span>
@@ -22,7 +22,7 @@
       <div class="border-blue-300 m-3"
         v-if="s.cat__providers[s.selectedCat.id]">
           <Provider class="card-clickable m-3"
-            @click="s.selectedProvider = ii"
+            @click="onClickProvider(ii)"
             v-for="ii in s.cat__providers[s.selectedCat.id].uproviders"
             :uprovider="ii"
             :highlight="s.selectedProvider.id == ii.id" />
@@ -46,6 +46,7 @@ const props = defineProps(['ucat','uprovider'])
 props.ucat as wyi.UCAT
 props.uprovider as wyi.UPROVIDER
 
+const emits = defineEmits(['changed']) 
 
 type CatProviders = {
 ucat: wyi.UCAT,
@@ -58,6 +59,15 @@ const s = glib.vue.reactive({
   selectedProvider: UPROVIDER_empty(),
   rt: runtime
 })
+
+const onClickCat = (v:CatProviders) => {
+  s.selectedCat = v.ucat
+}
+
+const onClickProvider = (ii:wyi.UPROVIDER) => {
+  s.selectedProvider = ii  
+  emits('changed',s.selectedCat,s.selectedProvider)
+}
 
 glib.vue.onMounted(async () => {
 
