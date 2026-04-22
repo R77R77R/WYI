@@ -2,6 +2,12 @@
 
   <div class="card">
 
+    <Pool v-if="props.billx.poolo?.id > 0"
+      :pool="props.billx.poolo" :mode="0" />
+    <div v-else>
+      Not in a pool.
+    </div>
+
     <div class="flex" v-if="props.mode == 0">
 
       <div>
@@ -91,6 +97,7 @@ import BillState from '~/comps/BillState.vue'
 import Provider from '~/comps/Provider.vue'
 import Unit from '~/comps/Unit.vue'
 import Acctx from '~/comps/Acctx.vue'
+import Pool from '~/comps/Pool.vue'
 
 const props = defineProps(['billx', 'mode'])
 props.billx as wyi.BillComplex

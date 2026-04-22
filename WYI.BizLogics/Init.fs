@@ -181,8 +181,11 @@ let init (runtime:Runtime) =
             billxs = 
                 billxs 
                 |> Array.filter(fun billx -> 
-                    billx.poolo <- Some i
-                    billx.bill.p.Provider = i.p.Provider)
+                    if billx.bill.p.Pool = i.ID then
+                        billx.poolo <- Some i
+                        true
+                    else
+                        false)
                 |> array__ModDictInt64 4 (fun billx -> billx.bill.ID)
             pool = i })
     |> loadAll runtime.output conn POOL_metadata
