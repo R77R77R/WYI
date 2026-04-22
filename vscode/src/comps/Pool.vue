@@ -1,22 +1,31 @@
 <template>
 
-
 <div v-if="props.mode == 0">
     <div class="card">
     <PoolState :state="props.pool.p.State" />
-    Caption: {{ props.pool.p.Caption }}
+    Bill Pool: {{ props.pool.p.Caption }}
+    <span
+      v-if="s.poolx != null">
+      for the provider:
+      <Provider 
+        v-if="s.poolx.providero != null"
+        :uprovider="s.poolx.providero" :mode="0" />
+    </span>
   </div>
 </div>
 
 <div v-else>
     
-  <div class="card">
-    <Provider :uprovider="s.poolx.providero" />
+  <div class="card" 
+    v-if="s.poolx != null">
+    <Provider 
+      v-if="s.poolx.providero != null"
+      :uprovider="s.poolx.providero" />
   </div>
 
   <div class="card">
     <div class="card-caption">
-      Caption: {{ props.pool.p.Caption }}
+      Bill Pool: {{ props.pool.p.Caption }}
     </div>
 
     <div class="card-caption"
@@ -58,6 +67,15 @@ props.mode as number
 const s = glib.vue.reactive({
   poolx: PoolComplex_empty(),
   rt: runtime
+})
+
+glib.vue.onMounted(async () => {
+  Common.loader('/api/admin/pools', {
+    id: props.pool.id,
+    act: 'load'
+  }, (rep: any) => {
+    s.poolx = rep.data as wyi.PoolComplex
+  })
 })
 
 </script>

@@ -26,7 +26,8 @@
 
   </div>
 
-  <Pool v-for="i in s.view.pools" :pool="i" :mode="0" />
+  <Pool v-for="i in s.view.pools" 
+    :pool="i" :mode="1" />
 
   <div class="card" v-if="s.view.billxs.length > 0">
     <div class="card-caption">
@@ -35,7 +36,8 @@
 
     <BillStates />
 
-    <Billx v-for="i in s.view.billxs" :billx="i" :mode="1" />
+    <Billx v-for="i in s.view.billxs" 
+      :billx="i" :mode="0" />
 
   </div>
 
