@@ -11,13 +11,17 @@
 项目的基本代码在以下github库，
 我将其设置为公开库，这样你可以访问分析
 
-Common 公共库：https://github.com/lchenmay/Common/
-JCS 代码生成器：https://github.com/lchenmay/JCS/
-WYI 项目主程序：https://github.com/R77R77R/WYI/
+Common 公共库 /Common：https://github.com/lchenmay/Common/
+JCS 代码生成器 /JCS：https://github.com/lchenmay/JCS/
+WYI 项目主程序 /WYI：https://github.com/R77R77R/WYI/
 
 根据这些库的目录结构，
 以及库中各个project的引用关系，
 你可以分析理解整个solution的结构。
+
+/WYI/doc/Prototy.pdf 是业务逻辑说明
+/WYI/WYI.Shared/中 Design-xxx.json 的系列文件是元数据说明
+
 
 - 开发环境为：localhost
 - 部署环境为: 5.78.201.21
@@ -25,12 +29,6 @@ WYI 项目主程序：https://github.com/R77R77R/WYI/
 - F#/Kestrel/PostgreSQL后端在所有环境都运行于80/443端口
 - 开发环境，前端在vscode/vue执行于 http://localhost:2019 
 - 部署环境，vue编译后的代码，作为静态文件，被后端的文件服务管理
-
-## 任务
-
-你需要：
-- 从公开的 repo 里分析关于前端主机转发的代码，特别是 vite.config.ts和Common/UtilKestrel/Server.fs
-- 找到在开发环境无法正确映射到app.MapGet("/file/{id}"和app.MapGet("/thumbnail/{id}"的原因
 
 
 ## WYI
